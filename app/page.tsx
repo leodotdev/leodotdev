@@ -42,7 +42,7 @@ export default function Home() {
           <motion.div
             whileHover={{ scale: 1.25 }}
             whileTap={{ scale: 1 }}
-            className="flex cursor-pointer flex-row items-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
+            className="flex flex-row items-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
           >
             {[
               ["1", "/starterkit-2023-1.png", "Plasmic StarterKit"],
@@ -83,7 +83,7 @@ export default function Home() {
           <motion.div
             whileHover={{ scale: 1.25 }}
             whileTap={{ scale: 1 }}
-            className="flex cursor-pointer flex-row items-center justify-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
+            className="flex flex-row items-center justify-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
           >
             {[["1", "/field-states-2021.png", "Plasmic Field States"]].map(
               ([id, file, name]) => (
@@ -123,7 +123,7 @@ export default function Home() {
           <motion.div
             whileHover={{ scale: 1.25 }}
             whileTap={{ scale: 1 }}
-            className="flex cursor-pointer flex-row items-center justify-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
+            className="flex flex-row items-center justify-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
           >
             {[["1", "/variants-exploration-2021.png", "Variants Panel"]].map(
               ([id, file, name]) => (
@@ -163,7 +163,7 @@ export default function Home() {
           <motion.div
             whileHover={{ scale: 1.25 }}
             whileTap={{ scale: 1 }}
-            className="flex cursor-pointer flex-row items-center justify-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
+            className="flex flex-row items-center justify-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
           >
             {[
               ["1", "/chrome-wireframe-2023.png", "Plasmic Chrome Wireframe"],
@@ -203,7 +203,7 @@ export default function Home() {
           <motion.div
             whileHover={{ scale: 1.25 }}
             whileTap={{ scale: 1 }}
-            className="flex cursor-pointer flex-row items-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
+            className="flex flex-row items-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
           >
             {[
               ["1", "/insert-menu-2023.png", "Variants Panel"],
