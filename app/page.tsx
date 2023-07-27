@@ -45,11 +45,11 @@ export default function Home() {
             className="flex cursor-pointer flex-row items-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
           >
             {[
-              ["/starterkit-2023-1.svg", "Plasmic StarterKit"],
-              ["/starterkit-2023-2.svg", "Plasmic StarterKit"],
-              ["/starterkit-2023-3.svg", "Plasmic StarterKit"],
-              ["/starterkit-2023-4.svg", "Plasmic StarterKit"],
-              ["/starterkit-2023-5.svg", "Plasmic StarterKit"],
+              ["/starterkit-2023-1.png", "Plasmic StarterKit"],
+              ["/starterkit-2023-2.png", "Plasmic StarterKit"],
+              ["/starterkit-2023-3.png", "Plasmic StarterKit"],
+              ["/starterkit-2023-4.png", "Plasmic StarterKit"],
+              ["/starterkit-2023-5.png", "Plasmic StarterKit"],
             ].map(([file, alt]) => (
               <Image
                 className="rounded"
@@ -199,51 +199,17 @@ export default function Home() {
           <motion.div
             whileHover={{ scale: 1.25 }}
             whileTap={{ scale: 1 }}
-            className="flex cursor-pointer flex-row items-center justify-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
-          >
-            {[["/insert-menu-2023.svg", "Variants Panel"]].map(
-              ([file, name]) => (
-                <Image
-                  className="rounded"
-                  src={file}
-                  alt={name}
-                  width="800"
-                  height="600"
-                  objectFit="contain"
-                  priority
-                />
-              ),
-            )}
-          </motion.div>
-
-          <div className="flex flex-row items-center gap-3">
-            <div className="rounded-full bg-stone-100 p-3 dark:bg-stone-800/30">
-              <RiNodeTree
-                title="Visual Design"
-                className="h-5 w-5 fill-stone-500"
-              />
-            </div>
-
-            <div className="flex flex-col">
-              <h2 className="text-xl font-semibold text-stone-950">
-                Insert Menu
-              </h2>
-
-              <p className="text-sm text-stone-500">Plasmic, 2023</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="mb-24 flex flex-col gap-4">
-          <motion.div
-            whileHover={{ scale: 1.25 }}
-            whileTap={{ scale: 1 }}
             className="flex cursor-pointer flex-row items-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
           >
             {[
-              ["/copilot-2023-1.svg", "Plasmic Copilot"],
-              ["/copilot-2023-2.svg", "Plasmic Copilot"],
-              ["/copilot-2023-3.svg", "Plasmic Copilot"],
+              ["/insert-menu-2023.svg", "Variants Panel"],
+              ["/copilot-2023-1.png", "Plasmic Copilot"],
+              ["/copilot-2023-2.png", "Plasmic Copilot"],
+              ["/copilot-2023-3.png", "Plasmic Copilot"],
+              ["/dashboard-2023-1.png", "Plasmic Dashboard"],
+              ["/dashboard-2023-2.png", "Plasmic Dashboard"],
+              ["/dashboard-2023-3.png", "Plasmic Dashboard"],
+              ["/dashboard-2023-4.png", "Plasmic Dashboard"],
             ].map(([file, alt]) => (
               <Image
                 className="rounded"
@@ -264,7 +230,9 @@ export default function Home() {
               />
             </div>
             <div className="flex flex-col">
-              <h2 className="text-xl font-semibold text-stone-950">Copilot </h2>
+              <h2 className="text-xl font-semibold text-stone-950">
+                Insert Menu, AI Copilot, Dashboard, Workspaces, Settings
+              </h2>
               <p className="text-sm text-stone-500">Plasmic, 2023</p>
             </div>
           </div>
