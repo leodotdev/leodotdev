@@ -45,13 +45,14 @@ export default function Home() {
             className="flex cursor-pointer flex-row items-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
           >
             {[
-              ["/starterkit-2023-1.png", "Plasmic StarterKit"],
-              ["/starterkit-2023-2.png", "Plasmic StarterKit"],
-              ["/starterkit-2023-3.png", "Plasmic StarterKit"],
-              ["/starterkit-2023-4.png", "Plasmic StarterKit"],
-              ["/starterkit-2023-5.png", "Plasmic StarterKit"],
-            ].map(([file, alt]) => (
+              ["1", "/starterkit-2023-1.png", "Plasmic StarterKit"],
+              ["2", "/starterkit-2023-2.png", "Plasmic StarterKit"],
+              ["3", "/starterkit-2023-3.png", "Plasmic StarterKit"],
+              ["4", "/starterkit-2023-4.png", "Plasmic StarterKit"],
+              ["5", "/starterkit-2023-5.png", "Plasmic StarterKit"],
+            ].map(([id, file, alt]) => (
               <Image
+                key={id}
                 className="rounded"
                 src={file}
                 alt={alt}
@@ -84,9 +85,10 @@ export default function Home() {
             whileTap={{ scale: 1 }}
             className="flex cursor-pointer flex-row items-center justify-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
           >
-            {[["/field-states-2021.svg", "Plasmic Field States"]].map(
-              ([file, name]) => (
+            {[["1", "/field-states-2021.svg", "Plasmic Field States"]].map(
+              ([id, file, name]) => (
                 <Image
+                  key={id}
                   className="rounded"
                   src={file}
                   alt={name}
@@ -124,8 +126,9 @@ export default function Home() {
             className="flex cursor-pointer flex-row items-center justify-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
           >
             {[["/variants-exploration-2021.svg", "Variants Panel"]].map(
-              ([file, name]) => (
+              ([id, file, name]) => (
                 <Image
+                  key={id}
                   className="rounded"
                   src={file}
                   alt={name}
@@ -163,8 +166,9 @@ export default function Home() {
             className="flex cursor-pointer flex-row items-center justify-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
           >
             {[["/chrome-wireframe-2023.svg", "Plasmic Variants Panel"]].map(
-              ([file, name]) => (
+              ([id, file, name]) => (
                 <Image
+                  key={id}
                   className="rounded"
                   src={file}
                   alt={name}
@@ -202,16 +206,17 @@ export default function Home() {
             className="flex cursor-pointer flex-row items-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
           >
             {[
-              ["/insert-menu-2023.svg", "Variants Panel"],
-              ["/copilot-2023-1.png", "Plasmic Copilot"],
-              ["/copilot-2023-2.png", "Plasmic Copilot"],
-              ["/copilot-2023-3.png", "Plasmic Copilot"],
-              ["/dashboard-2023-1.png", "Plasmic Dashboard"],
-              ["/dashboard-2023-2.png", "Plasmic Dashboard"],
-              ["/dashboard-2023-3.png", "Plasmic Dashboard"],
-              ["/dashboard-2023-4.png", "Plasmic Dashboard"],
-            ].map(([file, alt]) => (
+              ["1", "/insert-menu-2023.svg", "Variants Panel"],
+              ["2", "/copilot-2023-1.png", "Plasmic Copilot"],
+              ["3", "/copilot-2023-2.png", "Plasmic Copilot"],
+              ["4", "/copilot-2023-3.png", "Plasmic Copilot"],
+              ["5", "/dashboard-2023-1.png", "Plasmic Dashboard"],
+              ["6", "/dashboard-2023-2.png", "Plasmic Dashboard"],
+              ["7", "/dashboard-2023-3.png", "Plasmic Dashboard"],
+              ["8", "/dashboard-2023-4.png", "Plasmic Dashboard"],
+            ].map(([id, file, alt]) => (
               <Image
+                key={id}
                 className="rounded"
                 src={file}
                 alt={alt}
