@@ -220,7 +220,7 @@ export default function Home() {
           <motion.div
             whileHover={{ scale: 1.25 }}
             whileTap={{ scale: 1 }}
-            className="flex flex-row items-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
+            className="flex flex-row items-center gap-4 overflow-auto rounded-3xl bg-[url(/ventura-13-large.jpeg)] p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
           >
             {[
               ["1", "/insert-menu-2023.png", "Variants Panel"],
