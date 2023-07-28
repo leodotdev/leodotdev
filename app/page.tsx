@@ -41,7 +41,7 @@ export default function Home() {
 
             {/* link to resume */}
             <motion.a
-              href="/Leo-Succar-Ferré-Resume-2023.pdf"
+              href="/Leo-Succar-Ferré-Resume-2023-compressed.pdf"
               target="_blank"
               whileHover={{ scale: 1.25 }}
               whileTap={{ scale: 1 }}
