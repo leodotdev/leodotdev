@@ -7,6 +7,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "leo.dev",
   description: "Software Designer",
+  icons: {
+    icon: { url: "/icon.svg", type: "image/svg+xml", sizes: "any" },
+  },
 };
 
 export default function RootLayout({
@@ -16,7 +19,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <link rel="icon" href="/favicon.svg" sizes="any" />
       <body className={inter.className}>{children}</body>
     </html>
   );
