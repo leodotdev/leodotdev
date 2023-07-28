@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion, useScroll } from "framer-motion";
 
-import { RiPaintBrushFill, RiNodeTree } from "react-icons/ri";
+import { TbPaint, TbBinaryTree, TbFileText } from "react-icons/tb";
 
 // const { scrollYProgress } = useScroll();
 
@@ -16,6 +16,7 @@ export default function Home() {
             <h2 className={`text-2xl font-semibold text-stone-950`}>Leo</h2>
             <p className={`text-sm text-stone-500`}>Software Designer</p>
           </div>
+          {/* twitter link */}
           <div className="flex flex-row gap-4">
             <motion.a
               href="https://twitter.com/leosuccarferre"
@@ -26,6 +27,8 @@ export default function Home() {
             >
               Twitter
             </motion.a>
+
+            {/* linkedin link */}
             <motion.a
               href="https://www.linkedin.com/in/leosuccarferre/"
               target="_blank"
@@ -34,6 +37,20 @@ export default function Home() {
               className="cursor-pointer rounded-full bg-stone-100 p-3 px-5 dark:bg-stone-800/30"
             >
               LinkedIn
+            </motion.a>
+
+            {/* link to resume */}
+            <motion.a
+              href="/Leo-Succar-Ferré-Resume-2023.pdf"
+              target="_blank"
+              whileHover={{ scale: 1.25 }}
+              whileTap={{ scale: 1 }}
+              className="cursor-pointer self-center rounded-full bg-stone-100 p-3 px-5 dark:bg-stone-800/30"
+            >
+              <TbFileText
+                title="Visual Design"
+                className="h-5 w-5 stroke-stone-600"
+              />
             </motion.a>
           </div>
         </div>
@@ -65,9 +82,9 @@ export default function Home() {
           </motion.div>
           <div className="flex flex-row items-center gap-3">
             <div className="rounded-full bg-stone-100 p-3 dark:bg-stone-800/30">
-              <RiPaintBrushFill
+              <TbPaint
                 title="Visual Design"
-                className="h-5 w-5 fill-stone-500"
+                className="h-5 w-5 stroke-stone-600"
               />
             </div>
             <div className="flex flex-col">
@@ -103,9 +120,9 @@ export default function Home() {
 
           <div className="flex flex-row items-center gap-3">
             <div className="rounded-full bg-stone-100 p-3 dark:bg-stone-800/30">
-              <RiNodeTree
+              <TbBinaryTree
                 title="Visual Design"
-                className="h-5 w-5 fill-stone-500"
+                className="h-5 w-5 self-center stroke-stone-600"
               />
             </div>
 
@@ -143,9 +160,9 @@ export default function Home() {
 
           <div className="flex flex-row items-center gap-3">
             <div className="rounded-full bg-stone-100 p-3 dark:bg-stone-800/30">
-              <RiNodeTree
+              <TbBinaryTree
                 title="Visual Design"
-                className="h-5 w-5 fill-stone-500"
+                className="h-5 w-5 self-center stroke-stone-600"
               />
             </div>
 
@@ -183,9 +200,9 @@ export default function Home() {
 
           <div className="flex flex-row items-center gap-3">
             <div className="rounded-full bg-stone-100 p-3 dark:bg-stone-800/30">
-              <RiNodeTree
+              <TbBinaryTree
                 title="Visual Design"
-                className="h-5 w-5 fill-stone-500"
+                className="h-5 w-5 self-center stroke-stone-600"
               />
             </div>
 
@@ -229,15 +246,53 @@ export default function Home() {
           </motion.div>
           <div className="flex flex-row items-center gap-3">
             <div className="rounded-full bg-stone-100 p-3 dark:bg-stone-800/30">
-              <RiPaintBrushFill
+              <TbPaint
                 title="Visual Design"
-                className="h-5 w-5 fill-stone-500"
+                className="h-5 w-5 self-center stroke-stone-600"
               />
             </div>
             <div className="flex flex-col">
               <h2 className="text-xl font-semibold text-stone-950">
                 Insert Menu, AI Copilot, Dashboard, Workspaces, Settings
               </h2>
+              <p className="text-sm text-stone-500">Plasmic, 2023</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mb-24 flex flex-col gap-4">
+          <motion.div
+            whileHover={{ scale: 1.25 }}
+            whileTap={{ scale: 1 }}
+            className="flex flex-row items-center justify-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-8 transition-colors dark:border-stone-700 dark:bg-stone-800/30 lg:p-12"
+          >
+            {[["1", "/diagrams-2022.png", "Plasmic Chrome Wireframe"]].map(
+              ([id, file, name]) => (
+                <Image
+                  key={id}
+                  className="rounded"
+                  src={file}
+                  alt={name}
+                  width="800"
+                  height="600"
+                  objectFit="contain"
+                  priority
+                />
+              ),
+            )}
+          </motion.div>
+
+          <div className="flex flex-row items-center gap-3">
+            <div className="rounded-full bg-stone-100 p-3 dark:bg-stone-800/30">
+              <TbBinaryTree
+                title="Visual Design"
+                className="h-5 w-5 self-center stroke-stone-600"
+              />
+            </div>
+
+            <div className="flex flex-col">
+              <h2 className="text-xl font-semibold text-stone-950">Diagrams</h2>
+
               <p className="text-sm text-stone-500">Plasmic, 2023</p>
             </div>
           </div>
