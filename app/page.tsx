@@ -1,21 +1,40 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
-import { motion, useScroll } from "framer-motion";
 
-import { TbPaint, TbBinaryTree, TbFileText } from "react-icons/tb";
+import Lightbox from "yet-another-react-lightbox";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import "yet-another-react-lightbox/styles.css";
+
+import { motion } from "framer-motion";
+
+import {
+  TbPaint,
+  TbBinaryTree,
+  TbFileText,
+  TbChevronRight,
+  TbChevronLeft,
+  TbX,
+  TbZoomIn,
+  TbZoomOut,
+} from "react-icons/tb";
 
 // const { scrollYProgress } = useScroll();
 
 export default function Home() {
+  const [open, setOpen] = useState(false);
+
   return (
     <main>
       <div className="container p-12 lg:p-24">
+        {/* header */}
         <div className="mb-24 flex w-full flex-row items-center justify-between gap-4">
           <div className="flex flex-col">
             <h2 className={`text-2xl font-semibold text-stone-950`}>Leo</h2>
             <p className={`text-sm text-stone-500`}>Software Designer</p>
           </div>
+
           {/* twitter link */}
           <div className="flex flex-row gap-4">
             <motion.a
@@ -52,13 +71,12 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-12 gap-4">
+        <div className="grid grid-cols-12 gap-8">
           <div className="col-span-12 md:col-span-4 lg:col-span-3 ">
             <div className="mb-24 flex flex-col gap-4">
               <motion.div
-                whileHover={{ scale: 1.25 }}
-                whileTap={{ scale: 1 }}
-                className="flex aspect-square flex-row items-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-6 dark:border-stone-700 dark:bg-stone-800/30 lg:p-8"
+                onClick={() => setOpen(true)}
+                className="lg: flex aspect-square cursor-zoom-in flex-row items-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-6 dark:border-stone-700 dark:bg-stone-800/30 lg:p-8"
               >
                 {[
                   ["1", "/starterkit-2023-1.png", "Plasmic StarterKit"],
@@ -79,6 +97,27 @@ export default function Home() {
                   />
                 ))}
               </motion.div>
+
+              <Lightbox
+                render={{
+                  iconPrev: () => <TbChevronLeft />,
+                  iconNext: () => <TbChevronRight />,
+                  iconClose: () => <TbX />,
+                  iconZoomIn: () => <TbZoomIn />,
+                  iconZoomOut: () => <TbZoomOut />,
+                }}
+                plugins={[Zoom]}
+                open={open}
+                close={() => setOpen(false)}
+                slides={[
+                  { src: "/starterkit-2023-1.png" },
+                  { src: "/starterkit-2023-2.png" },
+                  { src: "/starterkit-2023-3.png" },
+                  { src: "/starterkit-2023-4.png" },
+                  { src: "/starterkit-2023-5.png" },
+                ]}
+              />
+
               <div className="flex flex-row items-center gap-3">
                 <div className="rounded-full bg-stone-100 p-3 dark:bg-stone-800/30">
                   <TbPaint
@@ -98,11 +137,7 @@ export default function Home() {
 
           <div className="col-span-12 md:col-span-4 lg:col-span-3 ">
             <div className="mb-24 flex flex-col gap-4">
-              <motion.div
-                whileHover={{ scale: 1.25 }}
-                whileTap={{ scale: 1 }}
-                className="flex aspect-square flex-row items-center justify-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-6 dark:border-stone-700 dark:bg-stone-800/30 lg:p-8"
-              >
+              <motion.div className="flex aspect-square flex-row items-center justify-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-6 dark:border-stone-700 dark:bg-stone-800/30 lg:p-8">
                 {[["1", "/field-states-2021.png", "Plasmic Field States"]].map(
                   ([id, file, name]) => (
                     <Image
@@ -138,11 +173,7 @@ export default function Home() {
 
           <div className="col-span-12 md:col-span-4 lg:col-span-3 ">
             <div className="mb-24 flex flex-col gap-4">
-              <motion.div
-                whileHover={{ scale: 1.25 }}
-                whileTap={{ scale: 1 }}
-                className="flex aspect-square flex-row items-center justify-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-6 dark:border-stone-700 dark:bg-stone-800/30 lg:p-8"
-              >
+              <motion.div className="flex aspect-square flex-row items-center justify-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-6 dark:border-stone-700 dark:bg-stone-800/30 lg:p-8">
                 {[
                   ["1", "/variants-exploration-2021.png", "Variants Panel"],
                 ].map(([id, file, name]) => (
@@ -178,11 +209,7 @@ export default function Home() {
 
           <div className="col-span-12 md:col-span-4 lg:col-span-3 ">
             <div className="mb-24 flex flex-col gap-4">
-              <motion.div
-                whileHover={{ scale: 1.25 }}
-                whileTap={{ scale: 1 }}
-                className="flex aspect-square flex-row items-center justify-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-6 dark:border-stone-700 dark:bg-stone-800/30 lg:p-8"
-              >
+              <motion.div className="flex aspect-square flex-row items-center justify-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-6 dark:border-stone-700 dark:bg-stone-800/30 lg:p-8">
                 {[
                   [
                     "1",
@@ -224,16 +251,12 @@ export default function Home() {
 
           <div className="col-span-12 md:col-span-4 lg:col-span-3 ">
             <div className="mb-24 flex flex-col gap-4">
-              <motion.div
-                whileHover={{ scale: 1.25 }}
-                whileTap={{ scale: 1 }}
-                className="flex aspect-square flex-row items-center gap-4 overflow-auto rounded-3xl bg-[url(/ventura-13-large.jpeg)] bg-cover p-8 dark:border-stone-700 dark:bg-stone-800/30 lg:p-8"
-              >
+              <motion.div className="flex aspect-square flex-row items-center gap-4 overflow-auto rounded-3xl bg-[url(/ventura-13-large.jpeg)] bg-cover p-8 dark:border-stone-700 dark:bg-stone-800/30 lg:p-8">
                 {[
                   ["1", "/insert-menu-2023.png", "Variants Panel"],
-                  ["2", "/copilot-2023-1.png", "Plasmic Copilot"],
-                  ["3", "/copilot-2023-2.png", "Plasmic Copilot"],
-                  ["4", "/copilot-2023-3.png", "Plasmic Copilot"],
+                  // ["2", "/copilot-2023-1.png", "Plasmic Copilot"],
+                  // ["3", "/copilot-2023-2.png", "Plasmic Copilot"],
+                  // ["4", "/copilot-2023-3.png", "Plasmic Copilot"],
                   ["5", "/dashboard-2023-1.png", "Plasmic Dashboard"],
                   ["6", "/dashboard-2023-2.png", "Plasmic Dashboard"],
                   ["7", "/dashboard-2023-3.png", "Plasmic Dashboard"],
@@ -270,11 +293,7 @@ export default function Home() {
 
           <div className="col-span-12 md:col-span-4 lg:col-span-3 ">
             <div className="mb-24 flex flex-col gap-4">
-              <motion.div
-                whileHover={{ scale: 1.25 }}
-                whileTap={{ scale: 1 }}
-                className="flex aspect-square flex-row items-center justify-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-6 dark:border-stone-700 dark:bg-stone-800/30 lg:p-8"
-              >
+              <motion.div className="flex aspect-square flex-row items-center justify-center gap-4 overflow-auto rounded-3xl bg-stone-100 p-6 dark:border-stone-700 dark:bg-stone-800/30 lg:p-8">
                 {[["1", "/diagrams-2022.png", "Plasmic Chrome Wireframe"]].map(
                   ([id, file, name]) => (
                     <Image
