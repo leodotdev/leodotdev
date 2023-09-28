@@ -4,9 +4,9 @@ import { motion } from "framer-motion";
 
 import { TbFileText } from "react-icons/tb";
 
-// const { scrollYProgress } = useScroll();
-
 import Link from "next/link";
+
+// const { scrollYProgress } = useScroll();
 
 export default function Home() {
   return (
@@ -55,9 +55,7 @@ export default function Home() {
           </div>
         </div>
 
-        <Link href="/about" className="grid grid-cols-12 gap-8">
-          coming soon…
-        </Link>
+        <div className="grid grid-cols-12 gap-8"> soon…</div>
       </div>
     </main>
   );
