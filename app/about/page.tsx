@@ -55,7 +55,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-12 gap-8"> soon…</div>
+        <div className="grid grid-cols-12 gap-8"> SOON…</div>
       </div>
     </main>
   );
