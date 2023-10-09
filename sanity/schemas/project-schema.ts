@@ -47,7 +47,6 @@ const project = {
             of: [{type: 'block'}]
         }
     ]
-
 }
 
 export default project;
