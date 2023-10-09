@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getProjects } from "@/sanity/sanity-utils";
 import { TbFileText } from "react-icons/tb";
+import Image from "next/image";
 
 export default async function Home() {
   const projects = await getProjects();
@@ -45,10 +46,27 @@ export default async function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-12 gap-8"></div>
-        {projects.map((project) => (
-          <div key={project._id}>{project.name}</div>
-        ))}
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-12">
+          {projects.map((project) => (
+            <div
+              key={project._id}
+              className="rounded-lg border border-gray-500 p-4"
+            >
+              {project.image && (
+                <Image
+                  src={project.image}
+                  alt={project.name}
+                  width={300}
+                  height={300}
+                  className="rounded-lg"
+                />
+              )}
+              <div className="bg-gradient-to-r from-orange-400 via-red-500 to-purple-600 bg-clip-text font-extrabold text-transparent">
+                {project.name}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </main>
   );
