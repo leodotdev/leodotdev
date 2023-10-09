@@ -1,14 +1,10 @@
-"use client";
-
-import { motion } from "framer-motion";
-
+import Link from "next/link";
+import { getProjects } from "@/sanity/sanity-utils";
 import { TbFileText } from "react-icons/tb";
 
-import Link from "next/link";
+export default async function Home() {
+  const projects = await getProjects();
 
-// const { scrollYProgress } = useScroll();
-
-export default function Home() {
   return (
     <main>
       <div className="container p-12 lg:p-24">
@@ -21,41 +17,38 @@ export default function Home() {
 
           {/* twitter link */}
           <div className="flex flex-row gap-4">
-            <motion.a
+            <a
               href="https://twitter.com/leosuccarferre"
               target="_blank"
-              whileHover={{ scale: 1.25 }}
-              whileTap={{ scale: 1 }}
               className="cursor-pointer rounded-full bg-stone-100 p-3 px-5 text-stone-950 dark:bg-stone-800/30"
             >
               Twitter
-            </motion.a>
+            </a>
 
             {/* linkedin link */}
-            <motion.a
+            <a
               href="https://www.linkedin.com/in/leosuccarferre/"
               target="_blank"
-              whileHover={{ scale: 1.25 }}
-              whileTap={{ scale: 1 }}
               className="cursor-pointer rounded-full bg-stone-100 p-3 px-5 text-stone-950 dark:bg-stone-800/30"
             >
               LinkedIn
-            </motion.a>
+            </a>
 
             {/* link to resume */}
-            <motion.a
+            <a
               href="/Leo-SF-Resume-2023.pdf"
               target="_blank"
-              whileHover={{ scale: 1.25 }}
-              whileTap={{ scale: 1 }}
               className="cursor-pointer self-center rounded-full bg-stone-100 p-3 px-5 dark:bg-stone-800/30"
             >
               <TbFileText title="Resume" className="h-5 w-5 stroke-stone-950" />
-            </motion.a>
+            </a>
           </div>
         </div>
 
-        <div className="grid grid-cols-12 gap-8"> SOON…</div>
+        <div className="grid grid-cols-12 gap-8"></div>
+        {projects.map((project) => (
+          <div key={project._id}>{project.name}</div>
+        ))}
       </div>
     </main>
   );
