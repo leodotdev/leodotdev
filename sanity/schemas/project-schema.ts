@@ -28,10 +28,7 @@ const project = {
                 {
                     name: 'alt',
                     title: 'Alt',
-                    type: 'string',
-                    options: {
-                        isHighlighted: true
-                    }
+                    type: 'string'
                 }
             ]
         },
