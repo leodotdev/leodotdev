@@ -46,11 +46,11 @@ export default async function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-12">
+        <div className="auto-rows grid grid-cols-3 gap-4">
           {projects.map((project) => (
             <div
               key={project._id}
-              className="rounded-lg border border-gray-500 p-4"
+              className="rounded-xl border border-gray-500 p-4"
             >
               {project.image && (
                 <Image
@@ -58,7 +58,7 @@ export default async function Home() {
                   alt={project.name}
                   width={800}
                   height={400}
-                  className="rounded-lg object-cover"
+                  className="rounded-md object-cover"
                 />
               )}
               <div className="bg-gradient-to-r from-orange-400 via-red-500 to-purple-600 bg-clip-text font-extrabold text-transparent">
