@@ -1,6 +1,4 @@
-import Link from "next/link";
 import { getProjects } from "@/sanity/sanity-utils";
-import { TbFileText } from "react-icons/tb";
 import Image from "next/image";
 
 import { PortableText } from "@portabletext/react";
@@ -14,11 +12,8 @@ export default async function Home() {
     <main>
       <div className="auto-rows grid gap-4 md:grid-cols-3">
         {projects.map((project) => (
-          <Dialog>
-            <DialogTrigger
-              key={project._id}
-              className="flex flex-col gap-2 rounded-3xl border border-stone-200 bg-stone-50 p-4 dark:border-stone-800 dark:bg-stone-900"
-            >
+          <Dialog key={project._id}>
+            <DialogTrigger className="flex flex-col gap-2 rounded-3xl border border-stone-200 bg-stone-50 p-4 dark:border-stone-800 dark:bg-stone-900">
               {project.image && (
                 <Image
                   src={project.image}
