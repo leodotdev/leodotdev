@@ -3,7 +3,12 @@ import Image from "next/image";
 
 import { PortableText } from "@portabletext/react";
 
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default async function Home() {
   const projects = await getProjects();
@@ -13,21 +18,29 @@ export default async function Home() {
       <div className="auto-rows grid gap-4 md:grid-cols-3">
         {projects.map((project) => (
           <Dialog key={project._id}>
-            <DialogTrigger className="flex flex-col gap-2 rounded-3xl border border-stone-200 bg-stone-50 p-4 dark:border-stone-800 dark:bg-stone-900">
+            <DialogTrigger className="flex flex-col items-stretch gap-2 rounded-3xl  bg-stone-200/50 p-4 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800">
               {project.image && (
                 <Image
                   src={project.image}
                   alt={project.name}
                   width={800}
                   height={400}
-                  className="rounded-md object-cover"
+                  className="aspect-[4/3] rounded-lg object-cover"
                 />
               )}
-              <div className="text-lg font-semibold text-stone-900 dark:text-stone-50">
-                {project.name}
+              <div className="flex flex-col">
+                <div className="flex text-lg font-semibold text-stone-900 dark:text-stone-50">
+                  {project.name}
+                </div>
+                <div className="text-md flex justify-between text-stone-500 dark:text-stone-500">
+                  <div>{project.client}</div>
+                  <div>{project.year}</div>
+                </div>
               </div>
             </DialogTrigger>
-            <DialogContent className="max-w-4xl flex-col gap-4">
+
+            <DialogContent className=" max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2srem)] overflow-auto md:max-w-4xl">
+              <DialogHeader>{project.name}</DialogHeader>
               <Image
                 src={project.image}
                 alt={project.name}

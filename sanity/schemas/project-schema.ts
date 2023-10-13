@@ -9,6 +9,16 @@ const project = {
             type:'string'
         },
         {
+            name: 'client',
+            title: 'Client',
+            type:'string'
+        },
+        {
+            name: 'year',
+            title: 'Year',
+            type:'string'
+        },
+        {
             name: 'slug',
             title: 'Slug',
             type:'slug',
@@ -25,8 +35,7 @@ const project = {
                 {
                     name: 'alt',
                     title: 'Alt',
-                    type: 'string',
-
+                    type: 'string'
                 }
             ]
         },
@@ -34,7 +43,7 @@ const project = {
             name: 'content',
             title: 'Content',
             type: 'array',
-            of: [{type: 'block'}]
+            of: [{type: 'block'}, {type: 'image'}]
         }
     ]
 }
