@@ -20,7 +20,7 @@ export default async function Home() {
     apiVersion: "2023-10-07",
   });
 
-  const SampleImageComponent = ({ value }: { value: any }) => {
+  const ContentImageComponent = ({ value }: { value: any }) => {
     return (
       <Image
         src={urlBuilder(client).image(value).fit("max").auto("format").url()}
@@ -35,7 +35,7 @@ export default async function Home() {
 
   const components = {
     types: {
-      image: SampleImageComponent,
+      image: ContentImageComponent,
       // Any other custom types you have in your content
       // Examples: mapLocation, contactForm, code, featuredProjects, latestNews, etc.
     },
@@ -76,7 +76,7 @@ export default async function Home() {
                 height={800}
                 className="w-100 object-cover"
               />
-              <div className="text-md text-stone-900 dark:text-stone-50">
+              <div className="text-md flex flex-col gap-2 text-stone-900 dark:text-stone-50">
                 <PortableText value={project.content} components={components} />
               </div>
             </DialogContent>
