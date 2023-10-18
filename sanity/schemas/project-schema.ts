@@ -43,7 +43,29 @@ const project = {
             name: 'content',
             title: 'Content',
             type: 'array',
-            of: [{type: 'block'}, {type: 'image'}]
+            of: [
+                {
+                  type: 'block'
+                },
+                // this is our first custom block which will make it possible to add block images with alt text fields into your portable text
+                {
+                  type: 'image',
+                  asset: {
+                    type: 'reference',
+                  },
+                    fields: [
+                      {
+                        name: 'alt',
+                        type: 'string',
+                        title: 'Alternative text',
+                        description: 'Important for SEO and accessiblity.',
+                          options: {
+                            isHighlighted: true,
+                        },
+                      },
+                    ],
+                }
+              ]
         }
     ]
 }

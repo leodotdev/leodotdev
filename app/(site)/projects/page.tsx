@@ -3,6 +3,8 @@ import Image from "next/image";
 
 import { PortableText } from "@portabletext/react";
 
+import { createClient } from "next-sanity";
+import urlBuilder from "@sanity/image-url";
 import {
   Dialog,
   DialogContent,
@@ -12,6 +14,32 @@ import {
 
 export default async function Home() {
   const projects = await getProjects();
+  const client = createClient({
+    projectId: "jyqe7nab",
+    dataset: "production",
+    apiVersion: "2023-10-07",
+  });
+
+  const SampleImageComponent = ({ value }: { value: any }) => {
+    return (
+      <Image
+        src={urlBuilder(client).image(value).fit("max").auto("format").url()}
+        alt={value.alt || " "}
+        width={0}
+        height={0}
+        sizes="100vw"
+        className="w-full"
+      />
+    );
+  };
+
+  const components = {
+    types: {
+      image: SampleImageComponent,
+      // Any other custom types you have in your content
+      // Examples: mapLocation, contactForm, code, featuredProjects, latestNews, etc.
+    },
+  };
 
   return (
     <main>
@@ -49,7 +77,7 @@ export default async function Home() {
                 className="w-100 object-cover"
               />
               <div className="text-md text-stone-900 dark:text-stone-50">
-                <PortableText value={project.content} />
+                <PortableText value={project.content} components={components} />
               </div>
             </DialogContent>
           </Dialog>

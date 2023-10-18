@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "../theme-provider";
 import { ThemeSwitcher } from "../theme-switcher";
 import Link from "next/link";
-import { TbFileText } from "react-icons/tb";
+import { TbArrowUpRight, TbFileText } from "react-icons/tb";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,8 +26,8 @@ export default function RootLayout({
       {/* <body className={inter.className}> */}
       <body className="font-mono">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="container p-12 lg:p-24">
-            <div className="mb-24 flex w-full flex-row items-center justify-between gap-4">
+          <div className="container p-6 md:p-12 lg:p-24">
+            <div className="mb-24 flex w-full flex-row flex-wrap items-center justify-between gap-4">
               <div className="flex flex-row items-center gap-4">
                 <Link href="/" className="flex flex-col">
                   <h2 className="text-2xl font-semibold text-stone-950 dark:text-stone-50">
@@ -39,7 +39,7 @@ export default function RootLayout({
                 </Link>
               </div>
 
-              <div className="flex flex-row gap-4">
+              <div className="flex flex-row flex-wrap gap-4">
                 <Link
                   href="/Leo-SF-Resume-2023.pdf"
                   target="_blank"
@@ -52,19 +52,33 @@ export default function RootLayout({
                 </Link>
 
                 <Link
-                  href="https://twitter.com/leosuccarferre"
-                  target="_blank"
-                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
-                >
-                  Twitter
-                </Link>
-
-                <Link
                   href="https://www.linkedin.com/in/leosuccarferre/"
                   target="_blank"
                   className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
                 >
-                  LinkedIn
+                  <span className="flex items-start gap-1">
+                    LinkedIn <TbArrowUpRight className="h-4 w-4" />
+                  </span>
+                </Link>
+
+                <Link
+                  href="https://warpcast.com/leodotdev"
+                  target="_blank"
+                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                >
+                  <span className="flex items-start gap-1">
+                    Warpcast <TbArrowUpRight className="h-4 w-4" />
+                  </span>
+                </Link>
+
+                <Link
+                  href="https://twitter.com/leosuccarferre"
+                  target="_blank"
+                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                >
+                  <span className="flex items-start gap-1">
+                    Twitter <TbArrowUpRight className="h-4 w-4" />
+                  </span>
                 </Link>
 
                 <ThemeSwitcher />
