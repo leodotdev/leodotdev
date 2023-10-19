@@ -45,6 +45,7 @@ export default async function Home() {
     <main>
       <div className="auto-rows grid gap-4 md:grid-cols-3">
         {projects.map((project) => (
+          // project card
           <Dialog key={project._id}>
             <DialogTrigger className="flex flex-col items-stretch gap-2 rounded-3xl  bg-stone-200/50 p-4 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800">
               {project.image && (
@@ -57,7 +58,7 @@ export default async function Home() {
                 />
               )}
               <div className="flex flex-col">
-                <div className="flex text-lg font-semibold text-stone-900 dark:text-stone-50">
+                <div className="flex font-medium text-stone-900 dark:text-stone-50">
                   {project.name}
                 </div>
                 <div className="text-md flex justify-between text-stone-500 dark:text-stone-500">
