@@ -54,7 +54,7 @@ export default async function Home() {
                   alt={project.name}
                   width={800}
                   height={400}
-                  className="aspect-[4/3] rounded-lg object-cover"
+                  className="aspect-[3/2] rounded-lg object-cover"
                 />
               )}
               <div className="flex flex-col">
