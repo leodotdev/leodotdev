@@ -68,7 +68,7 @@ export default async function Home() {
               </div>
             </DialogTrigger>
 
-            <DialogContent className=" max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2srem)] overflow-auto md:max-w-4xl">
+            <DialogContent className=" max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] overflow-auto md:max-w-5xl">
               <DialogHeader>{project.name}</DialogHeader>
               <Image
                 src={project.image}
