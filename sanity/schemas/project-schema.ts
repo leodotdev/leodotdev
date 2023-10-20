@@ -67,6 +67,13 @@ const project = {
                 }
               ]
         }
+    ],
+    orderings: [
+        {
+            name: 'yearDesc',
+            title: 'Year, Newest First',
+            by: [{field: 'year', direction: 'asc'}],
+        }
     ]
 }
 
