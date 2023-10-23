@@ -61,7 +61,7 @@ export default function RootLayout({
                   </span>
                 </Link>
 
-                <Link
+                {/* <Link
                   href="https://warpcast.com/leodotdev"
                   target="_blank"
                   className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
@@ -69,7 +69,7 @@ export default function RootLayout({
                   <span className="flex items-start gap-1">
                     Warpcast <TbArrowUpRight className="h-4 w-4" />
                   </span>
-                </Link>
+                </Link> */}
 
                 <Link
                   href="https://twitter.com/leosuccarferre"

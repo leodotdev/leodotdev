@@ -77,7 +77,7 @@ export default async function Home() {
                 height={800}
                 className="w-100 object-cover"
               />
-              <div className="text-md flex flex-col gap-2 text-stone-900 dark:text-stone-50">
+              <div className="text-md flex flex-col gap-4 text-stone-900 dark:text-stone-50">
                 <PortableText value={project.content} components={components} />
               </div>
             </DialogContent>
