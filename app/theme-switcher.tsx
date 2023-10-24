@@ -25,7 +25,7 @@ export const ThemeSwitcher = () => {
         <TbMoon title="Dark" className="h-5 w-5 stroke-stone-950" />
       ) : (
         <TbSun
-          title="Dark"
+          title="Light"
           className="h-5 w-5 stroke-stone-950 dark:stroke-stone-50"
         />
       )}
