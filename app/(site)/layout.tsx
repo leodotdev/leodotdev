@@ -6,6 +6,13 @@ import { ThemeSwitcher } from "../theme-switcher";
 import Link from "next/link";
 import { TbArrowUpRight, TbFileText } from "react-icons/tb";
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 // const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -27,7 +34,7 @@ export default function RootLayout({
       <body className="font-mono">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="container p-6 md:p-12 lg:p-24">
-            <div className="mb-24 flex w-full flex-row flex-wrap items-center justify-between gap-4">
+            <div className="mb-24 flex w-full flex-row flex-wrap items-center justify-center gap-4 md:justify-between">
               <div className="flex flex-row items-center gap-4">
                 <Link href="/" className="flex flex-col">
                   <h2 className="text-2xl font-semibold text-stone-950 dark:text-stone-50">
@@ -39,17 +46,20 @@ export default function RootLayout({
                 </Link>
               </div>
 
-              <div className="flex flex-row flex-wrap gap-4">
-                <Link
-                  href="/Leo-SF-Resume-2023.pdf"
-                  target="_blank"
-                  className="cursor-pointer self-center rounded-full bg-stone-200/50 p-3 px-5 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800"
-                >
-                  <TbFileText
-                    title="Resume"
-                    className="h-5 w-5 stroke-stone-950 dark:stroke-stone-50"
-                  />
-                </Link>
+              <div className="flex flex-row flex-wrap justify-center gap-4">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger className="rounded-full bg-stone-200/50 p-3 px-5 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800">
+                      <Link href="/Leo-SF-Resume-2023.pdf" target="_blank">
+                        <TbFileText
+                          title="Résumé"
+                          className="h-5 w-5 stroke-stone-950 dark:stroke-stone-50"
+                        />
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">Résumé</TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
 
                 <Link
                   href="https://www.linkedin.com/in/leosuccarferre/"
@@ -81,7 +91,14 @@ export default function RootLayout({
                   </span>
                 </Link>
 
-                <ThemeSwitcher />
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <ThemeSwitcher />
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">Theme</TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
             </div>
 
