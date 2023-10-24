@@ -54,6 +54,7 @@ export default async function Home() {
                   alt={project.name}
                   width={800}
                   height={400}
+                  loading="lazy"
                   className="aspect-[3/2] rounded-lg object-cover"
                 />
               )}
@@ -75,6 +76,7 @@ export default async function Home() {
                 alt={project.name}
                 width={1200}
                 height={800}
+                loading="lazy"
                 className="w-100 object-cover"
               />
               <div className="text-md flex flex-col gap-4 text-stone-900 dark:text-stone-50">
