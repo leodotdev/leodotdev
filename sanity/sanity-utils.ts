@@ -8,7 +8,7 @@ export async function getProjects(): Promise<Project[]> {
         apiVersion: "2023-10-07",
     });
     return client.fetch(
-        groq`*[_type == "project"]{
+        groq`*[_type == "project"]| order(year desc) {
             _id,
             _createdAt,
             name,
