@@ -1,10 +1,11 @@
 import { getProjects } from "@/sanity/sanity-utils";
 import Image from "next/image";
-
 import { PortableText } from "@portabletext/react";
-
 import { createClient } from "next-sanity";
 import urlBuilder from "@sanity/image-url";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -42,7 +43,141 @@ export default async function Home() {
   };
 
   return (
-    <main>
+    <main className="flex flex-col gap-4">
+      <div className="auto-rows grid gap-4 md:grid-cols-3">
+        <Card className="rounded-3xl shadow-none md:col-span-2">
+          <CardHeader>
+            <CardTitle>Experience</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="flex flex-col gap-4">
+              <li className="flex w-full flex-row justify-between">
+                <div className="flex flex-row items-center gap-2">
+                  <Avatar>
+                    <AvatarImage src="/logo-pl.svg" />
+                    <AvatarFallback className="text-stone-500">
+                      P
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col">
+                    <h4 className="font-medium">Founding Designer</h4>
+                    <p className="text-sm text-stone-500">Plasmic</p>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end text-end">
+                  <p className="text-sm">2020–Present</p>
+                  <p className="text-sm">Remote</p>
+                </div>
+              </li>
+              <Separator />
+              <li className="flex w-full flex-row justify-between">
+                <div className="flex flex-row items-center gap-2">
+                  <Avatar>
+                    <AvatarImage src="/logo-fb.svg" />
+                    <AvatarFallback className="text-stone-500">
+                      F
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col">
+                    <h4 className="font-medium">
+                      Product Designer, Design System Designer
+                    </h4>
+                    <p className="text-sm text-stone-500">
+                      Facebook, Core Systems
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end text-end">
+                  <p className="text-sm">2018–2020</p>
+                  <p className="text-sm">Menlo Park, CA</p>
+                </div>
+              </li>
+              <Separator />
+              <li className="flex w-full flex-row justify-between">
+                <div className="flex flex-row items-center gap-2">
+                  <Avatar>
+                    <AvatarImage src="/logo-sg.svg" />
+                    <AvatarFallback className="text-stone-500">
+                      S
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col">
+                    <h4 className="font-medium">Lead Product Designer</h4>
+                    <p className="text-sm text-stone-500">Sourcegraph</p>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end text-end">
+                  <p className="text-sm">2017–2018</p>
+                  <p className="text-sm">San Francisco, CA</p>
+                </div>
+              </li>
+              <Separator />
+              <li className="flex w-full flex-row justify-between">
+                <div className="flex flex-row items-center gap-2">
+                  <Avatar>
+                    <AvatarImage src="/logo-ze.svg" />
+                    <AvatarFallback className="text-stone-500">
+                      Z
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col">
+                    <h4 className="font-medium">Senior Product Designer</h4>
+                    <p className="text-sm text-stone-500">Zenefits</p>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end text-end">
+                  <p className="text-sm">2016</p>
+                  <p className="text-sm">San Francisco, CA</p>
+                </div>
+              </li>
+              <Separator />
+              <li className="flex w-full flex-row justify-between">
+                <div className="flex flex-row items-center gap-2">
+                  <Avatar>
+                    <AvatarImage src="/logo-sd.svg" />
+                    <AvatarFallback className="text-stone-500">
+                      S
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col">
+                    <h4 className="font-medium">Product Designer</h4>
+                    <p className="text-sm text-stone-500">SeamlessDocs</p>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end text-end">
+                  <p className="text-sm">2014–2015</p>
+                  <p className="text-sm">Miami, FL</p>
+                </div>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+        <Card className="rounded-3xl shadow-none">
+          <CardHeader>
+            <CardTitle>Tools</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            <div>
+              <h4 className="font-medium">Design</h4>
+              <p className="text-sm">Figma, Sketch, Photoshop, Illustrator</p>
+              <p className="text-sm">Procreate, FigJam</p>
+            </div>
+            <Separator />
+            <div>
+              <h4 className="font-medium">Low-code</h4>
+              <p className="text-sm">Webflow, Framer</p>
+            </div>
+            <Separator />
+            <div>
+              <h4 className="font-medium">Development</h4>
+              <p className="text-sm">
+                HTML, CSS, TailwindCS, ShadcnUI, RadixUI
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
       <div className="auto-rows grid gap-4 md:grid-cols-3">
         {projects.map((project) => (
           // project card
@@ -62,7 +197,7 @@ export default async function Home() {
                 <div className="flex font-medium text-stone-900 dark:text-stone-50">
                   {project.name}
                 </div>
-                <div className="text-md flex justify-between text-stone-500 dark:text-stone-500">
+                <div className="flex justify-between text-sm text-stone-500">
                   <div>{project.client}</div>
                   <div>{project.year}</div>
                 </div>

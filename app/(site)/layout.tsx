@@ -1,6 +1,6 @@
 import "../globals.css";
 import type { Metadata } from "next";
-// import { Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import { ThemeProvider } from "../theme-provider";
 import { ThemeSwitcher } from "../theme-switcher";
 import Link from "next/link";
@@ -13,7 +13,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-// const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "leo.dev",
@@ -30,12 +30,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      {/* <body className={inter.className}> */}
-      <body className="font-mono">
+      <body className={inter.className}>
+        {/* <body className="font-mono"> */}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="container p-6 md:p-12 lg:p-24">
-            <div className="mb-24 flex w-full flex-row flex-wrap items-center justify-center gap-4 md:justify-between">
-              <div className="flex flex-row items-center gap-4">
+            <div className="mb-12 flex flex-wrap items-center justify-between gap-4 sm:w-full">
+              <div className="flex flex-grow">
                 <Link href="/" className="flex flex-col">
                   <h2 className="text-2xl font-semibold text-stone-950 dark:text-stone-50">
                     Leo
@@ -46,7 +46,7 @@ export default function RootLayout({
                 </Link>
               </div>
 
-              <div className="flex flex-row flex-wrap justify-center gap-4">
+              <div className="flex flex-wrap justify-center gap-4">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger className="rounded-full bg-stone-200/50 p-3 px-5 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800">
