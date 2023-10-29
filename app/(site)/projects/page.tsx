@@ -43,15 +43,15 @@ export default async function Home() {
   };
 
   return (
-    <main className="flex flex-col gap-4">
-      <div className="auto-rows grid gap-4 md:grid-cols-3">
+    <main className="flex flex-col gap-8">
+      <div className="auto-rows grid gap-8 md:grid-cols-3">
         <Card className="rounded-3xl shadow-none md:col-span-2">
           <CardHeader>
             <CardTitle>Experience</CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="flex flex-col gap-4">
-              <li className="flex w-full flex-row justify-between">
+              <li className="flex w-full flex-row items-center justify-between">
                 <div className="flex flex-row items-center gap-2">
                   <Avatar>
                     <AvatarImage src="/logo-pl.svg" />
@@ -70,7 +70,7 @@ export default async function Home() {
                 </div>
               </li>
               <Separator />
-              <li className="flex w-full flex-row justify-between">
+              <li className="flex w-full flex-row items-center justify-between">
                 <div className="flex flex-row items-center gap-2">
                   <Avatar>
                     <AvatarImage src="/logo-fb.svg" />
@@ -93,7 +93,7 @@ export default async function Home() {
                 </div>
               </li>
               <Separator />
-              <li className="flex w-full flex-row justify-between">
+              <li className="flex w-full flex-row items-center justify-between">
                 <div className="flex flex-row items-center gap-2">
                   <Avatar>
                     <AvatarImage src="/logo-sg.svg" />
@@ -112,7 +112,7 @@ export default async function Home() {
                 </div>
               </li>
               <Separator />
-              <li className="flex w-full flex-row justify-between">
+              <li className="flex w-full flex-row items-center justify-between">
                 <div className="flex flex-row items-center gap-2">
                   <Avatar>
                     <AvatarImage src="/logo-ze.svg" />
@@ -131,7 +131,7 @@ export default async function Home() {
                 </div>
               </li>
               <Separator />
-              <li className="flex w-full flex-row justify-between">
+              <li className="flex w-full flex-row items-center justify-between">
                 <div className="flex flex-row items-center gap-2">
                   <Avatar>
                     <AvatarImage src="/logo-sd.svg" />
@@ -178,7 +178,7 @@ export default async function Home() {
         </Card>
       </div>
 
-      <div className="auto-rows grid gap-4 md:grid-cols-3">
+      <div className="auto-rows grid gap-8 md:grid-cols-3">
         {projects.map((project) => (
           // project card
           <Dialog key={project._id}>
@@ -194,7 +194,7 @@ export default async function Home() {
                 />
               )}
               <div className="flex flex-col">
-                <div className="flex font-medium text-stone-900 dark:text-stone-50">
+                <div className="flex text-left font-medium text-stone-900 dark:text-stone-50">
                   {project.name}
                 </div>
                 <div className="flex justify-between text-sm text-stone-500">

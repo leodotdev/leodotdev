@@ -46,7 +46,7 @@ export default function RootLayout({
                 </Link>
               </div>
 
-              <div className="flex flex-wrap justify-center gap-4">
+              <div className="flex flex-wrap gap-4">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger className="rounded-full bg-stone-200/50 p-3 px-5 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800">
