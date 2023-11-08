@@ -157,21 +157,21 @@ export default async function Home() {
             <CardTitle>Tools</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            <div>
-              <h4 className="font-medium">Design</h4>
+            <div className="flex flex-col gap-1">
+              <h4 className="text-sm text-stone-500">Design</h4>
               <p className="text-sm">Figma, Sketch, Photoshop, Illustrator</p>
               <p className="text-sm">Procreate, FigJam</p>
             </div>
             <Separator />
-            <div>
-              <h4 className="font-medium">Low-code</h4>
-              <p className="text-sm">Webflow, Framer</p>
+            <div className="flex flex-col gap-1">
+              <h4 className="text-sm text-stone-500">Low-code</h4>
+              <p className="text-sm">Webflow, Framer, Plasmic</p>
             </div>
             <Separator />
-            <div>
-              <h4 className="font-medium">Development</h4>
+            <div className="flex flex-col gap-1">
+              <h4 className="text-sm text-stone-500">Development</h4>
               <p className="text-sm">
-                HTML, CSS, TailwindCS, ShadcnUI, RadixUI
+                HTML, CSS, TailwindCSS, ShadcnUI, RadixUI
               </p>
             </div>
           </CardContent>
@@ -194,7 +194,7 @@ export default async function Home() {
                 />
               )}
               <div className="flex flex-col">
-                <div className="flex text-left font-medium text-stone-900 dark:text-stone-50">
+                <div className="flex text-left font-medium text-stone-950 dark:text-stone-50">
                   {project.name}
                 </div>
                 <div className="flex justify-between text-sm text-stone-500">
@@ -214,7 +214,7 @@ export default async function Home() {
                 loading="lazy"
                 className="w-100 object-cover"
               />
-              <div className="text-md flex flex-col gap-4 text-stone-900 dark:text-stone-50">
+              <div className="text-md flex flex-col gap-4 text-stone-950 dark:text-stone-50">
                 <PortableText value={project.content} components={components} />
               </div>
             </DialogContent>
