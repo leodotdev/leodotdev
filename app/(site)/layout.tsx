@@ -52,10 +52,9 @@ export default function RootLayout({
                   <Tooltip>
                     <TooltipTrigger className="rounded-full bg-stone-200/50 p-3 px-5 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800">
                       <Link href="/Leo-SF-Resume-2023.pdf" target="_blank">
-                        <TbFileText
-                          title="Résumé"
-                          className="h-5 w-5 stroke-stone-950 dark:stroke-stone-50"
-                        />
+                        <span className="flex items-start gap-1">
+                          Résumé <TbArrowUpRight className="h-4 w-4" />
+                        </span>
                       </Link>
                     </TooltipTrigger>
                     <TooltipContent side="bottom">Résumé</TooltipContent>
@@ -116,9 +115,9 @@ export default function RootLayout({
             <main>{children}</main>
             <Card className="rounded-3xl shadow-none md:col-span-3">
               <CardContent className="p-6 text-center text-sm text-stone-500">
-                Built using{" "}
+                Built by me using{" "}
                 <a
-                  className="text-stone-950 underline hover:text-blue-500"
+                  className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
                   target="_blank"
                   href="https://nextjs.org/"
                 >
@@ -126,7 +125,7 @@ export default function RootLayout({
                 </a>
                 ,{" "}
                 <a
-                  className="text-stone-950 underline hover:text-blue-500"
+                  className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
                   target="_blank"
                   href="https://nextjs.org/"
                 >
@@ -134,7 +133,7 @@ export default function RootLayout({
                 </a>
                 ,{" "}
                 <a
-                  className="text-stone-950 underline hover:text-blue-500"
+                  className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
                   target="_blank"
                   href="https://nextjs.org/"
                 >
@@ -142,7 +141,7 @@ export default function RootLayout({
                 </a>{" "}
                 +{" "}
                 <a
-                  className="text-stone-950 underline hover:text-blue-500"
+                  className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
                   target="_blank"
                   href="https://nextjs.org/"
                 >
@@ -150,7 +149,7 @@ export default function RootLayout({
                 </a>
                 , and{" "}
                 <a
-                  className="text-stone-950 underline hover:text-blue-500"
+                  className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
                   target="_blank"
                   href="https://nextjs.org/"
                 >
