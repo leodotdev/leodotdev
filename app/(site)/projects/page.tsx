@@ -61,7 +61,13 @@ export default async function Home() {
                   </Avatar>
                   <div className="flex flex-col">
                     <h4 className="font-medium">Founding Designer</h4>
-                    <p className="text-sm text-stone-500">Plasmic</p>
+                    <a
+                      className="text-sm text-stone-500 underline hover:text-blue-500"
+                      href="https://plasmic.app"
+                      target="_blank"
+                    >
+                      Plasmic
+                    </a>
                   </div>
                 </div>
                 <div className="flex flex-col items-end text-end">
@@ -82,9 +88,16 @@ export default async function Home() {
                     <h4 className="font-medium">
                       Product Designer, Design System Designer
                     </h4>
-                    <p className="text-sm text-stone-500">
-                      Facebook, Core Systems
-                    </p>
+                    <span className="text-sm text-stone-500">
+                      <a
+                        className="underline hover:text-blue-500"
+                        href="https://facebook.com"
+                        target="_blank"
+                      >
+                        Facebook
+                      </a>
+                      , Core Systems
+                    </span>
                   </div>
                 </div>
                 <div className="flex flex-col items-end text-end">
@@ -103,7 +116,13 @@ export default async function Home() {
                   </Avatar>
                   <div className="flex flex-col">
                     <h4 className="font-medium">Lead Product Designer</h4>
-                    <p className="text-sm text-stone-500">Sourcegraph</p>
+                    <a
+                      className="text-sm text-stone-500 underline hover:text-blue-500"
+                      href="https://sourcegraph.com"
+                      target="_blank"
+                    >
+                      Sourcegraph
+                    </a>
                   </div>
                 </div>
                 <div className="flex flex-col items-end text-end">
@@ -122,7 +141,14 @@ export default async function Home() {
                   </Avatar>
                   <div className="flex flex-col">
                     <h4 className="font-medium">Senior Product Designer</h4>
-                    <p className="text-sm text-stone-500">Zenefits</p>
+
+                    <a
+                      className="text-sm text-stone-500 underline hover:text-blue-500"
+                      href="https://zenefits.com"
+                      target="_blank"
+                    >
+                      Zenefits
+                    </a>
                   </div>
                 </div>
                 <div className="flex flex-col items-end text-end">
@@ -141,7 +167,13 @@ export default async function Home() {
                   </Avatar>
                   <div className="flex flex-col">
                     <h4 className="font-medium">Product Designer</h4>
-                    <p className="text-sm text-stone-500">SeamlessDocs</p>
+                    <a
+                      className="text-sm text-stone-500 underline hover:text-blue-500"
+                      href="https://govos.com"
+                      target="_blank"
+                    >
+                      SeamlessDocs
+                    </a>
                   </div>
                 </div>
                 <div className="flex flex-col items-end text-end">
