@@ -86,7 +86,7 @@ export default async function Home() {
                   </Avatar>
                   <div className="flex flex-col">
                     <h4 className="font-medium">
-                      Product Designer, Design System Designer
+                      Product Designer, Design Systems Designer
                     </h4>
                     <span className="text-sm text-stone-500">
                       <a
