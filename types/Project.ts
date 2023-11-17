@@ -8,5 +8,6 @@ export type Project = {
     year: string;
     slug: string;
     image: string;
+    embed: string;
     content: PortableTextBlock[];
 }

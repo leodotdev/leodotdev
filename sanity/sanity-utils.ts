@@ -17,6 +17,7 @@ export async function getProjects(): Promise<Project[]> {
             "slug": slug.current,
             "image": image.asset->url,
             url,
+            embed,
             content[]{
                 ...,
                 _type == "image" => {

@@ -247,6 +247,13 @@ export default async function Home() {
                 className="w-100 object-cover"
               />
               <div className="text-md flex flex-col gap-4 text-stone-950 dark:text-stone-50">
+                {project.embed && (
+                  <iframe
+                    height="600"
+                    src={project.embed}
+                    allowFullScreen
+                  ></iframe>
+                )}
                 <PortableText value={project.content} components={components} />
               </div>
             </DialogContent>

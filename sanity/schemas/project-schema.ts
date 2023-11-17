@@ -40,6 +40,11 @@ const project = {
             ]
         },
         {
+            name: 'embed',
+            title: 'Embed',
+            type:'url'
+        },
+        {
             name: 'content',
             title: 'Content',
             type: 'array',
