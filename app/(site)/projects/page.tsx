@@ -246,7 +246,7 @@ export default async function Home() {
                 loading="lazy"
                 className="w-100 object-cover"
               />
-              <div className="text-md flex flex-col gap-4 text-stone-950 dark:text-stone-50">
+              <div className="text-md flex flex-col gap-6 text-stone-950 dark:text-stone-50">
                 {project.embed && (
                   <iframe
                     height="600"
