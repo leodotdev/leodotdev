@@ -42,72 +42,72 @@ export default function RootLayout({
                     Leo
                   </h2>
                   <div className="text-md text-stone-500 dark:text-stone-500">
-                    Designer
+                    Product Designer
                   </div>
                 </Link>
               </div>
 
               <div className="flex flex-wrap gap-4">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger className="rounded-full bg-stone-200/50 p-3 px-5 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800">
-                      <Link href="/Leo-SF-Resume-2023.pdf" target="_blank">
-                        <span className="flex items-start gap-1">
-                          Résumé <TbArrowUpRight className="h-4 w-4" />
-                        </span>
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent side="bottom">Résumé</TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                <Link
+                  className="rounded-full bg-stone-200/50 p-3 px-5 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:hover:bg-stone-800"
+                  href="/Leo-SF-Resume-2023.pdf"
+                  target="_blank"
+                >
+                  <span className="flex items-start">
+                    Résumé <TbArrowUpRight className="h-4 w-4 text-stone-500" />
+                  </span>
+                </Link>
 
                 <Link
                   href="mailto:leo@leo.dev"
                   target="_blank"
-                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
                 >
-                  <span className="flex items-start gap-1">
-                    Email <TbArrowUpRight className="h-4 w-4" />
+                  <span className="flex items-start">
+                    Email <TbArrowUpRight className="h-4 w-4 text-stone-500" />
                   </span>
                 </Link>
 
                 <Link
                   href="https://calendly.com/leodotdev"
                   target="_blank"
-                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
                 >
-                  <span className="flex items-start gap-1">
-                    Calendly <TbArrowUpRight className="h-4 w-4" />
+                  <span className="flex items-start">
+                    Calendly{" "}
+                    <TbArrowUpRight className="h-4 w-4 text-stone-500" />
                   </span>
                 </Link>
 
                 <Link
                   href="https://www.linkedin.com/in/leosuccarferre/"
                   target="_blank"
-                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
                 >
-                  <span className="flex items-start gap-1">
-                    LinkedIn <TbArrowUpRight className="h-4 w-4" />
+                  <span className="flex items-start">
+                    LinkedIn{" "}
+                    <TbArrowUpRight className="h-4 w-4 text-stone-500" />
                   </span>
                 </Link>
 
                 {/* <Link
                   href="https://warpcast.com/leodotdev"
                   target="_blank"
-                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                  className="cursor-pointer rounded-full hover:underline bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
                 >
-                  <span className="flex items-start gap-1">
-                    Warpcast <TbArrowUpRight className="h-4 w-4" />
+                  <span className="flex items-start">
+                    Warpcast <TbArrowUpRight className="h-4 w-4 text-stone-500" />
                   </span>
                 </Link> */}
 
                 <Link
                   href="https://twitter.com/leosuccarferre"
                   target="_blank"
-                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
                 >
-                  <span className="flex items-start gap-1">
-                    Twitter <TbArrowUpRight className="h-4 w-4" />
+                  <span className="flex items-start">
+                    Twitter{" "}
+                    <TbArrowUpRight className="h-4 w-4 text-stone-500" />
                   </span>
                 </Link>
 
@@ -125,7 +125,7 @@ export default function RootLayout({
             <main>{children}</main>
             <Card className="rounded-3xl shadow-none md:col-span-3">
               <CardContent className="p-6 text-center text-sm text-stone-500">
-                Built by me using{" "}
+                Built using{" "}
                 <a
                   className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
                   target="_blank"
@@ -137,7 +137,7 @@ export default function RootLayout({
                 <a
                   className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
                   target="_blank"
-                  href="https://nextjs.org/"
+                  href="https://tailwindcss.com/"
                 >
                   TailwindCSS
                 </a>
@@ -145,7 +145,7 @@ export default function RootLayout({
                 <a
                   className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
                   target="_blank"
-                  href="https://nextjs.org/"
+                  href="https://ui.shadcn.com/"
                 >
                   ShadcnUI
                 </a>{" "}
@@ -153,7 +153,7 @@ export default function RootLayout({
                 <a
                   className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
                   target="_blank"
-                  href="https://nextjs.org/"
+                  href="https://www.radix-ui.com/"
                 >
                   RadixUI
                 </a>
@@ -161,7 +161,7 @@ export default function RootLayout({
                 <a
                   className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
                   target="_blank"
-                  href="https://nextjs.org/"
+                  href="https://www.sanity.io/"
                 >
                   SanityCMS
                 </a>
