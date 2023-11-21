@@ -91,7 +91,7 @@ export default async function Home() {
                     <span className="text-sm text-stone-500">
                       <a
                         className="underline hover:text-blue-500"
-                        href="https://facebook.com"
+                        href="https://www.meta.com"
                         target="_blank"
                       >
                         Facebook
