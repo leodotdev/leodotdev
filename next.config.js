@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = { 
+    experimental: {
+        serverComponents: true, // Enable Server Components
+      },
     images: {
         remotePatterns: [
             {
