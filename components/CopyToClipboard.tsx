@@ -17,7 +17,9 @@ const CopyToClipboard = ({
     navigator.clipboard
       .writeText(textToCopy)
       .then(() => {
-        alert("My email—leo@leo.dev—has been copied to your clipboard.");
+        alert(
+          "My email address—leo@leo.dev—has been copied to your clipboard.",
+        );
       })
       .catch((err) => {
         console.error("Failed to copy text.", err);

@@ -5,6 +5,7 @@ import { ThemeProvider } from "../theme-provider";
 import { ThemeSwitcher } from "../theme-switcher";
 import Link from "next/link";
 import { TbArrowUpRight, TbCopy } from "react-icons/tb";
+import { Analytics } from "@vercel/analytics/react";
 
 import {
   Tooltip,
@@ -25,8 +26,6 @@ export const metadata: Metadata = {
     icon: { url: "/icon.svg", type: "image/svg+xml", sizes: "any" },
   },
 };
-
-const emailToCopy = "example@example.com";
 
 export default function RootLayout({
   children,
@@ -73,17 +72,6 @@ export default function RootLayout({
                 </Link>
 
                 <Link
-                  href="https://calendly.com/leodotdev"
-                  target="_blank"
-                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
-                >
-                  <span className="flex items-start">
-                    Calendly
-                    <TbArrowUpRight className="h-4 w-4 text-stone-500" />
-                  </span>
-                </Link>
-
-                <Link
                   href="https://www.linkedin.com/in/leosuccarferre/"
                   target="_blank"
                   className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
@@ -98,9 +86,9 @@ export default function RootLayout({
                   href="https://warpcast.com/leodotdev"
                   target="_blank"
                   className="cursor-pointer rounded-full hover:underline bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
-                >
+                  >
                   <span className="flex items-start">
-                    Warpcast <TbArrowUpRight className="h-4 w-4 text-stone-500" />
+                  Warpcast <TbArrowUpRight className="h-4 w-4 text-stone-500" />
                   </span>
                 </Link> */}
 
@@ -111,6 +99,17 @@ export default function RootLayout({
                 >
                   <span className="flex items-start">
                     Twitter
+                    <TbArrowUpRight className="h-4 w-4 text-stone-500" />
+                  </span>
+                </Link>
+
+                <Link
+                  href="https://calendly.com/leodotdev"
+                  target="_blank"
+                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                >
+                  <span className="flex items-start">
+                    Calendly
                     <TbArrowUpRight className="h-4 w-4 text-stone-500" />
                   </span>
                 </Link>
@@ -126,10 +125,13 @@ export default function RootLayout({
               </div>
             </div>
 
-            <main>{children}</main>
+            <main>
+              {children}
+              <Analytics />
+            </main>
             <Card className="rounded-3xl shadow-none md:col-span-3">
               <CardContent className="p-6 text-center text-sm text-stone-500">
-                Built using
+                Built using{" "}
                 <a
                   className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
                   target="_blank"
@@ -137,7 +139,7 @@ export default function RootLayout({
                 >
                   NextJS
                 </a>
-                ,
+                ,{" "}
                 <a
                   className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
                   target="_blank"
@@ -145,7 +147,7 @@ export default function RootLayout({
                 >
                   TailwindCSS
                 </a>
-                ,
+                ,{" "}
                 <a
                   className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
                   target="_blank"
@@ -161,7 +163,7 @@ export default function RootLayout({
                 >
                   RadixUI
                 </a>
-                , and
+                , and{" "}
                 <a
                   className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
                   target="_blank"
