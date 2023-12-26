@@ -51,7 +51,7 @@ export default function RootLayout({
                 </Link>
               </div>
 
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-3">
                 <CopyToClipboard
                   textToCopy="leo@leo.dev"
                   className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 pr-4 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
