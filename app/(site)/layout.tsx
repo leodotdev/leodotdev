@@ -62,13 +62,21 @@ export default function RootLayout({
                 </CopyToClipboard>
 
                 <Link
-                  className="rounded-full bg-stone-200/50 p-3 px-5 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:hover:bg-stone-800"
+                  className="flex items-center gap-2 rounded-full bg-stone-200/50 px-5 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800"
                   href="/Leo-SF-Resume-2023.pdf"
                   target="_blank"
                 >
-                  <span className="flex items-start">
-                    Résumé <TbArrowUpRight className="h-4 w-4 text-stone-500" />
-                  </span>
+                  <span className="mr-1 flex items-start">Résumé:</span>
+                  <Link href="/Leo-SF-Resume-2023.docx" target="_blank">
+                    <span className="flex items-start hover:underline">
+                      DOCX <TbArrowUpRight className="h-4 w-4 text-stone-500" />
+                    </span>
+                  </Link>
+                  <Link href="/Leo-SF-Resume-2023.pdf" target="_blank">
+                    <span className="flex items-start hover:underline">
+                      PDF <TbArrowUpRight className="h-4 w-4 text-stone-500" />
+                    </span>
+                  </Link>
                 </Link>
 
                 <Link
