@@ -43,8 +43,8 @@ export default async function Home() {
   };
 
   return (
-    <main className="flex flex-col gap-8">
-      <div className="auto-rows grid gap-8 md:grid-cols-3">
+    <main className="flex flex-col gap-6">
+      <div className="auto-rows grid gap-6 md:grid-cols-3">
         <Card className="rounded-3xl shadow-none md:col-span-2">
           <CardHeader>
             <CardTitle>Work Experience</CardTitle>
@@ -71,7 +71,7 @@ export default async function Home() {
                   </div>
                 </div>
                 <div className="flex flex-col items-end text-end">
-                  <p className="text-sm">2020–Present</p>
+                  <p className="text-sm">2020–2023</p>
                   <p className="text-sm">Remote</p>
                 </div>
               </li>
@@ -210,11 +210,11 @@ export default async function Home() {
         </Card>
       </div>
 
-      <div className="auto-rows grid gap-8 md:grid-cols-3">
+      <div className="auto-rows grid gap-6 md:grid-cols-3">
         {projects.map((project) => (
           // project card
           <Dialog key={project._id}>
-            <DialogTrigger className="flex flex-col items-stretch gap-2 rounded-3xl  bg-stone-200/50 p-4 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800">
+            <DialogTrigger className="group flex flex-col items-stretch gap-2 overflow-clip rounded-3xl  bg-stone-200/50 p-4 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800">
               {project.image && (
                 <Image
                   src={project.image}
@@ -222,7 +222,7 @@ export default async function Home() {
                   width={800}
                   height={400}
                   loading="lazy"
-                  className="aspect-[3/2] rounded-lg object-cover"
+                  className="aspect-[3/2] rounded-lg object-cover transition group-hover:translate-y-8 group-hover:scale-[1.75]"
                 />
               )}
               <div className="flex flex-col">

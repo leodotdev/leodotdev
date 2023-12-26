@@ -68,7 +68,7 @@ export default function RootLayout({
                     className="cursor-pointer rounded-l-full bg-stone-200/50 p-3 pl-5 pr-3 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
                   >
                     <span className="flex items-start">
-                      resume-2023.PDF
+                      resume-2024.PDF
                       <TbArrowUpRight className="h-4 w-4 text-stone-500" />
                     </span>
                   </Link>
