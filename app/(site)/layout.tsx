@@ -54,7 +54,7 @@ export default function RootLayout({
               <div className="flex flex-wrap gap-4">
                 <CopyToClipboard
                   textToCopy="leo@leo.dev"
-                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 pr-4 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
                 >
                   <span className="flex items-start">
                     Email <TbCopy className="h-4 w-4 text-stone-500" />
@@ -68,7 +68,7 @@ export default function RootLayout({
                     className="cursor-pointer rounded-l-full bg-stone-200/50 p-3 pl-5 pr-3 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
                   >
                     <span className="flex items-start">
-                      resume-2023.PDF{" "}
+                      resume-2023.PDF
                       <TbArrowUpRight className="h-4 w-4 text-stone-500" />
                     </span>
                   </Link>
@@ -76,10 +76,10 @@ export default function RootLayout({
                   <Link
                     href="/Leo-SF-Resume-2023.docx"
                     target="_blank"
-                    className="cursor-pointer rounded-r-full bg-stone-200/50 p-3 pl-3 pr-5 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                    className="cursor-pointer rounded-r-full bg-stone-200/50 p-3 pl-3 pr-4 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
                   >
                     <span className="flex items-start">
-                      .DOCX{" "}
+                      .DOCX
                       <TbArrowUpRight className="h-4 w-4 text-stone-500" />
                     </span>
                   </Link>
@@ -88,7 +88,7 @@ export default function RootLayout({
                 <Link
                   href="https://www.linkedin.com/in/leosuccarferre/"
                   target="_blank"
-                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 pr-4 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
                 >
                   <span className="flex items-start">
                     LinkedIn
@@ -99,7 +99,7 @@ export default function RootLayout({
                 {/* <Link
                   href="https://warpcast.com/leodotdev"
                   target="_blank"
-                  className="cursor-pointer rounded-full hover:underline bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                  className="cursor-pointer rounded-full hover:underline bg-stone-200/50 p-3 px-5 pr-4 text-stone-950 hover:bg-stone-200 dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
                   >
                   <span className="flex items-start">
                   Warpcast <TbArrowUpRight className="h-4 w-4 text-stone-500" />
@@ -109,7 +109,7 @@ export default function RootLayout({
                 <Link
                   href="https://twitter.com/leosuccarferre"
                   target="_blank"
-                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 pr-4 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
                 >
                   <span className="flex items-start">
                     Twitter
@@ -120,7 +120,7 @@ export default function RootLayout({
                 <Link
                   href="https://calendly.com/leodotdev"
                   target="_blank"
-                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 pr-4 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
                 >
                   <span className="flex items-start">
                     Calendly
