@@ -61,23 +61,29 @@ export default function RootLayout({
                   </span>
                 </CopyToClipboard>
 
-                <Link
-                  className="flex items-center gap-2 rounded-full bg-stone-200/50 px-5 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800"
-                  href="/Leo-SF-Resume-2023.pdf"
-                  target="_blank"
-                >
-                  <span className="mr-1 flex items-start">Résumé:</span>
-                  <Link href="/Leo-SF-Resume-2023.docx" target="_blank">
-                    <span className="flex items-start hover:underline">
-                      DOCX <TbArrowUpRight className="h-4 w-4 text-stone-500" />
+                <div className="flex gap-1">
+                  <Link
+                    href="/Leo-SF-Resume-2023.pdf"
+                    target="_blank"
+                    className="cursor-pointer rounded-l-full bg-stone-200/50 p-3 pl-5 pr-3 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                  >
+                    <span className="flex items-start">
+                      resume-2023.PDF{" "}
+                      <TbArrowUpRight className="h-4 w-4 text-stone-500" />
                     </span>
                   </Link>
-                  <Link href="/Leo-SF-Resume-2023.pdf" target="_blank">
-                    <span className="flex items-start hover:underline">
-                      PDF <TbArrowUpRight className="h-4 w-4 text-stone-500" />
+
+                  <Link
+                    href="/Leo-SF-Resume-2023.docx"
+                    target="_blank"
+                    className="cursor-pointer rounded-r-full bg-stone-200/50 p-3 pl-3 pr-5 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                  >
+                    <span className="flex items-start">
+                      .DOCX{" "}
+                      <TbArrowUpRight className="h-4 w-4 text-stone-500" />
                     </span>
                   </Link>
-                </Link>
+                </div>
 
                 <Link
                   href="https://www.linkedin.com/in/leosuccarferre/"

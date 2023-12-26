@@ -47,7 +47,7 @@ export default async function Home() {
       <div className="auto-rows grid gap-8 md:grid-cols-3">
         <Card className="rounded-3xl shadow-none md:col-span-2">
           <CardHeader>
-            <CardTitle>Experience</CardTitle>
+            <CardTitle>Work Experience</CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="flex flex-col gap-4">
