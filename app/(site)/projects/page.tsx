@@ -274,14 +274,14 @@ export default async function Home() {
             <AccordionContent className="p-12 pr-24 pt-0 text-stone-700 dark:text-stone-300">
               <p className="mb-4 text-base leading-7">
                 I have now over 8 years of experience with Figma and large,
-                cutting edge React-based design systems. I've worked closely
+                cutting edge React-based design systems. I&#39;ve worked closely
                 with full-stack engineers, designers, and product management
                 teams across many domains and industries. I am primarily a
                 self-taught generalist and a lifelong learner.
               </p>
               <p className="mb-4 text-base leading-7">
                 I also have strong experience with modern front-end development
-                and visual development tools. I've worked with customer- and
+                and visual development tools. I&#39;ve worked with customer- and
                 data-driven teams, employing qualitative and quantitative UX
                 research methods like customer interviews, event tracking, user
                 journeys and personas, rapidly prototyping, overseeing design
@@ -292,9 +292,9 @@ export default async function Home() {
                 At Plasmic, I focus on empowering designers and others with
                 access to the rest of the development stack:
                 tokens/styles/design system, data sources, state and user
-                management, deployment, and collaboration. It's been incredible
-                to see everything people make with what we've built and be part
-                of such an enthusiastic community.
+                management, deployment, and collaboration. It&#39;s been
+                incredible to see everything people make with what we&#39;ve
+                built and be part of such an enthusiastic community.
               </p>
             </AccordionContent>
           </AccordionItem>
