@@ -258,7 +258,7 @@ export default async function Home() {
                     src="/emoji-pencil.svg"
                     className="inline-block align-text-bottom"
                   />{" "}
-                  , but also a Junior Design Engineer{" "}
+                  , and also a Junior Design Engineer{" "}
                   <Image
                     width="32"
                     height="32"
