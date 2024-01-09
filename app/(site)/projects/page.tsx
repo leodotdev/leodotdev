@@ -51,10 +51,93 @@ export default async function Home() {
 
   return (
     <main className="flex flex-col gap-6">
+      <Card className="rounded-3xl shadow-none md:col-span-2">
+        <Accordion type="single" collapsible>
+          <AccordionItem className="border-0" value="item-1">
+            <AccordionTrigger className="p-6 text-left md:p-12">
+              <h2 className="pr-12 text-2xl font-semibold leading-8 text-stone-950 dark:text-stone-50">
+                {/* <Image
+                  width="32"
+                  height="32"
+                  alt="brush"
+                  src="/emoji-waving-hand.svg"
+                  className="inline-block align-text-bottom"
+                /> */}
+                I’m a Web, Software, Product Designer.{" "}
+                <span className="font-light text-stone-700 dark:text-stone-300">
+                  I began computer arts and design at a young age using
+                  Macromedia and Adobe software
+                  {/* {" "}<Image
+                    width="32"
+                    height="32"
+                    alt="brush"
+                    src="/emoji-optical-disk.svg"
+                    className="inline-block align-text-bottom"
+                  /> */}
+                  , and later received my Bachelor of Arts in New Media{" "}
+                  {/* <Image
+                    width="32"
+                    height="32"
+                    alt="brush"
+                    src="/emoji-scroll.svg"
+                    className="inline-block align-text-bottom"
+                  />{" "} */}
+                  at Emerson College in Boston. I am a Senior Product, Visual,
+                  and Design Systems Designer,{" "}
+                  {/* <Image
+                    width="32"
+                    height="32"
+                    alt="brush"
+                    src="/emoji-pencil.svg"
+                    className="inline-block align-text-bottom"
+                  /> */}
+                  and a <em>Junior</em> Design Engineer
+                  {/* {" "}<Image
+                    width="32"
+                    height="32"
+                    alt="brush"
+                    src="/emoji-hammer.svg"
+                    className="inline-block align-text-bottom"
+                  /> */}
+                  .
+                </span>
+              </h2>
+            </AccordionTrigger>
+
+            <AccordionContent className="p-12 pr-24 pt-0 text-stone-700 dark:text-stone-300">
+              <p className="mb-4 text-base leading-7">
+                I have now over 8 years of experience with Figma and large,
+                cutting edge React-based design systems. I&#39;ve worked closely
+                with full-stack engineers, designers, and product management
+                teams across many domains and industries. I am primarily a
+                self-taught generalist and a lifelong learner.
+              </p>
+              <p className="mb-4 text-base leading-7">
+                I also have strong experience with modern front-end development
+                and visual development tools. I&#39;ve worked with customer- and
+                data-driven teams, employing qualitative and quantitative UX
+                research methods like customer interviews, event tracking, user
+                journeys and personas, rapidly prototyping, overseeing design
+                audits, supporting accessibility and localization, and much
+                more.
+              </p>
+              <p className="text-base leading-7">
+                At Plasmic, I focus on empowering designers and others with
+                access to the rest of the development stack:
+                tokens/styles/design system, data sources, state and user
+                management, deployment, and collaboration. It&#39;s been
+                incredible to see everything people make with what we&#39;ve
+                built and be part of such an enthusiastic community.
+              </p>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </Card>
+
       <div className="auto-rows grid gap-6 md:grid-cols-3">
         <Card className="rounded-3xl shadow-none md:col-span-2">
           <CardHeader>
-            <CardTitle>Work Experience</CardTitle>
+            <CardTitle>Work</CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="flex flex-col gap-4">
@@ -216,90 +299,6 @@ export default async function Home() {
           </CardContent>
         </Card>
       </div>
-
-      <Card className="rounded-3xl border-0 bg-stone-200/50 shadow-none hover:bg-stone-200 md:col-span-2 dark:bg-stone-800/50 dark:hover:bg-stone-800">
-        <Accordion type="single" collapsible>
-          <AccordionItem className="border-0" value="item-1">
-            <AccordionTrigger className="p-12 text-left">
-              <h2 className="pr-12 text-2xl font-semibold leading-8 text-stone-950 dark:text-stone-50">
-                Hi{" "}
-                <Image
-                  width="32"
-                  height="32"
-                  alt="brush"
-                  src="/emoji-waving-hand.svg"
-                  className="inline-block align-text-bottom"
-                />
-                , I’m Leo, a Web, Software, Product Designer.{" "}
-                <span className="font-light text-stone-700 dark:text-stone-300">
-                  I began computer arts and design at a young age using
-                  Macromedia and Adobe software{" "}
-                  <Image
-                    width="32"
-                    height="32"
-                    alt="brush"
-                    src="/emoji-optical-disk.svg"
-                    className="inline-block align-text-bottom"
-                  />
-                  , and later received my Bachelor of Arts in New Media{" "}
-                  <Image
-                    width="32"
-                    height="32"
-                    alt="brush"
-                    src="/emoji-scroll.svg"
-                    className="inline-block align-text-bottom"
-                  />{" "}
-                  at Emerson College in Boston. I am a Senior Product, Visual,
-                  and Design Systems Designer{" "}
-                  <Image
-                    width="32"
-                    height="32"
-                    alt="brush"
-                    src="/emoji-pencil.svg"
-                    className="inline-block align-text-bottom"
-                  />
-                  , and also a Junior Design Engineer{" "}
-                  <Image
-                    width="32"
-                    height="32"
-                    alt="brush"
-                    src="/emoji-hammer.svg"
-                    className="inline-block align-text-bottom"
-                  />
-                  .
-                </span>
-              </h2>
-            </AccordionTrigger>
-
-            <AccordionContent className="p-12 pr-24 pt-0 text-stone-700 dark:text-stone-300">
-              <p className="mb-4 text-base leading-7">
-                I have now over 8 years of experience with Figma and large,
-                cutting edge React-based design systems. I&#39;ve worked closely
-                with full-stack engineers, designers, and product management
-                teams across many domains and industries. I am primarily a
-                self-taught generalist and a lifelong learner.
-              </p>
-              <p className="mb-4 text-base leading-7">
-                I also have strong experience with modern front-end development
-                and visual development tools. I&#39;ve worked with customer- and
-                data-driven teams, employing qualitative and quantitative UX
-                research methods like customer interviews, event tracking, user
-                journeys and personas, rapidly prototyping, overseeing design
-                audits, supporting accessibility and localization, and much
-                more.
-              </p>
-              <p className="text-base leading-7">
-                At Plasmic, I focus on empowering designers and others with
-                access to the rest of the development stack:
-                tokens/styles/design system, data sources, state and user
-                management, deployment, and collaboration. It&#39;s been
-                incredible to see everything people make with what we&#39;ve
-                built and be part of such an enthusiastic community.
-              </p>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </Card>
 
       <div className="auto-rows grid gap-6 md:grid-cols-3">
         {projects.map((project) => (
