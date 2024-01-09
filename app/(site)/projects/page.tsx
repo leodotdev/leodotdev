@@ -63,7 +63,7 @@ export default async function Home() {
                   src="/emoji-waving-hand.svg"
                   className="inline-block align-text-bottom"
                 /> */}
-                I’m a Web, Software, Product Designer.{" "}
+                I&#39;m a Web, Software, Product Designer.{" "}
                 <span className="font-light text-stone-700 dark:text-stone-300">
                   I began computer arts and design at a young age using
                   Macromedia and Adobe software

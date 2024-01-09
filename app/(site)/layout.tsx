@@ -43,7 +43,7 @@ export default function RootLayout({
               <div className="flex flex-grow">
                 <Link href="/" className="flex flex-col">
                   <h2 className="text-2xl font-semibold text-stone-950 dark:text-stone-50">
-                    Hi, I'm Leo
+                    Hi, I&#39;m Leo
                   </h2>
                   {/* <span className="text-stone-500">Product Designer</span> */}
                 </Link>
