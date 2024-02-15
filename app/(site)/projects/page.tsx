@@ -185,8 +185,8 @@ export default async function Home() {
                         target="_blank"
                       >
                         Facebook
-                      </a>
-                      , Core Systems
+                      </a>{" "}
+                      (now Meta), Core Systems
                     </span>
                   </div>
                 </div>
@@ -231,14 +231,16 @@ export default async function Home() {
                   </Avatar>
                   <div className="flex flex-col">
                     <h4 className="font-medium">Senior Product Designer</h4>
-
-                    <a
-                      className="text-sm text-stone-500 underline hover:text-blue-500"
-                      href="https://zenefits.com"
-                      target="_blank"
-                    >
-                      Zenefits
-                    </a>
+                    <span className="text-sm text-stone-500">
+                      <a
+                        className="underline hover:text-blue-500"
+                        href="https://zenefits.com"
+                        target="_blank"
+                      >
+                        Zenefits
+                      </a>{" "}
+                      (now TriNet)
+                    </span>
                   </div>
                 </div>
                 <div className="flex flex-col items-end text-end">
@@ -257,13 +259,16 @@ export default async function Home() {
                   </Avatar>
                   <div className="flex flex-col">
                     <h4 className="font-medium">Product Designer</h4>
-                    <a
-                      className="text-sm text-stone-500 underline hover:text-blue-500"
-                      href="https://govos.com"
-                      target="_blank"
-                    >
-                      SeamlessDocs
-                    </a>
+                    <span className="text-sm text-stone-500">
+                      <a
+                        className="underline hover:text-blue-500"
+                        href="https://govos.com"
+                        target="_blank"
+                      >
+                        SeamlessDocs
+                      </a>{" "}
+                      (now GovOS)
+                    </span>
                   </div>
                 </div>
                 <div className="flex flex-col items-end text-end">
