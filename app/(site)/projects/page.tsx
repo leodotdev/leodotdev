@@ -122,12 +122,15 @@ export default async function Home() {
                 more.
               </p>
               <p className="text-base leading-7">
-                At Plasmic, I focus on empowering designers and others with
+                At Plasmic, I focused on empowering designers and others with
                 access to the rest of the development stack:
-                tokens/styles/design system, data sources, state and user
-                management, deployment, and collaboration. It&#39;s been
-                incredible to see everything people make with what we&#39;ve
-                built and be part of such an enthusiastic community.
+                token/style/component design systems, content management
+                systems, data sources and integrations, state and
+                user/authentication management, A/B testing and optimization,
+                code generation and deployment, and multiplayer preview, testing
+                and collaboration. It&#39;s been incredible to see everything
+                people make with what we&#39;ve built and be part of such an
+                enthusiastic and creative community.
               </p>
             </AccordionContent>
           </AccordionItem>
