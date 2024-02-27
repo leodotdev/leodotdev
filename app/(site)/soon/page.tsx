@@ -44,13 +44,7 @@ export default function Soon() {
         </AccordionItem>
         <AccordionItem value="item-3">
           <AccordionTrigger className="text-xl">
-            <span>
-              What sets{" "}
-              <span className="font-semibold">
-                leo<span className="text-orange-500">.</span>dev
-              </span>{" "}
-              apart from other design services?
-            </span>
+            <span>How is this different from other design services?</span>
           </AccordionTrigger>
           <AccordionContent className="text-lg">
             Unlike larger agencies or freelance marketplaces, I offer a personal
@@ -68,7 +62,7 @@ export default function Soon() {
             My service is ideal for startups, small businesses, entrepreneurs,
             and marketers looking for bespoke design solutions without the
             overhead of a full-time designer. Whether you need branding, website
-            design, social media graphics, or more, I’m here to support your
+            design, social media graphics, or more, I&#39;m here to support your
             vision.
           </AccordionContent>
         </AccordionItem>
@@ -79,21 +73,21 @@ export default function Soon() {
           <AccordionContent className="text-lg">
             I understand the importance of deadlines and strive to deliver
             initial drafts within 1-2 business days for most projects. The
-            complexity of your request may influence timing, but I’m committed
-            to working efficiently to meet your needs without sacrificing
-            quality.
+            complexity of your request may influence timing, but I&#39;m
+            committed to working efficiently to meet your needs without
+            sacrificing quality.
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-6">
           <AccordionTrigger className="text-xl">
-            <span>What if I’m not happy with a design?</span>
+            <span>What if I&#39;m not happy with a design?</span>
           </AccordionTrigger>
           <AccordionContent className="text-lg">
-            Your complete satisfaction is my priority. If a design isn’t quite
-            right, let me know, and I’ll make the necessary revisions. My
-            unlimited revision policy ensures we refine it until it perfectly
+            Your complete satisfaction is my priority. If a design isn&#39;t
+            quite right, let me know, and I&#39;ll make the necessary revisions.
+            My unlimited revision policy ensures we refine it until it perfectly
             matches your expectations. Should a project require a new direction,
-            I’m more than willing to adapt my approach.
+            I&#39;m more than willing to adapt my approach.
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-7">
@@ -103,7 +97,7 @@ export default function Soon() {
           <AccordionContent className="text-lg">
             Not at all! My subscription model is designed to accommodate
             unlimited design requests. No matter how big or small your needs,
-            I’m here to provide the continuous support your brand deserves.
+            I&#39;m here to provide the continuous support your brand deserves.
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-8">
@@ -113,7 +107,7 @@ export default function Soon() {
           <AccordionContent className="text-lg">
             Beginning is easy. Visit my website, choose the plan that fits your
             needs, and sign up. You can start submitting design requests right
-            away through our easy-to-use platform, and I’ll be here to bring
+            away through the easy-to-use platform, and I&#39;ll be here to bring
             your ideas to life.
           </AccordionContent>
         </AccordionItem>

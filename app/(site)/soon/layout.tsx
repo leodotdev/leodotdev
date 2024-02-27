@@ -41,6 +41,7 @@ export default function RootLayout({
                   <h2 className="text-2xl font-semibold text-stone-950 dark:text-stone-50">
                     leo<span className="text-orange-500">.</span>dev
                   </h2>
+                  <small className="text-stone-500">Est. 2024</small>
                   {/* <span className="text-stone-500">Product Designer</span> */}
                 </Link>
               </div>
