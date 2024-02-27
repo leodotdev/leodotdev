@@ -47,7 +47,7 @@ export default function RootLayout({
 
               <div className="flex flex-wrap gap-3">
                 <Link
-                  href="https://cal.com/leo.dev/30min"
+                  href="https://cal.com/leo.dev/20min"
                   target="_blank"
                   className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
                 >
