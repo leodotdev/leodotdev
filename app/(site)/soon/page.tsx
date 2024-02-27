@@ -25,7 +25,7 @@ export default function Soon() {
             </span>{" "}
             is a personalized design subscription service where I offer
             unlimited graphic design, web design, and creative solutions
-            tailored to your unique brand needs. As a dedicated designer with
+            tailored to your unique needs. As a dedicated designer with
             extensive experience, I&#39;m here to ensure your vision comes to
             life exactly as you imagine it.
           </AccordionContent>
@@ -36,7 +36,7 @@ export default function Soon() {
           </AccordionTrigger>
           <AccordionContent className="text-lg">
             It&#39;s simple! Once you subscribe, you&#39;ll get direct access to
-            the platform. Simply submit your design requests, and I&#39;ll begin
+            the platform. Submit your design requests, and I&#39;ll begin
             crafting your initial draft. My goal is to deliver first drafts
             within a set timeframe, allowing for prompt revisions until
             you&#39;re 100% satisfied with the final product.
