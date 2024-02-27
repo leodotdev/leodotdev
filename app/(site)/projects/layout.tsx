@@ -1,8 +1,8 @@
-import "../globals.css";
+import "../../globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ThemeProvider } from "../theme-provider";
-import { ThemeSwitcher } from "../theme-switcher";
+import { ThemeProvider } from "../../theme-provider";
+import { ThemeSwitcher } from "../../theme-switcher";
 import Link from "next/link";
 import { TbArrowUpRight, TbCopy } from "react-icons/tb";
 import { Analytics } from "@vercel/analytics/react";
