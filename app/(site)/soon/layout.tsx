@@ -34,7 +34,7 @@ export default function RootLayout({
       <body className={inter.className}>
         {/* <body className="font-mono"> */}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="container flex flex-col gap-12 p-0 md:p-12 lg:p-24">
+          <section className="container flex flex-col gap-12 p-0 md:p-12 lg:p-24 lg:px-72">
             <div className="flex flex-wrap items-center justify-between gap-4 p-6 sm:w-full md:p-0">
               <div className="flex flex-grow">
                 <Link href="/" className="flex flex-col">
@@ -69,7 +69,7 @@ export default function RootLayout({
               {children}
               <Analytics />
             </main>
-          </div>
+          </section>
         </ThemeProvider>
       </body>
     </html>
