@@ -26,8 +26,8 @@ export default function Soon() {
             is a personalized design subscription service where I offer
             unlimited graphic design, web design, and creative solutions
             tailored to your unique brand needs. As a dedicated designer with
-            extensive experience, I'm here to ensure your vision comes to life
-            exactly as you imagine it.
+            extensive experience, I&#39;m here to ensure your vision comes to
+            life exactly as you imagine it.
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-2">
@@ -35,11 +35,11 @@ export default function Soon() {
             <span>How does it work?</span>
           </AccordionTrigger>
           <AccordionContent className="text-lg">
-            It's simple! Once you subscribe, you'll get direct access to the
-            platform. Simply submit your design requests, and I'll begin
+            It&#39;s simple! Once you subscribe, you&#39;ll get direct access to
+            the platform. Simply submit your design requests, and I&#39;ll begin
             crafting your initial draft. My goal is to deliver first drafts
-            within a set timeframe, allowing for prompt revisions until you're
-            100% satisfied with the final product.
+            within a set timeframe, allowing for prompt revisions until
+            you&#39;re 100% satisfied with the final product.
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-3">
