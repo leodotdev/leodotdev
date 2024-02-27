@@ -97,7 +97,8 @@ export default function Soon() {
           <AccordionContent className="text-lg">
             Not at all! My subscription model is designed to accommodate
             unlimited design requests. No matter how big or small your needs,
-            I&#39;m here to provide the continuous support your brand deserves.
+            I&#39;m here to provide the continuous support your project
+            deserves.
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-8">
