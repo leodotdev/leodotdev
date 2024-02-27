@@ -18,7 +18,7 @@ export const ThemeSwitcher = () => {
 
   return (
     <button
-      className="cursor-pointer self-center rounded-full bg-stone-200/50 p-3 px-5 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800"
+      className="cursor-pointer self-center rounded-full bg-stone-200/50 p-3 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
     >
       {theme === "light" ? (
