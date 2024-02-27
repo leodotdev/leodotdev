@@ -8,7 +8,7 @@ import {
 export default function Soon() {
   return (
     <main className="flex flex-col gap-6">
-      <Accordion type="multiple" collapsible>
+      <Accordion type="multiple">
         <AccordionItem value="item-1">
           <AccordionTrigger className="text-xl">
             <span>
