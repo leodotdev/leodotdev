@@ -105,10 +105,10 @@ export default function Soon() {
             <span>How do I get started?</span>
           </AccordionTrigger>
           <AccordionContent className="text-lg">
-            Beginning is easy. Visit my website, choose the plan that fits your
-            needs, and sign up. You can start submitting design requests right
-            away through the easy-to-use platform, and I&#39;ll be here to bring
-            your ideas to life.
+            Beginning is easy. Choose the plan that fits your needs and sign up.
+            You can start submitting design requests right away through the
+            easy-to-use platform, and I&#39;ll be here to bring your ideas to
+            life.
           </AccordionContent>
         </AccordionItem>
       </Accordion>
