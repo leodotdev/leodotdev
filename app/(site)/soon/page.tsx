@@ -23,13 +23,13 @@ export default function Soon() {
         <div className="flex items-stretch">
           <Card className="basis-1/4 rounded-r-none">
             <CardHeader>
-              <CardTitle className="text-lg">Let's go!</CardTitle>
+              <CardTitle className="text-lg">Let&#39;s go!</CardTitle>
             </CardHeader>
             <CardContent>
               <p>
-                Start by booking a call and if we're a good fit, I'll invite you
-                to a private and secure Signal chat where we'll continuously
-                collaborate.
+                Start by booking a call and if we&#39;re a good fit, I&#39;ll
+                invite you to a private and secure Signal chat where we&#39;ll
+                continuously collaborate.
               </p>
             </CardContent>
           </Card>
@@ -50,8 +50,8 @@ export default function Soon() {
             </CardHeader>
             <CardContent>
               <p>
-                I'll craft your initial design draft, focusing on quality and
-                alignment with your vision.
+                I&#39;ll craft your initial design draft, focusing on quality
+                and alignment with your vision.
               </p>
             </CardContent>
           </Card>
