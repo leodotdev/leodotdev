@@ -34,12 +34,12 @@ export default function RootLayout({
       <body className={inter.className}>
         {/* <body className="font-mono"> */}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <section className="container flex flex-col gap-12 p-0 md:p-12 lg:p-24 lg:px-72">
+          <div className="container flex flex-col gap-12 p-0 md:p-12 lg:p-24 lg:px-72">
             <div className="flex flex-wrap items-center justify-between gap-4 p-6 sm:w-full md:p-0">
               <div className="flex flex-grow">
                 <Link href="/" className="flex flex-col">
                   <h2 className="text-2xl font-semibold text-stone-950 dark:text-stone-50">
-                    leo<span className="text-orange-500">.</span>dev
+                    leo.dev
                   </h2>
                   <small className="text-stone-500">Est. 2024</small>
                   {/* <span className="text-stone-500">Product Designer</span> */}
@@ -70,7 +70,7 @@ export default function RootLayout({
               {children}
               <Analytics />
             </main>
-          </section>
+          </div>
         </ThemeProvider>
       </body>
     </html>
