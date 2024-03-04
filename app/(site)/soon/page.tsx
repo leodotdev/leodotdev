@@ -5,61 +5,308 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
-import { TbArrowUpRight, TbCopy } from "react-icons/tb";
+import {
+  TbCalendarCheck,
+  TbMessageCheck,
+  TbWand,
+  TbEdit,
+  TbPlayerTrackNextFilled,
+  TbClockFilled,
+  TbCircleCheckFilled,
+  TbCircleCheck,
+} from "react-icons/tb";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Soon() {
   return (
     <main className="flex flex-col gap-6">
-      <section>
-        <div className="flex items-stretch">
-          <Card className="basis-1/4 rounded-r-none">
-            <CardHeader>
-              <CardTitle className="text-lg">Let&#39;s go!</CardTitle>
+      <section className="flex gap-4">
+        <Card className="basis-1/3 border-none bg-pink-50 shadow-none dark:bg-pink-950">
+          <CardHeader>
+            <CardTitle className="text-lg">Product Design</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>
+              Start by booking a call and if we&#39;re a good fit, I&#39;ll
+              invite you to a private and secure Signal chat where we&#39;ll
+              continuously collaborate.
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="basis-1/3 border-none bg-purple-50 shadow-none dark:bg-purple-950">
+          <CardHeader>
+            <CardTitle className="text-lg">Design Systems</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>
+              Start by booking a call and if we&#39;re a good fit, I&#39;ll
+              invite you to a private and secure Signal chat where we&#39;ll
+              continuously collaborate.
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="basis-1/3 border-none bg-indigo-50 shadow-none dark:bg-indigo-950">
+          <CardHeader>
+            <CardTitle className="text-lg">Brand Design</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>
+              Start by booking a call and if we&#39;re a good fit, I&#39;ll
+              invite you to a private and secure Signal chat where we&#39;ll
+              continuously collaborate.
+            </p>
+          </CardContent>
+        </Card>
+      </section>
+      <section className="flex ">
+        <Card className="basis-1/4 rounded-r-none">
+          <CardHeader>
+            <TbCalendarCheck className="h-6 w-6 stroke-[1.5px]" />
+            <CardTitle className="text-lg">Let&#39;s go!</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>
+              Start by booking a call and if we&#39;re a good fit, I&#39;ll
+              invite you to a private and secure Signal chat where we&#39;ll
+              continuously collaborate.
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="basis-1/4 rounded-none border-l-0">
+          <CardHeader>
+            <TbMessageCheck className="h-6 w-6 stroke-[1.5px]" />
+            <CardTitle className="text-lg">Request</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>
+              Share your design requirements and project details directly with
+              me.
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="basis-1/4 rounded-none border-l-0">
+          <CardHeader>
+            <TbWand className="h-6 w-6 stroke-[1.5px]" />
+            <CardTitle className="text-lg">Create</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>
+              I&#39;ll craft your initial design draft, focusing on quality and
+              alignment with your vision.
+            </p>
+          </CardContent>
+        </Card>
+        <Card className="basis-1/4 rounded-l-none border-l-0">
+          <CardHeader>
+            <TbEdit className="h-6 w-6 stroke-[1.5px]" />
+            <CardTitle className="text-lg">Edit</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>
+              Provide feedback and request revisions until the design meets your
+              complete satisfaction.
+            </p>
+          </CardContent>
+        </Card>
+      </section>
+
+      <section className="flex flex-col items-center gap-6 rounded-[60px] bg-stone-50 p-12  dark:bg-stone-950">
+        <div className="flex flex-col items-center gap-6">
+          <Badge>Plans</Badge>
+          <h2 className="text-4xl font-semibold">
+            Unlock Unlimited Creativity
+          </h2>
+          <h3 className="">
+            Straightforward pricing plans designed to bring your vision to life.
+          </h3>
+          <p></p>
+        </div>
+        <div className="flex gap-6">
+          <Card className="flex basis-1/2 flex-col ">
+            <CardHeader className="">
+              <div className="flex justify-between">
+                <CardTitle className="text-lg">Standard</CardTitle>
+                <Badge variant="secondary" className="gap-1 rounded-full ">
+                  <TbClockFilled />
+                  Limited Availibility
+                </Badge>
+              </div>
+              <div className="flex items-baseline gap-1 text-3xl font-semibold">
+                $4,900.00{" "}
+                <span className="text-sm font-normal text-stone-500">
+                  /month
+                </span>
+              </div>
             </CardHeader>
-            <CardContent>
-              <p>
-                Start by booking a call and if we&#39;re a good fit, I&#39;ll
-                invite you to a private and secure Signal chat where we&#39;ll
-                continuously collaborate.
-              </p>
+            <CardContent className="grow">
+              <ul>
+                <li className="flex items-center gap-4">
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-green-500" />
+                  Unlimited requests
+                </li>
+                <div className="my-4 pl-10">
+                  <Separator />
+                </div>
+                <li className="flex items-center gap-4">
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-green-500" />
+                  Unlimited revisions
+                </li>
+                <div className="my-4 pl-10">
+                  <Separator />
+                </div>
+                <li className="flex items-center gap-4">
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-green-500" />
+                  Implementation-ready product, software, web, or mobile app
+                  designs
+                </li>
+                <div className="my-4 pl-10">
+                  <Separator />
+                </div>
+                <li className="flex items-center gap-4 ">
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-green-500" />
+                  Fast, 1-2 day turnaround
+                </li>
+                <div className="my-4 pl-10">
+                  <Separator />
+                </div>
+                <li className="flex items-center gap-4">
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-green-500" />
+                  Private Signal channel for 1-on-1 asynchonous communication
+                </li>
+              </ul>
             </CardContent>
+            <CardFooter className="flex flex-col gap-4">
+              <Link
+                href="https://cal.com/leo.dev/20min"
+                target="_blank"
+                className="w-full cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-center text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+              >
+                Book a Call
+              </Link>
+              <div className="flex items-center justify-center">
+                <Separator className="" />
+                <span className="mx-4">or</span>
+                <Separator className="" />
+              </div>
+              <Link
+                href="https://cal.com/leo.dev/20min"
+                target="_blank"
+                className="w-full cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-center text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+              >
+                Subscribe Now
+              </Link>
+            </CardFooter>
           </Card>
-          <Card className="basis-1/4 rounded-none border-l-0">
-            <CardHeader>
-              <CardTitle className="text-lg">Request</CardTitle>
+          <Card className="basis-1/2 ">
+            <CardHeader className="">
+              <div className="flex justify-between">
+                <CardTitle className="text-lg">Pro</CardTitle>
+                <Badge variant="secondary" className="gap-1 rounded-full ">
+                  <TbPlayerTrackNextFilled />
+                  2x Requests
+                </Badge>
+              </div>
+              <div className="flex items-baseline gap-1 text-3xl font-semibold">
+                $6,900.00{" "}
+                <span className="text-sm font-normal text-stone-500">
+                  /month
+                </span>
+              </div>
             </CardHeader>
             <CardContent>
-              <p>
-                Share your design requirements and project details directly with
-                me.
-              </p>
+              <ul>
+                <li className="flex items-center gap-4">
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue-500" />
+                  Unlimited requests
+                </li>
+                <div className="my-4 pl-10">
+                  <Separator />
+                </div>
+                <li className="flex items-center gap-4">
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue-500" />
+                  Unlimited revisions
+                </li>
+                <div className="my-4 pl-10">
+                  <Separator />
+                </div>
+                <li className="flex items-center gap-4">
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue-500" />
+                  Implementation-ready product, software, web, or mobile app
+                  designs
+                </li>
+                <div className="my-4 pl-10">
+                  <Separator />
+                </div>
+                <li className="flex items-center gap-4 ">
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue-500" />
+                  Fast, 1-2 day turnaround
+                </li>
+                <div className="my-4 pl-10">
+                  <Separator />
+                </div>
+                <li className="flex items-center gap-4">
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue-500" />
+                  Private Signal channel for 1-on-1 asynchonous communication
+                </li>
+                <div className="my-4 pl-10">
+                  <Separator />
+                </div>
+                <li className="flex items-center gap-4">
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue-500" />
+                  Implementation-ready product, software, web, or mobile app
+                  designs
+                </li>
+                <div className="my-4 pl-10">
+                  <Separator />
+                </div>
+                <li className="flex items-center gap-4 ">
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue-500" />
+                  Fast, 1-2 day turnaround
+                </li>
+                <div className="my-4 pl-10">
+                  <Separator />
+                </div>
+                <li className="flex items-center gap-4">
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue-500" />
+                  Private Signal channel for 1-on-1 asynchonous communication
+                </li>
+              </ul>
             </CardContent>
-          </Card>
-          <Card className="basis-1/4 rounded-none border-l-0">
-            <CardHeader>
-              <CardTitle className="text-lg">Create</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>
-                I&#39;ll craft your initial design draft, focusing on quality
-                and alignment with your vision.
-              </p>
-            </CardContent>
-          </Card>
-          <Card className="basis-1/4 rounded-l-none border-l-0">
-            <CardHeader>
-              <CardTitle className="text-lg">Edit</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>
-                Provide feedback and request revisions until the design meets
-                your complete satisfaction.
-              </p>
-            </CardContent>
+            <CardFooter className="flex flex-col gap-4">
+              <Link
+                href="https://cal.com/leo.dev/20min"
+                target="_blank"
+                className="w-full cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-center text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+              >
+                Book a Call
+              </Link>
+              <div className="flex items-center justify-center">
+                <Separator className="" />
+                <span className="mx-4">or</span>
+                <Separator className="" />
+              </div>
+              <Link
+                href="https://cal.com/leo.dev/20min"
+                target="_blank"
+                className="w-full cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-center text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+              >
+                Subscribe Now
+              </Link>
+            </CardFooter>
           </Card>
         </div>
+        <span className=" text-stone-500">Pause or cancel anytime</span>
       </section>
       <section>
         <Accordion type="multiple">
