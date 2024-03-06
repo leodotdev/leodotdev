@@ -76,7 +76,16 @@ export default function RootLayout({
                       <TbArrowUpRight className="h-4 w-4 text-stone-500" />
                     </span>
                   </Link>
-
+                  <Link
+                    href="https://docs.google.com/document/d/17uK2emyv7p8VYtYV5M36g3mxQ0CvbhDanzWVnVvtIiE/edit?usp=sharing"
+                    target="_blank"
+                    className="cursor-pointer bg-stone-200/50 p-3 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                  >
+                    <span className="flex items-start">
+                      .GDOC
+                      <TbArrowUpRight className="h-4 w-4 text-stone-500" />
+                    </span>
+                  </Link>
                   <Link
                     href="/Leo-SF-Resume-2024.docx"
                     target="_blank"
@@ -121,7 +130,7 @@ export default function RootLayout({
                   </span>
                 </Link>
 
-                <Link
+                {/* <Link
                   href="https://calendly.com/leodotdev"
                   target="_blank"
                   className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 pr-4 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
@@ -130,7 +139,7 @@ export default function RootLayout({
                     Calendly
                     <TbArrowUpRight className="h-4 w-4 text-stone-500" />
                   </span>
-                </Link>
+                </Link> */}
 
                 <TooltipProvider>
                   <Tooltip>
