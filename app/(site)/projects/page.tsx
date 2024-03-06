@@ -104,7 +104,7 @@ export default async function Home() {
               </h2>
             </AccordionTrigger>
 
-            <AccordionContent className="p-12 px-80 pt-0 text-stone-700 dark:text-stone-300">
+            <AccordionContent className="p-12 px-6 pt-0 text-stone-700 md:px-12 lg:px-12 xl:px-80 dark:text-stone-300">
               <p className="mb-4 text-base leading-7">
                 I have now over 8 years of experience with Figma and large,
                 cutting edge React-based design systems. I&#39;ve worked closely
