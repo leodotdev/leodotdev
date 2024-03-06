@@ -319,10 +319,10 @@ export default function Soon() {
                 leo<span className="text-orange-500">.</span>dev
               </span>{" "}
               is a personalized design subscription service where I offer
-              unlimited product, web, and product design tailored to your unique
-              needs. As a dedicated designer with extensive experience, I&#39;m
-              here to ensure your vision comes to life exactly as you imagine
-              it.
+              unlimited product, web, and software design tailored to your
+              unique needs. As a dedicated designer with extensive experience,
+              I&#39;m here to ensure your vision comes to life exactly as you
+              imagine it.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-2">

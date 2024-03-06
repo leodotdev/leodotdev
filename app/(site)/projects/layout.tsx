@@ -1,6 +1,6 @@
 import "../../globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { DM_Sans, Inter } from "next/font/google";
 import { ThemeProvider } from "../../theme-provider";
 import { ThemeSwitcher } from "../../theme-switcher";
 import Link from "next/link";
@@ -19,6 +19,11 @@ import CopyToClipboard from "@/components/CopyToClipboard";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-dm-sans",
+});
+
 export const metadata: Metadata = {
   title: "leo.dev",
   description: "Software Designer",
@@ -35,6 +40,7 @@ export default function RootLayout({
   const textToCopy = "Text you want to copy to clipboard";
   return (
     <html lang="en">
+      {/* <body className={dmSans.className}> */}
       <body className={inter.className}>
         {/* <body className="font-mono"> */}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>

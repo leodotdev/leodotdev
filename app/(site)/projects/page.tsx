@@ -62,7 +62,7 @@ export default async function Home() {
                   alt="brush"
                   src="/emoji-waving-hand.svg"
                   className="inline-block align-text-bottom"
-                /> */}
+              /> */}
                 I&#39;m a Web, Software, Product Designer.{" "}
                 <span className="font-light text-stone-700 dark:text-stone-300">
                   I began computer arts and design at a young age using
@@ -73,7 +73,7 @@ export default async function Home() {
                     alt="brush"
                     src="/emoji-optical-disk.svg"
                     className="inline-block align-text-bottom"
-                  /> */}
+                /> */}
                   , and later received my Bachelor of Arts in New Media{" "}
                   {/* <Image
                     width="32"
@@ -81,7 +81,7 @@ export default async function Home() {
                     alt="brush"
                     src="/emoji-scroll.svg"
                     className="inline-block align-text-bottom"
-                  />{" "} */}
+                />{" "} */}
                   at Emerson College in Boston. I am a Senior Product, Visual,
                   and Design Systems Designer,{" "}
                   {/* <Image
@@ -90,7 +90,7 @@ export default async function Home() {
                     alt="brush"
                     src="/emoji-pencil.svg"
                     className="inline-block align-text-bottom"
-                  /> */}
+                /> */}
                   and a <em>Junior</em> Design Engineer
                   {/* {" "}<Image
                     width="32"
@@ -98,7 +98,7 @@ export default async function Home() {
                     alt="brush"
                     src="/emoji-hammer.svg"
                     className="inline-block align-text-bottom"
-                  /> */}
+                /> */}
                   .
                 </span>
               </h2>
@@ -147,6 +147,33 @@ export default async function Home() {
               <li className="flex w-full flex-row items-center justify-between">
                 <div className="flex flex-row items-center gap-2">
                   <Avatar>
+                    <AvatarImage src="/logo-bg.svg" />
+                    <AvatarFallback className="text-stone-500">
+                      B
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col">
+                    <h4 className="font-medium">
+                      Senior Product Designer, Design Systems Designer
+                    </h4>
+                    <a
+                      className="text-sm text-stone-500 underline hover:text-blue-500"
+                      href="https://www.bitgo.com/"
+                      target="_blank"
+                    >
+                      BitGo
+                    </a>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end text-end">
+                  <p className="text-sm">2023–Present</p>
+                  <p className="text-sm">Remote</p>
+                </div>
+              </li>
+              <Separator />
+              <li className="flex w-full flex-row items-center justify-between">
+                <div className="flex flex-row items-center gap-2">
+                  <Avatar>
                     <AvatarImage src="/logo-pl.svg" />
                     <AvatarFallback className="text-stone-500">
                       P
@@ -189,7 +216,7 @@ export default async function Home() {
                       >
                         Facebook
                       </a>{" "}
-                      (now Meta), Core Systems
+                      (now Meta), xDesign + Core Systems
                     </span>
                   </div>
                 </div>
@@ -295,7 +322,7 @@ export default async function Home() {
             <Separator />
             <div className="flex flex-col gap-1">
               <h4 className="text-sm text-stone-500">Low-code</h4>
-              <p className="text-sm">Webflow, Framer, Plasmic</p>
+              <p className="text-sm">Webflow, Framer, Toddle, Plasmic</p>
             </div>
             <Separator />
             <div className="flex flex-col gap-1">
