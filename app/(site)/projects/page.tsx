@@ -104,7 +104,7 @@ export default async function Home() {
               </h2>
             </AccordionTrigger>
 
-            <AccordionContent className="p-12 pr-24 pt-0 text-stone-700 dark:text-stone-300">
+            <AccordionContent className="p-12 px-80 pt-0 text-stone-700 dark:text-stone-300">
               <p className="mb-4 text-base leading-7">
                 I have now over 8 years of experience with Figma and large,
                 cutting edge React-based design systems. I&#39;ve worked closely
@@ -140,7 +140,7 @@ export default async function Home() {
       <div className="auto-rows grid gap-6 md:grid-cols-3">
         <Card className="rounded-3xl shadow-none md:col-span-2">
           <CardHeader>
-            <CardTitle>Work</CardTitle>
+            <CardTitle>Work Experience</CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="flex flex-col gap-4">
@@ -311,25 +311,26 @@ export default async function Home() {
         </Card>
         <Card className="rounded-3xl shadow-none">
           <CardHeader>
-            <CardTitle>Tools</CardTitle>
+            <CardTitle>Favorite Tools</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <div className="flex flex-col gap-1">
               <h4 className="text-sm text-stone-500">Design</h4>
               <p className="text-sm">Figma, Sketch, Photoshop, Illustrator</p>
-              <p className="text-sm">Procreate, FigJam</p>
+              <p className="text-sm">Play, Procreate, FigJam, tldraw</p>
             </div>
             <Separator />
             <div className="flex flex-col gap-1">
               <h4 className="text-sm text-stone-500">Low-code</h4>
-              <p className="text-sm">Webflow, Framer, Toddle, Plasmic</p>
+              <p className="text-sm">Framer, Webflow, Toddle, Plasmic</p>
             </div>
             <Separator />
             <div className="flex flex-col gap-1">
               <h4 className="text-sm text-stone-500">Development</h4>
               <p className="text-sm">
-                HTML, CSS, TailwindCSS, ShadcnUI, RadixUI
+                HTML, CSS, Tailwind CSS, shadcn/ui, Radix
               </p>
+              <p className="text-sm">Cody, Copilot</p>
             </div>
           </CardContent>
         </Card>
