@@ -154,7 +154,7 @@ export default async function Home() {
                   </Avatar>
                   <div className="flex flex-col">
                     <h4 className="font-medium">
-                      Senior Product Designer, Design Systems Designer
+                      Senior Product & Design Systems Designer
                     </h4>
                     <a
                       className="text-sm text-stone-500 underline hover:text-blue-500"
@@ -206,7 +206,7 @@ export default async function Home() {
                   </Avatar>
                   <div className="flex flex-col">
                     <h4 className="font-medium">
-                      Product Designer, Design Systems Designer
+                      Product & Design Systems Designer
                     </h4>
                     <span className="text-sm text-stone-500">
                       <a
@@ -216,7 +216,7 @@ export default async function Home() {
                       >
                         Facebook
                       </a>{" "}
-                      (now Meta), xDesign + Core Systems
+                      (now Meta), xDesign & Core Systems
                     </span>
                   </div>
                 </div>
