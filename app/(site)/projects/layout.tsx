@@ -67,7 +67,7 @@ export default function RootLayout({
 
                 <div className="flex gap-1">
                   <Link
-                    href="/Leo-SF-Resume-2023.pdf"
+                    href="/Leo-SF-Resume-2024_compressed.pdf"
                     target="_blank"
                     className="cursor-pointer rounded-l-full bg-stone-200/50 p-3 pl-5 pr-3 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
                   >
@@ -78,7 +78,7 @@ export default function RootLayout({
                   </Link>
 
                   <Link
-                    href="/Leo-SF-Resume-2023.docx"
+                    href="/Leo-SF-Resume-2024.docx"
                     target="_blank"
                     className="cursor-pointer rounded-r-full bg-stone-200/50 p-3 pl-3 pr-4 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
                   >
