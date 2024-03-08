@@ -50,7 +50,7 @@ export default async function Home() {
   };
 
   return (
-    <main className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6">
       <Card className="rounded-3xl shadow-none md:col-span-2 ">
         <Accordion type="single" collapsible>
           <AccordionItem className="border-0" value="item-1">
@@ -82,8 +82,8 @@ export default async function Home() {
                     src="/emoji-scroll.svg"
                     className="inline-block align-text-bottom"
                 />{" "} */}
-                  at Emerson College in Boston. I am a Senior Product, Visual,
-                  and Design Systems Designer,{" "}
+                  at Emerson College. I am a Senior Product, Visual, and Design
+                  Systems Designer,{" "}
                   {/* <Image
                     width="32"
                     height="32"
@@ -324,21 +324,19 @@ export default async function Home() {
           <CardContent className="flex flex-col gap-4">
             <div className="flex flex-col gap-1">
               <h4 className="text-sm text-stone-500">Design</h4>
-              <p className="text-sm">Figma, Sketch, Photoshop, Illustrator</p>
-              <p className="text-sm">Play, Procreate, FigJam, tldraw</p>
+              <p>Figma, Sketch, Photoshop, Illustrator</p>
+              <p>Play, Procreate, FigJam, tldraw</p>
             </div>
             <Separator />
             <div className="flex flex-col gap-1">
               <h4 className="text-sm text-stone-500">Low-code</h4>
-              <p className="text-sm">Framer, Webflow, Toddle, Plasmic</p>
+              <p>Framer, Webflow, Toddle, Plasmic</p>
             </div>
             <Separator />
             <div className="flex flex-col gap-1">
               <h4 className="text-sm text-stone-500">Development</h4>
-              <p className="text-sm">
-                HTML, CSS, Tailwind CSS, shadcn/ui, Radix
-              </p>
-              <p className="text-sm">Cody, Copilot</p>
+              <p>HTML, CSS, Tailwind CSS, shadcn/ui, Radix</p>
+              <p>Cody, Copilot</p>
             </div>
           </CardContent>
         </Card>
@@ -394,6 +392,6 @@ export default async function Home() {
           </Dialog>
         ))}
       </div>
-    </main>
+    </div>
   );
 }
