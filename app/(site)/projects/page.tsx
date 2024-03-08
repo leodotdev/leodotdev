@@ -106,7 +106,7 @@ export default async function Home() {
 
             <AccordionContent className=" pt-0 text-stone-700  dark:text-stone-300">
               <div className="px-6 md:px-12 lg:px-12 xl:px-80">
-                <p className="mb-4 text-base leading-7">
+                <p className="mb-6 text-base leading-7">
                   I have now over 8 years of experience with Figma and large,
                   cutting edge React-based design systems. I&#39;ve worked
                   closely with full-stack engineers, designers, and product
@@ -121,7 +121,7 @@ export default async function Home() {
                 src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F5Ah1Dz2oy5xahtyj6N6jlI%2FMy-Journey%3Ftype%3Dwhiteboard%26node-id%3D0%253A1%26t%3DfsXN0Ilb5uMK4jbx-1"
               ></iframe>
               <div className="px-6 md:px-12 lg:px-12 xl:px-80">
-                <p className="mb-4 text-base leading-7">
+                <p className="my-6 text-base leading-7">
                   I also have strong experience with modern front-end
                   development and visual development tools. I&#39;ve worked with
                   customer- and data-driven teams, employing qualitative and
@@ -130,7 +130,7 @@ export default async function Home() {
                   prototyping, overseeing design audits, supporting
                   accessibility and localization, and much more.
                 </p>
-                <p className="text-base leading-7">
+                <p className="mb-6 text-base leading-7">
                   At Plasmic, I focused on empowering designers and others with
                   access to the rest of the development stack:
                   token/style/component design systems, content management
