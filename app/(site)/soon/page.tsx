@@ -22,10 +22,9 @@ import {
   TbPlayerTrackNextFilled,
   TbClockFilled,
   TbCircleCheckFilled,
-  TbCircleCheck,
 } from "react-icons/tb";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
+
 import Link from "next/link";
 
 export default function Soon() {

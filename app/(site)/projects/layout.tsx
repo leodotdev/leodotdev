@@ -72,7 +72,7 @@ export default function RootLayout({
                     className="cursor-pointer rounded-l-full bg-stone-200/50 p-3 pl-5 pr-3 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
                   >
                     <span className="flex items-start">
-                      resume-2024.PDF
+                      resume.PDF
                       <TbArrowUpRight className="h-4 w-4 text-stone-500" />
                     </span>
                   </Link>
@@ -130,16 +130,16 @@ export default function RootLayout({
                   </span>
                 </Link>
 
-                {/* <Link
-                  href="https://calendly.com/leodotdev"
+                <Link
+                  href="https://cal.com/leo.dev/20min"
                   target="_blank"
                   className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 pr-4 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
                 >
                   <span className="flex items-start">
-                    Calendly
+                    Let's Chat
                     <TbArrowUpRight className="h-4 w-4 text-stone-500" />
                   </span>
-                </Link> */}
+                </Link>
 
                 <TooltipProvider>
                   <Tooltip>

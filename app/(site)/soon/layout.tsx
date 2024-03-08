@@ -4,7 +4,6 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "../../theme-provider";
 import { ThemeSwitcher } from "../../theme-switcher";
 import Link from "next/link";
-import { TbArrowUpRight, TbCopy } from "react-icons/tb";
 import { Analytics } from "@vercel/analytics/react";
 
 import {
