@@ -51,7 +51,7 @@ export default async function Home() {
 
   return (
     <main className="flex flex-col gap-6">
-      <Card className="rounded-3xl shadow-none md:col-span-2">
+      <Card className="rounded-3xl shadow-none md:col-span-2 ">
         <Accordion type="single" collapsible>
           <AccordionItem className="border-0" value="item-1">
             <AccordionTrigger className="p-6 text-left md:p-12">
@@ -104,34 +104,44 @@ export default async function Home() {
               </h2>
             </AccordionTrigger>
 
-            <AccordionContent className="p-12 px-6 pt-0 text-stone-700 md:px-12 lg:px-12 xl:px-80 dark:text-stone-300">
-              <p className="mb-4 text-base leading-7">
-                I have now over 8 years of experience with Figma and large,
-                cutting edge React-based design systems. I&#39;ve worked closely
-                with full-stack engineers, designers, and product management
-                teams across many domains and industries. I am primarily a
-                self-taught generalist and a lifelong learner.
-              </p>
-              <p className="mb-4 text-base leading-7">
-                I also have strong experience with modern front-end development
-                and visual development tools. I&#39;ve worked with customer- and
-                data-driven teams, employing qualitative and quantitative UX
-                research methods like customer interviews, event tracking, user
-                journeys and personas, rapidly prototyping, overseeing design
-                audits, supporting accessibility and localization, and much
-                more.
-              </p>
-              <p className="text-base leading-7">
-                At Plasmic, I focused on empowering designers and others with
-                access to the rest of the development stack:
-                token/style/component design systems, content management
-                systems, data sources and integrations, state and
-                user/authentication management, A/B testing and optimization,
-                code generation and deployment, and multiplayer preview, testing
-                and collaboration. It&#39;s been incredible to see everything
-                people make with what we&#39;ve built and be part of such an
-                enthusiastic and creative community.
-              </p>
+            <AccordionContent className=" pt-0 text-stone-700  dark:text-stone-300">
+              <div className="px-6 md:px-12 lg:px-12 xl:px-80">
+                <p className="mb-4 text-base leading-7">
+                  I have now over 8 years of experience with Figma and large,
+                  cutting edge React-based design systems. I&#39;ve worked
+                  closely with full-stack engineers, designers, and product
+                  management teams across many domains and industries. I am
+                  primarily a self-taught generalist and a lifelong learner.
+                </p>
+              </div>
+              <iframe
+                className="px-6"
+                width="100%"
+                height="600"
+                src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F5Ah1Dz2oy5xahtyj6N6jlI%2FMy-Journey%3Ftype%3Dwhiteboard%26node-id%3D0%253A1%26t%3DfsXN0Ilb5uMK4jbx-1"
+              ></iframe>
+              <div className="px-6 md:px-12 lg:px-12 xl:px-80">
+                <p className="mb-4 text-base leading-7">
+                  I also have strong experience with modern front-end
+                  development and visual development tools. I&#39;ve worked with
+                  customer- and data-driven teams, employing qualitative and
+                  quantitative UX research methods like customer interviews,
+                  event tracking, user journeys and personas, rapidly
+                  prototyping, overseeing design audits, supporting
+                  accessibility and localization, and much more.
+                </p>
+                <p className="text-base leading-7">
+                  At Plasmic, I focused on empowering designers and others with
+                  access to the rest of the development stack:
+                  token/style/component design systems, content management
+                  systems, data sources and integrations, state and
+                  user/authentication management, A/B testing and optimization,
+                  code generation and deployment, and multiplayer preview,
+                  testing and collaboration. It&#39;s been incredible to see
+                  everything people make with what we&#39;ve built and be part
+                  of such an enthusiastic and creative community.
+                </p>
+              </div>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
