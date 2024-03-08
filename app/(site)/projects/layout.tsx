@@ -136,7 +136,7 @@ export default function RootLayout({
                   className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 pr-4 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
                 >
                   <span className="flex items-start">
-                    Let's Chat
+                    Book a Call
                     <TbArrowUpRight className="h-4 w-4 text-stone-500" />
                   </span>
                 </Link>
