@@ -114,12 +114,9 @@ export default async function Home() {
                   primarily a self-taught generalist and a lifelong learner.
                 </p>
               </div>
-              <iframe
-                className="px-6"
-                width="100%"
-                height="600"
-                src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F5Ah1Dz2oy5xahtyj6N6jlI%2FMy-Journey%3Ftype%3Dwhiteboard%26node-id%3D0%253A1%26t%3DfsXN0Ilb5uMK4jbx-1"
-              ></iframe>
+              <div className="px-6">
+                <img src="/journey.svg" alt="Journey" />
+              </div>
               <div className="px-6 md:px-12 lg:px-12 xl:px-80">
                 <p className="my-6 text-base leading-7">
                   I also have strong experience with modern front-end
