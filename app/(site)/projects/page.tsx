@@ -109,9 +109,10 @@ export default async function Home() {
                 <p className="mb-6 text-base leading-7">
                   I have now over 8 years of experience with Figma and large,
                   cutting edge React-based design systems. I&#39;ve worked
-                  closely with full-stack engineers, designers, and product
-                  management teams across many domains and industries. I am
-                  primarily a self-taught generalist and a lifelong learner.
+                  closely with full-stack and front-end engineers, as well as
+                  design and product management teams across many domains and
+                  industries. I am primarily a self-taught generalist and a
+                  lifelong learner.
                 </p>
               </div>
               <div className="px-6">
