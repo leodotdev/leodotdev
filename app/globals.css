@@ -78,12 +78,12 @@
 }
 
 #texture {
-  position: fixed;
+  position:fixed;
   inset: 0;
   z-index: -1;
   width: 100vw;
   min-height: 100vh;
-  opacity: .2;
+  opacity: .25;
   pointer-events: none;
   transform: translateY(0);
   filter: contrast(60%) brightness(80%);

@@ -4,6 +4,8 @@ import { useTheme } from "next-themes";
 
 import { TbMoon, TbSun } from "react-icons/tb";
 
+import { Button } from "@/components/ui/button";
+
 export const ThemeSwitcher = () => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
@@ -17,8 +19,9 @@ export const ThemeSwitcher = () => {
   }
 
   return (
-    <button
-      className="cursor-pointer self-center rounded-full bg-stone-200/50 p-3 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800"
+    <Button
+      variant="link"
+      size="icon"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
     >
       {theme === "light" ? (
@@ -29,6 +32,6 @@ export const ThemeSwitcher = () => {
           className="h-5 w-5 stroke-stone-950 dark:stroke-stone-50"
         />
       )}
-    </button>
+    </Button>
   );
 };
