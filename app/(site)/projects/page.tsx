@@ -48,8 +48,6 @@ export default async function Home() {
   const components = {
     types: {
       image: ContentImageComponent,
-      // Any other custom types you have in your content
-      // Examples: mapLocation, contactForm, code, featuredProjects, latestNews, etc.
     },
   };
 
