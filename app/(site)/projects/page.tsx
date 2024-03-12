@@ -52,15 +52,15 @@ export default async function Home() {
   };
 
   return (
-    <div className="py-24 ">
+    <div className="py-32 md:py-24  ">
       <div className={ReallySansLargeBlack.className}>
         <div className="flex flex-col gap-6 border-0 px-12 text-center">
           <Link href="/" className="">
             <div className={ReallySansLargeUltra.className}>
-              <h2 className="-mb-6 flex flex-col text-center text-[128px] font-black leading-none text-stone-950 dark:text-stone-50">
+              <h2 className="-mb-6 flex flex-col text-center text-[100px] font-black leading-none text-stone-950 md:text-[128px] dark:text-stone-50">
                 Leo
               </h2>
-              <h2 className="-gap-4 flex flex-col text-center text-[128px] font-black leading-none text-stone-950 dark:text-stone-50">
+              <h2 className="-gap-4 flex flex-col text-center text-[100px] font-black leading-none text-stone-950 md:text-[128px] dark:text-stone-50">
                 Succar
               </h2>
             </div>

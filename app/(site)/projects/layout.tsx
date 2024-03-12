@@ -46,12 +46,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         {/* <body className={ReallySansLargeUltra.className}> */}
-        <div className="flex items-center justify-center">
-          {/* <body className="font-mono"> */}
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <div className="flex max-w-screen-md flex-col gap-12 border-l border-r">
-              <div className="fixed left-0 right-0 top-0 z-50 flex w-full max-w-screen-md flex-wrap items-center justify-center justify-self-center border-x border-b bg-white dark:bg-black">
-                {/* <Link
+        {/* <body className="font-mono"> */}
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <div className="mx-auto flex max-w-screen-md flex-col gap-12 md:border-l md:border-r">
+            <div className="fixed left-0 right-0 top-0 z-50 flex w-full max-w-screen-md flex-wrap items-center justify-center justify-self-center border-b bg-white align-middle md:border-x dark:bg-black">
+              {/* <Link
                   href="https://warpcast.com/leodotdev"
                   target="_blank"
                   
@@ -61,148 +60,153 @@ export default function RootLayout({
                   </span>
                 </Link> */}
 
-                <Link href="https://twitter.com/leosuccarferre" target="_blank">
-                  <Button
-                    variant="link"
-                    className="text-md flex h-12 items-center rounded-none pr-3 "
-                  >
-                    Twitter
-                    <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-                  </Button>
-                </Link>
-                <Link
-                  href="https://www.linkedin.com/in/leosuccarferre/"
-                  target="_blank"
+              <Link href="https://twitter.com/leosuccarferre" target="_blank">
+                <Button
+                  variant="link"
+                  tabIndex={-1}
+                  className="text-md flex h-12 items-center rounded-none pr-3 "
                 >
-                  <Button
-                    variant="link"
-                    className="text-md flex h-12 items-center rounded-none pr-3 "
-                  >
-                    LinkedIn
-                    <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-                  </Button>
-                </Link>
-                <Link href="https://cal.com/leo.dev/20min" target="_blank">
-                  <Button
-                    variant="link"
-                    className="text-md flex h-12 items-center rounded-none pr-3 "
-                  >
-                    Book a Call
-                    <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-                  </Button>
-                </Link>
+                  Twitter
+                  <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+                </Button>
+              </Link>
+              <Link
+                href="https://www.linkedin.com/in/leosuccarferre/"
+                target="_blank"
+              >
+                <Button
+                  variant="link"
+                  tabIndex={-1}
+                  className="text-md flex h-12 items-center rounded-none pr-3 "
+                >
+                  LinkedIn
+                  <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+                </Button>
+              </Link>
+              <Link href="https://cal.com/leo.dev/20min" target="_blank">
+                <Button
+                  variant="link"
+                  tabIndex={-1}
+                  className="text-md flex h-12 items-center rounded-none pr-3 "
+                >
+                  Book a Call
+                  <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+                </Button>
+              </Link>
+              <Link href="">
                 <CopyToClipboard textToCopy="leo@leo.dev">
                   <Button
                     variant="link"
-                    className="text-md flex h-12 items-center rounded-none pr-3 "
+                    tabIndex={-1}
+                    className="text-md flex h-12 items-center rounded-none pr-3 hover:no-underline"
                   >
                     Copy my Email
                     <TbCopy className="h-4 w-4 self-start text-stone-500" />
                   </Button>
                 </CopyToClipboard>
+              </Link>
 
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="text-md flex h-12 items-center px-4 pr-3 font-medium text-stone-900 dark:text-stone-50">
-                    Résumé <TbChevronDown className="h-4 w-4 text-stone-500" />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem>
-                      <Link href="/Leo-SF-Resume-2024.pdf" target="_blank">
-                        Adobe PDF
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link
-                        href="https://docs.google.com/document/d/17uK2emyv7p8VYtYV5M36g3mxQ0CvbhDanzWVnVvtIiE/edit?usp=sharing"
-                        target="_blank"
-                      >
-                        Google DOC
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link href="/Leo-SF-Resume-2024.docx" target="_blank">
-                        Word DOCX
-                      </Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+              <DropdownMenu>
+                <DropdownMenuTrigger className="text-md flex h-12 items-center px-4 pr-3 font-medium text-stone-900 dark:text-stone-50">
+                  Résumé <TbChevronDown className="h-4 w-4 text-stone-500" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem>
+                    <Link href="/Leo-SF-Resume-2024.pdf" target="_blank">
+                      Adobe PDF
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link
+                      href="https://docs.google.com/document/d/17uK2emyv7p8VYtYV5M36g3mxQ0CvbhDanzWVnVvtIiE/edit?usp=sharing"
+                      target="_blank"
+                    >
+                      Google DOC
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href="/Leo-SF-Resume-2024.docx" target="_blank">
+                      Word DOCX
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
 
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <ThemeSwitcher />
-                    </TooltipTrigger>
-                    <TooltipContent side="bottom">Theme</TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <ThemeSwitcher />
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">Theme</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
 
-              <main>
-                {children}
-                <Analytics />
-              </main>
-              <div className="rounded-none border-none shadow-none md:col-span-3">
-                <div className="flex flex-col items-center gap-6 p-6 text-sm text-stone-500">
-                  <div className="flex flex-wrap">
-                    Built using{" "}
-                    <a
-                      className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
-                      target="_blank"
-                      href="https://nextjs.org/"
-                    >
-                      NextJS
-                    </a>
-                    ,{" "}
-                    <a
-                      className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
-                      target="_blank"
-                      href="https://tailwindcss.com/"
-                    >
-                      TailwindCSS
-                    </a>
-                    ,{" "}
-                    <a
-                      className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
-                      target="_blank"
-                      href="https://ui.shadcn.com/"
-                    >
-                      ShadcnUI
-                    </a>
-                    +
-                    <a
-                      className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
-                      target="_blank"
-                      href="https://www.radix-ui.com/"
-                    >
-                      RadixUI
-                    </a>
-                    , and{" "}
-                    <a
-                      className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
-                      target="_blank"
-                      href="https://www.sanity.io/"
-                    >
-                      SanityCMS
-                    </a>
-                    .
-                  </div>
+            <main>
+              {children}
+              <Analytics />
+            </main>
+            <div className="rounded-none border-none shadow-none md:col-span-3">
+              <div className="flex flex-col items-center gap-6 p-6 text-sm text-stone-500">
+                <div className="flex flex-wrap">
+                  Built using{" "}
+                  <a
+                    className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
+                    target="_blank"
+                    href="https://nextjs.org/"
+                  >
+                    NextJS
+                  </a>
+                  ,{" "}
+                  <a
+                    className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
+                    target="_blank"
+                    href="https://tailwindcss.com/"
+                  >
+                    TailwindCSS
+                  </a>
+                  ,{" "}
+                  <a
+                    className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
+                    target="_blank"
+                    href="https://ui.shadcn.com/"
+                  >
+                    ShadcnUI
+                  </a>
+                  +
+                  <a
+                    className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
+                    target="_blank"
+                    href="https://www.radix-ui.com/"
+                  >
+                    RadixUI
+                  </a>
+                  , and{" "}
+                  <a
+                    className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
+                    target="_blank"
+                    href="https://www.sanity.io/"
+                  >
+                    SanityCMS
+                  </a>
+                  .
                 </div>
               </div>
             </div>
-          </ThemeProvider>
-          <svg id="texture">
-            <filter id="noise">
-              <feTurbulence
-                type="turbulence"
-                baseFrequency="0.5"
-                numOctaves="1"
-                stitchTiles="stitch"
-              ></feTurbulence>
-              <feColorMatrix type="saturate" values="0"></feColorMatrix>
-            </filter>
-            <rect width="100%" height="100%" filter="url(#noise)"></rect>
-          </svg>
-        </div>
+          </div>
+        </ThemeProvider>
+        <svg id="texture">
+          <filter id="noise">
+            <feTurbulence
+              type="turbulence"
+              baseFrequency="0.5"
+              numOctaves="1"
+              stitchTiles="stitch"
+            ></feTurbulence>
+            <feColorMatrix type="saturate" values="0"></feColorMatrix>
+          </filter>
+          <rect width="100%" height="100%" filter="url(#noise)"></rect>
+        </svg>
       </body>
     </html>
   );
