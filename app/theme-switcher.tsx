@@ -23,6 +23,7 @@ export const ThemeSwitcher = () => {
       variant="link"
       size="icon"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      className="h-12 w-12 rounded-none"
     >
       {theme === "light" ? (
         <TbMoon title="Dark" className="h-5 w-5 stroke-stone-950" />

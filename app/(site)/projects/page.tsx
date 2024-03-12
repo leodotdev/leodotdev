@@ -1,6 +1,5 @@
 import { getProjects } from "@/sanity/sanity-utils";
 import Image from "next/image";
-import { Inter } from "next/font/google";
 import { PortableText } from "@portabletext/react";
 import { createClient } from "next-sanity";
 import urlBuilder from "@sanity/image-url";
@@ -15,22 +14,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import Link from "next/link";
 
-const inter = Inter({ subsets: ["latin"] });
-
-const ReallySansBlack = localFont({
-  src: "../../../public/fonts/ReallySansLarge-Black.woff",
+const ReallySansLargeUltra = localFont({
+  src: "../../../public/fonts/ReallySansLarge-Ultra.woff",
 });
 
-const ReallySansSmallRegular = localFont({
-  src: "../../../public/fonts/ReallySansSmall-Regular.woff",
+const ReallySansLargeBlack = localFont({
+  src: "../../../public/fonts/ReallySansLarge-Black.woff",
 });
 
 export default async function Home() {
@@ -63,9 +54,19 @@ export default async function Home() {
   };
 
   return (
-    <div>
-      <div className={ReallySansBlack.className}>
-        <div className="flex flex-col gap-6 border-0 p-12 pb-0 text-center">
+    <div className="py-24 ">
+      <div className={ReallySansLargeBlack.className}>
+        <div className="flex flex-col gap-6 border-0 px-12 text-center">
+          <Link href="/" className="">
+            <div className={ReallySansLargeUltra.className}>
+              <h2 className="-mb-6 flex flex-col text-center text-[128px] font-black leading-none text-stone-950 dark:text-stone-50">
+                Leo
+              </h2>
+              <h2 className="-gap-4 flex flex-col text-center text-[128px] font-black leading-none text-stone-950 dark:text-stone-50">
+                Succar
+              </h2>
+            </div>
+          </Link>
           <h2 className="text-5xl text-stone-950 dark:text-stone-50">
             I&#39;m a Senior Product & Design Systems Designer at{" "}
             <Link href="https://bitgo.com" target="_blank">
@@ -76,14 +77,14 @@ export default async function Home() {
           <h2 className="text-5xl text-stone-950 dark:text-stone-50">
             Previously, I was with{" "}
             <Link
-              className={ReallySansBlack.className}
+              className={ReallySansLargeBlack.className}
               href="https://plasmic.app"
               target="_blank"
             >
               <span className="text-pink-500 hover:underline ">Plasmic</span>,
             </Link>{" "}
             <Link
-              className={ReallySansBlack.className}
+              className={ReallySansLargeBlack.className}
               href="https://meta.com"
               target="_blank"
             >
@@ -91,7 +92,7 @@ export default async function Home() {
             </Link>
             , and{" "}
             <Link
-              className={ReallySansBlack.className}
+              className={ReallySansLargeBlack.className}
               href="https://sourcegraph.com"
               target="_blank"
             >
@@ -104,211 +105,208 @@ export default async function Home() {
         </div>
       </div>
 
-      <div className={ReallySansSmallRegular.className}>
-        <div className="auto-rows grid gap-6 p-12 md:grid-cols-3">
-          <Card className="rounded-none shadow-none md:col-span-2">
-            <CardHeader>
-              <CardTitle>Work Experience</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="flex flex-col gap-4">
-                <li className="flex w-full items-center justify-between gap-4">
-                  <div className="flex flex-row items-center gap-2">
-                    <Avatar>
-                      <AvatarImage src="/logo-bg.svg" />
-                      <AvatarFallback className="text-stone-500">
-                        B
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col">
-                      <h4 className="font-medium">
-                        Senior Product & Design Systems Designer
-                      </h4>
-                      <a
-                        className="text-sm text-stone-500 underline hover:text-blue-500"
-                        href="https://www.bitgo.com/"
-                        target="_blank"
-                      >
-                        BitGo
-                      </a>
-                    </div>
+      <div className="auto-rows grid gap-6 p-12 md:grid-cols-3">
+        <Card className="rounded-3xl shadow-none md:col-span-2">
+          <CardHeader>
+            <CardTitle>Work Experience</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="flex flex-col gap-4">
+              <li className="flex w-full items-center justify-between gap-4">
+                <div className="flex flex-row items-center gap-2">
+                  <Avatar>
+                    <AvatarImage src="/logo-bg.svg" />
+                    <AvatarFallback className="text-stone-500">
+                      B
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col">
+                    <h4 className="font-medium">
+                      Senior Product & Design Systems Designer
+                    </h4>
+                    <a
+                      className="text-sm text-stone-500 underline hover:text-blue-500"
+                      href="https://www.bitgo.com/"
+                      target="_blank"
+                    >
+                      BitGo
+                    </a>
                   </div>
-                  <div className="flex flex-col items-end text-end">
-                    <p className="text-sm">2023–Present</p>
-                    <p className="text-sm">Remote</p>
-                  </div>
-                </li>
-                <Separator />
-                <li className="flex w-full items-center justify-between gap-4">
-                  <div className="flex flex-row items-center gap-2">
-                    <Avatar>
-                      <AvatarImage src="/logo-pl.svg" />
-                      <AvatarFallback className="text-stone-500">
-                        P
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col">
-                      <h4 className="font-medium">Founding Designer</h4>
-                      <a
-                        className="text-sm text-stone-500 underline hover:text-blue-500"
-                        href="https://plasmic.app"
-                        target="_blank"
-                      >
-                        Plasmic
-                      </a>
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-end text-end">
-                    <p className="text-sm">2020–2023</p>
-                    <p className="text-sm">Remote</p>
-                  </div>
-                </li>
-                <Separator />
-                <li className="flex w-full items-center justify-between gap-4">
-                  <div className="flex flex-row items-center gap-2">
-                    <Avatar>
-                      <AvatarImage src="/logo-fb.svg" />
-                      <AvatarFallback className="text-stone-500">
-                        F
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col">
-                      <h4 className="font-medium">
-                        Product & Design Systems Designer
-                      </h4>
-                      <span className="text-sm text-stone-500">
-                        <a
-                          className="underline hover:text-blue-500"
-                          href="https://www.meta.com"
-                          target="_blank"
-                        >
-                          Facebook
-                        </a>{" "}
-                        (now Meta), xDesign & Core Systems
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-end text-end">
-                    <p className="text-sm">2018–2020</p>
-                    <p className="text-sm">Menlo Park, CA</p>
-                  </div>
-                </li>
-                <Separator />
-                <li className="flex w-full items-center justify-between gap-4">
-                  <div className="flex flex-row items-center gap-2">
-                    <Avatar>
-                      <AvatarImage src="/logo-sg.svg" />
-                      <AvatarFallback className="text-stone-500">
-                        S
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col">
-                      <h4 className="font-medium">Lead Product Designer</h4>
-                      <a
-                        className="text-sm text-stone-500 underline hover:text-blue-500"
-                        href="https://sourcegraph.com"
-                        target="_blank"
-                      >
-                        Sourcegraph
-                      </a>
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-end text-end">
-                    <p className="text-sm">2017–2018</p>
-                    <p className="text-sm">San Francisco, CA</p>
-                  </div>
-                </li>
-                <Separator />
-                <li className="flex w-full items-center justify-between gap-4">
-                  <div className="flex flex-row items-center gap-2">
-                    <Avatar>
-                      <AvatarImage src="/logo-ze.svg" />
-                      <AvatarFallback className="text-stone-500">
-                        Z
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col">
-                      <h4 className="font-medium">Senior Product Designer</h4>
-                      <span className="text-sm text-stone-500">
-                        <a
-                          className="underline hover:text-blue-500"
-                          href="https://zenefits.com"
-                          target="_blank"
-                        >
-                          Zenefits
-                        </a>{" "}
-                        (now TriNet)
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-end text-end">
-                    <p className="text-sm">2016</p>
-                    <p className="text-sm">San Francisco, CA</p>
-                  </div>
-                </li>
-                <Separator />
-                <li className="flex w-full items-center justify-between gap-4">
-                  <div className="flex flex-row items-center gap-2">
-                    <Avatar>
-                      <AvatarImage src="/logo-sd.svg" />
-                      <AvatarFallback className="text-stone-500">
-                        S
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col">
-                      <h4 className="font-medium">Product Designer</h4>
-                      <span className="text-sm text-stone-500">
-                        <a
-                          className="underline hover:text-blue-500"
-                          href="https://govos.com"
-                          target="_blank"
-                        >
-                          SeamlessDocs
-                        </a>{" "}
-                        (now GovOS)
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-end text-end">
-                    <p className="text-sm">2014–2015</p>
-                    <p className="text-sm">Miami, FL</p>
-                  </div>
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
-          <Card className="rounded-none shadow-none">
-            <CardHeader>
-              <CardTitle>Favorite Tools</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-4">
-              <div className="flex flex-col gap-1">
-                <h4 className="text-sm text-stone-500">Design</h4>
-                <p>
-                  Figma, Sketch, Photoshop, Illustrator, Play, Procreate,
-                  FigJam, tldraw
-                </p>
-              </div>
+                </div>
+                <div className="flex flex-col items-end text-end">
+                  <p className="text-sm">2023–Present</p>
+                  <p className="text-sm">Remote</p>
+                </div>
+              </li>
               <Separator />
-              <div className="flex flex-col gap-1">
-                <h4 className="text-sm text-stone-500">Low-code</h4>
-                <p>Framer, Webflow, Toddle, Plasmic</p>
-              </div>
+              <li className="flex w-full items-center justify-between gap-4">
+                <div className="flex flex-row items-center gap-2">
+                  <Avatar>
+                    <AvatarImage src="/logo-pl.svg" />
+                    <AvatarFallback className="text-stone-500">
+                      P
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col">
+                    <h4 className="font-medium">Founding Designer</h4>
+                    <a
+                      className="text-sm text-stone-500 underline hover:text-blue-500"
+                      href="https://plasmic.app"
+                      target="_blank"
+                    >
+                      Plasmic
+                    </a>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end text-end">
+                  <p className="text-sm">2020–2023</p>
+                  <p className="text-sm">Remote</p>
+                </div>
+              </li>
               <Separator />
-              <div className="flex flex-col gap-1">
-                <h4 className="text-sm text-stone-500">Development</h4>
-                <p>HTML, CSS, Tailwind CSS, shadcn/ui, Radix, Cody, Copilot</p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+              <li className="flex w-full items-center justify-between gap-4">
+                <div className="flex flex-row items-center gap-2">
+                  <Avatar>
+                    <AvatarImage src="/logo-fb.svg" />
+                    <AvatarFallback className="text-stone-500">
+                      F
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col">
+                    <h4 className="font-medium">
+                      Product & Design Systems Designer
+                    </h4>
+                    <span className="text-sm text-stone-500">
+                      <a
+                        className="underline hover:text-blue-500"
+                        href="https://www.meta.com"
+                        target="_blank"
+                      >
+                        Facebook
+                      </a>{" "}
+                      (now Meta), xDesign & Core Systems
+                    </span>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end text-end">
+                  <p className="text-sm">2018–2020</p>
+                  <p className="text-sm">Menlo Park, CA</p>
+                </div>
+              </li>
+              <Separator />
+              <li className="flex w-full items-center justify-between gap-4">
+                <div className="flex flex-row items-center gap-2">
+                  <Avatar>
+                    <AvatarImage src="/logo-sg.svg" />
+                    <AvatarFallback className="text-stone-500">
+                      S
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col">
+                    <h4 className="font-medium">Lead Product Designer</h4>
+                    <a
+                      className="text-sm text-stone-500 underline hover:text-blue-500"
+                      href="https://sourcegraph.com"
+                      target="_blank"
+                    >
+                      Sourcegraph
+                    </a>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end text-end">
+                  <p className="text-sm">2017–2018</p>
+                  <p className="text-sm">San Francisco, CA</p>
+                </div>
+              </li>
+              <Separator />
+              <li className="flex w-full items-center justify-between gap-4">
+                <div className="flex flex-row items-center gap-2">
+                  <Avatar>
+                    <AvatarImage src="/logo-ze.svg" />
+                    <AvatarFallback className="text-stone-500">
+                      Z
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col">
+                    <h4 className="font-medium">Senior Product Designer</h4>
+                    <span className="text-sm text-stone-500">
+                      <a
+                        className="underline hover:text-blue-500"
+                        href="https://zenefits.com"
+                        target="_blank"
+                      >
+                        Zenefits
+                      </a>{" "}
+                      (now TriNet)
+                    </span>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end text-end">
+                  <p className="text-sm">2016</p>
+                  <p className="text-sm">San Francisco, CA</p>
+                </div>
+              </li>
+              <Separator />
+              <li className="flex w-full items-center justify-between gap-4">
+                <div className="flex flex-row items-center gap-2">
+                  <Avatar>
+                    <AvatarImage src="/logo-sd.svg" />
+                    <AvatarFallback className="text-stone-500">
+                      S
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col">
+                    <h4 className="font-medium">Product Designer</h4>
+                    <span className="text-sm text-stone-500">
+                      <a
+                        className="underline hover:text-blue-500"
+                        href="https://govos.com"
+                        target="_blank"
+                      >
+                        SeamlessDocs
+                      </a>{" "}
+                      (now GovOS)
+                    </span>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end text-end">
+                  <p className="text-sm">2014–2015</p>
+                  <p className="text-sm">Miami, FL</p>
+                </div>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+        <Card className="rounded-3xl shadow-none">
+          <CardHeader>
+            <CardTitle>Favorite Tools</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1">
+              <h4 className="text-sm text-stone-500">Design</h4>
+              <p>
+                Figma, Photoshop, Illustrator, Play, Procreate, FigJam, tldraw
+              </p>
+            </div>
+            <Separator />
+            <div className="flex flex-col gap-1">
+              <h4 className="text-sm text-stone-500">Low-code</h4>
+              <p>Framer, Webflow, Toddle, Plasmic</p>
+            </div>
+            <Separator />
+            <div className="flex flex-col gap-1">
+              <h4 className="text-sm text-stone-500">Development</h4>
+              <p>HTML, CSS, Tailwind CSS, shadcn/ui, Radix, Cody, Copilot</p>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       <div className="auto-rows grid gap-6 md:grid-cols-1">
         {projects.map((project) => (
           // project card
           <Dialog key={project._id}>
-            <DialogTrigger className="group flex flex-col items-stretch gap-2 overflow-clip rounded-none  bg-stone-200/50 p-4 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800">
+            <DialogTrigger className="group flex flex-col items-stretch gap-2 overflow-clip rounded-3xl  bg-stone-200/50 p-4 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800">
               {project.image && (
                 <Image
                   src={project.image}
@@ -316,7 +314,7 @@ export default async function Home() {
                   width={800}
                   height={400}
                   loading="lazy"
-                  className="aspect-[3/2] rounded-none object-cover transition group-hover:translate-y-5 group-hover:scale-[1.666]"
+                  className="aspect-[3/2] rounded-xl object-cover transition group-hover:translate-y-5 group-hover:scale-[1.666]"
                 />
               )}
               <div className="flex flex-col">
