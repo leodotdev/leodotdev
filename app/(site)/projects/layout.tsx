@@ -50,7 +50,7 @@ export default function RootLayout({
           {/* <body className="font-mono"> */}
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <div className="flex max-w-screen-md flex-col gap-12 border-l border-r">
-              <div className="fixed left-0 right-0 top-0 z-50 flex h-12 w-full max-w-screen-md flex-wrap items-center justify-center justify-self-center border-x border-b bg-white dark:bg-black">
+              <div className="fixed left-0 right-0 top-0 z-50 flex w-full max-w-screen-md flex-wrap items-center justify-center justify-self-center border-x border-b bg-white dark:bg-black">
                 {/* <Link
                   href="https://warpcast.com/leodotdev"
                   target="_blank"
@@ -64,7 +64,7 @@ export default function RootLayout({
                 <Link href="https://twitter.com/leosuccarferre" target="_blank">
                   <Button
                     variant="link"
-                    className="text-md flex h-12 items-center rounded-none "
+                    className="text-md flex h-12 items-center rounded-none pr-3 "
                   >
                     Twitter
                     <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
@@ -76,7 +76,7 @@ export default function RootLayout({
                 >
                   <Button
                     variant="link"
-                    className="text-md flex h-12 items-center rounded-none "
+                    className="text-md flex h-12 items-center rounded-none pr-3 "
                   >
                     LinkedIn
                     <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
@@ -85,7 +85,7 @@ export default function RootLayout({
                 <Link href="https://cal.com/leo.dev/20min" target="_blank">
                   <Button
                     variant="link"
-                    className="text-md flex h-12 items-center rounded-none "
+                    className="text-md flex h-12 items-center rounded-none pr-3 "
                   >
                     Book a Call
                     <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
@@ -94,7 +94,7 @@ export default function RootLayout({
                 <CopyToClipboard textToCopy="leo@leo.dev">
                   <Button
                     variant="link"
-                    className="text-md flex h-12 items-center rounded-none "
+                    className="text-md flex h-12 items-center rounded-none pr-3 "
                   >
                     Copy my Email
                     <TbCopy className="h-4 w-4 self-start text-stone-500" />
@@ -102,7 +102,7 @@ export default function RootLayout({
                 </CopyToClipboard>
 
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="text-md flex h-full items-center px-4 font-medium text-stone-900 dark:text-stone-50">
+                  <DropdownMenuTrigger className="text-md flex h-12 items-center px-4 pr-3 font-medium text-stone-900 dark:text-stone-50">
                     Résumé <TbChevronDown className="h-4 w-4 text-stone-500" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>

@@ -65,14 +65,14 @@ export default async function Home() {
               </h2>
             </div>
           </Link>
-          <h2 className="text-5xl text-stone-950 dark:text-stone-50">
+          <h2 className="text-4xl text-stone-950 dark:text-stone-50">
             I&#39;m a Senior Product & Design Systems Designer at{" "}
             <Link href="https://bitgo.com" target="_blank">
               <span className="text-sky-500 hover:underline ">BitGo</span>
             </Link>
             .
           </h2>
-          <h2 className="text-5xl text-stone-950 dark:text-stone-50">
+          <h2 className="text-4xl text-stone-950 dark:text-stone-50">
             Previously, I was with{" "}
             <Link
               className={ReallySansLargeBlack.className}
@@ -106,7 +106,7 @@ export default async function Home() {
       <div className="auto-rows grid gap-6 p-12 md:grid-cols-3">
         <Card className="rounded-3xl shadow-none md:col-span-2">
           <CardHeader>
-            <CardTitle>Work Experience</CardTitle>
+            <CardTitle className="text-lg">Work Experience</CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="flex flex-col gap-4">
@@ -277,7 +277,7 @@ export default async function Home() {
         </Card>
         <Card className="rounded-3xl shadow-none">
           <CardHeader>
-            <CardTitle>Favorite Tools</CardTitle>
+            <CardTitle className="text-lg">Favorite Tools</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <div className="flex flex-col gap-1">
