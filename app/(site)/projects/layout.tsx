@@ -147,7 +147,7 @@ export default function RootLayout({
               <Analytics />
             </main>
             <div className="rounded-none border-none shadow-none md:col-span-3">
-              <div className="flex flex-col items-center gap-6 p-6 text-sm text-stone-500">
+              <div className="flex flex-col items-center gap-6 p-6 text-stone-500">
                 <div className="flex flex-wrap">
                   Built using{" "}
                   <a

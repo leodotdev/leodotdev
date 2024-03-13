@@ -54,7 +54,7 @@ export default async function Home() {
   return (
     <div className="py-32 md:py-24  ">
       <div className={ReallySansLargeBlack.className}>
-        <div className="flex flex-col gap-6 border-0 px-12 text-center">
+        <div className="flex flex-col gap-6 border-0 px-6 text-center md:px-12">
           <Link href="/" className="">
             <div className={ReallySansLargeUltra.className}>
               <h2 className="-mb-6 flex flex-col text-center text-[88px] font-black leading-none text-stone-950 md:text-[128px] dark:text-stone-50">
@@ -103,7 +103,7 @@ export default async function Home() {
         </div>
       </div>
 
-      <div className="auto-rows grid gap-6 p-12 md:grid-cols-3">
+      <div className="auto-rows grid gap-6 p-6 md:grid-cols-3 md:p-12">
         <Card className="rounded-3xl shadow-none md:col-span-2">
           <CardHeader>
             <CardTitle className="text-lg">Work Experience</CardTitle>
