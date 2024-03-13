@@ -28,6 +28,10 @@ import CopyToClipboard from "@/components/CopyToClipboard";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const ReallySansLargeUltra = localFont({
+  src: "../../../public/fonts/ReallySansLarge-Ultra.woff",
+});
+
 export const metadata: Metadata = {
   title: "leo.dev",
   description: "Software Designer",
@@ -49,7 +53,7 @@ export default function RootLayout({
         {/* <body className="font-mono"> */}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="mx-auto flex max-w-screen-md flex-col gap-12 md:border-l md:border-r">
-            <div className="fixed left-0 right-0 top-0 z-50 flex w-full max-w-screen-md flex-wrap items-center justify-center justify-self-center border-b bg-white align-middle md:border-x dark:bg-black">
+            <div className="fixed left-0 right-0 top-0 z-50 flex w-full max-w-screen-md flex-wrap items-center justify-center justify-self-center border-b bg-white align-middle dark:bg-black md:border-x">
               {/* <Link
                   href="https://warpcast.com/leodotdev"
                   target="_blank"
@@ -146,51 +150,55 @@ export default function RootLayout({
               {children}
               <Analytics />
             </main>
-            <div className="rounded-none border-none shadow-none md:col-span-3">
-              <div className="flex flex-col items-center gap-6 p-6 text-stone-500">
-                <div className="flex flex-wrap">
-                  Built using{" "}
-                  <a
-                    className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
-                    target="_blank"
-                    href="https://nextjs.org/"
-                  >
-                    NextJS
-                  </a>
-                  ,{" "}
-                  <a
-                    className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
-                    target="_blank"
-                    href="https://tailwindcss.com/"
-                  >
-                    TailwindCSS
-                  </a>
-                  ,{" "}
-                  <a
-                    className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
-                    target="_blank"
-                    href="https://ui.shadcn.com/"
-                  >
-                    ShadcnUI
-                  </a>
-                  +
-                  <a
-                    className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
-                    target="_blank"
-                    href="https://www.radix-ui.com/"
-                  >
-                    RadixUI
-                  </a>
-                  , and{" "}
-                  <a
-                    className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
-                    target="_blank"
-                    href="https://www.sanity.io/"
-                  >
-                    SanityCMS
-                  </a>
-                  .
+            <div>
+              <div className={ReallySansLargeUltra.className}>
+                <div className="flex items-center justify-center text-[72px] leading-none md:text-[128px]">
+                  Thanks!
                 </div>
+              </div>
+
+              <div className="mx-auto p-6 text-center">
+                Built using{" "}
+                <a
+                  className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
+                  target="_blank"
+                  href="https://nextjs.org/"
+                >
+                  NextJS
+                </a>
+                ,{" "}
+                <a
+                  className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
+                  target="_blank"
+                  href="https://tailwindcss.com/"
+                >
+                  TailwindCSS
+                </a>
+                ,{" "}
+                <a
+                  className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
+                  target="_blank"
+                  href="https://ui.shadcn.com/"
+                >
+                  ShadcnUI
+                </a>{" "}
+                &{" "}
+                <a
+                  className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
+                  target="_blank"
+                  href="https://www.radix-ui.com/"
+                >
+                  RadixUI
+                </a>
+                , and{" "}
+                <a
+                  className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
+                  target="_blank"
+                  href="https://www.sanity.io/"
+                >
+                  SanityCMS
+                </a>
+                .
               </div>
             </div>
           </div>
