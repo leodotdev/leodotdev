@@ -57,10 +57,10 @@ export default async function Home() {
         <div className="flex flex-col gap-6 border-0 px-6 text-center md:px-12">
           <Link href="/" className="">
             <div className={ReallySansLargeUltra.className}>
-              <h2 className="-mb-6 flex flex-col text-center text-[88px] font-black leading-none text-stone-950 md:text-[128px] dark:text-stone-50">
+              <h2 className="-mb-6 flex flex-col text-center text-[88px] font-black leading-none text-stone-950 dark:text-stone-50 md:text-[128px]">
                 Leo
               </h2>
-              <h2 className="-gap-4 flex flex-col text-center text-[88px] font-black leading-none text-stone-950 md:text-[128px] dark:text-stone-50">
+              <h2 className="-gap-4 flex flex-col text-center text-[88px] font-black leading-none text-stone-950 dark:text-stone-50 md:text-[128px]">
                 Succar
               </h2>
             </div>
@@ -104,7 +104,7 @@ export default async function Home() {
       </div>
 
       <div className="auto-rows grid gap-6 p-6 md:grid-cols-3 md:p-12">
-        <Card className="rounded-3xl shadow-none md:col-span-2">
+        <Card className="rounded-3xl bg-white/5 shadow-none backdrop-blur-sm dark:bg-black/5 md:col-span-2">
           <CardHeader>
             <CardTitle className="text-lg">Work Experience</CardTitle>
           </CardHeader>
@@ -275,7 +275,7 @@ export default async function Home() {
             </ul>
           </CardContent>
         </Card>
-        <Card className="rounded-3xl shadow-none">
+        <Card className="rounded-3xl bg-white/5 shadow-none backdrop-blur-sm dark:bg-black/5">
           <CardHeader>
             <CardTitle className="text-lg">Favorite Tools</CardTitle>
           </CardHeader>

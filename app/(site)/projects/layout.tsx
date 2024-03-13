@@ -53,7 +53,7 @@ export default function RootLayout({
         {/* <body className="font-mono"> */}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="mx-auto flex max-w-screen-md flex-col gap-12 md:border-l md:border-r">
-            <div className="fixed left-0 right-0 top-0 z-50 mx-auto flex w-full max-w-screen-md flex-wrap items-center justify-center justify-self-center border-b bg-white align-middle dark:bg-black md:border-x">
+            <div className="fixed left-0 right-0 top-0 z-50 mx-auto flex w-full max-w-screen-md flex-wrap items-center justify-center justify-self-center border-b bg-white bg-white/50 align-middle backdrop-blur-lg dark:bg-black dark:bg-black/50 md:border-x">
               {/* <Link
                   href="https://warpcast.com/leodotdev"
                   target="_blank"
