@@ -312,7 +312,7 @@ export default async function Home() {
                   width={800}
                   height={400}
                   loading="lazy"
-                  className="aspect-[3/2] rounded-none object-cover transition group-hover:translate-y-5 group-hover:scale-[1.666]"
+                  className="aspect-[3/2] rounded-sm object-cover transition group-hover:translate-y-5 group-hover:scale-[1.666]"
                 />
               )}
               <div className="flex flex-col">
