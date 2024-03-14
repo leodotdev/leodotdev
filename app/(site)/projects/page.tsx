@@ -52,7 +52,7 @@ export default async function Home() {
   };
 
   return (
-    <div className="py-32 md:py-24  ">
+    <div className="pt-32 md:pt-24">
       <div className={ReallySansLargeBlack.className}>
         <div className="flex flex-col gap-6 border-0 px-6 text-center md:px-12">
           <Link href="/" className="">
@@ -68,7 +68,7 @@ export default async function Home() {
           <h2 className="text-4xl text-stone-950 dark:text-stone-50">
             I&#39;m a Senior Product & Design Systems Designer at{" "}
             <Link href="https://bitgo.com" target="_blank">
-              <span className="text-sky-500 hover:underline ">BitGo</span>
+              <span className="text-sky-500 hover:underline">BitGo</span>
             </Link>
             .
           </h2>
@@ -79,7 +79,7 @@ export default async function Home() {
               href="https://plasmic.app"
               target="_blank"
             >
-              <span className="text-pink-500 hover:underline ">Plasmic</span>,
+              <span className="text-pink-500 hover:underline">Plasmic</span>,
             </Link>{" "}
             <Link
               className={ReallySansLargeBlack.className}
@@ -300,11 +300,11 @@ export default async function Home() {
         </Card>
       </div>
 
-      <div className="auto-rows grid gap-6 md:grid-cols-1">
+      <div className="auto-rows grid gap-6 p-6 md:grid-cols-1 md:p-12">
         {projects.map((project) => (
           // project card
           <Dialog key={project._id}>
-            <DialogTrigger className="group flex flex-col items-stretch gap-2 overflow-clip rounded-3xl  bg-stone-200/50 p-4 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800">
+            <DialogTrigger className="group flex flex-col items-stretch gap-2 overflow-clip rounded-3xl  bg-stone-200/50 p-6 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800">
               {project.image && (
                 <Image
                   src={project.image}
@@ -312,7 +312,7 @@ export default async function Home() {
                   width={800}
                   height={400}
                   loading="lazy"
-                  className="aspect-[3/2] rounded-xl object-cover transition group-hover:translate-y-5 group-hover:scale-[1.666]"
+                  className="aspect-[3/2] rounded-none object-cover transition group-hover:translate-y-5 group-hover:scale-[1.666]"
                 />
               )}
               <div className="flex flex-col">
