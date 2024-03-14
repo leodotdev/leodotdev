@@ -104,7 +104,7 @@ export default async function Home() {
       </div>
 
       <div className="auto-rows grid gap-6 p-6 md:grid-cols-3 md:p-12">
-        <Card className="rounded-3xl bg-white/5 shadow-none backdrop-blur-sm dark:bg-black/5 md:col-span-2">
+        <Card className="rounded-3xl bg-white/5 shadow-none dark:bg-black/5 md:col-span-2">
           <CardHeader>
             <CardTitle className="text-lg">Work Experience</CardTitle>
           </CardHeader>
@@ -275,7 +275,7 @@ export default async function Home() {
             </ul>
           </CardContent>
         </Card>
-        <Card className="rounded-3xl bg-white/5 shadow-none backdrop-blur-sm dark:bg-black/5">
+        <Card className="rounded-3xl bg-white/5 shadow-none dark:bg-black/5">
           <CardHeader>
             <CardTitle className="text-lg">Favorite Tools</CardTitle>
           </CardHeader>
