@@ -116,21 +116,33 @@ export default function RootLayout({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuItem>
-                    <Link href="/Leo-SF-Resume-2024.pdf" target="_blank">
+                    <Link
+                      href="/Leo-SF-Resume-2024.pdf"
+                      target="_blank"
+                      className="flex pr-0"
+                    >
                       Adobe PDF
+                      <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Link
                       href="https://docs.google.com/document/d/17uK2emyv7p8VYtYV5M36g3mxQ0CvbhDanzWVnVvtIiE/edit?usp=sharing"
                       target="_blank"
+                      className="flex pr-0"
                     >
                       Google DOC
+                      <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <Link href="/Leo-SF-Resume-2024.docx" target="_blank">
+                    <Link
+                      href="/Leo-SF-Resume-2024.docx"
+                      target="_blank"
+                      className="flex pr-0"
+                    >
                       Word DOCX
+                      <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
                     </Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
