@@ -5,7 +5,12 @@ import { createClient } from "next-sanity";
 import urlBuilder from "@sanity/image-url";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+import { ThemeSwitcher } from "../../theme-switcher";
+
+import { Button } from "@/components/ui/button";
+
+import CopyToClipboard from "@/components/CopyToClipboard";
 
 import {
   Dialog,
@@ -14,7 +19,23 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 import Link from "next/link";
+
+import { TbArrowUpRight, TbChevronDown, TbCopy } from "react-icons/tb";
 
 export default async function Home() {
   const projects = await getProjects();
@@ -79,6 +100,101 @@ export default async function Home() {
           </Link>
           .
         </div>
+      </div>
+
+      <div className="sticky left-4 right-4 top-4 z-50 mx-auto flex w-fit max-w-screen-md flex-wrap items-center justify-center justify-self-center rounded-full border px-3 align-middle backdrop-blur-lg">
+        <Link href="https://twitter.com/leosuccarferre" target="_blank">
+          <Button
+            variant="link"
+            tabIndex={-1}
+            className="text-md flex h-12 items-center rounded-none pr-3 "
+          >
+            Twitter
+            <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+          </Button>
+        </Link>
+        <Link
+          href="https://www.linkedin.com/in/leosuccarferre/"
+          target="_blank"
+        >
+          <Button
+            variant="link"
+            tabIndex={-1}
+            className="text-md flex h-12 items-center rounded-none pr-3 "
+          >
+            LinkedIn
+            <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+          </Button>
+        </Link>
+        <Link href="https://cal.com/leo.dev/20min" target="_blank">
+          <Button
+            variant="link"
+            tabIndex={-1}
+            className="text-md flex h-12 items-center rounded-none pr-3 "
+          >
+            Book a Call
+            <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+          </Button>
+        </Link>
+        <Link href="">
+          <CopyToClipboard textToCopy="leo@leo.dev">
+            <Button
+              variant="link"
+              tabIndex={-1}
+              className="text-md flex h-12 items-center rounded-none pr-3 hover:no-underline"
+            >
+              Copy my Email
+              <TbCopy className="h-4 w-4 self-start text-stone-500" />
+            </Button>
+          </CopyToClipboard>
+        </Link>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger className="text-md flex h-12 items-center px-4 pr-3 font-medium text-stone-900 dark:text-stone-50">
+            Résumé <TbChevronDown className="h-4 w-4 text-stone-500" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>
+              <Link
+                href="/Leo-SF-Resume-2024.pdf"
+                target="_blank"
+                className="flex pr-0"
+              >
+                Adobe PDF
+                <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link
+                href="https://docs.google.com/document/d/17uK2emyv7p8VYtYV5M36g3mxQ0CvbhDanzWVnVvtIiE/edit?usp=sharing"
+                target="_blank"
+                className="flex pr-0"
+              >
+                Google DOC
+                <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link
+                href="/Leo-SF-Resume-2024.docx"
+                target="_blank"
+                className="flex pr-0"
+              >
+                Word DOCX
+                <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <ThemeSwitcher />
+            </TooltipTrigger>
+            <TooltipContent side="bottom">Theme</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
 
       <div className="auto-rows gap-6 px-6 md:grid-cols-3 md:px-12">
@@ -311,6 +427,54 @@ export default async function Home() {
             </DialogContent>
           </Dialog>
         ))}
+      </div>
+
+      <div>
+        <div className="flex px-6 text-xl md:px-12">Thanks!</div>
+
+        <div className="text-md mx-auto px-6 pb-24 md:px-12">
+          Built using{" "}
+          <a
+            className="text-stone-950 underline decoration-dotted hover:text-blue-500 hover:decoration-solid dark:text-stone-50"
+            target="_blank"
+            href="https://nextjs.org/"
+          >
+            NextJS
+          </a>
+          ,{" "}
+          <a
+            className="text-stone-950 underline decoration-dotted hover:text-blue-500 hover:decoration-solid dark:text-stone-50"
+            target="_blank"
+            href="https://tailwindcss.com/"
+          >
+            TailwindCSS
+          </a>
+          ,{" "}
+          <a
+            className="text-stone-950 underline decoration-dotted hover:text-blue-500 hover:decoration-solid dark:text-stone-50"
+            target="_blank"
+            href="https://ui.shadcn.com/"
+          >
+            ShadcnUI
+          </a>{" "}
+          &{" "}
+          <a
+            className="text-stone-950 underline decoration-dotted hover:text-blue-500 hover:decoration-solid dark:text-stone-50"
+            target="_blank"
+            href="https://www.radix-ui.com/"
+          >
+            RadixUI
+          </a>
+          , and{" "}
+          <a
+            className="text-stone-950 underline decoration-dotted hover:text-blue-500 hover:decoration-solid dark:text-stone-50"
+            target="_blank"
+            href="https://www.sanity.io/"
+          >
+            SanityCMS
+          </a>
+          .
+        </div>
       </div>
     </div>
   );
