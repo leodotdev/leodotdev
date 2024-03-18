@@ -1,7 +1,6 @@
 import "../../globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import localFont from "next/font/local";
 import { ThemeProvider } from "../../theme-provider";
 import { ThemeSwitcher } from "../../theme-switcher";
 import Link from "next/link";
@@ -28,10 +27,6 @@ import CopyToClipboard from "@/components/CopyToClipboard";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const ReallySansLargeUltra = localFont({
-  src: "../../../public/fonts/ReallySansLarge-Ultra.woff",
-});
-
 export const metadata: Metadata = {
   title: "leo.dev",
   description: "Software Designer",
@@ -49,7 +44,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {/* <body className={ReallySansLargeUltra.className}> */}
         {/* <body className="font-mono"> */}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="mx-auto flex max-w-screen-md flex-col gap-12 md:border-l md:border-r">
@@ -163,16 +157,12 @@ export default function RootLayout({
               <Analytics />
             </main>
             <div>
-              <div className={ReallySansLargeUltra.className}>
-                <div className="flex items-center justify-center text-[72px] leading-none md:text-[128px]">
-                  Thanks!
-                </div>
-              </div>
+              <div className="flex px-6 text-xl md:px-12">Thanks!</div>
 
-              <div className="mx-auto p-6 text-center">
+              <div className="text-md mx-auto px-6 pb-24 md:px-12">
                 Built using{" "}
                 <a
-                  className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
+                  className="text-stone-950 underline decoration-dotted hover:text-blue-500 hover:decoration-solid dark:text-stone-50"
                   target="_blank"
                   href="https://nextjs.org/"
                 >
@@ -180,7 +170,7 @@ export default function RootLayout({
                 </a>
                 ,{" "}
                 <a
-                  className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
+                  className="text-stone-950 underline decoration-dotted hover:text-blue-500 hover:decoration-solid dark:text-stone-50"
                   target="_blank"
                   href="https://tailwindcss.com/"
                 >
@@ -188,7 +178,7 @@ export default function RootLayout({
                 </a>
                 ,{" "}
                 <a
-                  className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
+                  className="text-stone-950 underline decoration-dotted hover:text-blue-500 hover:decoration-solid dark:text-stone-50"
                   target="_blank"
                   href="https://ui.shadcn.com/"
                 >
@@ -196,7 +186,7 @@ export default function RootLayout({
                 </a>{" "}
                 &{" "}
                 <a
-                  className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
+                  className="text-stone-950 underline decoration-dotted hover:text-blue-500 hover:decoration-solid dark:text-stone-50"
                   target="_blank"
                   href="https://www.radix-ui.com/"
                 >
@@ -204,7 +194,7 @@ export default function RootLayout({
                 </a>
                 , and{" "}
                 <a
-                  className="text-stone-950 underline hover:text-blue-500 dark:text-stone-50"
+                  className="text-stone-950 underline decoration-dotted hover:text-blue-500 hover:decoration-solid dark:text-stone-50"
                   target="_blank"
                   href="https://www.sanity.io/"
                 >
