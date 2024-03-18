@@ -71,7 +71,7 @@ export default async function Home() {
           <div className="text-xl font-bold">Leo Succar</div>
         </Link>
         <div className="text-md">
-          I&#39;m a Senior Product & Design Systems Designer at{" "}
+          I&#39;m a Product & Design Systems Designer, currently with{" "}
           <Link href="https://bitgo.com" target="_blank">
             <span className="text-sky-500 underline decoration-dotted hover:decoration-solid">
               BitGo
@@ -80,7 +80,7 @@ export default async function Home() {
           .
         </div>
         <div className="text-md text-stone-950 dark:text-stone-50">
-          Previously, I was with{" "}
+          Formerly, I was with{" "}
           <Link href="https://plasmic.app" target="_blank">
             <span className="text-pink-500 underline decoration-dotted hover:decoration-solid">
               Plasmic
@@ -102,99 +102,107 @@ export default async function Home() {
         </div>
       </div>
 
-      <div className="sticky left-4 right-4 top-4 z-50 mx-auto flex w-fit max-w-screen-md flex-wrap items-center justify-center justify-self-center rounded-full border px-3 align-middle backdrop-blur-lg">
-        <Link href="https://twitter.com/leosuccarferre" target="_blank">
-          <Button
-            variant="link"
-            tabIndex={-1}
-            className="text-md flex h-12 items-center rounded-none pr-3 "
-          >
-            Twitter
-            <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-          </Button>
-        </Link>
-        <Link
-          href="https://www.linkedin.com/in/leosuccarferre/"
-          target="_blank"
-        >
-          <Button
-            variant="link"
-            tabIndex={-1}
-            className="text-md flex h-12 items-center rounded-none pr-3 "
-          >
-            LinkedIn
-            <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-          </Button>
-        </Link>
-        <Link href="https://cal.com/leo.dev/20min" target="_blank">
-          <Button
-            variant="link"
-            tabIndex={-1}
-            className="text-md flex h-12 items-center rounded-none pr-3 "
-          >
-            Book a Call
-            <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-          </Button>
-        </Link>
-        <Link href="">
-          <CopyToClipboard textToCopy="leo@leo.dev">
+      <div className="sticky left-4 right-4 top-4 z-50 px-6 md:px-12">
+        <div className=" flex w-fit max-w-screen-md flex-wrap items-center justify-center justify-self-center rounded-full border px-1 align-middle backdrop-blur-lg">
+          <Link href="https://twitter.com/leosuccarferre" target="_blank">
             <Button
-              variant="link"
+              variant="secondary"
               tabIndex={-1}
-              className="text-md flex h-12 items-center rounded-none pr-3 hover:no-underline"
+              className="text-md flex items-center rounded-full pr-3 "
             >
-              Copy my Email
-              <TbCopy className="h-4 w-4 self-start text-stone-500" />
+              Twitter
+              <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
             </Button>
-          </CopyToClipboard>
-        </Link>
+          </Link>
+          <Link
+            href="https://www.linkedin.com/in/leosuccarferre/"
+            target="_blank"
+          >
+            <Button
+              variant="secondary"
+              tabIndex={-1}
+              className="text-md flex items-center rounded-full pr-3 "
+            >
+              LinkedIn
+              <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+            </Button>
+          </Link>
+          <Link href="https://cal.com/leo.dev/20min" target="_blank">
+            <Button
+              variant="secondary"
+              tabIndex={-1}
+              className="text-md flex items-center rounded-full pr-3 "
+            >
+              Book a Call
+              <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+            </Button>
+          </Link>
+          <Link href="">
+            <CopyToClipboard textToCopy="leo@leo.dev">
+              <Button
+                variant="secondary"
+                tabIndex={-1}
+                className="text-md flex items-center rounded-full pr-3 hover:no-underline"
+              >
+                Copy my Email
+                <TbCopy className="h-4 w-4 self-start text-stone-500" />
+              </Button>
+            </CopyToClipboard>
+          </Link>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger className="text-md flex h-12 items-center px-4 pr-3 font-medium text-stone-900 dark:text-stone-50">
-            Résumé <TbChevronDown className="h-4 w-4 text-stone-500" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem>
-              <Link
-                href="/Leo-SF-Resume-2024.pdf"
-                target="_blank"
-                className="flex pr-0"
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Button
+                variant="secondary"
+                className="text-md flex items-center rounded-full pr-3 hover:no-underline"
               >
-                Adobe PDF
-                <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link
-                href="https://docs.google.com/document/d/17uK2emyv7p8VYtYV5M36g3mxQ0CvbhDanzWVnVvtIiE/edit?usp=sharing"
-                target="_blank"
-                className="flex pr-0"
-              >
-                Google DOC
-                <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link
-                href="/Leo-SF-Resume-2024.docx"
-                target="_blank"
-                className="flex pr-0"
-              >
-                Word DOCX
-                <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-              </Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+                Résumé
+                <TbChevronDown className="h-4 w-4 text-stone-500" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>
+                <Link
+                  href="/Leo-SF-Resume-2024.pdf"
+                  target="_blank"
+                  className="flex pr-0"
+                >
+                  Adobe PDF
+                  <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link
+                  href="https://docs.google.com/document/d/17uK2emyv7p8VYtYV5M36g3mxQ0CvbhDanzWVnVvtIiE/edit?usp=sharing"
+                  target="_blank"
+                  className="flex pr-0"
+                >
+                  Google DOC
+                  <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link
+                  href="/Leo-SF-Resume-2024.docx"
+                  target="_blank"
+                  className="flex pr-0"
+                >
+                  Word DOCX
+                  <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <ThemeSwitcher />
-            </TooltipTrigger>
-            <TooltipContent side="bottom">Theme</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <ThemeSwitcher />
+              </TooltipTrigger>
+              <TooltipContent side="bottom">Theme</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
       </div>
 
       <div className="auto-rows gap-6 px-6 md:grid-cols-3 md:px-12">
@@ -220,7 +228,7 @@ export default async function Home() {
             </div>
             <div className="flex flex-col items-end text-end">
               <p className="text-sm">2023–Present</p>
-              <p className="text-sm">Remote</p>
+              <p className="text-sm text-stone-500">Remote</p>
             </div>
           </li>
           <Separator />
@@ -243,7 +251,7 @@ export default async function Home() {
             </div>
             <div className="flex flex-col items-end text-end">
               <p className="text-sm">2020–2023</p>
-              <p className="text-sm">Remote</p>
+              <p className="text-sm text-stone-500">Remote</p>
             </div>
           </li>
           <Separator />
@@ -271,7 +279,7 @@ export default async function Home() {
             </div>
             <div className="flex flex-col items-end text-end">
               <p className="text-sm">2018–2020</p>
-              <p className="text-sm">Menlo Park, CA</p>
+              <p className="text-sm text-stone-500">Menlo Park, CA</p>
             </div>
           </li>
           <Separator />
@@ -294,7 +302,7 @@ export default async function Home() {
             </div>
             <div className="flex flex-col items-end text-end">
               <p className="text-sm">2017–2018</p>
-              <p className="text-sm">San Francisco, CA</p>
+              <p className="text-sm text-stone-500">San Francisco, CA</p>
             </div>
           </li>
           <Separator />
@@ -322,7 +330,7 @@ export default async function Home() {
             </div>
             <div className="flex flex-col items-end text-end">
               <p className="text-sm">2016</p>
-              <p className="text-sm">San Francisco, CA</p>
+              <p className="text-sm text-stone-500">San Francisco, CA</p>
             </div>
           </li>
           <Separator />
@@ -348,7 +356,7 @@ export default async function Home() {
             </div>
             <div className="flex flex-col items-end text-end">
               <p className="text-sm">2014–2015</p>
-              <p className="text-sm">Miami, FL</p>
+              <p className="text-sm text-stone-500">Miami, FL</p>
             </div>
           </li>
         </ul>
