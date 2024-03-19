@@ -102,8 +102,9 @@ export default async function Home() {
         </div>
       </div>
 
+      {/* navigation */}
       <div className="sticky left-4 right-4 top-4 z-50 px-6 md:px-12">
-        <div className=" flex w-fit max-w-screen-md flex-wrap items-center justify-center justify-self-center rounded-full border px-1 align-middle backdrop-blur-lg">
+        <div className=" flex w-fit max-w-screen-md flex-wrap justify-center rounded-3xl border p-1 align-middle backdrop-blur-lg md:justify-start md:rounded-full">
           <Link href="https://twitter.com/leosuccarferre" target="_blank">
             <Button
               variant="secondary"

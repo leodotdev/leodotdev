@@ -20,10 +20,10 @@ export const ThemeSwitcher = () => {
 
   return (
     <Button
-      variant="link"
+      variant="secondary"
       size="icon"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="h-12 w-12 rounded-none"
+      className="rounded-full"
     >
       {theme === "light" ? (
         <TbMoon title="Dark" className="h-5 w-5 stroke-stone-950" />
