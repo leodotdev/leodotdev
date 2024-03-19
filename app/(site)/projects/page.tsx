@@ -104,7 +104,7 @@ export default async function Home() {
 
       {/* navigation */}
       <div className="sticky left-4 right-4 top-4 z-50 px-6 md:px-12">
-        <div className=" flex w-fit max-w-screen-md flex-wrap justify-center rounded-3xl border p-1 align-middle backdrop-blur-lg md:justify-start md:rounded-full">
+        <div className=" flex w-fit max-w-screen-md flex-wrap justify-center gap-1 rounded-3xl border p-1 align-middle backdrop-blur-lg md:justify-start md:rounded-full">
           <Link href="https://twitter.com/leosuccarferre" target="_blank">
             <Button
               variant="secondary"
@@ -387,19 +387,19 @@ export default async function Home() {
         </Card> */}
       </div>
 
-      <div className="auto-rows grid gap-6 px-6 md:grid-cols-2 md:px-12">
+      <div className="auto-rows grid gap-1 px-6 md:grid-cols-2 md:px-12">
         {projects.map((project) => (
           // project card
           <Dialog key={project._id}>
-            <DialogTrigger className="group flex flex-col items-stretch gap-2 overflow-clip rounded-3xl  bg-stone-200/50 p-6 hover:bg-stone-200 dark:bg-stone-800/50 dark:hover:bg-stone-800">
+            <DialogTrigger className="group flex flex-col items-stretch gap-2 overflow-clip rounded-3xl bg-secondary p-6 hover:bg-secondary/80">
               {project.image && (
                 <Image
                   src={project.image}
                   alt={project.name}
                   width={800}
-                  height={400}
+                  height={300}
                   loading="lazy"
-                  className="aspect-[3/2] rounded-sm object-cover transition group-hover:translate-y-5 group-hover:scale-[1.666]"
+                  className="aspect-[3/2] rounded-sm object-cover transition group-hover:translate-y-6 group-hover:scale-[1.666]"
                 />
               )}
               <div className="flex flex-col">
