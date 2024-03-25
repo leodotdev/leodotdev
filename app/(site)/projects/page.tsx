@@ -387,30 +387,28 @@ export default async function Home() {
         </Card> */}
       </div>
 
-      <div className="auto-rows grid gap-1 px-6 md:grid-cols-2 md:px-12">
+      <div className="auto-rows grid gap-6 px-6 md:gap-12 md:px-12">
         {projects.map((project) => (
           // project card
           <Dialog key={project._id}>
-            <DialogTrigger className="group flex flex-col items-stretch gap-2 overflow-clip rounded-3xl bg-secondary p-6 hover:bg-secondary/80">
+            <DialogTrigger className="group flex flex-col items-stretch justify-between gap-4 overflow-clip rounded-3xl bg-secondary p-6 hover:bg-secondary/80">
+              <div className="flex items-end justify-between">
+                <div className="flex flex-col text-left font-medium text-stone-950 dark:text-stone-50">
+                  <div>{project.name}</div>
+                  <div className="text-sm text-stone-500">{project.client}</div>
+                </div>
+                <div className="text-sm text-stone-500">{project.year}</div>
+              </div>
               {project.image && (
                 <Image
                   src={project.image}
                   alt={project.name}
                   width={800}
-                  height={300}
+                  height={400}
                   loading="lazy"
-                  className="aspect-[3/2] rounded-sm object-cover transition group-hover:translate-y-6 group-hover:scale-[1.666]"
+                  className="-mb-48 aspect-[3/2] w-full rounded-sm object-cover transition group-hover:-translate-y-28 group-hover:scale-[1.5]"
                 />
               )}
-              <div className="flex flex-col">
-                <div className="flex text-left font-medium text-stone-950 dark:text-stone-50">
-                  {project.name}
-                </div>
-                <div className="flex justify-between text-sm text-stone-500">
-                  <div>{project.client}</div>
-                  <div>{project.year}</div>
-                </div>
-              </div>
             </DialogTrigger>
 
             <DialogContent className="max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] overflow-auto md:max-w-5xl">
