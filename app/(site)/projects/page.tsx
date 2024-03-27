@@ -414,7 +414,7 @@ export default async function Home() {
                     <p>
                       Leo volunteered to design for the Sticker Admin Tool for
                       the Story Creation Team, which is one of our most
-                      important tools, to be used to deploy / manage sticker
+                      important tools, to be used to deploy/manage sticker
                       assets in sticker tray for public users. Historically it
                       has been a huge pain point as the old tool is lacking a
                       lot of functionalities and very inefficient to use.
@@ -453,7 +453,7 @@ export default async function Home() {
               <Card>
                 <CardContent className="flex flex-col gap-4 p-6">
                   <blockquote>
-                    I can&#39;'t stress the relief I felt every time Leo and I
+                    I can&#39;t stress the relief I felt every time Leo and I
                     worked together. He is one of the most reliable partners and
                     brings an incredible amount of creativity and expertise to
                     every project.
