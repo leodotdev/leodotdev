@@ -453,10 +453,10 @@ export default async function Home() {
               <Card>
                 <CardContent className="flex flex-col gap-4 p-6">
                   <blockquote>
-                    I can't stress the relief I felt every time Leo and I worked
-                    together. He is one of the most reliable partners and brings
-                    an incredible amount of creativity and expertise to every
-                    project.
+                    I can&#39;'t stress the relief I felt every time Leo and I
+                    worked together. He is one of the most reliable partners and
+                    brings an incredible amount of creativity and expertise to
+                    every project.
                   </blockquote>
                   <p>- Melissa Bazillion, Marketing Strategist, MassMutual</p>
                 </CardContent>
