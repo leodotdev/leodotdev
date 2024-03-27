@@ -424,8 +424,8 @@ export default async function Home() {
                       himself to this project with full passion and went on full
                       speed. After several iterations, the design was perfected
                       and received very positive feedback from people across the
-                      whole story creation team. Also made to the "Story of the
-                      Week."
+                      whole story creation team. Also made it to the &#34;Story
+                      of the Week.&#34;
                     </p>
                   </blockquote>
                   <p>- James Yu, Senior Software Engineer, Meta</p>
