@@ -76,7 +76,7 @@ export default async function Home() {
     <div className="flex flex-col gap-12 pt-32 md:pt-24">
       <div className="flex flex-col gap-6 border-0 px-6 md:px-12">
         <Link href="/" className="">
-          <div className=" font-bold">Leo Succar</div>
+          <div className="font-bold">Leo Succar</div>
         </Link>
         <div>
           I&#39;m a Product & Design Systems Designer, currently with{" "}
@@ -501,13 +501,13 @@ export default async function Home() {
         ))}
       </div>
 
-      <div>
-        <div className="flex px-6 text-xl md:px-12">Thanks!</div>
+      <div className="flex flex-col gap-4 p-6 md:p-12">
+        <div className="font-bold">Thanks for visiting!</div>
 
-        <div className="text-md mx-auto px-6 pb-24 md:px-12">
+        <div className="text-sm text-stone-500">
           Built using{" "}
           <a
-            className="text-stone-950 underline decoration-dotted hover:text-blue-500 hover:decoration-solid dark:text-stone-50"
+            className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
             target="_blank"
             href="https://nextjs.org/"
           >
@@ -515,7 +515,7 @@ export default async function Home() {
           </a>
           ,{" "}
           <a
-            className="text-stone-950 underline decoration-dotted hover:text-blue-500 hover:decoration-solid dark:text-stone-50"
+            className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
             target="_blank"
             href="https://tailwindcss.com/"
           >
@@ -523,7 +523,7 @@ export default async function Home() {
           </a>
           ,{" "}
           <a
-            className="text-stone-950 underline decoration-dotted hover:text-blue-500 hover:decoration-solid dark:text-stone-50"
+            className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
             target="_blank"
             href="https://ui.shadcn.com/"
           >
@@ -531,7 +531,7 @@ export default async function Home() {
           </a>{" "}
           &{" "}
           <a
-            className="text-stone-950 underline decoration-dotted hover:text-blue-500 hover:decoration-solid dark:text-stone-50"
+            className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
             target="_blank"
             href="https://www.radix-ui.com/"
           >
@@ -539,7 +539,7 @@ export default async function Home() {
           </a>
           , and{" "}
           <a
-            className="text-stone-950 underline decoration-dotted hover:text-blue-500 hover:decoration-solid dark:text-stone-50"
+            className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
             target="_blank"
             href="https://www.sanity.io/"
           >
