@@ -41,15 +41,6 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
 import Link from "next/link";
 
 import { TbArrowUpRight, TbChevronDown, TbCopy } from "react-icons/tb";
@@ -85,9 +76,9 @@ export default async function Home() {
     <div className="flex flex-col gap-12 pt-32 md:pt-24">
       <div className="flex flex-col gap-6 border-0 px-6 md:px-12">
         <Link href="/" className="">
-          <div className="text-xl font-bold">Leo Succar</div>
+          <div className=" font-bold">Leo Succar</div>
         </Link>
-        <div className="text-md">
+        <div>
           I&#39;m a Product & Design Systems Designer, currently with{" "}
           <Link href="https://bitgo.com" target="_blank">
             <span className="text-sky-500 underline decoration-dotted hover:decoration-solid">
@@ -96,7 +87,7 @@ export default async function Home() {
           </Link>
           .
         </div>
-        <div className="text-md text-stone-950 dark:text-stone-50">
+        <div className="text-stone-950 dark:text-stone-50">
           Formerly, I was with{" "}
           <Link href="https://plasmic.app" target="_blank">
             <span className="text-pink-500 underline decoration-dotted hover:decoration-solid">
@@ -232,7 +223,7 @@ export default async function Home() {
                 <AvatarFallback className="text-stone-500">B</AvatarFallback>
               </Avatar>
               <div className="flex flex-col">
-                <div className="text-md font-medium">
+                <div className="font-medium">
                   Senior Product & Design Systems Designer
                 </div>
                 <a
@@ -257,7 +248,7 @@ export default async function Home() {
                 <AvatarFallback className="text-stone-500">P</AvatarFallback>
               </Avatar>
               <div className="flex flex-col">
-                <div className="text-md font-medium">Founding Designer</div>
+                <div className="font-medium">Founding Designer</div>
                 <a
                   className="text-sm text-stone-500 underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
                   href="https://plasmic.app"
@@ -280,7 +271,7 @@ export default async function Home() {
                 <AvatarFallback className="text-stone-500">F</AvatarFallback>
               </Avatar>
               <div className="flex flex-col">
-                <div className="text-md font-medium">
+                <div className="font-medium">
                   Product & Design Systems Designer
                 </div>
                 <span className="text-sm text-stone-500">
@@ -308,7 +299,7 @@ export default async function Home() {
                 <AvatarFallback className="text-stone-500">S</AvatarFallback>
               </Avatar>
               <div className="flex flex-col">
-                <div className="text-md font-medium">Lead Product Designer</div>
+                <div className="font-medium">Lead Product Designer</div>
                 <a
                   className="text-sm text-stone-500 underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
                   href="https://sourcegraph.com"
@@ -331,9 +322,7 @@ export default async function Home() {
                 <AvatarFallback className="text-stone-500">Z</AvatarFallback>
               </Avatar>
               <div className="flex flex-col">
-                <div className="text-md font-medium">
-                  Senior Product Designer
-                </div>
+                <div className="font-medium">Senior Product Designer</div>
                 <span className="text-sm text-stone-500">
                   <a
                     className="underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
@@ -359,7 +348,7 @@ export default async function Home() {
                 <AvatarFallback className="text-stone-500">S</AvatarFallback>
               </Avatar>
               <div className="flex flex-col">
-                <div className="text-md font-medium">Product Designer</div>
+                <div className="font-medium">Product Designer</div>
                 <span className="text-sm text-stone-500">
                   <a
                     className="underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
@@ -407,47 +396,55 @@ export default async function Home() {
       <Carousel>
         <CarouselContent>
           <CarouselItem>
-            <div className="flex flex-col gap-4 p-12">
+            <div className="flex flex-col gap-4 px-24 py-6">
               <blockquote className="flex flex-col gap-4">
                 <p>
-                  Leo volunteered to design for the Sticker Admin Tool for the
-                  Story Creation Team, which is one of our most important tools,
-                  to be used to deploy/manage sticker assets in sticker tray for
-                  public users. Historically it has been a huge pain point as
-                  the old tool is lacking a lot of functionalities and very
-                  inefficient to use.
+                  &#34;Leo volunteered to design for the Sticker Admin Tool for
+                  the Story Creation Team, which is one of our most important
+                  tools, to be used to deploy/manage sticker assets in sticker
+                  tray for public users. Historically it has been a huge pain
+                  point as the old tool is lacking a lot of functionalities and
+                  very inefficient to use.
                 </p>
                 <p>
-                  Despite being out of his scope, Leo still dedicated himself to
-                  this project with full passion and went on full speed. After
-                  several iterations, the design was perfected and received very
-                  positive feedback from people across the whole story creation
-                  team. Also made it to the &#34;Story of the Week.&#34;
+                  Leo dedicated himself to this project with full passion and
+                  went full speed. After several iterations, the design was
+                  perfected and received very positive feedback from people
+                  across the whole Story Creation Team, which also made it to
+                  the &#39;Story of the Week.&#39;&#34;
                 </p>
               </blockquote>
-              <p>- James Yu, Senior Software Engineer, Meta</p>
+              <p className="text-sm text-stone-500">
+                - James Yu, Senior Software Engineer, Meta
+              </p>
             </div>
           </CarouselItem>
           <CarouselItem>
-            <div className="flex flex-col gap-4 p-12">
+            <div className="flex flex-col gap-4 px-24 py-6">
               <blockquote>
-                Rarely do you meet a creative with such a lethal combination of
-                technical skills and fundamental design ability. Leo can handle
-                any project from classic graphic design to robust web projects
-                using the latest technology with ease. It was a pleasure to work
-                with someone who was never out of their element.
+                &#34;Rarely do you meet a creative with such a lethal
+                combination of technical skills and fundamental design ability.
+                Leo can handle any project from classic graphic design to robust
+                web projects using the latest technology with ease. It was a
+                pleasure to work with someone who was never out of their
+                element.&#34;
               </blockquote>
-              <p>- Justin Harsch, Design Director, Benenson Strategy Group</p>
+              <p className="text-sm text-stone-500">
+                - Justin Harsch, Design Director, Benenson Strategy Group
+              </p>
             </div>
           </CarouselItem>
           <CarouselItem>
-            <div className="flex flex-col gap-4 p-12">
+            <div className="flex flex-col gap-4 px-24 py-6">
               <blockquote>
-                I can&#39;t stress the relief I felt every time Leo and I worked
-                together. He is one of the most reliable partners and brings an
-                incredible amount of creativity and expertise to every project.
+                &#34;I can&#39;t stress the relief I felt every time Leo and I
+                worked together. He is one of the most reliable partners and
+                brings an incredible amount of creativity and expertise to every
+                project.&#34;
               </blockquote>
-              <p>- Melissa Bazillion, Marketing Strategist, MassMutual</p>
+              <p className="text-sm text-stone-500">
+                - Melissa Bazillion, Marketing Strategist, MassMutual
+              </p>
             </div>
           </CarouselItem>
         </CarouselContent>
@@ -459,7 +456,7 @@ export default async function Home() {
         {projects.map((project) => (
           // project card
           <Dialog key={project._id}>
-            <DialogTrigger className="group flex flex-col items-stretch justify-between gap-4 overflow-clip rounded-3xl bg-secondary p-6 hover:bg-secondary/80">
+            <DialogTrigger className="group flex flex-col items-stretch justify-between gap-4 overflow-clip rounded-3xl bg-secondary p-6 hover:bg-secondary/80 md:p-12">
               <div className="flex items-end justify-between">
                 <div className="flex flex-col text-left font-medium text-stone-950 dark:text-stone-50">
                   <div>{project.name}</div>
