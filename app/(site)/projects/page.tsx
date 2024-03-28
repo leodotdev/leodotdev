@@ -471,7 +471,7 @@ export default async function Home() {
                   width={800}
                   height={400}
                   loading="lazy"
-                  className="-mb-12 aspect-[3/2]  w-full rounded-sm object-cover transition group-hover:-translate-y-28 group-hover:scale-[1.5] md:-mb-32"
+                  className="-mb-12 aspect-[3/2]  w-full rounded-sm object-cover transition group-hover:-translate-y-24 group-hover:scale-[1.5] md:-mb-32"
                 />
               )}
             </DialogTrigger>
