@@ -404,69 +404,56 @@ export default async function Home() {
         </Card> */}
       </div>
 
-      <div className="px-6 md:px-12">
-        <Carousel>
-          <CarouselContent>
-            <CarouselItem>
-              <Card>
-                <CardContent className="flex flex-col gap-4 p-6">
-                  <blockquote className="flex flex-col gap-4">
-                    <p>
-                      Leo volunteered to design for the Sticker Admin Tool for
-                      the Story Creation Team, which is one of our most
-                      important tools, to be used to deploy/manage sticker
-                      assets in sticker tray for public users. Historically it
-                      has been a huge pain point as the old tool is lacking a
-                      lot of functionalities and very inefficient to use.
-                    </p>
-                    <p>
-                      Despite being out of his scope, Leo still dedicated
-                      himself to this project with full passion and went on full
-                      speed. After several iterations, the design was perfected
-                      and received very positive feedback from people across the
-                      whole story creation team. Also made it to the &#34;Story
-                      of the Week.&#34;
-                    </p>
-                  </blockquote>
-                  <p>- James Yu, Senior Software Engineer, Meta</p>
-                </CardContent>
-              </Card>
-            </CarouselItem>
-            <CarouselItem>
-              <Card>
-                <CardContent className="flex flex-col gap-4 p-6">
-                  <blockquote>
-                    Rarely do you meet a creative with such a lethal of a
-                    combination of technical skills and fundamental design
-                    ability. Leo can handle any project from classic graphic
-                    design to robust web projects using the latest technology
-                    with ease. It was a pleasure to work with someone who was
-                    never out of their element.
-                  </blockquote>
-                  <p>
-                    - Justin Harsch, Design Director, Benenson Strategy Group
-                  </p>
-                </CardContent>
-              </Card>
-            </CarouselItem>
-            <CarouselItem>
-              <Card>
-                <CardContent className="flex flex-col gap-4 p-6">
-                  <blockquote>
-                    I can&#39;t stress the relief I felt every time Leo and I
-                    worked together. He is one of the most reliable partners and
-                    brings an incredible amount of creativity and expertise to
-                    every project.
-                  </blockquote>
-                  <p>- Melissa Bazillion, Marketing Strategist, MassMutual</p>
-                </CardContent>
-              </Card>
-            </CarouselItem>
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-      </div>
+      <Carousel>
+        <CarouselContent>
+          <CarouselItem>
+            <div className="flex flex-col gap-4 p-12">
+              <blockquote className="flex flex-col gap-4">
+                <p>
+                  Leo volunteered to design for the Sticker Admin Tool for the
+                  Story Creation Team, which is one of our most important tools,
+                  to be used to deploy/manage sticker assets in sticker tray for
+                  public users. Historically it has been a huge pain point as
+                  the old tool is lacking a lot of functionalities and very
+                  inefficient to use.
+                </p>
+                <p>
+                  Despite being out of his scope, Leo still dedicated himself to
+                  this project with full passion and went on full speed. After
+                  several iterations, the design was perfected and received very
+                  positive feedback from people across the whole story creation
+                  team. Also made it to the &#34;Story of the Week.&#34;
+                </p>
+              </blockquote>
+              <p>- James Yu, Senior Software Engineer, Meta</p>
+            </div>
+          </CarouselItem>
+          <CarouselItem>
+            <div className="flex flex-col gap-4 p-12">
+              <blockquote>
+                Rarely do you meet a creative with such a lethal combination of
+                technical skills and fundamental design ability. Leo can handle
+                any project from classic graphic design to robust web projects
+                using the latest technology with ease. It was a pleasure to work
+                with someone who was never out of their element.
+              </blockquote>
+              <p>- Justin Harsch, Design Director, Benenson Strategy Group</p>
+            </div>
+          </CarouselItem>
+          <CarouselItem>
+            <div className="flex flex-col gap-4 p-12">
+              <blockquote>
+                I can&#39;t stress the relief I felt every time Leo and I worked
+                together. He is one of the most reliable partners and brings an
+                incredible amount of creativity and expertise to every project.
+              </blockquote>
+              <p>- Melissa Bazillion, Marketing Strategist, MassMutual</p>
+            </div>
+          </CarouselItem>
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
 
       <div className="auto-rows grid gap-6 px-6 md:gap-12 md:px-12">
         {projects.map((project) => (
