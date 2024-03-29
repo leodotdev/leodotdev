@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 
 import CopyToClipboard from "@/components/CopyToClipboard";
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 import {
   Dialog,
   DialogContent,
@@ -170,6 +172,16 @@ export default async function Home() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
+              <DropdownMenuItem>
+                <Link
+                  href="https://read.cv/leo.dev"
+                  target="_blank"
+                  className="flex pr-0"
+                >
+                  Read.cv
+                  <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+                </Link>
+              </DropdownMenuItem>{" "}
               <DropdownMenuItem>
                 <Link
                   href="/Leo-SF-Resume-2024.pdf"
