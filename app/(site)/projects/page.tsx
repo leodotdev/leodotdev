@@ -287,14 +287,15 @@ export default async function Home() {
                   Product & Design Systems Designer
                 </div>
                 <span className="text-sm text-stone-500">
+                  Facebook (now{" "}
                   <a
                     className="underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
                     href="https://www.meta.com"
                     target="_blank"
                   >
-                    Facebook
-                  </a>{" "}
-                  (now Meta), xDesign & Core Systems
+                    Meta
+                  </a>
+                  ), xDesign & Core Systems
                 </span>
               </div>
             </div>
@@ -336,14 +337,15 @@ export default async function Home() {
               <div className="flex flex-col">
                 <div className="font-medium">Senior Product Designer</div>
                 <span className="text-sm text-stone-500">
+                  Zenefits (now{" "}
                   <a
                     className="underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
                     href="https://zenefits.com"
                     target="_blank"
                   >
-                    Zenefits
-                  </a>{" "}
-                  (now TriNet)
+                    TriNet
+                  </a>
+                  )
                 </span>
               </div>
             </div>
@@ -464,7 +466,7 @@ export default async function Home() {
         <CarouselNext />
       </Carousel>
 
-      <div className="auto-rows grid gap-6 px-6 md:gap-12 md:px-12">
+      <div className="auto-rows grid gap-6 md:gap-12 ">
         {projects.map((project) => (
           // project card
           <Dialog key={project._id}>
