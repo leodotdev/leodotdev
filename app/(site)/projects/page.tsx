@@ -470,7 +470,7 @@ export default async function Home() {
         {projects.map((project) => (
           // project card
           <Dialog key={project._id}>
-            <DialogTrigger className="group flex flex-col items-stretch justify-between gap-4 overflow-clip rounded-3xl bg-secondary p-6 hover:bg-secondary/80 md:p-12">
+            <DialogTrigger className="group -mx-[1px] flex flex-col items-stretch justify-between gap-4 overflow-clip rounded-3xl border p-6 md:p-12">
               <div className="flex items-end justify-between">
                 <div className="flex flex-col text-left font-medium text-stone-950 dark:text-stone-50">
                   <div>{project.name}</div>
@@ -485,7 +485,7 @@ export default async function Home() {
                   width={800}
                   height={400}
                   loading="lazy"
-                  className="-mb-12 aspect-[3/2]  w-full rounded-sm object-cover transition group-hover:-translate-y-24 group-hover:scale-[1.5] md:-mb-32"
+                  className="-mb-12 aspect-[3/2] w-full rounded-sm object-cover transition group-hover:-translate-y-24 group-hover:scale-[1.5] md:-mb-32"
                 />
               )}
             </DialogTrigger>
