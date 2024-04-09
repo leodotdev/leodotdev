@@ -1,4 +1,5 @@
 import { getProjects } from "@/sanity/sanity-utils";
+import { getBooks } from "@/sanity/sanity-utils";
 import Image from "next/image";
 import { PortableText } from "@portabletext/react";
 import { createClient } from "next-sanity";
@@ -13,6 +14,8 @@ import { Button } from "@/components/ui/button";
 import CopyToClipboard from "@/components/CopyToClipboard";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 import {
   Dialog,
@@ -49,6 +52,7 @@ import { TbArrowUpRight, TbChevronDown, TbCopy } from "react-icons/tb";
 
 export default async function Home() {
   const projects = await getProjects();
+  const books = await getBooks();
   const client = createClient({
     projectId: "jyqe7nab",
     dataset: "production",
@@ -364,14 +368,15 @@ export default async function Home() {
               <div className="flex flex-col">
                 <div className="font-medium">Product Designer</div>
                 <span className="text-sm text-stone-500">
+                  SeamlessDocs (now{" "}
                   <a
                     className="underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
                     href="https://govos.com"
                     target="_blank"
                   >
-                    SeamlessDocs
-                  </a>{" "}
-                  (now GovOS)
+                    GovOS
+                  </a>
+                  )
                 </span>
               </div>
             </div>
@@ -466,6 +471,43 @@ export default async function Home() {
         <CarouselNext />
       </Carousel>
 
+      {/* <div className="px-6 font-bold md:px-12">Book Shelf</div>
+
+      <ScrollArea className="w-full whitespace-nowrap">
+        <div className="flex overflow-x-auto">
+          {books.map((book) => (
+            // book card
+            <div key={book._id}>
+              <div className="group flex shrink-0">
+                {book.image && (
+                  <Image
+                    src={book.image}
+                    alt={book.name}
+                    width={100}
+                    height={200}
+                    loading="lazy"
+                    className="flex h-20 w-20 rounded-sm object-cover transition group-hover:scale-[1.5]"
+                  />
+                )}
+                <div className="flex items-end justify-between">
+                <div className="flex flex-col text-left font-medium text-stone-950 dark:text-stone-50">
+                  <div>{book.name}</div>
+                  <div className="text-sm text-stone-500">{book.client}</div>
+                </div>
+                <div className="text-sm text-stone-500">{book.year}</div>
+              </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea> */}
+
+      <div className="px-6 md:px-12">
+        <div className="font-bold">Projects</div>
+        <div>Shots and embeds of past work.</div>
+      </div>
+
       <div className="auto-rows grid gap-6 md:gap-12 ">
         {projects.map((project) => (
           // project card
@@ -485,7 +527,7 @@ export default async function Home() {
                   width={800}
                   height={400}
                   loading="lazy"
-                  className="-mb-12 aspect-[3/2] w-full rounded-sm object-cover transition group-hover:-translate-y-24 group-hover:scale-[1.5] md:-mb-32"
+                  className="-mb-12 aspect-[3/2]  w-full rounded-sm object-cover transition group-hover:-translate-y-24 group-hover:scale-[1.5] md:-mb-32"
                 />
               )}
             </DialogTrigger>

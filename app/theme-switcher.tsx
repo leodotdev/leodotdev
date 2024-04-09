@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 import { TbMoon, TbSun } from "react-icons/tb";
 
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export const ThemeSwitcher = () => {
   const [mounted, setMounted] = useState(false);
@@ -26,12 +27,9 @@ export const ThemeSwitcher = () => {
       className="rounded-full"
     >
       {theme === "light" ? (
-        <TbMoon title="Dark" className="h-5 w-5 stroke-stone-950" />
+        <Image src="new-moon-face.svg" alt="Dark" width={24} height={24} />
       ) : (
-        <TbSun
-          title="Light"
-          className="h-5 w-5 stroke-stone-950 dark:stroke-stone-50"
-        />
+        <Image src="sun-with-face.svg" alt="Dark" width={24} height={24} />
       )}
     </Button>
   );
