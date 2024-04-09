@@ -118,107 +118,108 @@ export default async function Home() {
 
       {/* navigation */}
       <div className="sticky left-4 right-4 top-4 z-50 px-6 md:px-12">
-        <div className=" flex w-fit max-w-screen-md flex-wrap justify-center gap-1 rounded-3xl border p-1 align-middle backdrop-blur-lg md:justify-start md:rounded-full">
-          <Link href="https://twitter.com/leosuccarferre" target="_blank">
-            <Button
-              variant="secondary"
-              tabIndex={-1}
-              className="text-md flex items-center rounded-full pr-3 "
-            >
-              Twitter
-              <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-            </Button>
-          </Link>
-          <Link
-            href="https://www.linkedin.com/in/leosuccarferre/"
-            target="_blank"
-          >
-            <Button
-              variant="secondary"
-              tabIndex={-1}
-              className="text-md flex items-center rounded-full pr-3 "
-            >
-              LinkedIn
-              <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-            </Button>
-          </Link>
-          <Link href="https://cal.com/leo.dev/20min" target="_blank">
-            <Button
-              variant="secondary"
-              tabIndex={-1}
-              className="text-md flex items-center rounded-full pr-3 "
-            >
-              Book a Call
-              <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-            </Button>
-          </Link>
-          <Link href="">
-            <CopyToClipboard textToCopy="leo@leo.dev">
+        <div className="flex w-full justify-between gap-1 rounded-3xl border p-1 backdrop-blur-lg">
+          <div className="flex w-full flex-1 flex-wrap gap-1">
+            <Link href="https://twitter.com/leosuccarferre" target="_blank">
               <Button
                 variant="secondary"
                 tabIndex={-1}
-                className="text-md flex items-center rounded-full pr-3 hover:no-underline"
+                className="text-md flex items-center rounded-full pr-3 "
               >
-                Copy my Email
-                <TbCopy className="h-4 w-4 self-start text-stone-500" />
+                Twitter
+                <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
               </Button>
-            </CopyToClipboard>
-          </Link>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger>
+            </Link>
+            <Link
+              href="https://www.linkedin.com/in/leosuccarferre/"
+              target="_blank"
+            >
               <Button
                 variant="secondary"
-                className="text-md flex items-center rounded-full pr-3 hover:no-underline"
+                tabIndex={-1}
+                className="text-md flex items-center rounded-full pr-3 "
               >
-                Résumé
-                <TbChevronDown className="h-4 w-4 text-stone-500" />
+                LinkedIn
+                <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem>
-                <Link
-                  href="https://read.cv/leo.dev"
-                  target="_blank"
-                  className="flex pr-0"
+            </Link>
+            <Link href="https://cal.com/leo.dev/20min" target="_blank">
+              <Button
+                variant="secondary"
+                tabIndex={-1}
+                className="text-md flex items-center rounded-full pr-3 "
+              >
+                Book a Call
+                <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+              </Button>
+            </Link>
+            <Link href="">
+              <CopyToClipboard textToCopy="leo@leo.dev">
+                <Button
+                  variant="secondary"
+                  tabIndex={-1}
+                  className="text-md flex items-center rounded-full pr-3 hover:no-underline"
                 >
-                  Read.cv
-                  <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-                </Link>
-              </DropdownMenuItem>{" "}
-              <DropdownMenuItem>
-                <Link
-                  href="/Leo-SF-Resume-2024.pdf"
-                  target="_blank"
-                  className="flex pr-0"
-                >
-                  Adobe PDF
-                  <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link
-                  href="https://docs.google.com/document/d/17uK2emyv7p8VYtYV5M36g3mxQ0CvbhDanzWVnVvtIiE/edit?usp=sharing"
-                  target="_blank"
-                  className="flex pr-0"
-                >
-                  Google DOC
-                  <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link
-                  href="/Leo-SF-Resume-2024.docx"
-                  target="_blank"
-                  className="flex pr-0"
-                >
-                  Word DOCX
-                  <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  Copy my Email
+                  <TbCopy className="h-4 w-4 self-start text-stone-500" />
+                </Button>
+              </CopyToClipboard>
+            </Link>
 
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Button
+                  variant="secondary"
+                  className="text-md flex items-center rounded-full pr-3 hover:no-underline"
+                >
+                  Résumé
+                  <TbChevronDown className="h-4 w-4 text-stone-500" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem>
+                  <Link
+                    href="https://read.cv/leo.dev"
+                    target="_blank"
+                    className="flex pr-0"
+                  >
+                    Read.cv
+                    <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+                  </Link>
+                </DropdownMenuItem>{" "}
+                <DropdownMenuItem>
+                  <Link
+                    href="/Leo-SF-Resume-2024.pdf"
+                    target="_blank"
+                    className="flex pr-0"
+                  >
+                    Adobe PDF
+                    <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link
+                    href="https://docs.google.com/document/d/17uK2emyv7p8VYtYV5M36g3mxQ0CvbhDanzWVnVvtIiE/edit?usp=sharing"
+                    target="_blank"
+                    className="flex pr-0"
+                  >
+                    Google DOC
+                    <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link
+                    href="/Leo-SF-Resume-2024.docx"
+                    target="_blank"
+                    className="flex pr-0"
+                  >
+                    Word DOCX
+                    <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
