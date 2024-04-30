@@ -86,6 +86,12 @@ export default async function Home() {
         </Link>
         <div>
           I&#39;m a Product & Design Systems Designer, currently with{" "}
+          <Link href="https://plasmic.app" target="_blank">
+            <span className="text-pink-500 underline decoration-dotted hover:decoration-solid">
+              Plasmic
+            </span>
+          </Link>{" "}
+          and{" "}
           <Link href="https://bitgo.com" target="_blank">
             <span className="text-sky-500 underline decoration-dotted hover:decoration-solid">
               BitGo
@@ -95,18 +101,12 @@ export default async function Home() {
         </div>
         <div className="text-stone-950 dark:text-stone-50">
           Formerly, I was with{" "}
-          <Link href="https://plasmic.app" target="_blank">
-            <span className="text-pink-500 underline decoration-dotted hover:decoration-solid">
-              Plasmic
-            </span>
-            ,
-          </Link>{" "}
           <Link href="https://meta.com" target="_blank">
             <span className="text-blue-500 underline decoration-dotted hover:decoration-solid">
               Meta
             </span>
-          </Link>
-          , and{" "}
+          </Link>{" "}
+          and{" "}
           <Link href="https://sourcegraph.com" target="_blank">
             <span className="text-violet-500 underline decoration-dotted hover:decoration-solid">
               Sourcegraph
@@ -253,7 +253,7 @@ export default async function Home() {
               </div>
             </div>
             <div className="flex flex-col items-end text-end">
-              <p className="text-sm">2023–Present</p>
+              <p className="text-sm">2023–Now</p>
               <p className="text-sm text-stone-500">Remote</p>
             </div>
           </li>
@@ -276,7 +276,7 @@ export default async function Home() {
               </div>
             </div>
             <div className="flex flex-col items-end text-end">
-              <p className="text-sm">2020–2023</p>
+              <p className="text-sm">2020–Now</p>
               <p className="text-sm text-stone-500">Remote</p>
             </div>
           </li>
