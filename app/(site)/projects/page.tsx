@@ -86,7 +86,7 @@ export default async function Home() {
         height="200px"
         loading="lazy"
       ></iframe> */}
-      <div className="flex flex-col gap-12 border-0 px-6 md:px-12">
+      <div className="flex flex-col gap-12 border-0 px-6 pt-12 md:px-12">
         <Link href="/" className="">
           <div className="font-bold">Leo Succar</div>
           <div className="text-stone-500">Product, Software, Web Designer</div>
@@ -126,11 +126,11 @@ export default async function Home() {
       {/* navigation */}
       <div className="sticky left-4 right-4 top-4 z-50 px-6 md:px-12">
         <div className="flex w-full justify-between gap-1 rounded-3xl border p-1 backdrop-blur-lg">
-          <div className="flex w-full flex-1 flex-wrap gap-1">
+          <div className="flex w-full flex-1 flex-wrap content-stretch items-stretch justify-stretch gap-1">
             <Link
               href="https://twitter.com/leosuccarferre"
               target="_blank"
-              className="text-md flex items-center rounded-full pr-3 "
+              className="text-md flex items-center rounded-full px-3 py-2 pl-4 hover:bg-secondary "
             >
               Twitter
               <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
@@ -138,7 +138,7 @@ export default async function Home() {
             <Link
               href="https://www.linkedin.com/in/leosuccarferre/"
               target="_blank"
-              className="text-md flex items-center rounded-full pr-3 "
+              className="text-md flex items-center rounded-full px-3 py-2 pl-4 hover:bg-secondary "
             >
               LinkedIn
               <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
@@ -146,23 +146,23 @@ export default async function Home() {
             <Link
               href="https://cal.com/leo.dev/20min"
               target="_blank"
-              className="text-md flex items-center rounded-full pr-3 "
+              className="text-md flex items-center rounded-full px-3 py-2 pl-4 hover:bg-secondary "
             >
               Book a Call
               <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
             </Link>
             <Link
               href=""
-              className="text-md flex items-center rounded-full pr-3 "
+              className="text-md flex items-center rounded-full px-3 py-2 pl-4 hover:bg-secondary "
             >
-              <CopyToClipboard textToCopy="leo@leo.dev">
+              <CopyToClipboard className="flex gap-1" textToCopy="leo@leo.dev">
                 Copy my Email
                 <TbCopy className="h-4 w-4 self-start text-stone-500" />
               </CopyToClipboard>
             </Link>
 
             <DropdownMenu>
-              <DropdownMenuTrigger className="text-md flex items-center rounded-full pr-3 hover:no-underline">
+              <DropdownMenuTrigger className="text-md flex items-center rounded-full px-3 py-2 pl-4 hover:bg-secondary hover:no-underline">
                 Résumé
                 <TbChevronDown className="h-4 w-4 text-stone-500" />
               </DropdownMenuTrigger>
@@ -171,7 +171,7 @@ export default async function Home() {
                   <Link
                     href="https://read.cv/leo.dev"
                     target="_blank"
-                    className="text-md flex items-center rounded-full pr-3 "
+                    className="flex pr-0"
                   >
                     Read.cv
                     <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
@@ -454,6 +454,20 @@ export default async function Home() {
               </blockquote>
               <p className="text-sm text-stone-500">
                 - Melissa Bazillion, Marketing Strategist, MassMutual
+              </p>
+            </div>
+          </CarouselItem>
+          <CarouselItem>
+            <div className="flex flex-col gap-4 px-24 py-6">
+              <blockquote>
+                &#34;You are all killing it on the design front! Thank you so
+                much for your hard work and always pushing for what&#39;s best
+                for the customer! It&#39;s been super fun working together and
+                I&#39;m beyond excited to get [our project] out to the
+                world!&#34;
+              </blockquote>
+              <p className="text-sm text-stone-500">
+                - Bryce Truman, Product Manager, BitGo
               </p>
             </div>
           </CarouselItem>

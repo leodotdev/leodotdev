@@ -21,10 +21,9 @@ export const ThemeSwitcher = () => {
 
   return (
     <Button
-      variant="secondary"
       size="icon"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="rounded-full"
+      className="rounded-full bg-transparent hover:bg-secondary"
     >
       {theme === "light" ? (
         <Image src="new-moon-face.svg" alt="Dark" width={24} height={24} />
