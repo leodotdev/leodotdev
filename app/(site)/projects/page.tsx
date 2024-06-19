@@ -130,7 +130,7 @@ export default async function Home() {
             <Link
               href="https://twitter.com/leosuccarferre"
               target="_blank"
-              className="text-md flex items-center rounded-full px-3 py-2 pl-4 hover:bg-secondary "
+              className="text-md flex items-center rounded-full px-4 py-2 pr-3 hover:bg-secondary "
             >
               Twitter
               <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
@@ -138,7 +138,7 @@ export default async function Home() {
             <Link
               href="https://www.linkedin.com/in/leosuccarferre/"
               target="_blank"
-              className="text-md flex items-center rounded-full px-3 py-2 pl-4 hover:bg-secondary "
+              className="text-md flex items-center rounded-full px-4 py-2 pr-3 hover:bg-secondary "
             >
               LinkedIn
               <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
@@ -146,23 +146,22 @@ export default async function Home() {
             <Link
               href="https://cal.com/leo.dev/20min"
               target="_blank"
-              className="text-md flex items-center rounded-full px-3 py-2 pl-4 hover:bg-secondary "
+              className="text-md flex items-center rounded-full px-4 py-2 pr-3 hover:bg-secondary "
             >
               Book a Call
               <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
             </Link>
             <Link
               href=""
-              className="text-md flex items-center rounded-full px-3 py-2 pl-4 hover:bg-secondary "
+              className="text-md flex cursor-pointer items-center rounded-full px-4 py-2 pr-3 hover:bg-secondary"
             >
-              <CopyToClipboard className="flex gap-1" textToCopy="leo@leo.dev">
+              <CopyToClipboard className="flex" textToCopy="leo@leo.dev">
                 Copy my Email
                 <TbCopy className="h-4 w-4 self-start text-stone-500" />
               </CopyToClipboard>
             </Link>
-
             <DropdownMenu>
-              <DropdownMenuTrigger className="text-md flex items-center rounded-full px-3 py-2 pl-4 hover:bg-secondary hover:no-underline">
+              <DropdownMenuTrigger className="text-md flex items-center rounded-full px-4 py-2 pr-3 hover:bg-secondary hover:no-underline">
                 Résumé
                 <TbChevronDown className="h-4 w-4 text-stone-500" />
               </DropdownMenuTrigger>
