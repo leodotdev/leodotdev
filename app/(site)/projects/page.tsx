@@ -79,10 +79,17 @@ export default async function Home() {
   };
 
   return (
-    <div className="flex flex-col gap-12 pt-32 md:pt-24">
-      <div className="flex flex-col gap-6 border-0 px-6 md:px-12">
+    <div className="flex flex-col gap-12">
+      {/* <iframe
+        src="https://unicorn.studio/embed/WoAIhYshG0mf8sO06B8B?update=1.2.6&scale=1&dpi=2&fps=60"
+        width="100%"
+        height="200px"
+        loading="lazy"
+      ></iframe> */}
+      <div className="flex flex-col gap-12 border-0 px-6 md:px-12">
         <Link href="/" className="">
           <div className="font-bold">Leo Succar</div>
+          <div className="text-stone-500">Product, Software, Web Designer</div>
         </Link>
         <div>
           I&#39;m a Product & Design Systems Designer, currently with{" "}
@@ -120,68 +127,51 @@ export default async function Home() {
       <div className="sticky left-4 right-4 top-4 z-50 px-6 md:px-12">
         <div className="flex w-full justify-between gap-1 rounded-3xl border p-1 backdrop-blur-lg">
           <div className="flex w-full flex-1 flex-wrap gap-1">
-            <Link href="https://twitter.com/leosuccarferre" target="_blank">
-              <Button
-                variant="secondary"
-                tabIndex={-1}
-                className="text-md flex items-center rounded-full pr-3 "
-              >
-                Twitter
-                <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-              </Button>
+            <Link
+              href="https://twitter.com/leosuccarferre"
+              target="_blank"
+              className="text-md flex items-center rounded-full pr-3 "
+            >
+              Twitter
+              <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
             </Link>
             <Link
               href="https://www.linkedin.com/in/leosuccarferre/"
               target="_blank"
+              className="text-md flex items-center rounded-full pr-3 "
             >
-              <Button
-                variant="secondary"
-                tabIndex={-1}
-                className="text-md flex items-center rounded-full pr-3 "
-              >
-                LinkedIn
-                <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-              </Button>
+              LinkedIn
+              <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
             </Link>
-            <Link href="https://cal.com/leo.dev/20min" target="_blank">
-              <Button
-                variant="secondary"
-                tabIndex={-1}
-                className="text-md flex items-center rounded-full pr-3 "
-              >
-                Book a Call
-                <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-              </Button>
+            <Link
+              href="https://cal.com/leo.dev/20min"
+              target="_blank"
+              className="text-md flex items-center rounded-full pr-3 "
+            >
+              Book a Call
+              <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
             </Link>
-            <Link href="">
+            <Link
+              href=""
+              className="text-md flex items-center rounded-full pr-3 "
+            >
               <CopyToClipboard textToCopy="leo@leo.dev">
-                <Button
-                  variant="secondary"
-                  tabIndex={-1}
-                  className="text-md flex items-center rounded-full pr-3 hover:no-underline"
-                >
-                  Copy my Email
-                  <TbCopy className="h-4 w-4 self-start text-stone-500" />
-                </Button>
+                Copy my Email
+                <TbCopy className="h-4 w-4 self-start text-stone-500" />
               </CopyToClipboard>
             </Link>
 
             <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Button
-                  variant="secondary"
-                  className="text-md flex items-center rounded-full pr-3 hover:no-underline"
-                >
-                  Résumé
-                  <TbChevronDown className="h-4 w-4 text-stone-500" />
-                </Button>
+              <DropdownMenuTrigger className="text-md flex items-center rounded-full pr-3 hover:no-underline">
+                Résumé
+                <TbChevronDown className="h-4 w-4 text-stone-500" />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem>
                   <Link
                     href="https://read.cv/leo.dev"
                     target="_blank"
-                    className="flex pr-0"
+                    className="text-md flex items-center rounded-full pr-3 "
                   >
                     Read.cv
                     <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
