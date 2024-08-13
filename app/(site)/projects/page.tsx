@@ -431,6 +431,26 @@ export default async function Home() {
           <CarouselItem>
             <div className="flex flex-col gap-4 px-24 py-6">
               <blockquote>
+                &#34;Leo is a deep thinker who lives in-between design and code.
+                While at BitGo, Leo took ownership of the design system by
+                streamlining components, testing new UI elements within the
+                product, and bridging those components with our UI repository.
+                He&#39;s excited to live in these two worlds by supporting both
+                the design and front-end engineering teams. Previously he led
+                some of BitGo&#39;s newest market growing spaces, including
+                BitGo Prime and Go products, helping connect our users with
+                partner services. Leo has a level head and pragmatic style
+                required to design, build, launch, and maintain complex
+                systems.&#34;
+              </blockquote>
+              <p className="text-sm text-stone-500">
+                - Alexander Lambert, Design Director, BitGo
+              </p>
+            </div>
+          </CarouselItem>
+          <CarouselItem>
+            <div className="flex flex-col gap-4 px-24 py-6">
+              <blockquote>
                 &#34;Rarely do you meet a creative with such a lethal
                 combination of technical skills and fundamental design ability.
                 Leo can handle any project from classic graphic design to robust
@@ -589,7 +609,7 @@ export default async function Home() {
           >
             ShadcnUI
           </a>{" "}
-          &{" "}
+          +{" "}
           <a
             className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
             target="_blank"
