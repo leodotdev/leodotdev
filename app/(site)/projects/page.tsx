@@ -225,7 +225,7 @@ export default async function Home() {
           <CardHeader className="p-6">
             <div className="font-bold">Experience</div>
             <div className="text-stone-500">
-              Companies I've had the pleasure of working with.
+              Companies I&#39;ve had the pleasure of working with.
             </div>
           </CardHeader>
           <ul className="flex flex-col">
