@@ -27,7 +27,7 @@ export default function RootLayout({
       <body className={inter.className}>
         {/* <body className="font-mono"> */}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="mx-auto flex max-w-screen-md flex-col gap-12 md:border-l md:border-r">
+          <div className="mx-auto flex max-w-screen-md flex-col gap-12 ">
             <main>
               {children}
               <Analytics />

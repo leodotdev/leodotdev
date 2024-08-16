@@ -88,8 +88,8 @@ export default async function Home() {
       ></iframe> */}
       <div className="flex flex-col gap-6 border-0 px-6 pt-12 md:px-12">
         <Link href="/" className="">
-          <div className="font-bold">Leo Succar</div>
-          <div className="text-stone-500">Product, Software, Web Designer</div>
+          <p className="font-bold">Leo Succar</p>
+          <p className="text-stone-500">Product, Software, Web Designer</p>
         </Link>
         <div>
           I&#39;m a Product & Design Systems Designer, currently with{" "}
@@ -130,7 +130,7 @@ export default async function Home() {
             <Link
               href="https://twitter.com/leosuccarferre"
               target="_blank"
-              className="text-md flex items-center rounded-full bg-secondary px-4 py-2 pr-3 hover:bg-secondary/80 "
+              className="text-md flex items-center rounded-full bg-secondary px-4 py-2 pr-3 hover:bg-secondary/80"
             >
               Twitter
               <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
@@ -138,7 +138,7 @@ export default async function Home() {
             <Link
               href="https://www.linkedin.com/in/leosuccarferre/"
               target="_blank"
-              className="text-md flex items-center rounded-full bg-secondary px-4 py-2 pr-3 hover:bg-secondary/80 "
+              className="text-md flex items-center rounded-full bg-secondary px-4 py-2 pr-3 hover:bg-secondary/80"
             >
               LinkedIn
               <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
@@ -146,7 +146,7 @@ export default async function Home() {
             <Link
               href="https://cal.com/leo.dev/20min"
               target="_blank"
-              className="text-md flex items-center rounded-full bg-secondary px-4 py-2 pr-3 hover:bg-secondary/80 "
+              className="text-md flex items-center rounded-full bg-secondary px-4 py-2 pr-3 hover:bg-secondary/80"
             >
               Book a Call
               <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
@@ -219,172 +219,169 @@ export default async function Home() {
           </TooltipProvider>
         </div>
       </div>
+      <div className="px-6 md:px-12">
+        <div className="font-bold">Experience</div>
+        <div className="text-stone-500">Work and employment history.</div>
+      </div>
 
-      <div className="auto-rows gap-6 px-6 md:grid-cols-3 md:px-12">
-        <Card>
-          <CardHeader className="p-6">
-            <div className="font-bold">Experience</div>
-            <div className="text-stone-500">
-              Companies I&#39;ve had the pleasure of working with.
+      <div className="-mx-[1px] rounded-3xl border bg-transparent backdrop-blur-lg">
+        <ul className="flex flex-col">
+          <li className="flex w-full items-center justify-between p-6 md:px-12 md:pt-12 ">
+            <div className="flex flex-row items-center gap-2">
+              <Avatar>
+                <AvatarImage src="/logo-bg.svg" />
+                <AvatarFallback className="text-stone-500">B</AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col">
+                <div className="font-medium">
+                  Senior Product & Design Systems Designer
+                </div>
+                <a
+                  className="text-sm text-stone-500 underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+                  href="https://www.bitgo.com/"
+                  target="_blank"
+                >
+                  BitGo
+                </a>
+              </div>
             </div>
-          </CardHeader>
-          <ul className="flex flex-col">
-            <li className="flex w-full items-center justify-between p-6">
-              <div className="flex flex-row items-center gap-2">
-                <Avatar>
-                  <AvatarImage src="/logo-bg.svg" />
-                  <AvatarFallback className="text-stone-500">B</AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col">
-                  <div className="font-medium">
-                    Senior Product & Design Systems Designer
-                  </div>
+            <div className="flex flex-col items-end text-end">
+              <p className="text-sm">2023–Present</p>
+              <p className="text-sm text-stone-500">Remote</p>
+            </div>
+          </li>
+          <Separator />
+          <li className="flex w-full items-center justify-between p-6 md:px-12 ">
+            <div className="flex flex-row items-center gap-2">
+              <Avatar>
+                <AvatarImage src="/logo-pl.svg" />
+                <AvatarFallback className="text-stone-500">P</AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col">
+                <div className="font-medium">Founding Designer</div>
+                <a
+                  className="text-sm text-stone-500 underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
+                  href="https://plasmic.app"
+                  target="_blank"
+                >
+                  Plasmic
+                </a>
+              </div>
+            </div>
+            <div className="flex flex-col items-end text-end">
+              <p className="text-sm">2020–Present</p>
+              <p className="text-sm text-stone-500">Remote</p>
+            </div>
+          </li>
+          <Separator />
+          <li className="flex w-full items-center justify-between p-6 md:px-12 ">
+            <div className="flex flex-row items-center gap-2">
+              <Avatar>
+                <AvatarImage src="/logo-fb.svg" />
+                <AvatarFallback className="text-stone-500">F</AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col">
+                <div className="font-medium">
+                  Product & Design Systems Designer
+                </div>
+                <span className="text-sm text-stone-500">
+                  Facebook (now{" "}
                   <a
-                    className="text-sm text-stone-500 underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
-                    href="https://www.bitgo.com/"
+                    className="underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
+                    href="https://www.meta.com"
                     target="_blank"
                   >
-                    BitGo
+                    Meta
                   </a>
-                </div>
+                  ), xDesign & Core Systems
+                </span>
               </div>
-              <div className="flex flex-col items-end text-end">
-                <p className="text-sm">2023–Present</p>
-                <p className="text-sm text-stone-500">Remote</p>
+            </div>
+            <div className="flex flex-col items-end text-end">
+              <p className="text-sm">2018–2020</p>
+              <p className="text-sm text-stone-500">Menlo Park, CA</p>
+            </div>
+          </li>
+          <Separator />
+          <li className="flex w-full items-center justify-between p-6 md:px-12 ">
+            <div className="flex flex-row items-center gap-2">
+              <Avatar>
+                <AvatarImage src="/logo-sg.svg" />
+                <AvatarFallback className="text-stone-500">S</AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col">
+                <div className="font-medium">Lead Product Designer</div>
+                <a
+                  className="text-sm text-stone-500 underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
+                  href="https://sourcegraph.com"
+                  target="_blank"
+                >
+                  Sourcegraph
+                </a>
               </div>
-            </li>
-            <Separator />
-            <li className="flex w-full items-center justify-between p-6">
-              <div className="flex flex-row items-center gap-2">
-                <Avatar>
-                  <AvatarImage src="/logo-pl.svg" />
-                  <AvatarFallback className="text-stone-500">P</AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col">
-                  <div className="font-medium">Founding Designer</div>
+            </div>
+            <div className="flex flex-col items-end text-end">
+              <p className="text-sm">2017–2018</p>
+              <p className="text-sm text-stone-500">San Francisco, CA</p>
+            </div>
+          </li>
+          <Separator />
+          <li className="flex w-full items-center justify-between p-6 md:px-12 ">
+            <div className="flex flex-row items-center gap-2">
+              <Avatar>
+                <AvatarImage src="/logo-ze.svg" />
+                <AvatarFallback className="text-stone-500">Z</AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col">
+                <div className="font-medium">Senior Product Designer</div>
+                <span className="text-sm text-stone-500">
+                  Zenefits (now{" "}
                   <a
-                    className="text-sm text-stone-500 underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
-                    href="https://plasmic.app"
+                    className="underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
+                    href="https://zenefits.com"
                     target="_blank"
                   >
-                    Plasmic
+                    TriNet
                   </a>
-                </div>
+                  )
+                </span>
               </div>
-              <div className="flex flex-col items-end text-end">
-                <p className="text-sm">2020–Present</p>
-                <p className="text-sm text-stone-500">Remote</p>
-              </div>
-            </li>
-            <Separator />
-            <li className="flex w-full items-center justify-between p-6">
-              <div className="flex flex-row items-center gap-2">
-                <Avatar>
-                  <AvatarImage src="/logo-fb.svg" />
-                  <AvatarFallback className="text-stone-500">F</AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col">
-                  <div className="font-medium">
-                    Product & Design Systems Designer
-                  </div>
-                  <span className="text-sm text-stone-500">
-                    Facebook (now{" "}
-                    <a
-                      className="underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
-                      href="https://www.meta.com"
-                      target="_blank"
-                    >
-                      Meta
-                    </a>
-                    ), xDesign & Core Systems
-                  </span>
-                </div>
-              </div>
-              <div className="flex flex-col items-end text-end">
-                <p className="text-sm">2018–2020</p>
-                <p className="text-sm text-stone-500">Menlo Park, CA</p>
-              </div>
-            </li>
-            <Separator />
-            <li className="flex w-full items-center justify-between p-6">
-              <div className="flex flex-row items-center gap-2">
-                <Avatar>
-                  <AvatarImage src="/logo-sg.svg" />
-                  <AvatarFallback className="text-stone-500">S</AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col">
-                  <div className="font-medium">Lead Product Designer</div>
+            </div>
+            <div className="flex flex-col items-end text-end">
+              <p className="text-sm">2016</p>
+              <p className="text-sm text-stone-500">San Francisco, CA</p>
+            </div>
+          </li>
+          <Separator />
+          <li className="flex w-full items-center justify-between p-6 md:px-12 md:pb-12">
+            <div className="flex flex-row items-center gap-2">
+              <Avatar>
+                <AvatarImage src="/logo-sd.svg" />
+                <AvatarFallback className="text-stone-500">S</AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col">
+                <div className="font-medium">Product Designer</div>
+                <span className="text-sm text-stone-500">
+                  SeamlessDocs (now{" "}
                   <a
-                    className="text-sm text-stone-500 underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
-                    href="https://sourcegraph.com"
+                    className="underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
+                    href="https://govos.com"
                     target="_blank"
                   >
-                    Sourcegraph
+                    GovOS
                   </a>
-                </div>
+                  )
+                </span>
               </div>
-              <div className="flex flex-col items-end text-end">
-                <p className="text-sm">2017–2018</p>
-                <p className="text-sm text-stone-500">San Francisco, CA</p>
-              </div>
-            </li>
-            <Separator />
-            <li className="flex w-full items-center justify-between p-6">
-              <div className="flex flex-row items-center gap-2">
-                <Avatar>
-                  <AvatarImage src="/logo-ze.svg" />
-                  <AvatarFallback className="text-stone-500">Z</AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col">
-                  <div className="font-medium">Senior Product Designer</div>
-                  <span className="text-sm text-stone-500">
-                    Zenefits (now{" "}
-                    <a
-                      className="underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
-                      href="https://zenefits.com"
-                      target="_blank"
-                    >
-                      TriNet
-                    </a>
-                    )
-                  </span>
-                </div>
-              </div>
-              <div className="flex flex-col items-end text-end">
-                <p className="text-sm">2016</p>
-                <p className="text-sm text-stone-500">San Francisco, CA</p>
-              </div>
-            </li>
-            <Separator />
-            <li className="flex w-full items-center justify-between p-6">
-              <div className="flex flex-row items-center gap-2">
-                <Avatar>
-                  <AvatarImage src="/logo-sd.svg" />
-                  <AvatarFallback className="text-stone-500">S</AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col">
-                  <div className="font-medium">Product Designer</div>
-                  <span className="text-sm text-stone-500">
-                    SeamlessDocs (now{" "}
-                    <a
-                      className="underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
-                      href="https://govos.com"
-                      target="_blank"
-                    >
-                      GovOS
-                    </a>
-                    )
-                  </span>
-                </div>
-              </div>
-              <div className="flex flex-col items-end text-end">
-                <p className="text-sm">2014–2015</p>
-                <p className="text-sm text-stone-500">Miami, FL</p>
-              </div>
-            </li>
-          </ul>
+            </div>
+            <div className="flex flex-col items-end text-end">
+              <p className="text-sm">2014–2015</p>
+              <p className="text-sm text-stone-500">Miami, FL</p>
+            </div>
+          </li>
+        </ul>
 
-          {/* <Card className="rounded-3xl bg-white/50 shadow-none dark:bg-black/50">
+        {/* <Card className="rounded-3xl bg-white/50 shadow-none dark:bg-black/50">
           <CardHeader>
             <CardTitle className="text-lg">Favorite Tools</CardTitle>
           </CardHeader>
@@ -407,13 +404,20 @@ export default async function Home() {
             </div>
           </CardContent>
         </Card> */}
-        </Card>
+      </div>
+
+      <div className="px-6 md:px-12">
+        <div className="font-bold">References</div>
+        <div className="text-stone-500">
+          Folks I&#39;ve had the pleasure of working with.
+        </div>
       </div>
 
       <Carousel>
+        <CarouselPrevious />
         <CarouselContent>
           <CarouselItem>
-            <div className="flex flex-col gap-4 px-24 py-6">
+            <div className="flex flex-col gap-4 rounded-3xl border p-6 backdrop-blur-lg md:p-12">
               <blockquote className="flex flex-col gap-4">
                 <p>
                   &#34;Leo volunteered to design for the Sticker Admin Tool for
@@ -437,14 +441,14 @@ export default async function Home() {
             </div>
           </CarouselItem>
           <CarouselItem>
-            <div className="flex flex-col gap-4 px-24 py-6">
-              <blockquote>
+            <div className="flex flex-col gap-4 rounded-3xl border p-6 backdrop-blur-lg md:p-12">
+              <blockquote className="text-xl">
                 &#34;Leo is a deep thinker who lives in-between design and code.
                 While at BitGo, Leo took ownership of the design system by
                 streamlining components, testing new UI elements within the
                 product, and bridging those components with our UI repository.
                 He&#39;s excited to live in these two worlds by supporting both
-                the design and front-end engineering teams. Previously he led
+                the design and front-end engineering teams. Previously, he led
                 some of BitGo&#39;s newest market growing spaces, including
                 BitGo Prime and Go products, helping connect our users with
                 partner services. Leo has a level head and pragmatic style
@@ -457,8 +461,8 @@ export default async function Home() {
             </div>
           </CarouselItem>
           <CarouselItem>
-            <div className="flex flex-col gap-4 px-24 py-6">
-              <blockquote>
+            <div className="flex flex-col gap-4 rounded-3xl border p-6 backdrop-blur-lg md:p-12">
+              <blockquote className="text-xl">
                 &#34;Rarely do you meet a creative with such a lethal
                 combination of technical skills and fundamental design ability.
                 Leo can handle any project from classic graphic design to robust
@@ -472,8 +476,8 @@ export default async function Home() {
             </div>
           </CarouselItem>
           <CarouselItem>
-            <div className="flex flex-col gap-4 px-24 py-6">
-              <blockquote>
+            <div className="flex flex-col gap-4 rounded-3xl border p-6 backdrop-blur-lg md:p-12">
+              <blockquote className="text-xl">
                 &#34;I can&#39;t stress the relief I felt every time Leo and I
                 worked together. He is one of the most reliable partners and
                 brings an incredible amount of creativity and expertise to every
@@ -485,8 +489,8 @@ export default async function Home() {
             </div>
           </CarouselItem>
           <CarouselItem>
-            <div className="flex flex-col gap-4 px-24 py-6">
-              <blockquote>
+            <div className="flex flex-col gap-4 rounded-3xl border p-6 backdrop-blur-lg md:p-12">
+              <blockquote className="text-xl">
                 &#34;You are all killing it on the design front! Thank you so
                 much for your hard work and always pushing for what&#39;s best
                 for the customer! It&#39;s been super fun working together and
@@ -499,7 +503,6 @@ export default async function Home() {
             </div>
           </CarouselItem>
         </CarouselContent>
-        <CarouselPrevious />
         <CarouselNext />
       </Carousel>
 
@@ -544,7 +547,7 @@ export default async function Home() {
         {projects.map((project) => (
           // project card
           <Dialog key={project._id}>
-            <DialogTrigger className="group -mx-[1px] flex flex-col items-stretch justify-between gap-4 overflow-clip rounded-3xl border p-6 md:p-12">
+            <DialogTrigger className="group -mx-[1px] flex flex-col items-stretch justify-between gap-4 overflow-clip rounded-3xl border p-6 backdrop-blur-lg md:p-12">
               <div className="flex items-end justify-between">
                 <div className="flex flex-col text-left font-medium text-stone-950 dark:text-stone-50">
                   <div>{project.name}</div>
