@@ -94,30 +94,30 @@ export default async function Home() {
         <div>
           I&#39;m a Product & Design Systems Designer, currently with{" "}
           <Link href="https://plasmic.app" target="_blank">
-            <div className="text-pink-500 underline decoration-dotted hover:decoration-solid">
+            <span className="text-pink-500 underline decoration-dotted hover:decoration-solid">
               Plasmic
-            </div>
+            </span>
           </Link>{" "}
           and{" "}
           <Link href="https://bitgo.com" target="_blank">
-            <div className="text-sky-500 underline decoration-dotted hover:decoration-solid">
+            <span className="text-sky-500 underline decoration-dotted hover:decoration-solid">
               BitGo
-            </div>
+            </span>
           </Link>
           .
         </div>
         <div>
           Formerly, I was with{" "}
           <Link href="https://meta.com" target="_blank">
-            <div className="text-blue-500 underline decoration-dotted hover:decoration-solid">
+            <span className="text-blue-500 underline decoration-dotted hover:decoration-solid">
               Meta
-            </div>
+            </span>
           </Link>{" "}
           and{" "}
           <Link href="https://sourcegraph.com" target="_blank">
-            <div className="text-violet-500 underline decoration-dotted hover:decoration-solid">
+            <span className="text-violet-500 underline decoration-dotted hover:decoration-solid">
               Sourcegraph
-            </div>
+            </span>
           </Link>
           .
         </div>
