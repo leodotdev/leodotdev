@@ -94,30 +94,30 @@ export default async function Home() {
         <div>
           I&#39;m a Product & Design Systems Designer, currently with{" "}
           <Link href="https://plasmic.app" target="_blank">
-            <span className="text-pink-500 underline decoration-dotted hover:decoration-solid">
+            <div className="text-pink-500 underline decoration-dotted hover:decoration-solid">
               Plasmic
-            </span>
+            </div>
           </Link>{" "}
           and{" "}
           <Link href="https://bitgo.com" target="_blank">
-            <span className="text-sky-500 underline decoration-dotted hover:decoration-solid">
+            <div className="text-sky-500 underline decoration-dotted hover:decoration-solid">
               BitGo
-            </span>
+            </div>
           </Link>
           .
         </div>
         <div>
           Formerly, I was with{" "}
           <Link href="https://meta.com" target="_blank">
-            <span className="text-blue-500 underline decoration-dotted hover:decoration-solid">
+            <div className="text-blue-500 underline decoration-dotted hover:decoration-solid">
               Meta
-            </span>
+            </div>
           </Link>{" "}
           and{" "}
           <Link href="https://sourcegraph.com" target="_blank">
-            <span className="text-violet-500 underline decoration-dotted hover:decoration-solid">
+            <div className="text-violet-500 underline decoration-dotted hover:decoration-solid">
               Sourcegraph
-            </span>
+            </div>
           </Link>
           .
         </div>
@@ -237,7 +237,7 @@ export default async function Home() {
                   Senior Product & Design Systems Designer
                 </div>
                 <a
-                  className="text-sm text-stone-500 underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+                  className="w-fit text-sm text-stone-500 underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
                   href="https://www.bitgo.com/"
                   target="_blank"
                 >
@@ -260,7 +260,7 @@ export default async function Home() {
               <div className="flex flex-col">
                 <div className="font-medium">Founding Designer</div>
                 <a
-                  className="text-sm text-stone-500 underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
+                  className="w-fit text-sm text-stone-500 underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
                   href="https://plasmic.app"
                   target="_blank"
                 >
@@ -284,7 +284,7 @@ export default async function Home() {
                 <div className="font-medium">
                   Product & Design Systems Designer
                 </div>
-                <span className="text-sm text-stone-500">
+                <div className="text-sm text-stone-500">
                   Facebook (now{" "}
                   <a
                     className="underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
@@ -294,7 +294,7 @@ export default async function Home() {
                     Meta
                   </a>
                   ), xDesign & Core Systems
-                </span>
+                </div>
               </div>
             </div>
             <div className="flex flex-col items-end text-end">
@@ -312,7 +312,7 @@ export default async function Home() {
               <div className="flex flex-col">
                 <div className="font-medium">Lead Product Designer</div>
                 <a
-                  className="text-sm text-stone-500 underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
+                  className="w-fit text-sm text-stone-500 underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
                   href="https://sourcegraph.com"
                   target="_blank"
                 >
@@ -334,7 +334,7 @@ export default async function Home() {
               </Avatar>
               <div className="flex flex-col">
                 <div className="font-medium">Senior Product Designer</div>
-                <span className="text-sm text-stone-500">
+                <div className="text-sm text-stone-500">
                   Zenefits (now{" "}
                   <a
                     className="underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
@@ -344,7 +344,7 @@ export default async function Home() {
                     TriNet
                   </a>
                   )
-                </span>
+                </div>
               </div>
             </div>
             <div className="flex flex-col items-end text-end">
@@ -361,7 +361,7 @@ export default async function Home() {
               </Avatar>
               <div className="flex flex-col">
                 <div className="font-medium">Product Designer</div>
-                <span className="text-sm text-stone-500">
+                <div className="text-sm text-stone-500">
                   SeamlessDocs (now{" "}
                   <a
                     className="underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
@@ -371,7 +371,7 @@ export default async function Home() {
                     GovOS
                   </a>
                   )
-                </span>
+                </div>
               </div>
             </div>
             <div className="flex flex-col items-end text-end">
