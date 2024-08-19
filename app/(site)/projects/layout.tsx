@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "leo.dev",
-  description: "Software Designer",
+  description: "Web, Software, Product Designer",
   icons: {
     icon: { url: "/icon.svg", type: "image/svg+xml", sizes: "any" },
   },
@@ -27,7 +27,8 @@ export default function RootLayout({
       <body className={inter.className}>
         {/* <body className="font-mono"> */}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="mx-auto flex max-w-screen-md flex-col gap-12 ">
+          <div className="mx-auto flex max-w-screen-md flex-col gap-12 md:border-l md:border-r">
+            {" "}
             <main>
               {children}
               <Analytics />

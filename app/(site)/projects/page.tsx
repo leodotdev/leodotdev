@@ -89,7 +89,7 @@ export default async function Home() {
       <div className="flex flex-col gap-6 border-0 px-6 pt-12 md:px-12">
         <Link href="/" className="">
           <p className="font-bold">Leo Succar</p>
-          <p className="text-stone-500">Product, Software, Web Designer</p>
+          <p className="text-stone-500">Web, Software, Product Designer</p>
         </Link>
         <div>
           I&#39;m a Product & Design Systems Designer, currently with{" "}
@@ -224,7 +224,7 @@ export default async function Home() {
         <div className="text-stone-500">Work and employment history.</div>
       </div>
 
-      <div className="-mx-[1px] rounded-3xl border bg-transparent backdrop-blur-lg">
+      <div className="-mx-[1px] rounded-3xl border bg-white">
         <ul className="flex flex-col">
           <li className="flex w-full items-center justify-between p-6 md:px-12 md:pt-12 ">
             <div className="flex flex-row items-center gap-2">
@@ -417,7 +417,7 @@ export default async function Home() {
         <CarouselPrevious />
         <CarouselContent>
           <CarouselItem>
-            <div className="flex flex-col gap-4 rounded-3xl border p-6 backdrop-blur-lg md:p-12">
+            <div className="flex flex-col gap-4 rounded-3xl border bg-white p-6 md:p-12">
               <blockquote className="flex flex-col gap-4">
                 <p>
                   &#34;Leo volunteered to design for the Sticker Admin Tool for
@@ -441,7 +441,7 @@ export default async function Home() {
             </div>
           </CarouselItem>
           <CarouselItem>
-            <div className="flex flex-col gap-4 rounded-3xl border p-6 backdrop-blur-lg md:p-12">
+            <div className="flex flex-col gap-4 rounded-3xl border bg-white p-6 md:p-12">
               <blockquote className="text-xl">
                 &#34;Leo is a deep thinker who lives in-between design and code.
                 While at BitGo, Leo took ownership of the design system by
@@ -461,7 +461,7 @@ export default async function Home() {
             </div>
           </CarouselItem>
           <CarouselItem>
-            <div className="flex flex-col gap-4 rounded-3xl border p-6 backdrop-blur-lg md:p-12">
+            <div className="flex flex-col gap-4 rounded-3xl border bg-white p-6 md:p-12">
               <blockquote className="text-xl">
                 &#34;Rarely do you meet a creative with such a lethal
                 combination of technical skills and fundamental design ability.
@@ -476,7 +476,7 @@ export default async function Home() {
             </div>
           </CarouselItem>
           <CarouselItem>
-            <div className="flex flex-col gap-4 rounded-3xl border p-6 backdrop-blur-lg md:p-12">
+            <div className="flex flex-col gap-4 rounded-3xl border bg-white p-6 md:p-12">
               <blockquote className="text-xl">
                 &#34;I can&#39;t stress the relief I felt every time Leo and I
                 worked together. He is one of the most reliable partners and
@@ -489,7 +489,7 @@ export default async function Home() {
             </div>
           </CarouselItem>
           <CarouselItem>
-            <div className="flex flex-col gap-4 rounded-3xl border p-6 backdrop-blur-lg md:p-12">
+            <div className="flex flex-col gap-4 rounded-3xl border bg-white p-6 md:p-12">
               <blockquote className="text-xl">
                 &#34;You are all killing it on the design front! Thank you so
                 much for your hard work and always pushing for what&#39;s best
@@ -547,10 +547,10 @@ export default async function Home() {
         {projects.map((project) => (
           // project card
           <Dialog key={project._id}>
-            <DialogTrigger className="group -mx-[1px] flex flex-col items-stretch justify-between gap-4 overflow-clip rounded-3xl border p-6 backdrop-blur-lg md:p-12">
+            <DialogTrigger className="group -mx-[1px] flex flex-col items-stretch justify-between gap-4 overflow-clip rounded-3xl border bg-white p-6 md:p-12">
               <div className="flex items-end justify-between">
-                <div className="flex flex-col text-left font-medium text-stone-950 dark:text-stone-50">
-                  <div>{project.name}</div>
+                <div className="flex flex-col text-left text-stone-950 dark:text-stone-50">
+                  <div className="font-medium">{project.name}</div>
                   <div className="text-sm text-stone-500">{project.client}</div>
                 </div>
                 <div className="text-sm text-stone-500">{project.year}</div>
