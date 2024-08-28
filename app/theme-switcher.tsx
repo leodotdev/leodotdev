@@ -2,8 +2,6 @@
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 
-import { TbMoon, TbSun } from "react-icons/tb";
-
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 

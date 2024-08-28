@@ -125,7 +125,7 @@ export default async function Home() {
 
       {/* navigation */}
       <div className="sticky left-4 right-4 top-4 z-50 px-6 md:px-12">
-        <div className="flex w-full justify-between gap-1 rounded-3xl border p-1 backdrop-blur-lg">
+        <div className="flex w-full justify-between rounded-3xl border p-1 backdrop-blur-lg">
           <div className="flex w-full flex-1 flex-wrap content-stretch items-stretch justify-stretch gap-1">
             <Link
               href="https://twitter.com/leosuccarferre"
@@ -156,7 +156,7 @@ export default async function Home() {
               className="text-md flex cursor-pointer items-center rounded-full bg-secondary px-4 py-2 pr-3 hover:bg-secondary/80"
             >
               <CopyToClipboard className="flex" textToCopy="leo@leo.dev">
-                Copy my Email
+                Email
                 <TbCopy className="h-4 w-4 self-start text-stone-500" />
               </CopyToClipboard>
             </Link>
@@ -221,7 +221,9 @@ export default async function Home() {
       </div>
       <div className="px-6 md:px-12">
         <div className="font-bold">Experience</div>
-        <div className="text-stone-500">Work and employment history.</div>
+        <div className="text-sm text-stone-500">
+          Work and employment history.
+        </div>
       </div>
 
       <div className="-mx-[1px] rounded-3xl border bg-white dark:bg-black">
@@ -408,7 +410,7 @@ export default async function Home() {
 
       <div className="px-6 md:px-12">
         <div className="font-bold">References</div>
-        <div className="text-stone-500">
+        <div className="text-sm text-stone-500">
           Folks I&#39;ve had the pleasure of working with.
         </div>
       </div>
@@ -540,7 +542,9 @@ export default async function Home() {
 
       <div className="px-6 md:px-12">
         <div className="font-bold">Projects</div>
-        <div className="text-stone-500">Shots and embeds of past work.</div>
+        <div className="text-sm text-stone-500">
+          Shots and embeds of past work.
+        </div>
       </div>
 
       <div className="auto-rows grid gap-6 md:gap-12 ">
