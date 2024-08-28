@@ -26,7 +26,7 @@ export default function RootLayout({
     <html lang="en">
       {/* <body className={inter.className}> */}
       <body className="font-mono">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="dark">
           <div className="mx-auto flex max-w-screen-md flex-col gap-12 md:border-l md:border-r">
             {" "}
             <main>
