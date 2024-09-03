@@ -89,7 +89,9 @@ export default async function Home() {
       <div className="flex flex-col gap-6 border-0 px-6 pt-12 md:px-12">
         <Link href="/" className="">
           <p className="font-bold">Leo Succar</p>
-          <p className="text-stone-500">Web, Software, Product Designer</p>
+          <p className="text-stone-500">
+            Web, Software, Product, Visual Designer
+          </p>
         </Link>
         <div>
           I&#39;m a Product & Design Systems Designer, currently with{" "}
