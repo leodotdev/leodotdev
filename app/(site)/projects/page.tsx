@@ -81,13 +81,13 @@ export default async function Home() {
   return (
     <div>
       <iframe
-        src="https://unicorn.studio/embed/AyFghFWYp37UJfD7Sn7P"
-        width="100%"
-        height="274px"
+        src="https://unicorn.studio/embed/AyFghFWYp37UJfD7Sn7P?preview=true"
         loading="lazy"
+        height="300px"
+        className=" -z-50 w-full mix-blend-exclusion dark:mix-blend-lighten"
       ></iframe>
       <div className="flex flex-col gap-12">
-        <div className="flex flex-col gap-6 border-0 px-6 pt-12 md:px-12">
+        <div className="-mt-32 flex flex-col gap-6 border-0 px-6 md:px-12">
           <Link href="/" className="">
             <p className="font-bold">Leo Succar</p>
             <p className="text-stone-500">
