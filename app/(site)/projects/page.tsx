@@ -81,7 +81,7 @@ export default async function Home() {
   return (
     <div>
       <iframe
-        src="https://unicorn.studio/embed/AyFghFWYp37UJfD7Sn7P?preview=true"
+        src="https://unicorn.studio/embed/AyFghFWYp37UJfD7Sn7P"
         loading="lazy"
         height="300px"
         className=" -z-50 w-full mix-blend-exclusion dark:mix-blend-lighten"
