@@ -82,12 +82,12 @@ export default async function Home() {
     <div>
       <iframe
         src="https://unicorn.studio/embed/AyFghFWYp37UJfD7Sn7P"
-        loading="lazy"
+        // loading="lazy"
         height="300px"
-        className="-z-50 w-full mix-blend-exclusion dark:mix-blend-lighten"
+        className="w-full mix-blend-exclusion dark:bg-black dark:mix-blend-lighten"
       ></iframe>
       <div className="flex flex-col gap-12">
-        <div className="-mt-32 flex flex-col gap-6 border-0 px-6 md:px-12">
+        <div className="flex flex-col gap-6 border-0 px-6 md:px-12">
           <Link href="/" className="">
             <p className="font-bold">Leo Succar</p>
             <p className="text-stone-500">
@@ -100,12 +100,6 @@ export default async function Home() {
               <span className="text-pink-500 underline decoration-dotted hover:decoration-solid">
                 Plasmic
               </span>
-            </Link>{" "}
-            and{" "}
-            <Link href="https://bitgo.com" target="_blank">
-              <span className="text-sky-500 underline decoration-dotted hover:decoration-solid">
-                BitGo
-              </span>
             </Link>
             .
           </div>
@@ -115,11 +109,17 @@ export default async function Home() {
               <span className="text-blue-500 underline decoration-dotted hover:decoration-solid">
                 Meta
               </span>
-            </Link>{" "}
-            and{" "}
+            </Link>
+            ,{" "}
             <Link href="https://sourcegraph.com" target="_blank">
               <span className="text-violet-500 underline decoration-dotted hover:decoration-solid">
                 Sourcegraph
+              </span>
+            </Link>
+            , and{" "}
+            <Link href="https://bitgo.com" target="_blank">
+              <span className="text-sky-500 underline decoration-dotted hover:decoration-solid">
+                BitGo
               </span>
             </Link>
             .
@@ -151,7 +151,7 @@ export default async function Home() {
                 target="_blank"
                 className="text-md flex items-center rounded-full bg-secondary px-4 py-2 pr-3 hover:bg-secondary/80"
               >
-                Book a Call
+                Book a call
                 <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
               </Link>
               <Link
@@ -159,7 +159,7 @@ export default async function Home() {
                 className="text-md flex cursor-pointer items-center rounded-full bg-secondary px-4 py-2 pr-3 hover:bg-secondary/80"
               >
                 <CopyToClipboard className="flex" textToCopy="leo@leo.dev">
-                  Email
+                  Copy my email
                   <TbCopy className="h-4 w-4 self-start text-stone-500" />
                 </CopyToClipboard>
               </Link>
@@ -234,6 +234,29 @@ export default async function Home() {
             <li className="flex w-full items-center justify-between p-6 md:px-12 md:pt-12 ">
               <div className="flex flex-row items-center gap-2">
                 <Avatar>
+                  <AvatarImage src="/logo-pl.svg" />
+                  <AvatarFallback className="text-stone-500">P</AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col">
+                  <div className="font-medium">Founding Designer</div>
+                  <a
+                    className="w-fit text-sm text-stone-500 underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
+                    href="https://plasmic.app"
+                    target="_blank"
+                  >
+                    Plasmic
+                  </a>
+                </div>
+              </div>
+              <div className="flex flex-col items-end text-end">
+                <p className="text-sm">2020–Present</p>
+                <p className="text-sm text-stone-500">Remote</p>
+              </div>
+            </li>
+            <Separator />
+            <li className="flex w-full items-center justify-between p-6 md:px-12 ">
+              <div className="flex flex-row items-center gap-2">
+                <Avatar>
                   <AvatarImage src="/logo-bg.svg" />
                   <AvatarFallback className="text-stone-500">B</AvatarFallback>
                 </Avatar>
@@ -251,30 +274,7 @@ export default async function Home() {
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
-                <p className="text-sm">2023–Present</p>
-                <p className="text-sm text-stone-500">Remote</p>
-              </div>
-            </li>
-            <Separator />
-            <li className="flex w-full items-center justify-between p-6 md:px-12 ">
-              <div className="flex flex-row items-center gap-2">
-                <Avatar>
-                  <AvatarImage src="/logo-pl.svg" />
-                  <AvatarFallback className="text-stone-500">P</AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col">
-                  <div className="font-medium">Founding Designer</div>
-                  <a
-                    className="w-fit text-sm text-stone-500 underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
-                    href="https://plasmic.app"
-                    target="_blank"
-                  >
-                    Plasmic
-                  </a>
-                </div>
-              </div>
-              <div className="flex flex-col items-end text-end">
-                <p className="text-sm">2020–Present</p>
+                <p className="text-sm">2023–2024</p>
                 <p className="text-sm text-stone-500">Remote</p>
               </div>
             </li>
