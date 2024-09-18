@@ -84,7 +84,7 @@ export default async function Home() {
         src="https://unicorn.studio/embed/AyFghFWYp37UJfD7Sn7P"
         loading="lazy"
         height="300px"
-        className=" -z-50 w-full mix-blend-exclusion dark:mix-blend-lighten"
+        className="-z-50 w-full mix-blend-exclusion dark:mix-blend-lighten"
       ></iframe>
       <div className="flex flex-col gap-12">
         <div className="-mt-32 flex flex-col gap-6 border-0 px-6 md:px-12">
