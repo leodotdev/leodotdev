@@ -91,11 +91,11 @@ export default async function Home() {
           <Link href="/" className="">
             <p className="font-bold">Leo Succar</p>
             <p className="text-base text-stone-500">
-              Web, Software, Product, Visual Designer
+              Web, Software, Product, Visual, and Design Systems Designer
             </p>
           </Link>
           <div>
-            I&#39;m a Product & Design Systems Designer, currently with{" "}
+            Currently with{" "}
             <Link href="https://plasmic.app" target="_blank">
               <span className="text-pink-500 underline decoration-dotted hover:decoration-solid">
                 Plasmic
@@ -104,7 +104,7 @@ export default async function Home() {
             .
           </div>
           <div>
-            Formerly, I was with{" "}
+            Formerly with{" "}
             <Link href="https://meta.com" target="_blank">
               <span className="text-blue-500 underline decoration-dotted hover:decoration-solid">
                 Meta
