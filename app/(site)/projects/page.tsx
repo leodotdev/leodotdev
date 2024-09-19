@@ -90,7 +90,7 @@ export default async function Home() {
         <div className="flex flex-col gap-6 border-0 px-6 md:px-12">
           <Link href="/" className="">
             <p className="font-bold">Leo Succar</p>
-            <p className="text-stone-500">
+            <p className="text-base text-stone-500">
               Web, Software, Product, Visual Designer
             </p>
           </Link>
@@ -127,7 +127,7 @@ export default async function Home() {
         </div>
 
         {/* navigation */}
-        <div className="sticky left-4 right-4 top-4 z-50 px-6 md:px-12">
+        <div className="sticky left-4 right-4 top-4 z-50 px-6 text-base md:px-12">
           <div className="flex w-full justify-between rounded-3xl border p-1 backdrop-blur-lg">
             <div className="flex w-full flex-1 flex-wrap content-stretch items-stretch justify-stretch gap-1">
               <Link
@@ -224,7 +224,7 @@ export default async function Home() {
         </div>
         <div className="px-6 md:px-12">
           <div className="font-bold">Experience</div>
-          <div className="text-sm text-stone-500">
+          <div className="text-base text-stone-500">
             Work and employment history.
           </div>
         </div>
@@ -240,7 +240,7 @@ export default async function Home() {
                 <div className="flex flex-col">
                   <div className="font-medium">Founding Designer</div>
                   <a
-                    className="w-fit text-sm text-stone-500 underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
+                    className="w-fit text-base text-stone-500 underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
                     href="https://plasmic.app"
                     target="_blank"
                   >
@@ -249,8 +249,8 @@ export default async function Home() {
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
-                <p className="text-sm">2020–Present</p>
-                <p className="text-sm text-stone-500">Remote</p>
+                <p className="text-base">2020–Present</p>
+                <p className="text-base text-stone-500">Remote</p>
               </div>
             </li>
             <Separator />
@@ -265,7 +265,7 @@ export default async function Home() {
                     Senior Product & Design Systems Designer
                   </div>
                   <a
-                    className="w-fit text-sm text-stone-500 underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+                    className="w-fit text-base text-stone-500 underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
                     href="https://www.bitgo.com/"
                     target="_blank"
                   >
@@ -274,8 +274,8 @@ export default async function Home() {
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
-                <p className="text-sm">2023–2024</p>
-                <p className="text-sm text-stone-500">Remote</p>
+                <p className="text-base">2023–2024</p>
+                <p className="text-base text-stone-500">Remote</p>
               </div>
             </li>
             <Separator />
@@ -289,7 +289,7 @@ export default async function Home() {
                   <div className="font-medium">
                     Product & Design Systems Designer
                   </div>
-                  <div className="text-sm text-stone-500">
+                  <div className="text-base text-stone-500">
                     Facebook (now{" "}
                     <a
                       className="underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
@@ -303,8 +303,8 @@ export default async function Home() {
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
-                <p className="text-sm">2018–2020</p>
-                <p className="text-sm text-stone-500">Menlo Park, CA</p>
+                <p className="text-base">2018–2020</p>
+                <p className="text-base text-stone-500">Menlo Park, CA</p>
               </div>
             </li>
             <Separator />
@@ -317,7 +317,7 @@ export default async function Home() {
                 <div className="flex flex-col">
                   <div className="font-medium">Lead Product Designer</div>
                   <a
-                    className="w-fit text-sm text-stone-500 underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
+                    className="w-fit text-base text-stone-500 underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
                     href="https://sourcegraph.com"
                     target="_blank"
                   >
@@ -326,8 +326,8 @@ export default async function Home() {
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
-                <p className="text-sm">2017–2018</p>
-                <p className="text-sm text-stone-500">San Francisco, CA</p>
+                <p className="text-base">2017–2018</p>
+                <p className="text-base text-stone-500">San Francisco, CA</p>
               </div>
             </li>
             <Separator />
@@ -339,7 +339,7 @@ export default async function Home() {
                 </Avatar>
                 <div className="flex flex-col">
                   <div className="font-medium">Senior Product Designer</div>
-                  <div className="text-sm text-stone-500">
+                  <div className="text-base text-stone-500">
                     Zenefits (now{" "}
                     <a
                       className="underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
@@ -353,8 +353,8 @@ export default async function Home() {
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
-                <p className="text-sm">2016</p>
-                <p className="text-sm text-stone-500">San Francisco, CA</p>
+                <p className="text-base">2016</p>
+                <p className="text-base text-stone-500">San Francisco, CA</p>
               </div>
             </li>
             <Separator />
@@ -366,7 +366,7 @@ export default async function Home() {
                 </Avatar>
                 <div className="flex flex-col">
                   <div className="font-medium">Product Designer</div>
-                  <div className="text-sm text-stone-500">
+                  <div className="text-base text-stone-500">
                     SeamlessDocs (now{" "}
                     <a
                       className="underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
@@ -380,8 +380,8 @@ export default async function Home() {
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
-                <p className="text-sm">2014–2015</p>
-                <p className="text-sm text-stone-500">Miami, FL</p>
+                <p className="text-base">2014–2015</p>
+                <p className="text-base text-stone-500">Miami, FL</p>
               </div>
             </li>
           </ul>
@@ -392,19 +392,19 @@ export default async function Home() {
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <div className="flex flex-col gap-1">
-              <h4 className="text-sm text-stone-500">Design</h4>
+              <h4 className="text-base text-stone-500">Design</h4>
               <p>
                 Figma, Photoshop, Illustrator, Play, Procreate, FigJam, tldraw
               </p>
             </div>
             <Separator />
             <div className="flex flex-col gap-1">
-              <h4 className="text-sm text-stone-500">Low-code</h4>
+              <h4 className="text-base text-stone-500">Low-code</h4>
               <p>Framer, Webflow, Toddle, Plasmic</p>
             </div>
             <Separator />
             <div className="flex flex-col gap-1">
-              <h4 className="text-sm text-stone-500">Development</h4>
+              <h4 className="text-base text-stone-500">Development</h4>
               <p>HTML, CSS, Tailwind CSS, shadcn/ui, Radix, Cody, Copilot</p>
             </div>
           </CardContent>
@@ -413,7 +413,7 @@ export default async function Home() {
 
         <div className="px-6 md:px-12">
           <div className="font-bold">References</div>
-          <div className="text-sm text-stone-500">
+          <div className="text-base text-stone-500">
             Folks I&#39;ve had the pleasure of working with.
           </div>
         </div>
@@ -440,7 +440,7 @@ export default async function Home() {
                     the &#39;Story of the Week.&#39;&#34;
                   </p>
                 </blockquote>
-                <p className="text-sm text-stone-500">
+                <p className="text-base text-stone-500">
                   - James Yu, Senior Software Engineer, Meta
                 </p>
               </div>
@@ -460,7 +460,7 @@ export default async function Home() {
                   pragmatic style required to design, build, launch, and
                   maintain complex systems.&#34;
                 </blockquote>
-                <p className="text-sm text-stone-500">
+                <p className="text-base text-stone-500">
                   - Alexander Lambert, Design Director, BitGo
                 </p>
               </div>
@@ -475,7 +475,7 @@ export default async function Home() {
                   ease. It was a pleasure to work with someone who was never out
                   of their element.&#34;
                 </blockquote>
-                <p className="text-sm text-stone-500">
+                <p className="text-base text-stone-500">
                   - Justin Harsch, Design Director, Benenson Strategy Group
                 </p>
               </div>
@@ -488,7 +488,7 @@ export default async function Home() {
                   brings an incredible amount of creativity and expertise to
                   every project.&#34;
                 </blockquote>
-                <p className="text-sm text-stone-500">
+                <p className="text-base text-stone-500">
                   - Melissa Bazillion, Marketing Strategist, MassMutual
                 </p>
               </div>
@@ -502,7 +502,7 @@ export default async function Home() {
                   I&#39;m beyond excited to get [our project] out to the
                   world!&#34;
                 </blockquote>
-                <p className="text-sm text-stone-500">
+                <p className="text-base text-stone-500">
                   - Bryce Truman, Product Manager, BitGo
                 </p>
               </div>
@@ -532,9 +532,9 @@ export default async function Home() {
                 <div className="flex items-end justify-between">
                 <div className="flex flex-col text-left font-medium text-stone-950 dark:text-stone-50">
                   <div>{book.name}</div>
-                  <div className="text-sm text-stone-500">{book.client}</div>
+                  <div className="text-base text-stone-500">{book.client}</div>
                 </div>
-                <div className="text-sm text-stone-500">{book.year}</div>
+                <div className="text-base text-stone-500">{book.year}</div>
               </div>
               </div>
             </div>
@@ -545,7 +545,7 @@ export default async function Home() {
 
         <div className="px-6 md:px-12">
           <div className="font-bold">Projects</div>
-          <div className="text-sm text-stone-500">
+          <div className="text-base text-stone-500">
             Shots and embeds of past work.
           </div>
         </div>
@@ -558,11 +558,11 @@ export default async function Home() {
                 <div className="flex items-end justify-between">
                   <div className="flex flex-col text-left text-stone-950 dark:text-stone-50">
                     <div className="font-medium">{project.name}</div>
-                    <div className="text-sm text-stone-500">
+                    <div className="text-base text-stone-500">
                       {project.client}
                     </div>
                   </div>
-                  <div className="text-sm text-stone-500">{project.year}</div>
+                  <div className="text-base text-stone-500">{project.year}</div>
                 </div>
                 {project.image && (
                   <Image
@@ -607,7 +607,7 @@ export default async function Home() {
         <div className="flex flex-col gap-4 p-6 md:p-12">
           <div className="font-bold">Thanks for visiting!</div>
 
-          <div className="text-sm text-stone-500">
+          <div className="text-base text-stone-500">
             Built using{" "}
             <a
               className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
