@@ -181,7 +181,7 @@ export default async function Home() {
                   </DropdownMenuItem>{" "}
                   <DropdownMenuItem>
                     <Link
-                      href="/Leo-SF-Resume-2024.pdf"
+                      href="/Leo-SF-Resume-2025.pdf"
                       target="_blank"
                       className="flex pr-0"
                     >
