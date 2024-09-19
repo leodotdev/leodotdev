@@ -80,11 +80,110 @@ export default async function Home() {
 
   return (
     <div>
+      {/* navigation */}
+      <div className="sticky left-4 right-4 top-4 z-50 px-6 text-base md:px-12">
+        <div className="flex w-full justify-between rounded-3xl border p-1 backdrop-blur-lg">
+          <div className="flex w-full flex-1 flex-wrap content-stretch items-stretch justify-stretch gap-1">
+            <Link
+              href="https://twitter.com/leosuccarferre"
+              target="_blank"
+              className="text-md flex items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary/80"
+            >
+              Twitter
+              <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+            </Link>
+            <Link
+              href="https://www.linkedin.com/in/leosuccarferre/"
+              target="_blank"
+              className="text-md flex items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary/80"
+            >
+              LinkedIn
+              <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+            </Link>
+            <Link
+              href="https://cal.com/leo.dev/20min"
+              target="_blank"
+              className="text-md flex items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary/80"
+            >
+              Book a call
+              <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+            </Link>
+            <Link
+              href=""
+              className="text-md flex cursor-pointer items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary/80"
+            >
+              <CopyToClipboard className="flex" textToCopy="leo@leo.dev">
+                Copy my email
+                <TbCopy className="h-4 w-4 self-start text-stone-500" />
+              </CopyToClipboard>
+            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="text-md flex items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary/80 hover:no-underline">
+                Résumé
+                <TbChevronDown className="h-4 w-4 text-stone-500" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem>
+                  <Link
+                    href="https://read.cv/leo.dev"
+                    target="_blank"
+                    className="flex pr-0"
+                  >
+                    Read.cv
+                    <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+                  </Link>
+                </DropdownMenuItem>{" "}
+                <DropdownMenuItem>
+                  <Link
+                    href="/Leo-SF-Resume-2025.pdf"
+                    target="_blank"
+                    className="flex pr-0"
+                  >
+                    Adobe PDF
+                    <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link
+                    href="https://docs.google.com/document/d/17uK2emyv7p8VYtYV5M36g3mxQ0CvbhDanzWVnVvtIiE/edit?usp=sharing"
+                    target="_blank"
+                    className="flex pr-0"
+                  >
+                    Google DOC
+                    <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link
+                    href="/Leo-SF-Resume-2024.docx"
+                    target="_blank"
+                    className="flex pr-0"
+                  >
+                    Word DOCX
+                    <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <ThemeSwitcher />
+              </TooltipTrigger>
+              <TooltipContent side="bottom">Theme</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      </div>
+      {/* unicorn */}
       <iframe
         src="https://unicorn.studio/embed/AyFghFWYp37UJfD7Sn7P"
-        // loading="lazy"
-        height="300px"
-        className="w-full mix-blend-exclusion dark:bg-black dark:mix-blend-lighten"
+        width="100%"
+        height="200px"
+        loading="lazy"
+        className="-mt-12 w-full mix-blend-exclusion dark:bg-black
+      dark:mix-blend-lighten"
       ></iframe>
       <div className="flex flex-col gap-12">
         <div className="flex flex-col gap-6 border-0 px-6 md:px-12">
@@ -126,102 +225,6 @@ export default async function Home() {
           </div>
         </div>
 
-        {/* navigation */}
-        <div className="sticky left-4 right-4 top-4 z-50 px-6 text-base md:px-12">
-          <div className="flex w-full justify-between rounded-3xl border p-1 backdrop-blur-lg">
-            <div className="flex w-full flex-1 flex-wrap content-stretch items-stretch justify-stretch gap-1">
-              <Link
-                href="https://twitter.com/leosuccarferre"
-                target="_blank"
-                className="text-md flex items-center rounded-full bg-secondary px-4 py-2 pr-3 hover:bg-secondary/80"
-              >
-                Twitter
-                <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-              </Link>
-              <Link
-                href="https://www.linkedin.com/in/leosuccarferre/"
-                target="_blank"
-                className="text-md flex items-center rounded-full bg-secondary px-4 py-2 pr-3 hover:bg-secondary/80"
-              >
-                LinkedIn
-                <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-              </Link>
-              <Link
-                href="https://cal.com/leo.dev/20min"
-                target="_blank"
-                className="text-md flex items-center rounded-full bg-secondary px-4 py-2 pr-3 hover:bg-secondary/80"
-              >
-                Book a call
-                <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-              </Link>
-              <Link
-                href=""
-                className="text-md flex cursor-pointer items-center rounded-full bg-secondary px-4 py-2 pr-3 hover:bg-secondary/80"
-              >
-                <CopyToClipboard className="flex" textToCopy="leo@leo.dev">
-                  Copy my email
-                  <TbCopy className="h-4 w-4 self-start text-stone-500" />
-                </CopyToClipboard>
-              </Link>
-              <DropdownMenu>
-                <DropdownMenuTrigger className="text-md flex items-center rounded-full bg-secondary px-4 py-2 pr-3 hover:bg-secondary/80 hover:no-underline">
-                  Résumé
-                  <TbChevronDown className="h-4 w-4 text-stone-500" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem>
-                    <Link
-                      href="https://read.cv/leo.dev"
-                      target="_blank"
-                      className="flex pr-0"
-                    >
-                      Read.cv
-                      <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-                    </Link>
-                  </DropdownMenuItem>{" "}
-                  <DropdownMenuItem>
-                    <Link
-                      href="/Leo-SF-Resume-2025.pdf"
-                      target="_blank"
-                      className="flex pr-0"
-                    >
-                      Adobe PDF
-                      <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link
-                      href="https://docs.google.com/document/d/17uK2emyv7p8VYtYV5M36g3mxQ0CvbhDanzWVnVvtIiE/edit?usp=sharing"
-                      target="_blank"
-                      className="flex pr-0"
-                    >
-                      Google DOC
-                      <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link
-                      href="/Leo-SF-Resume-2024.docx"
-                      target="_blank"
-                      className="flex pr-0"
-                    >
-                      Word DOCX
-                      <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <ThemeSwitcher />
-                </TooltipTrigger>
-                <TooltipContent side="bottom">Theme</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-        </div>
         <div className="px-6 md:px-12">
           <div className="font-bold">Experience</div>
           <div className="text-base text-stone-500">
