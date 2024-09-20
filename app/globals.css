@@ -95,8 +95,8 @@
   z-index: -1;
   width: 100vw;
   min-height: 100vh;
-  opacity: .125;
+  opacity: 0.125;
   pointer-events: none;
   transform: translateY(0);
-  filter: contrast(60%) brightness(80%);
+  filter: contrast(10%) brightness(90%);
 }
