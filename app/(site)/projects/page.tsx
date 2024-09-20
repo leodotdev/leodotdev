@@ -177,13 +177,13 @@ export default async function Home() {
         </div>
       </div>
       {/* unicorn */}
+
       <iframe
-        src="https://unicorn.studio/embed/AyFghFWYp37UJfD7Sn7P"
-        width="100%"
-        height="200px"
+        src="https://unicorn.studio/embed/AyFghFWYp37UJfD7Sn7P?preview=true"
+        // width="1022px"
+        height="300px"
         loading="lazy"
-        className="-mt-12 w-full mix-blend-exclusion dark:bg-black
-      dark:mix-blend-lighten"
+        className="-mt-12 w-full mix-blend-exclusion dark:mix-blend-lighten"
       ></iframe>
       <div className="flex flex-col gap-12">
         <div className="flex flex-col gap-6 border-0 px-6 md:px-12">
