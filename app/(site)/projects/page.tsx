@@ -7,6 +7,12 @@ import urlBuilder from "@sanity/image-url";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 
+import { Playpen_Sans } from "next/font/google";
+const playpen = Playpen_Sans({
+  weight: "300", // Specify the weight you need
+  subsets: ["latin"], // Optional: specify subsets
+});
+
 import { ThemeSwitcher } from "../../theme-switcher";
 
 import { Button } from "@/components/ui/button";
@@ -37,14 +43,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 
 import Link from "next/link";
 
@@ -433,36 +431,39 @@ export default async function Home() {
             </div>
           </div>
 
-          <Carousel>
-            <CarouselPrevious />
-            <CarouselContent>
-              <CarouselItem>
-                <div className="p-6 md:p-12">
-                  <blockquote className="flex flex-col gap-4">
-                    <p>
-                      &#34;Leo volunteered to design for the Sticker Admin Tool
-                      for the Story Creation Team, which is one of our most
-                      important tools, to be used to deploy/manage sticker
-                      assets in sticker tray for public users. Historically it
-                      has been a huge pain point as the old tool is lacking a
-                      lot of functionalities and very inefficient to use.
-                    </p>
-                    <p>
-                      Leo dedicated himself to this project with full passion
-                      and went full speed. After several iterations, the design
-                      was perfected and received very positive feedback from
-                      people across the whole Story Creation Team, which also
-                      made it to the &#39;Story of the Week.&#39;&#34;
-                    </p>
-                  </blockquote>
-                  <p className="text-base text-stone-500">
-                    - James Yu, Senior Software Engineer, Meta
+          <div className="relative -mb-12 flex w-full snap-x snap-mandatory items-center gap-6 overflow-x-auto px-6 pb-12 md:px-12">
+            <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-yellow-500/20 bg-yellow-50/40 p-6 text-yellow-950 dark:border-yellow-500/10 dark:bg-yellow-950/20 dark:text-yellow-50/80">
+              <div className={playpen.className}>
+                <blockquote className="flex flex-col gap-2 text-lg">
+                  <p>
+                    &#34;Leo volunteered to design for the Sticker Admin Tool
+                    for the Story Creation Team, which is one of our most
+                    important tools, to be used to deploy/manage sticker assets
+                    in sticker tray for public users. Historically, it has been
+                    a huge pain point as the old tool is lacking a lot of
+                    functionalities and very inefficient to use.
                   </p>
-                </div>
-              </CarouselItem>
-              <CarouselItem>
-                <div className="flex flex-col gap-1 p-6 md:p-12">
-                  <blockquote>
+                  <p>
+                    Leo dedicated himself to this project with full passion and
+                    went full speed. After several iterations, the design was
+                    perfected and received very positive feedback from people
+                    across the whole Story Creation Team, which also made it to
+                    the &#39;Story of the Week.&#39;&#34;
+                  </p>
+                </blockquote>
+              </div>
+              <div className="flex flex-col text-base ">
+                <p>James Yu</p>
+                <p className="text-yellow-900/60 dark:text-yellow-50/40">
+                  Senior Software Engineer, Meta
+                </p>
+              </div>
+            </div>
+
+            <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-lime-500/20 bg-lime-50/40 p-6 text-lime-950 dark:border-lime-500/10 dark:bg-lime-950/20 dark:text-lime-50/80">
+              <div className={playpen.className}>
+                <blockquote className="flex flex-col gap-2 text-lg">
+                  <p>
                     &#34;Leo is a deep thinker who lives in-between design and
                     code. While at BitGo, Leo took ownership of the design
                     system by streamlining components, testing new UI elements
@@ -471,60 +472,76 @@ export default async function Home() {
                     by supporting both the design and front-end engineering
                     teams. Previously, he led some of BitGo&#39;s newest market
                     growing spaces, including BitGo Prime and Go products,
-                    helping connect our users with partner services. Leo has a
-                    level head and pragmatic style required to design, build,
-                    launch, and maintain complex systems.&#34;
-                  </blockquote>
-                  <p className="text-base text-stone-500">
-                    - Alexander Lambert, Design Director, BitGo
+                    helping connect our users with partner services.
                   </p>
-                </div>
-              </CarouselItem>
-              <CarouselItem>
-                <div className="flex flex-col gap-1 p-6 md:p-12">
-                  <blockquote>
-                    &#34;Rarely do you meet a creative with such a lethal
-                    combination of technical skills and fundamental design
-                    ability. Leo can handle any project from classic graphic
-                    design to robust web projects using the latest technology
-                    with ease. It was a pleasure to work with someone who was
-                    never out of their element.&#34;
-                  </blockquote>
-                  <p className="text-base text-stone-500">
-                    - Justin Harsch, Design Director, Benenson Strategy Group
+                  <p>
+                    Leo has a level head and pragmatic style required to design,
+                    build, launch, and maintain complex systems.&#34;
                   </p>
-                </div>
-              </CarouselItem>
-              <CarouselItem>
-                <div className="flex flex-col gap-1 p-6 md:p-12">
-                  <blockquote>
-                    &#34;I can&#39;t stress the relief I felt every time Leo and
-                    I worked together. He is one of the most reliable partners
-                    and brings an incredible amount of creativity and expertise
-                    to every project.&#34;
-                  </blockquote>
-                  <p className="text-base text-stone-500">
-                    - Melissa Bazillion, Marketing Strategist, MassMutual
-                  </p>
-                </div>
-              </CarouselItem>
-              <CarouselItem>
-                <div className="flex flex-col gap-1 p-6 md:p-12">
-                  <blockquote>
-                    &#34;You are all killing it on the design front! Thank you
-                    so much for your hard work and always pushing for what&#39;s
-                    best for the customer! It&#39;s been super fun working
-                    together and I&#39;m beyond excited to get [our project] out
-                    to the world!&#34;
-                  </blockquote>
-                  <p className="text-base text-stone-500">
-                    - Bryce Truman, Product Manager, BitGo
-                  </p>
-                </div>
-              </CarouselItem>
-            </CarouselContent>
-            <CarouselNext />
-          </Carousel>
+                </blockquote>
+              </div>
+              <div className="flex flex-col text-base ">
+                <p>Alexander Lambert</p>
+                <p className="text-lime-900/60 dark:text-lime-50/40">
+                  Design Director, BitGo
+                </p>
+              </div>
+            </div>
+
+            <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-green-500/20 bg-green-50/40 p-6 text-green-950 dark:border-green-500/10 dark:bg-green-950/20 dark:text-green-50/80">
+              <div className={playpen.className}>
+                <blockquote className="text-lg">
+                  &#34;Rarely do you meet a creative with such a lethal
+                  combination of technical skills and fundamental design
+                  ability. Leo can handle any project from classic graphic
+                  design to robust web projects using the latest technology with
+                  ease. It was a pleasure to work with someone who was never out
+                  of their element.&#34;
+                </blockquote>
+              </div>
+              <div className="flex flex-col text-base ">
+                <p>Justin Harsch</p>
+                <p className="text-green-900/60 dark:text-green-50/40">
+                  Design Director, Benenson Strategy Group
+                </p>
+              </div>
+            </div>
+
+            <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-emerald-500/20 bg-emerald-50/40 p-6 text-emerald-950 dark:border-emerald-500/10 dark:bg-emerald-950/20 dark:text-emerald-50/80">
+              <div className={playpen.className}>
+                <blockquote className="text-lg">
+                  &#34;I can&#39;t stress the relief I felt every time Leo and I
+                  worked together. He is one of the most reliable partners and
+                  brings an incredible amount of creativity and expertise to
+                  every project.&#34;
+                </blockquote>
+              </div>
+              <div className="flex flex-col text-base ">
+                <p>Melissa Bazillion</p>
+                <p className="text-emerald-900/60 dark:text-emerald-50/40">
+                  Marketing Strategist, MassMutual
+                </p>
+              </div>
+            </div>
+
+            <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-teal-500/20 bg-teal-50/40 p-6 text-teal-950 dark:border-teal-500/10 dark:bg-teal-950/20 dark:text-teal-50/80">
+              <div className={playpen.className}>
+                <blockquote className="text-lg">
+                  &#34;You are all killing it on the design front! Thank you so
+                  much for your hard work and always pushing for what&#39;s best
+                  for the customer! It&#39;s been super fun working together and
+                  I&#39;m beyond excited to get [our project] out to the
+                  world!&#34;
+                </blockquote>
+              </div>
+              <div className="flex flex-col text-base ">
+                <p>Bryce Truman</p>
+                <p className="text-teal-900/60 dark:text-teal-50/40">
+                  Product Manager, BitGo
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* <div className="px-6 font-bold md:px-12">Book Shelf</div>
@@ -578,7 +595,7 @@ export default async function Home() {
                     <div className="truncate">{project.name}</div>
                     <div className="flex flex-row justify-between text-stone-500">
                       <div className="flex-1">{project.client}</div>
-                      <div className="flex-1 text-right">{project.year}</div>
+                      <div className="text-right">{project.year}</div>
                     </div>
                   </div>
 
@@ -589,7 +606,7 @@ export default async function Home() {
                       width={800}
                       height={400}
                       loading="lazy"
-                      className="-mb-40 aspect-[4/3] rounded-sm object-cover transition group-hover:-translate-y-[44px] md:-mb-28"
+                      className="-mb-40 aspect-[4/3] rounded-sm object-cover transition group-hover:-translate-y-[44px] group-hover:shadow-2xl md:-mb-28"
                     />
                   )}
                 </DialogTrigger>
