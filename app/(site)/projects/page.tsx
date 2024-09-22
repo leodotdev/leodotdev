@@ -434,7 +434,7 @@ export default async function Home() {
           <div className="relative -mb-12 flex w-full snap-x snap-mandatory items-center gap-6 overflow-x-auto px-6 pb-12 md:px-12">
             <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-yellow-500/20 bg-yellow-50/40 p-6 text-yellow-950 dark:border-yellow-500/10 dark:bg-yellow-950/20 dark:text-yellow-50/80">
               <div className={playpen.className}>
-                <blockquote className="flex flex-col gap-2 text-lg">
+                <blockquote className="flex flex-col gap-2 ">
                   <p>
                     &#34;Leo volunteered to design for the Sticker Admin Tool
                     for the Story Creation Team, which is one of our most
@@ -462,7 +462,7 @@ export default async function Home() {
 
             <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-lime-500/20 bg-lime-50/40 p-6 text-lime-950 dark:border-lime-500/10 dark:bg-lime-950/20 dark:text-lime-50/80">
               <div className={playpen.className}>
-                <blockquote className="flex flex-col gap-2 text-lg">
+                <blockquote className="flex flex-col gap-2 ">
                   <p>
                     &#34;Leo is a deep thinker who lives in-between design and
                     code. While at BitGo, Leo took ownership of the design
@@ -490,7 +490,7 @@ export default async function Home() {
 
             <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-green-500/20 bg-green-50/40 p-6 text-green-950 dark:border-green-500/10 dark:bg-green-950/20 dark:text-green-50/80">
               <div className={playpen.className}>
-                <blockquote className="text-lg">
+                <blockquote>
                   &#34;Rarely do you meet a creative with such a lethal
                   combination of technical skills and fundamental design
                   ability. Leo can handle any project from classic graphic
@@ -509,7 +509,7 @@ export default async function Home() {
 
             <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-emerald-500/20 bg-emerald-50/40 p-6 text-emerald-950 dark:border-emerald-500/10 dark:bg-emerald-950/20 dark:text-emerald-50/80">
               <div className={playpen.className}>
-                <blockquote className="text-lg">
+                <blockquote>
                   &#34;I can&#39;t stress the relief I felt every time Leo and I
                   worked together. He is one of the most reliable partners and
                   brings an incredible amount of creativity and expertise to
@@ -526,7 +526,7 @@ export default async function Home() {
 
             <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-teal-500/20 bg-teal-50/40 p-6 text-teal-950 dark:border-teal-500/10 dark:bg-teal-950/20 dark:text-teal-50/80">
               <div className={playpen.className}>
-                <blockquote className="text-lg">
+                <blockquote>
                   &#34;You are all killing it on the design front! Thank you so
                   much for your hard work and always pushing for what&#39;s best
                   for the customer! It&#39;s been super fun working together and
