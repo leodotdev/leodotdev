@@ -525,7 +525,7 @@ export default async function Home() {
             <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-teal-500/20 bg-teal-50/40 p-6 text-teal-950 dark:border-teal-500/10 dark:bg-teal-950/20 dark:text-teal-50/80">
               <div className={playpen.className}>
                 <blockquote className="">
-                  &#34;You are all killing it on the design front! Thank you so
+                  &#34;[Leo is] killing it on the design front! Thank you so
                   much for your hard work and always pushing for what&#39;s best
                   for the customer! It&#39;s been super fun working together and
                   I&#39;m beyond excited to get [our project] out to the
