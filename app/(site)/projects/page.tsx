@@ -79,7 +79,7 @@ export default async function Home() {
   return (
     <div>
       {/* navigation */}
-      <div className="sticky left-4 right-4 top-4 z-50 px-6 text-base md:px-12">
+      <div className="sticky left-4 right-4 top-4 z-50 px-6  md:px-12">
         <div className="flex w-full justify-between rounded-3xl border bg-secondary/20 p-1 backdrop-blur-md">
           <div className="flex w-full flex-1 flex-wrap content-stretch items-stretch justify-stretch gap-1">
             <Link
@@ -188,7 +188,7 @@ export default async function Home() {
         <div className="flex flex-col gap-6 px-6 md:px-12">
           <Link href="/">
             <p className="font-bold">Leo Succar</p>
-            <p className="text-base text-stone-500">
+            <p className=" text-stone-500">
               Web, Software, Product, Visual, and Design Systems Designer
             </p>
           </Link>
@@ -230,12 +230,10 @@ export default async function Home() {
         <div>
           <div className="px-6 pb-12 md:px-12">
             <div className="font-bold">Experience</div>
-            <div className="text-base text-stone-500">
-              Work and employment history.
-            </div>
+            <div className=" text-stone-500">Work and employment history.</div>
           </div>
 
-          <ul className="flex flex-col gap-4 px-6 text-base md:px-12">
+          <ul className="flex flex-col gap-4 px-6  md:px-12">
             <li className="flex w-full items-center justify-between">
               <div className="flex flex-row items-center gap-4">
                 <Avatar>
@@ -403,19 +401,19 @@ export default async function Home() {
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <div className="flex flex-col gap-1">
-              <h4 className="text-base text-stone-500">Design</h4>
+              <h4 className=" text-stone-500">Design</h4>
               <p>
                 Figma, Photoshop, Illustrator, Play, Procreate, FigJam, tldraw
               </p>
             </div>
             <Separator />
             <div className="flex flex-col gap-1">
-              <h4 className="text-base text-stone-500">Low-code</h4>
+              <h4 className=" text-stone-500">Low-code</h4>
               <p>Framer, Webflow, Toddle, Plasmic</p>
             </div>
             <Separator />
             <div className="flex flex-col gap-1">
-              <h4 className="text-base text-stone-500">Development</h4>
+              <h4 className=" text-stone-500">Development</h4>
               <p>HTML, CSS, Tailwind CSS, shadcn/ui, Radix, Cody, Copilot</p>
             </div>
           </CardContent>
@@ -426,7 +424,7 @@ export default async function Home() {
         <div>
           <div className="px-6 pb-12 md:px-12">
             <div className="font-bold">References</div>
-            <div className="text-base text-stone-500">
+            <div className=" text-stone-500">
               Folks I&#39;ve had the pleasure of working with.
             </div>
           </div>
@@ -434,7 +432,7 @@ export default async function Home() {
           <div className="relative -mb-12 flex w-full snap-x snap-mandatory items-center gap-6 overflow-x-auto px-6 pb-12 md:px-12">
             <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-yellow-500/20 bg-yellow-50/40 p-6 text-yellow-950 dark:border-yellow-500/10 dark:bg-yellow-950/20 dark:text-yellow-50/80">
               <div className={playpen.className}>
-                <blockquote className="flex flex-col gap-2 text-base">
+                <blockquote className="flex flex-col gap-2 ">
                   <p>
                     &#34;Leo volunteered to design for the Sticker Admin Tool
                     for the Story Creation Team, which is one of our most
@@ -452,7 +450,7 @@ export default async function Home() {
                   </p>
                 </blockquote>
               </div>
-              <div className="flex flex-col text-base ">
+              <div className="flex flex-col  ">
                 <p>James Yu</p>
                 <p className="text-yellow-900/60 dark:text-yellow-50/40">
                   Senior Software Engineer, Meta
@@ -462,7 +460,7 @@ export default async function Home() {
 
             <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-lime-500/20 bg-lime-50/40 p-6 text-lime-950 dark:border-lime-500/10 dark:bg-lime-950/20 dark:text-lime-50/80">
               <div className={playpen.className}>
-                <blockquote className="flex flex-col gap-2 text-base">
+                <blockquote className="flex flex-col gap-2 ">
                   <p>
                     &#34;Leo is a deep thinker who lives in-between design and
                     code. While at BitGo, Leo took ownership of the design
@@ -480,7 +478,7 @@ export default async function Home() {
                   </p>
                 </blockquote>
               </div>
-              <div className="flex flex-col text-base ">
+              <div className="flex flex-col  ">
                 <p>Alexander Lambert</p>
                 <p className="text-lime-900/60 dark:text-lime-50/40">
                   Design Director, BitGo
@@ -490,7 +488,7 @@ export default async function Home() {
 
             <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-green-500/20 bg-green-50/40 p-6 text-green-950 dark:border-green-500/10 dark:bg-green-950/20 dark:text-green-50/80">
               <div className={playpen.className}>
-                <blockquote className="text-base">
+                <blockquote className="">
                   &#34;Rarely do you meet a creative with such a lethal
                   combination of technical skills and fundamental design
                   ability. Leo can handle any project from classic graphic
@@ -499,7 +497,7 @@ export default async function Home() {
                   of their element.&#34;
                 </blockquote>
               </div>
-              <div className="flex flex-col text-base ">
+              <div className="flex flex-col  ">
                 <p>Justin Harsch</p>
                 <p className="text-green-900/60 dark:text-green-50/40">
                   Design Director, Benenson Strategy Group
@@ -509,14 +507,14 @@ export default async function Home() {
 
             <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-emerald-500/20 bg-emerald-50/40 p-6 text-emerald-950 dark:border-emerald-500/10 dark:bg-emerald-950/20 dark:text-emerald-50/80">
               <div className={playpen.className}>
-                <blockquote className="text-base">
+                <blockquote className="">
                   &#34;I can&#39;t stress the relief I felt every time Leo and I
                   worked together. He is one of the most reliable partners and
                   brings an incredible amount of creativity and expertise to
                   every project.&#34;
                 </blockquote>
               </div>
-              <div className="flex flex-col text-base ">
+              <div className="flex flex-col  ">
                 <p>Melissa Bazillion</p>
                 <p className="text-emerald-900/60 dark:text-emerald-50/40">
                   Marketing Strategist, MassMutual
@@ -526,7 +524,7 @@ export default async function Home() {
 
             <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-teal-500/20 bg-teal-50/40 p-6 text-teal-950 dark:border-teal-500/10 dark:bg-teal-950/20 dark:text-teal-50/80">
               <div className={playpen.className}>
-                <blockquote className="text-base">
+                <blockquote className="">
                   &#34;You are all killing it on the design front! Thank you so
                   much for your hard work and always pushing for what&#39;s best
                   for the customer! It&#39;s been super fun working together and
@@ -534,7 +532,7 @@ export default async function Home() {
                   world!&#34;
                 </blockquote>
               </div>
-              <div className="flex flex-col text-base ">
+              <div className="flex flex-col  ">
                 <p>Bryce Truman</p>
                 <p className="text-teal-900/60 dark:text-teal-50/40">
                   Product Manager, BitGo
@@ -565,9 +563,9 @@ export default async function Home() {
                 <div className="flex items-end justify-between">
                 <div className="flex flex-col text-left font-medium text-stone-950 dark:text-stone-50">
                   <div>{book.name}</div>
-                  <div className="text-base text-stone-500">{book.client}</div>
+                  <div className=" text-stone-500">{book.client}</div>
                 </div>
-                <div className="text-base text-stone-500">{book.year}</div>
+                <div className=" text-stone-500">{book.year}</div>
               </div>
               </div>
             </div>
@@ -581,7 +579,7 @@ export default async function Home() {
         <div>
           <div className="px-6 pb-12 md:px-12">
             <div className="font-bold">Projects</div>
-            <div className="text-base text-stone-500">
+            <div className=" text-stone-500">
               Shots and embeds of past work.
             </div>
           </div>
@@ -591,7 +589,7 @@ export default async function Home() {
               // project card
               <Dialog key={project._id}>
                 <DialogTrigger className="group flex flex-col items-stretch gap-6 overflow-clip rounded-md border bg-secondary p-6 hover:bg-secondary/40 dark:bg-secondary/40 dark:hover:bg-secondary">
-                  <div className="flex flex-col text-left text-base text-stone-950 dark:text-stone-50">
+                  <div className="flex flex-col text-left  text-stone-950 dark:text-stone-50">
                     <div className="truncate">{project.name}</div>
                     <div className="flex flex-row justify-between text-stone-500">
                       <div className="flex-1">{project.client}</div>
@@ -642,7 +640,7 @@ export default async function Home() {
         </div>
 
         <div className="flex flex-col gap-4 p-6 md:p-12">
-          <div className="text-base text-stone-500">
+          <div className=" text-stone-500">
             Built using{" "}
             <a
               className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"

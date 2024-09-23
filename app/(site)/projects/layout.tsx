@@ -34,7 +34,7 @@ export default function RootLayout({
         {/* <body className={spaceMono.className}> */}
         {/* <body className="font-mono"> */}
         <ThemeProvider attribute="class" defaultTheme="dark">
-          <div className="mx-auto flex max-w-screen-lg flex-col gap-12 bg-white text-lg dark:bg-black md:border-l md:border-r">
+          <div className="mx-auto flex max-w-screen-lg flex-col gap-12 bg-white dark:bg-black md:border-l md:border-r">
             {" "}
             <main>
               {children}
