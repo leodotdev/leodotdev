@@ -304,7 +304,7 @@ export default async function Home() {
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
-                <p>2023–'24</p>
+                <p>2023–&#39;24</p>
                 <p className="text-stone-500">Remote</p>
               </div>
             </li>
@@ -334,7 +334,7 @@ export default async function Home() {
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
-                <p>2018–'20</p>
+                <p>2018–&#39;20</p>
                 <p className="text-stone-500">Menlo Park, CA</p>
               </div>
             </li>
@@ -359,7 +359,7 @@ export default async function Home() {
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
-                <p>2017–'18</p>
+                <p>2017–&#39;18</p>
                 <p className="text-stone-500">San Francisco, CA</p>
               </div>
             </li>
@@ -415,7 +415,7 @@ export default async function Home() {
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
-                <p>2014–'15</p>
+                <p>2014–&#39;15</p>
                 <p className="text-stone-500">Miami, FL</p>
               </div>
             </li>
