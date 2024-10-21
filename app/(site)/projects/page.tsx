@@ -252,7 +252,9 @@ export default async function Home() {
                   >
                     Meta
                   </a>
-                  <div className="italic text-stone-500">Product Designer</div>
+                  <div className="italic text-stone-500">
+                    Product Designer (Contract)
+                  </div>
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
@@ -299,7 +301,7 @@ export default async function Home() {
                     BitGo
                   </a>
                   <div className="italic text-stone-500">
-                    Senior Product & Design Systems Designer
+                    Senior Product & Design Systems Designer (Contract)
                   </div>
                 </div>
               </div>
