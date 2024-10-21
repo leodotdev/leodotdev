@@ -188,12 +188,16 @@ export default async function Home() {
         <div className="flex flex-col gap-6 px-6 md:px-12">
           <Link href="/">
             <p className="font-bold">Leo Succar</p>
-            <p className=" text-stone-500">
-              Web, Software, Product, Visual, and Design Systems Designer
-            </p>
+            <p className=" text-stone-500">Interface Designer</p>
           </Link>
           <div>
             Currently with{" "}
+            <Link href="https://meta.com" target="_blank">
+              <span className="text-blue-500 underline decoration-dotted hover:decoration-solid">
+                Meta
+              </span>
+            </Link>{" "}
+            and{" "}
             <Link href="https://plasmic.app" target="_blank">
               <span className="text-pink-500 underline decoration-dotted hover:decoration-solid">
                 Plasmic
@@ -201,7 +205,7 @@ export default async function Home() {
             </Link>
             .
           </div>
-          <div>
+          {/* <div>
             Formerly with{" "}
             <Link href="https://meta.com" target="_blank">
               <span className="text-blue-500 underline decoration-dotted hover:decoration-solid">
@@ -221,7 +225,7 @@ export default async function Home() {
               </span>
             </Link>
             .
-          </div>
+          </div> */}
         </div>
 
         <Separator />
@@ -234,6 +238,29 @@ export default async function Home() {
           </div>
 
           <ul className="flex flex-col gap-4 px-6  md:px-12">
+            <li className="flex w-full items-center justify-between">
+              <div className="flex flex-row items-center gap-4">
+                <Avatar>
+                  <AvatarImage src="/logo-me.svg" />
+                  <AvatarFallback className="text-stone-500">P</AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col">
+                  <a
+                    className="underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
+                    href="https://www.meta.com"
+                    target="_blank"
+                  >
+                    Meta
+                  </a>
+                  <div className="italic text-stone-500">Product Designer</div>
+                </div>
+              </div>
+              <div className="flex flex-col items-end text-end">
+                <p>2024–Present</p>
+                <p className="text-stone-500">Remote</p>
+              </div>
+            </li>
+            <Separator />
             <li className="flex w-full items-center justify-between">
               <div className="flex flex-row items-center gap-4">
                 <Avatar>
@@ -252,7 +279,7 @@ export default async function Home() {
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
-                <p>2020 – Present</p>
+                <p>2020–Present</p>
                 <p className="text-stone-500">Remote</p>
               </div>
             </li>
@@ -277,7 +304,7 @@ export default async function Home() {
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
-                <p>2023 – 2024</p>
+                <p>2023–'24</p>
                 <p className="text-stone-500">Remote</p>
               </div>
             </li>
@@ -307,7 +334,7 @@ export default async function Home() {
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
-                <p>2018 – 2020</p>
+                <p>2018–'20</p>
                 <p className="text-stone-500">Menlo Park, CA</p>
               </div>
             </li>
@@ -332,7 +359,7 @@ export default async function Home() {
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
-                <p>2017 – 2018</p>
+                <p>2017–'18</p>
                 <p className="text-stone-500">San Francisco, CA</p>
               </div>
             </li>
@@ -388,7 +415,7 @@ export default async function Home() {
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
-                <p>2014 – 2015</p>
+                <p>2014–'15</p>
                 <p className="text-stone-500">Miami, FL</p>
               </div>
             </li>
