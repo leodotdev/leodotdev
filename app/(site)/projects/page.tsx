@@ -123,21 +123,21 @@ export default async function Home() {
               <DropdownMenuContent>
                 <DropdownMenuItem>
                   <Link
-                    href="https://read.cv/leo.dev"
-                    target="_blank"
-                    className="flex pr-0"
-                  >
-                    Read.cv
-                    <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
-                  </Link>
-                </DropdownMenuItem>{" "}
-                <DropdownMenuItem>
-                  <Link
-                    href="/Leo-SF-Resume-2025.pdf"
+                    href="/Leo-SF-Resume-May-2025.pdf"
                     target="_blank"
                     className="flex pr-0"
                   >
                     Adobe PDF
+                    <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link
+                    href="/Leo-SF-Resume-May-2025.docx"
+                    target="_blank"
+                    className="flex pr-0"
+                  >
+                    Word DOCX
                     <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
                   </Link>
                 </DropdownMenuItem>
@@ -151,13 +151,14 @@ export default async function Home() {
                     <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
                   </Link>
                 </DropdownMenuItem>
+
                 <DropdownMenuItem>
                   <Link
-                    href="/Leo-SF-Resume-2024.docx"
+                    href="https://read.cv/leo.dev"
                     target="_blank"
                     className="flex pr-0"
                   >
-                    Word DOCX
+                    Read.cv
                     <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
                   </Link>
                 </DropdownMenuItem>
