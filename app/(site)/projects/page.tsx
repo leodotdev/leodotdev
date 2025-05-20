@@ -187,26 +187,24 @@ export default async function Home() {
 
       <div className="mt-16 flex flex-col gap-12">
         <div className="flex flex-col gap-6 px-6 md:px-12">
-          <Link href="/">
-            <p className="font-bold">Leo Succar</p>
-            <p className=" max-w-xl text-stone-500">
-              Product Designer experienced in systems and tools, focused on
-              AI-first workflows, crafting design systems and end-to-end
-              experiences across web and native. Currently with{" "}
-              <Link href="https://meta.com" target="_blank">
-                <span className="text-blue-500 underline decoration-dotted hover:decoration-solid">
-                  Meta
-                </span>
-              </Link>{" "}
-              and{" "}
-              <Link href="https://plasmic.app" target="_blank">
-                <span className="text-pink-500 underline decoration-dotted hover:decoration-solid">
-                  Plasmic
-                </span>
-              </Link>
-              .
-            </p>
-          </Link>
+          <p className="font-bold">Leo Succar</p>
+          <p className=" max-w-xl text-stone-500">
+            Product Designer experienced in systems and tools, focused on
+            AI-first workflows, crafting design systems and end-to-end
+            experiences across web and native. Currently with{" "}
+            <Link href="https://meta.com" target="_blank">
+              <span className="text-blue-500 underline decoration-dotted hover:decoration-solid">
+                Meta
+              </span>
+            </Link>{" "}
+            and{" "}
+            <Link href="https://plasmic.app" target="_blank">
+              <span className="text-pink-500 underline decoration-dotted hover:decoration-solid">
+                Plasmic
+              </span>
+            </Link>
+            .
+          </p>
 
           {/* <div>
             Formerly with{" "}
