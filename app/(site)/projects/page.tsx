@@ -87,7 +87,7 @@ export default async function Home() {
               target="_blank"
               className="text-md flex items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary"
             >
-              Twitter
+              My Twitter
               <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
             </Link>
             <Link
@@ -95,7 +95,7 @@ export default async function Home() {
               target="_blank"
               className="text-md flex items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary"
             >
-              LinkedIn
+              My LinkedIn
               <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
             </Link>
             <Link
@@ -103,7 +103,7 @@ export default async function Home() {
               target="_blank"
               className="text-md flex items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary"
             >
-              Book a call
+              Book a call w/ me
               <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
             </Link>
             <Link
@@ -186,7 +186,7 @@ export default async function Home() {
       ></iframe> */}
 
       <div className="mt-16 flex flex-col gap-12">
-        <div className="flex flex-col gap-6 px-6 md:px-12">
+        <div className="flex flex-col px-6 md:px-12">
           <p className="font-bold">Leo Succar</p>
           <p className=" max-w-xl text-stone-500">
             Product Designer experienced in systems and tools, focused on
