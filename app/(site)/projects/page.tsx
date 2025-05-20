@@ -189,23 +189,25 @@ export default async function Home() {
         <div className="flex flex-col gap-6 px-6 md:px-12">
           <Link href="/">
             <p className="font-bold">Leo Succar</p>
-            <p className=" text-stone-500">Interface Designer</p>
+            <p className=" max-w-xl text-stone-500">
+              Product Designer experienced in systems and tools, focused on
+              AI-first workflows, crafting design systems and end-to-end
+              experiences across web and native. Currently with{" "}
+              <Link href="https://meta.com" target="_blank">
+                <span className="text-blue-500 underline decoration-dotted hover:decoration-solid">
+                  Meta
+                </span>
+              </Link>{" "}
+              and{" "}
+              <Link href="https://plasmic.app" target="_blank">
+                <span className="text-pink-500 underline decoration-dotted hover:decoration-solid">
+                  Plasmic
+                </span>
+              </Link>
+              .
+            </p>
           </Link>
-          <div>
-            Currently with{" "}
-            <Link href="https://meta.com" target="_blank">
-              <span className="text-blue-500 underline decoration-dotted hover:decoration-solid">
-                Meta
-              </span>
-            </Link>{" "}
-            and{" "}
-            <Link href="https://plasmic.app" target="_blank">
-              <span className="text-pink-500 underline decoration-dotted hover:decoration-solid">
-                Plasmic
-              </span>
-            </Link>
-            .
-          </div>
+
           {/* <div>
             Formerly with{" "}
             <Link href="https://meta.com" target="_blank">
@@ -240,7 +242,7 @@ export default async function Home() {
 
           <ul className="flex flex-col gap-4 px-6  md:px-12">
             <li className="flex w-full items-center justify-between">
-              <div className="flex flex-row items-center gap-4">
+              <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-me.svg" />
                   <AvatarFallback className="text-stone-500">P</AvatarFallback>
@@ -265,7 +267,7 @@ export default async function Home() {
             </li>
             <Separator />
             <li className="flex w-full items-center justify-between">
-              <div className="flex flex-row items-center gap-4">
+              <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-pl.svg" />
                   <AvatarFallback className="text-stone-500">P</AvatarFallback>
@@ -288,7 +290,7 @@ export default async function Home() {
             </li>
             <Separator />
             <li className="flex w-full items-center justify-between">
-              <div className="flex flex-row items-center gap-4">
+              <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-bg.svg" />
                   <AvatarFallback className="text-stone-500">B</AvatarFallback>
@@ -313,7 +315,7 @@ export default async function Home() {
             </li>
             <Separator />
             <li className="flex w-full items-center justify-between">
-              <div className="flex flex-row items-center gap-4">
+              <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-fb.svg" />
                   <AvatarFallback className="text-stone-500">F</AvatarFallback>
@@ -343,7 +345,7 @@ export default async function Home() {
             </li>
             <Separator />
             <li className="flex w-full items-center justify-between">
-              <div className="flex flex-row items-center gap-4">
+              <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-sg.svg" />
                   <AvatarFallback className="text-stone-500">S</AvatarFallback>
@@ -368,7 +370,7 @@ export default async function Home() {
             </li>
             <Separator />
             <li className="flex w-full items-center justify-between">
-              <div className="flex flex-row items-center gap-4">
+              <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-ze.svg" />
                   <AvatarFallback className="text-stone-500">Z</AvatarFallback>
@@ -397,7 +399,7 @@ export default async function Home() {
             </li>
             <Separator />
             <li className="flex w-full items-center justify-between">
-              <div className="flex flex-row items-center gap-4">
+              <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-sd.svg" />
                   <AvatarFallback className="text-stone-500">S</AvatarFallback>
@@ -460,7 +462,7 @@ export default async function Home() {
           </div>
 
           <div className="relative -mb-12 flex w-full snap-x snap-mandatory items-center gap-6 overflow-x-auto px-6 pb-12 md:px-12">
-            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-2 rounded-sm border border-yellow-500/20 bg-yellow-50/40 p-6 text-yellow-950 dark:border-yellow-500/10 dark:bg-yellow-950/20 dark:text-yellow-50/80">
+            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-4 rounded-sm border border-yellow-500/20 bg-yellow-50/40 p-6 text-yellow-950 dark:border-yellow-500/10 dark:bg-yellow-950/20 dark:text-yellow-50/80">
               <div className={playfairDisplay.className}>
                 <blockquote className="flex flex-col gap-2 text-xl leading-[1.5]">
                   <p>
@@ -483,15 +485,22 @@ export default async function Home() {
                   </p>
                 </blockquote>
               </div>
-              <div className="flex flex-col  ">
-                <p>James Yu</p>
-                <p className="text-yellow-900/60 dark:text-yellow-50/40">
-                  Senior Software Engineer, Meta
-                </p>
+              <div className="flex flex-row items-center gap-3">
+                <Avatar>
+                  <AvatarFallback className="text-yellow-900/80 dark:text-yellow-50/80">
+                    JY
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col">
+                  <p>James Yu</p>
+                  <p className="text-yellow-900/60 dark:text-yellow-50/40">
+                    Senior Software Engineer, Meta
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-2 rounded-sm border border-lime-500/20 bg-lime-50/40 p-6 text-lime-950 dark:border-lime-500/10 dark:bg-lime-950/20 dark:text-lime-50/80">
+            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-4 rounded-sm border border-lime-500/20 bg-lime-50/40 p-6 text-lime-950 dark:border-lime-500/10 dark:bg-lime-950/20 dark:text-lime-50/80">
               <div className={playfairDisplay.className}>
                 <blockquote className="flex flex-col gap-2 text-xl leading-[1.5]">
                   <p>
@@ -514,15 +523,22 @@ export default async function Home() {
                   </p>
                 </blockquote>
               </div>
-              <div className="flex flex-col  ">
-                <p>Alexander Lambert</p>
-                <p className="text-lime-900/60 dark:text-lime-50/40">
-                  Design Director, BitGo
-                </p>
+              <div className="flex flex-row items-center gap-3">
+                <Avatar>
+                  <AvatarFallback className="text-lime-900/80 dark:text-lime-50/80">
+                    AL
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col">
+                  <p>Alexander Lambert</p>
+                  <p className="text-lime-900/60 dark:text-lime-50/40">
+                    Design Director, BitGo
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-2 rounded-sm border border-green-500/20 bg-green-50/40 p-6 text-green-950 dark:border-green-500/10 dark:bg-green-950/20 dark:text-green-50/80">
+            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-4 rounded-sm border border-green-500/20 bg-green-50/40 p-6 text-green-950 dark:border-green-500/10 dark:bg-green-950/20 dark:text-green-50/80">
               <div className={playfairDisplay.className}>
                 <blockquote className="flex flex-col gap-2 text-xl leading-[1.5]">
                   &#34;Rarely do you meet a creative with such a lethal
@@ -533,15 +549,22 @@ export default async function Home() {
                   of their element.&#34;
                 </blockquote>
               </div>
-              <div className="flex flex-col  ">
-                <p>Justin Harsch</p>
-                <p className="text-green-900/60 dark:text-green-50/40">
-                  Design Director, Benenson Strategy Group
-                </p>
+              <div className="flex flex-row items-center gap-3">
+                <Avatar>
+                  <AvatarFallback className="text-green-900/80 dark:text-green-50/80">
+                    JH
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col">
+                  <p>Justin Harsch</p>
+                  <p className="text-green-900/60 dark:text-green-50/40">
+                    Design Director, Benenson Strategy Group
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-2 rounded-sm border border-emerald-500/20 bg-emerald-50/40 p-6 text-emerald-950 dark:border-emerald-500/10 dark:bg-emerald-950/20 dark:text-emerald-50/80">
+            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-4 rounded-sm border border-emerald-500/20 bg-emerald-50/40 p-6 text-emerald-950 dark:border-emerald-500/10 dark:bg-emerald-950/20 dark:text-emerald-50/80">
               <div className={playfairDisplay.className}>
                 <blockquote className="flex flex-col gap-2 text-xl leading-[1.5]">
                   &#34;I can&#39;t stress the relief I felt every time Leo and I
@@ -550,15 +573,22 @@ export default async function Home() {
                   every project.&#34;
                 </blockquote>
               </div>
-              <div className="flex flex-col  ">
-                <p>Melissa Bazillion</p>
-                <p className="text-emerald-900/60 dark:text-emerald-50/40">
-                  Marketing Strategist, MassMutual
-                </p>
+              <div className="flex flex-row items-center gap-3">
+                <Avatar>
+                  <AvatarFallback className="text-emerald-900/80 dark:text-emerald-50/80">
+                    MB
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col">
+                  <p>Melissa Bazillion</p>
+                  <p className="text-emerald-900/60 dark:text-emerald-50/40">
+                    Marketing Strategist, MassMutual
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-2 rounded-sm border border-teal-500/20 bg-teal-50/40 p-6 text-teal-950 dark:border-teal-500/10 dark:bg-teal-950/20 dark:text-teal-50/80">
+            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-4 rounded-sm border border-teal-500/20 bg-teal-50/40 p-6 text-teal-950 dark:border-teal-500/10 dark:bg-teal-950/20 dark:text-teal-50/80">
               <div className={playfairDisplay.className}>
                 <blockquote className="flex flex-col gap-2 text-xl leading-[1.5]">
                   &#34;[Leo is] killing it on the design front! Thank you so
@@ -568,11 +598,18 @@ export default async function Home() {
                   world!&#34;
                 </blockquote>
               </div>
-              <div className="flex flex-col  ">
-                <p>Bryce Truman</p>
-                <p className="text-teal-900/60 dark:text-teal-50/40">
-                  Product Manager, BitGo
-                </p>
+              <div className="flex flex-row items-center gap-3">
+                <Avatar>
+                  <AvatarFallback className="text-teal-900/80 dark:text-teal-50/80">
+                    BT
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col">
+                  <p>Bryce Truman</p>
+                  <p className="text-teal-900/60 dark:text-teal-50/40">
+                    Product Manager, BitGo
+                  </p>
+                </div>
               </div>
             </div>
           </div>
