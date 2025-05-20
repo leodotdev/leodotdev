@@ -117,7 +117,7 @@ export default async function Home() {
             </Link>
             <DropdownMenu>
               <DropdownMenuTrigger className="text-md flex items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary hover:no-underline ">
-                Résumé
+                My résumés
                 <TbChevronDown className="h-4 w-4 text-stone-500" />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
@@ -235,7 +235,9 @@ export default async function Home() {
         <div>
           <div className="px-6 pb-12 md:px-12">
             <div className="font-bold">Experience</div>
-            <div className=" text-stone-500">Work and employment history.</div>
+            <div className=" text-stone-500">
+              My work and employment history.
+            </div>
           </div>
 
           <ul className="flex flex-col gap-4 px-6  md:px-12">
@@ -651,7 +653,7 @@ export default async function Home() {
           <div className="px-6 pb-12 md:px-12">
             <div className="font-bold">Projects</div>
             <div className=" text-stone-500">
-              Shots and embeds of past work.
+              Shots and embeds of my past work.
             </div>
           </div>
 
