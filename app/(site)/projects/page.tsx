@@ -7,9 +7,9 @@ import urlBuilder from "@sanity/image-url";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 
-import { Playpen_Sans } from "next/font/google";
-const playpen = Playpen_Sans({
-  weight: "300", // Specify the weight you need
+import { Playfair_Display } from "next/font/google";
+const playfairDisplay = Playfair_Display({
+  weight: "400", // Specify the weight you need (Playfair Display supports multiple weights)
   subsets: ["latin"], // Optional: specify subsets
 });
 
@@ -176,16 +176,16 @@ export default async function Home() {
         </div>
       </div>
 
-      {/* unicorn */}
+      {/* unicorn
       <iframe
         src="https://unicorn.studio/embed/AyFghFWYp37UJfD7Sn7P?preview=true"
         // width="1022px"
         height="300px"
         loading="lazy"
         className="-mt-12 w-full mix-blend-exclusion dark:mix-blend-lighten"
-      ></iframe>
+      ></iframe> */}
 
-      <div className="flex flex-col gap-12">
+      <div className="mt-16 flex flex-col gap-12">
         <div className="flex flex-col gap-6 px-6 md:px-12">
           <Link href="/">
             <p className="font-bold">Leo Succar</p>
@@ -427,7 +427,7 @@ export default async function Home() {
 
         {/* <Card className="rounded-3xl bg-white dark:bg-black/50 shadow-none dark:bg-black/50">
           <CardHeader>
-            <CardTitle className="text-lg">Favorite Tools</CardTitle>
+            <CardTitle className=">Favorite Tools</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <div className="flex flex-col gap-1">
@@ -460,16 +460,19 @@ export default async function Home() {
           </div>
 
           <div className="relative -mb-12 flex w-full snap-x snap-mandatory items-center gap-6 overflow-x-auto px-6 pb-12 md:px-12">
-            <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-yellow-500/20 bg-yellow-50/40 p-6 text-yellow-950 dark:border-yellow-500/10 dark:bg-yellow-950/20 dark:text-yellow-50/80">
-              <div className={playpen.className}>
-                <blockquote className="flex flex-col gap-2 ">
+            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-2 rounded-sm border border-yellow-500/20 bg-yellow-50/40 p-6 text-yellow-950 dark:border-yellow-500/10 dark:bg-yellow-950/20 dark:text-yellow-50/80">
+              <div className={playfairDisplay.className}>
+                <blockquote className="flex flex-col gap-2 text-xl leading-[1.5]">
                   <p>
                     &#34;Leo volunteered to design for the Sticker Admin Tool
                     for the Story Creation Team, which is one of our most
                     important tools, to be used to deploy/manage sticker assets
-                    in sticker tray for public users. Historically, it has been
-                    a huge pain point as the old tool is lacking a lot of
-                    functionalities and very inefficient to use.
+                    in sticker tray for public users.
+                  </p>
+                  <p>
+                    Historically, it has been a huge pain point as the old tool
+                    is lacking a lot of functionalities and very inefficient to
+                    use.
                   </p>
                   <p>
                     Leo dedicated himself to this project with full passion and
@@ -488,9 +491,9 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-lime-500/20 bg-lime-50/40 p-6 text-lime-950 dark:border-lime-500/10 dark:bg-lime-950/20 dark:text-lime-50/80">
-              <div className={playpen.className}>
-                <blockquote className="flex flex-col gap-2 ">
+            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-2 rounded-sm border border-lime-500/20 bg-lime-50/40 p-6 text-lime-950 dark:border-lime-500/10 dark:bg-lime-950/20 dark:text-lime-50/80">
+              <div className={playfairDisplay.className}>
+                <blockquote className="flex flex-col gap-2 text-xl leading-[1.5]">
                   <p>
                     &#34;Leo is a deep thinker who lives in-between design and
                     code. While at BitGo, Leo took ownership of the design
@@ -498,9 +501,12 @@ export default async function Home() {
                     within the product, and bridging those components with our
                     UI repository. He&#39;s excited to live in these two worlds
                     by supporting both the design and front-end engineering
-                    teams. Previously, he led some of BitGo&#39;s newest market
-                    growing spaces, including BitGo Prime and Go products,
-                    helping connect our users with partner services.
+                    teams.
+                  </p>
+                  <p>
+                    Previously, he led some of BitGo&#39;s newest market growing
+                    spaces, including BitGo Prime and Go products, helping
+                    connect our users with partner services.
                   </p>
                   <p>
                     Leo has a level head and pragmatic style required to design,
@@ -516,9 +522,9 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-green-500/20 bg-green-50/40 p-6 text-green-950 dark:border-green-500/10 dark:bg-green-950/20 dark:text-green-50/80">
-              <div className={playpen.className}>
-                <blockquote className="">
+            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-2 rounded-sm border border-green-500/20 bg-green-50/40 p-6 text-green-950 dark:border-green-500/10 dark:bg-green-950/20 dark:text-green-50/80">
+              <div className={playfairDisplay.className}>
+                <blockquote className="flex flex-col gap-2 text-xl leading-[1.5]">
                   &#34;Rarely do you meet a creative with such a lethal
                   combination of technical skills and fundamental design
                   ability. Leo can handle any project from classic graphic
@@ -535,9 +541,9 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-emerald-500/20 bg-emerald-50/40 p-6 text-emerald-950 dark:border-emerald-500/10 dark:bg-emerald-950/20 dark:text-emerald-50/80">
-              <div className={playpen.className}>
-                <blockquote className="">
+            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-2 rounded-sm border border-emerald-500/20 bg-emerald-50/40 p-6 text-emerald-950 dark:border-emerald-500/10 dark:bg-emerald-950/20 dark:text-emerald-50/80">
+              <div className={playfairDisplay.className}>
+                <blockquote className="flex flex-col gap-2 text-xl leading-[1.5]">
                   &#34;I can&#39;t stress the relief I felt every time Leo and I
                   worked together. He is one of the most reliable partners and
                   brings an incredible amount of creativity and expertise to
@@ -552,9 +558,9 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="flex h-fit max-w-96 shrink-0 snap-center flex-col gap-2 rounded-sm border border-teal-500/20 bg-teal-50/40 p-6 text-teal-950 dark:border-teal-500/10 dark:bg-teal-950/20 dark:text-teal-50/80">
-              <div className={playpen.className}>
-                <blockquote className="">
+            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-2 rounded-sm border border-teal-500/20 bg-teal-50/40 p-6 text-teal-950 dark:border-teal-500/10 dark:bg-teal-950/20 dark:text-teal-50/80">
+              <div className={playfairDisplay.className}>
+                <blockquote className="flex flex-col gap-2 text-xl leading-[1.5]">
                   &#34;[Leo is] killing it on the design front! Thank you so
                   much for your hard work and always pushing for what&#39;s best
                   for the customer! It&#39;s been super fun working together and
