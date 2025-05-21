@@ -187,7 +187,7 @@ export default async function Home() {
 
       <div className="mt-16 flex flex-col gap-12">
         <div className="flex flex-col px-6 md:px-12">
-          <p className="font-bold">Leo Succar</p>
+          <p className="font-semibold">Leo Succar</p>
           <p className=" max-w-xl text-stone-500">
             Product Designer experienced in systems and tools, focused on
             AI-first workflows, crafting design systems and end-to-end
@@ -234,7 +234,7 @@ export default async function Home() {
         {/* experience */}
         <div>
           <div className="px-6 pb-12 md:px-12">
-            <div className="font-bold">Experience</div>
+            <div className="font-semibold">Experience</div>
             <div className=" text-stone-500">
               My work and employment history.
             </div>
@@ -455,16 +455,16 @@ export default async function Home() {
 
         <div>
           <div className="px-6 pb-12 md:px-12">
-            <div className="font-bold">References</div>
+            <div className="font-semibold">References</div>
             <div className=" text-stone-500">
               Folks I&#39;ve had the pleasure of working with.
             </div>
           </div>
 
           <div className="relative -mb-12 flex w-full snap-x snap-mandatory items-center gap-6 overflow-x-auto px-6 pb-12 md:px-12">
-            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-4 rounded-sm border border-yellow-500/20 bg-yellow-50/40 p-6 text-yellow-950 dark:border-yellow-500/10 dark:bg-yellow-950/20 dark:text-yellow-50/80">
+            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-4 rounded-xl border border-yellow-500/20 bg-yellow-50/40 p-6 text-yellow-950 dark:border-yellow-500/10 dark:bg-yellow-950/20 dark:text-yellow-50/80">
               <div className={playfairDisplay.className}>
-                <blockquote className="flex flex-col gap-2 text-xl leading-[1.5]">
+                <blockquote className="flex flex-col gap-2 text-lg font-extralight leading-[1.5]">
                   <p>
                     &#34;Leo volunteered to design for the Sticker Admin Tool
                     for the Story Creation Team, which is one of our most
@@ -487,7 +487,7 @@ export default async function Home() {
               </div>
               <div className="flex flex-row items-center gap-3">
                 <Avatar>
-                  <AvatarFallback className="text-yellow-900/80 dark:text-yellow-50/80">
+                  <AvatarFallback className="bg-yellow-500/20 text-yellow-900/80 dark:text-yellow-50/80">
                     JY
                   </AvatarFallback>
                 </Avatar>
@@ -500,9 +500,9 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-4 rounded-sm border border-lime-500/20 bg-lime-50/40 p-6 text-lime-950 dark:border-lime-500/10 dark:bg-lime-950/20 dark:text-lime-50/80">
+            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-4 rounded-xl border border-lime-500/20 bg-lime-50/40 p-6 text-lime-950 dark:border-lime-500/10 dark:bg-lime-950/20 dark:text-lime-50/80">
               <div className={playfairDisplay.className}>
-                <blockquote className="flex flex-col gap-2 text-xl leading-[1.5]">
+                <blockquote className="flex flex-col gap-2 text-lg font-extralight leading-[1.5]">
                   <p>
                     &#34;Leo is a deep thinker who lives in-between design and
                     code. While at BitGo, Leo took ownership of the design
@@ -525,7 +525,7 @@ export default async function Home() {
               </div>
               <div className="flex flex-row items-center gap-3">
                 <Avatar>
-                  <AvatarFallback className="text-lime-900/80 dark:text-lime-50/80">
+                  <AvatarFallback className="bg-lime-500/20 text-lime-900/80 dark:text-lime-50/80">
                     AL
                   </AvatarFallback>
                 </Avatar>
@@ -538,9 +538,9 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-4 rounded-sm border border-green-500/20 bg-green-50/40 p-6 text-green-950 dark:border-green-500/10 dark:bg-green-950/20 dark:text-green-50/80">
+            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-4 rounded-xl border border-green-500/20 bg-green-50/40 p-6 text-green-950 dark:border-green-500/10 dark:bg-green-950/20 dark:text-green-50/80">
               <div className={playfairDisplay.className}>
-                <blockquote className="flex flex-col gap-2 text-xl leading-[1.5]">
+                <blockquote className="flex flex-col gap-2 text-lg font-extralight leading-[1.5]">
                   &#34;Rarely do you meet a creative with such a lethal
                   combination of technical skills and fundamental design
                   ability. Leo can handle any project from classic graphic
@@ -551,7 +551,7 @@ export default async function Home() {
               </div>
               <div className="flex flex-row items-center gap-3">
                 <Avatar>
-                  <AvatarFallback className="text-green-900/80 dark:text-green-50/80">
+                  <AvatarFallback className="bg-green-500/20 text-green-900/80 dark:text-green-50/80">
                     JH
                   </AvatarFallback>
                 </Avatar>
@@ -564,9 +564,9 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-4 rounded-sm border border-emerald-500/20 bg-emerald-50/40 p-6 text-emerald-950 dark:border-emerald-500/10 dark:bg-emerald-950/20 dark:text-emerald-50/80">
+            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-4 rounded-xl border border-emerald-500/20 bg-emerald-50/40 p-6 text-emerald-950 dark:border-emerald-500/10 dark:bg-emerald-950/20 dark:text-emerald-50/80">
               <div className={playfairDisplay.className}>
-                <blockquote className="flex flex-col gap-2 text-xl leading-[1.5]">
+                <blockquote className="flex flex-col gap-2 text-lg font-extralight leading-[1.5]">
                   &#34;I can&#39;t stress the relief I felt every time Leo and I
                   worked together. He is one of the most reliable partners and
                   brings an incredible amount of creativity and expertise to
@@ -575,7 +575,7 @@ export default async function Home() {
               </div>
               <div className="flex flex-row items-center gap-3">
                 <Avatar>
-                  <AvatarFallback className="text-emerald-900/80 dark:text-emerald-50/80">
+                  <AvatarFallback className="bg-emerald-500/20 text-emerald-900/80 dark:text-emerald-50/80">
                     MB
                   </AvatarFallback>
                 </Avatar>
@@ -588,9 +588,9 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-4 rounded-sm border border-teal-500/20 bg-teal-50/40 p-6 text-teal-950 dark:border-teal-500/10 dark:bg-teal-950/20 dark:text-teal-50/80">
+            <div className="flex h-fit max-w-lg shrink-0 snap-center flex-col gap-4 rounded-xl border border-teal-500/20 bg-teal-50/40 p-6 text-teal-950 dark:border-teal-500/10 dark:bg-teal-950/20 dark:text-teal-50/80">
               <div className={playfairDisplay.className}>
-                <blockquote className="flex flex-col gap-2 text-xl leading-[1.5]">
+                <blockquote className="flex flex-col gap-2 text-lg font-extralight leading-[1.5]">
                   &#34;[Leo is] killing it on the design front! Thank you so
                   much for your hard work and always pushing for what&#39;s best
                   for the customer! It&#39;s been super fun working together and
@@ -600,7 +600,7 @@ export default async function Home() {
               </div>
               <div className="flex flex-row items-center gap-3">
                 <Avatar>
-                  <AvatarFallback className="text-teal-900/80 dark:text-teal-50/80">
+                  <AvatarFallback className="bg-teal-500/20 text-teal-900/80 dark:text-teal-50/80">
                     BT
                   </AvatarFallback>
                 </Avatar>
@@ -615,7 +615,7 @@ export default async function Home() {
           </div>
         </div>
 
-        {/* <div className="px-6 font-bold md:px-12">Book Shelf</div>
+        {/* <div className="px-6 font-semibold md:px-12">Book Shelf</div>
 
       <ScrollArea className="w-full whitespace-nowrap">
         <div className="flex overflow-x-auto">
@@ -630,7 +630,7 @@ export default async function Home() {
                     width={100}
                     height={200}
                     loading="lazy"
-                    className="flex h-20 w-20 rounded-sm object-cover transition group-hover:scale-[1.5]"
+                    className="flex h-20 w-20 rounded-xl object-cover transition group-hover:scale-[1.5]"
                   />
                 )}
                 <div className="flex items-end justify-between">
@@ -651,17 +651,17 @@ export default async function Home() {
 
         <div>
           <div className="px-6 pb-12 md:px-12">
-            <div className="font-bold">Projects</div>
+            <div className="font-semibold">Projects</div>
             <div className=" text-stone-500">
               Shots and embeds of my past work.
             </div>
           </div>
 
-          <div className="auto-rows grid grid-cols-1 gap-6 md:grid-cols-3 md:px-12">
+          <div className="auto-rows grid grid-cols-1 gap-6 md:grid-cols-2 md:px-12">
             {projects.map((project) => (
               // project card
               <Dialog key={project._id}>
-                <DialogTrigger className="group flex flex-col items-stretch gap-6 overflow-clip rounded-md border bg-secondary p-6 hover:bg-secondary/40 dark:bg-secondary/40 dark:hover:bg-secondary">
+                <DialogTrigger className="group flex flex-col items-stretch gap-6 overflow-clip rounded-xl border bg-secondary p-6 hover:bg-secondary/40 dark:bg-secondary/40 dark:hover:bg-secondary">
                   <div className="flex flex-col text-left  text-stone-950 dark:text-stone-50">
                     <div className="truncate">{project.name}</div>
                     <div className="flex flex-row justify-between text-stone-500">
