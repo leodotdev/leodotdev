@@ -5,30 +5,9 @@ import { createClient } from "next-sanity";
 import urlBuilder from "@sanity/image-url";
 import Link from "next/link";
 import React from "react";
-import {
-  TbArrowLeft,
-  TbArrowRight,
-  TbChevronLeft,
-  TbChevronRight,
-  TbArrowUpRight,
-  TbChevronDown,
-  TbCopy,
-} from "react-icons/tb";
-import { ThemeSwitcher } from "../../../theme-switcher";
-import CopyToClipboard from "@/components/CopyToClipboard";
+import { TbChevronLeft, TbChevronRight } from "react-icons/tb";
 import { BackButton } from "@/components/BackButton";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Navigation } from "@/components/Navigation";
 
 export default async function ProjectPage({
   params,
@@ -75,136 +54,16 @@ export default async function ProjectPage({
   return (
     <div>
       {/* Navigation */}
-      <div className="sticky left-4 right-4 top-4 z-50 px-6 md:px-12">
-        <div className="flex w-full justify-between rounded-3xl border bg-secondary/20 p-1 backdrop-blur-md">
-          <div className="flex w-full flex-1 flex-wrap content-stretch items-stretch justify-stretch gap-1">
-            <BackButton />
-            <Link
-              href="https://twitter.com/leosuccarferre"
-              target="_blank"
-              className="text-md flex items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary"
-            >
-              My Twitter
-              <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
-            </Link>
-            <Link
-              href="https://www.linkedin.com/in/leosuccarferre/"
-              target="_blank"
-              className="text-md flex items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary"
-            >
-              My LinkedIn
-              <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
-            </Link>
-            <Link
-              href="https://cal.com/leo.dev/20min"
-              target="_blank"
-              className="text-md flex items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary"
-            >
-              Let's Chat
-              <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
-            </Link>
-            <Link
-              href=""
-              className="text-md flex cursor-pointer items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary"
-            >
-              <CopyToClipboard className="flex" textToCopy="leo@leo.dev">
-                Copy my email
-                <TbCopy className="h-4 w-4 self-start text-muted-foreground" />
-              </CopyToClipboard>
-            </Link>
-            <DropdownMenu>
-              <DropdownMenuTrigger className="text-md flex items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary hover:no-underline">
-                My résumés
-                <TbChevronDown className="h-4 w-4 text-muted-foreground" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem>
-                  <Link
-                    href="/Leo-SF-Resume-May-2025.pdf"
-                    target="_blank"
-                    className="flex pr-0"
-                  >
-                    Adobe PDF
-                    <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link
-                    href="/Leo-SF-Resume-May-2025.docx"
-                    target="_blank"
-                    className="flex pr-0"
-                  >
-                    Word DOCX
-                    <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link
-                    href="https://docs.google.com/document/d/17uK2emyv7p8VYtYV5M36g3mxQ0CvbhDanzWVnVvtIiE/edit?usp=sharing"
-                    target="_blank"
-                    className="flex pr-0"
-                  >
-                    Google DOC
-                    <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link
-                    href="https://read.cv/leo.dev"
-                    target="_blank"
-                    className="flex pr-0"
-                  >
-                    Read.cv
-                    <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <ThemeSwitcher />
-              </TooltipTrigger>
-              <TooltipContent side="bottom">Theme</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-      </div>
+      <Navigation>
+        <BackButton />
+      </Navigation>
 
       {/* Project Content */}
-      <div className="mx-auto max-w-5xl px-6 py-12 md:px-12">
+      <div className="mx-auto px-6 py-12 md:px-12">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-start justify-between gap-4">
-            <div className="flex flex-col">
-              <h1 className="text-4xl font-bold">{project.name}</h1>
-              <div className="flex flex-wrap gap-1 text-muted-foreground">
-                <span>{project.client}</span>
-                <span className="mx-2">•</span>
-                <span>{project.year}</span>
-                {project.categories && project.categories.length > 0 && (
-                  <>
-                    {project.categories.map(
-                      (category: string, index: number) => (
-                        <React.Fragment key={category}>
-                          <span className="mx-2">•</span>
-                          <span>
-                            {category
-                              .split("-")
-                              .map(
-                                (word) =>
-                                  word.charAt(0).toUpperCase() + word.slice(1),
-                              )
-                              .join(" ")}
-                          </span>
-                        </React.Fragment>
-                      ),
-                    )}
-                  </>
-                )}
-              </div>
-            </div>
+            <h1 className="text-6xl font-bold ">{project.name}</h1>
             {nextProject && (
               <Link
                 href={`/projects/${nextProject.slug}`}
@@ -236,17 +95,54 @@ export default async function ProjectPage({
               </Link>
             )}
           </div>
+        </div>
+
+        {/* Project Metadata and Description */}
+        <div className="mb-8 flex flex-col gap-8 md:flex-row md:gap-12">
+          <div className="md:flex-shrink-0">
+            <dl className="divide-y divide-border">
+              <div className="flex gap-4 py-3">
+                <dt className="w-32 flex-shrink-0 text-sm font-medium">Client</dt>
+                <dd className="flex-1 text-sm text-muted-foreground">
+                  {project.client}
+                </dd>
+              </div>
+              <div className="flex gap-4 py-3">
+                <dt className="w-32 flex-shrink-0 text-sm font-medium">Year</dt>
+                <dd className="flex-1 text-sm text-muted-foreground">
+                  {project.year}
+                </dd>
+              </div>
+              {project.categories && project.categories.length > 0 && (
+                <div className="flex gap-4 py-3">
+                  <dt className="w-32 flex-shrink-0 text-sm font-medium">Categories</dt>
+                  <dd className="flex-1 text-sm text-muted-foreground">
+                    {project.categories.map((category: string, index: number) => (
+                      <span key={category}>
+                        {category
+                          .split("-")
+                          .map(
+                            (word) =>
+                              word.charAt(0).toUpperCase() + word.slice(1),
+                          )
+                          .join(" ")}
+                        {index < project.categories!.length - 1 && ", "}
+                      </span>
+                    ))}
+                  </dd>
+                </div>
+              )}
+            </dl>
+          </div>
 
           {project.description && (
-            <p className="mt-4 text-lg text-muted-foreground">
-              {project.description}
-            </p>
+            <p className="flex-1 text-base md:max-w-xl">{project.description}</p>
           )}
         </div>
 
         {/* Hero Image */}
         {project.image && (
-          <div className="mb-12">
+          <div className="mb-8">
             <Image
               src={project.image}
               alt={project.name}
@@ -259,7 +155,7 @@ export default async function ProjectPage({
 
         {/* Embed */}
         {project.embed && (
-          <div className="mb-12">
+          <div className="mb-8">
             <iframe
               src={project.embed}
               className="aspect-video w-full rounded-lg"
@@ -269,12 +165,12 @@ export default async function ProjectPage({
         )}
 
         {/* Content */}
-        <div className="prose prose-lg dark:prose-invert max-w-none">
+        <div className="flex max-w-none flex-col gap-8">
           <PortableText value={project.content} components={components} />
         </div>
 
         {/* Navigation */}
-        <div className="mt-24 border-t pt-12">
+        <div className="mt-16">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {/* Previous Project */}
             {prevProject ? (
