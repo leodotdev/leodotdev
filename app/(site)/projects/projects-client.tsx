@@ -2,17 +2,9 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { PortableText } from "@portabletext/react";
-import { createClient } from "next-sanity";
-import urlBuilder from "@sanity/image-url";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Project } from "@/types/Project";
+import Link from "next/link";
 
 const categories = [
   { title: "Product Design", value: "product-design" },
@@ -28,12 +20,6 @@ const categories = [
 export function ProjectsClient({ projects }: { projects: Project[] }) {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
-  const client = createClient({
-    projectId: "jyqe7nab",
-    dataset: "production",
-    apiVersion: "2023-10-07",
-  });
-
   // Calculate category counts
   const categoryCounts = categories.reduce(
     (acc, category) => {
@@ -44,25 +30,6 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
     },
     {} as Record<string, number>,
   );
-
-  const ContentImageComponent = ({ value }: { value: any }) => {
-    return (
-      <Image
-        src={urlBuilder(client).image(value).fit("max").auto("format").url()}
-        alt={value.alt || " "}
-        width={0}
-        height={0}
-        sizes="100vw"
-        className="w-full"
-      />
-    );
-  };
-
-  const components = {
-    types: {
-      image: ContentImageComponent,
-    },
-  };
 
   const toggleCategory = (categoryValue: string) => {
     setSelectedCategories((prev) =>
@@ -119,51 +86,30 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
 
       <div className="auto-rows grid grid-cols-1 gap-6 md:grid-cols-2 md:px-12">
         {filteredProjects.map((project) => (
-          <Dialog key={project._id}>
-            <DialogTrigger className="group flex flex-col items-stretch gap-6 overflow-clip rounded-xl border bg-secondary p-6 hover:bg-secondary/40 dark:bg-secondary/40 dark:hover:bg-secondary">
-              <div className="flex flex-col text-left text-foreground">
-                <div className="truncate">{project.name}</div>
-                <div className="flex flex-row justify-between text-muted-foreground">
-                  <div className="flex-1">{project.client}</div>
-                  <div className="text-right">{project.year}</div>
-                </div>
+          <Link 
+            key={project._id}
+            href={`/projects/${project.slug}`}
+            className="group flex flex-col items-stretch gap-6 overflow-clip rounded-xl border bg-secondary p-6 hover:bg-secondary/40 dark:bg-secondary/40 dark:hover:bg-secondary transition-colors"
+          >
+            <div className="flex flex-col text-left text-foreground">
+              <div className="truncate">{project.name}</div>
+              <div className="flex flex-row justify-between text-muted-foreground">
+                <div className="flex-1">{project.client}</div>
+                <div className="text-right">{project.year}</div>
               </div>
+            </div>
 
-              {project.image && (
-                <Image
-                  src={project.image}
-                  alt={project.name}
-                  width={800}
-                  height={400}
-                  loading="lazy"
-                  className="-mb-40 aspect-[4/3] rounded-sm object-cover transition group-hover:-translate-y-[44px] group-hover:shadow-2xl md:-mb-28"
-                />
-              )}
-            </DialogTrigger>
-
-            <DialogContent className="max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] overflow-auto rounded-lg md:max-w-5xl">
-              <DialogHeader>{project.name}</DialogHeader>
+            {project.image && (
               <Image
                 src={project.image}
                 alt={project.name}
-                width={1200}
-                height={800}
+                width={800}
+                height={400}
                 loading="lazy"
-                className="w-100 object-cover"
+                className="-mb-40 aspect-[4/3] rounded-sm object-cover transition group-hover:-translate-y-[44px] group-hover:shadow-2xl md:-mb-28"
               />
-              <div className="text-md flex flex-col gap-6 text-foreground">
-                {project.embed && (
-                  <iframe
-                    height="600"
-                    src={project.embed}
-                    allowFullScreen
-                    className="hidden md:inline"
-                  ></iframe>
-                )}
-                <PortableText value={project.content} components={components} />
-              </div>
-            </DialogContent>
-          </Dialog>
+            )}
+          </Link>
         ))}
       </div>
     </div>

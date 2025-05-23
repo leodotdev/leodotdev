@@ -17,7 +17,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "leo.dev",
-  description: "Software Designer",
+  description: "Web, Software, Product Designer",
   icons: {
     icon: { url: "/icon.svg", type: "image/svg+xml", sizes: "any" },
   },

@@ -24,9 +24,9 @@ export const ThemeSwitcher = () => {
       className="rounded-full bg-transparent hover:bg-secondary/80"
     >
       {theme === "light" ? (
-        <Image src="new-moon-face.svg" alt="Dark" width={24} height={24} />
+        <Image src="/new-moon-face.svg" alt="Dark" width={24} height={24} />
       ) : (
-        <Image src="sun-with-face.svg" alt="Dark" width={24} height={24} />
+        <Image src="/sun-with-face.svg" alt="Light" width={24} height={24} />
       )}
     </Button>
   );

@@ -48,6 +48,7 @@ import Link from "next/link";
 
 import { TbArrowUpRight, TbChevronDown, TbCopy } from "react-icons/tb";
 import { ProjectsClient } from "./projects-client";
+import { ProjectsWrapper } from "./projects-wrapper";
 
 export default async function Home() {
   const projects = await getProjects();
@@ -78,7 +79,8 @@ export default async function Home() {
   };
 
   return (
-    <div>
+    <ProjectsWrapper>
+      <div>
       {/* navigation */}
       <div className="sticky left-4 right-4 top-4 z-50 px-6  md:px-12">
         <div className="flex w-full justify-between rounded-3xl border bg-secondary/20 p-1 backdrop-blur-md">
@@ -246,9 +248,11 @@ export default async function Home() {
               <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-me.svg" />
-                  <AvatarFallback className="text-muted-foreground">P</AvatarFallback>
+                  <AvatarFallback className="text-muted-foreground">
+                    P
+                  </AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col">
+                <div className="flex flex-col md:flex-row md:gap-2">
                   <a
                     className="underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
                     href="https://www.meta.com"
@@ -256,14 +260,20 @@ export default async function Home() {
                   >
                     Meta
                   </a>
+                  <span className="hidden text-muted-foreground md:inline">
+                    •
+                  </span>
                   <div className="italic text-muted-foreground">
                     Product Designer (Contract)
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col items-end text-end">
-                <p>2024–Present</p>
+              <div className="flex flex-col items-end text-end md:flex-row md:gap-2">
                 <p className="text-muted-foreground">Remote</p>
+                <span className="hidden text-muted-foreground md:inline">
+                  •
+                </span>
+                <p>2024–Present</p>
               </div>
             </li>
             <Separator />
@@ -271,22 +281,32 @@ export default async function Home() {
               <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-pl.svg" />
-                  <AvatarFallback className="text-muted-foreground">P</AvatarFallback>
+                  <AvatarFallback className="text-muted-foreground">
+                    P
+                  </AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col">
+                <div className="flex flex-col md:flex-row md:gap-2">
                   <a
-                    className="w-fit  underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+                    className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
                     href="https://plasmic.app"
                     target="_blank"
                   >
                     Plasmic
                   </a>
-                  <div className="italic text-muted-foreground">Founding Designer</div>
+                  <span className="hidden text-muted-foreground md:inline">
+                    •
+                  </span>
+                  <div className="italic text-muted-foreground">
+                    Founding Designer
+                  </div>
                 </div>
               </div>
-              <div className="flex flex-col items-end text-end">
-                <p>2020–Present</p>
+              <div className="flex flex-col items-end text-end md:flex-row md:gap-2">
                 <p className="text-muted-foreground">Remote</p>
+                <span className="hidden text-muted-foreground md:inline">
+                  •
+                </span>
+                <p>2020–Present</p>
               </div>
             </li>
             <Separator />
@@ -294,24 +314,32 @@ export default async function Home() {
               <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-bg.svg" />
-                  <AvatarFallback className="text-muted-foreground">B</AvatarFallback>
+                  <AvatarFallback className="text-muted-foreground">
+                    B
+                  </AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col">
+                <div className="flex flex-col md:flex-row md:gap-2">
                   <a
-                    className="w-fit  underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+                    className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
                     href="https://www.bitgo.com/"
                     target="_blank"
                   >
                     BitGo
                   </a>
+                  <span className="hidden text-muted-foreground md:inline">
+                    •
+                  </span>
                   <div className="italic text-muted-foreground">
                     Senior Product & Design Systems Designer (Contract)
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col items-end text-end">
-                <p>2023–&#39;24</p>
+              <div className="flex flex-col items-end text-end md:flex-row md:gap-2">
                 <p className="text-muted-foreground">Remote</p>
+                <span className="hidden text-muted-foreground md:inline">
+                  •
+                </span>
+                <p>2023–&#39;24</p>
               </div>
             </li>
             <Separator />
@@ -319,9 +347,11 @@ export default async function Home() {
               <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-fb.svg" />
-                  <AvatarFallback className="text-muted-foreground">F</AvatarFallback>
+                  <AvatarFallback className="text-muted-foreground">
+                    F
+                  </AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col">
+                <div className="flex flex-col md:flex-row md:gap-2">
                   <div>
                     Facebook (now{" "}
                     <a
@@ -333,15 +363,20 @@ export default async function Home() {
                     </a>
                     )
                   </div>
-                  <div className="text-muted-foreground">
-                    <i>Product & Design Systems Designer</i>, xDesign & Core
-                    Systems
+                  <span className="hidden text-muted-foreground md:inline">
+                    •
+                  </span>
+                  <div className="italic text-muted-foreground">
+                    Product & Design Systems Designer
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col items-end text-end">
-                <p>2018–&#39;20</p>
+              <div className="flex flex-col items-end text-end md:flex-row md:gap-2">
                 <p className="text-muted-foreground">Menlo Park, CA</p>
+                <span className="hidden text-muted-foreground md:inline">
+                  •
+                </span>
+                <p>2018–&#39;20</p>
               </div>
             </li>
             <Separator />
@@ -349,24 +384,32 @@ export default async function Home() {
               <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-sg.svg" />
-                  <AvatarFallback className="text-muted-foreground">S</AvatarFallback>
+                  <AvatarFallback className="text-muted-foreground">
+                    S
+                  </AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col">
+                <div className="flex flex-col md:flex-row md:gap-2">
                   <a
-                    className="w-fit  underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
+                    className="underline decoration-dotted hover:text-blue-500  hover:decoration-solid"
                     href="https://sourcegraph.com"
                     target="_blank"
                   >
                     Sourcegraph
                   </a>
+                  <span className="hidden text-muted-foreground md:inline">
+                    •
+                  </span>
                   <div className="italic text-muted-foreground">
                     Lead Product Designer
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col items-end text-end">
-                <p>2017–&#39;18</p>
+              <div className="flex flex-col items-end text-end md:flex-row md:gap-2">
                 <p className="text-muted-foreground">San Francisco, CA</p>
+                <span className="hidden text-muted-foreground md:inline">
+                  •
+                </span>
+                <p>2017–&#39;18</p>
               </div>
             </li>
             <Separator />
@@ -374,9 +417,11 @@ export default async function Home() {
               <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-ze.svg" />
-                  <AvatarFallback className="text-muted-foreground">Z</AvatarFallback>
+                  <AvatarFallback className="text-muted-foreground">
+                    Z
+                  </AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col">
+                <div className="flex flex-col md:flex-row md:gap-2">
                   <div>
                     Zenefits (now{" "}
                     <a
@@ -388,14 +433,20 @@ export default async function Home() {
                     </a>
                     )
                   </div>
-                  <div className="text-muted-foreground">
-                    <i>Senior Product Designer</i>
+                  <span className="hidden text-muted-foreground md:inline">
+                    •
+                  </span>
+                  <div className="italic text-muted-foreground">
+                    Senior Product Designer
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col items-end text-end">
-                <p>2016</p>
+              <div className="flex flex-col items-end text-end md:flex-row md:gap-2">
                 <p className="text-muted-foreground">San Francisco, CA</p>
+                <span className="hidden text-muted-foreground md:inline">
+                  •
+                </span>
+                <p>2016</p>
               </div>
             </li>
             <Separator />
@@ -403,9 +454,11 @@ export default async function Home() {
               <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-sd.svg" />
-                  <AvatarFallback className="text-muted-foreground">S</AvatarFallback>
+                  <AvatarFallback className="text-muted-foreground">
+                    S
+                  </AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col">
+                <div className="flex flex-col md:flex-row md:gap-2">
                   <div>
                     SeamlessDocs (now{" "}
                     <a
@@ -417,12 +470,20 @@ export default async function Home() {
                     </a>
                     )
                   </div>
-                  <div className="italic text-muted-foreground">Product Designer</div>
+                  <span className="hidden text-muted-foreground md:inline">
+                    •
+                  </span>
+                  <div className="italic text-muted-foreground">
+                    Product Designer
+                  </div>
                 </div>
               </div>
-              <div className="flex flex-col items-end text-end">
-                <p>2014–&#39;15</p>
+              <div className="flex flex-col items-end text-end md:flex-row md:gap-2">
                 <p className="text-muted-foreground">Miami, FL</p>
+                <span className="hidden text-muted-foreground md:inline">
+                  •
+                </span>
+                <p>2014–&#39;15</p>
               </div>
             </li>
           </ul>
@@ -505,7 +566,7 @@ export default async function Home() {
               <div className={playfairDisplay.className}>
                 <blockquote className="flex flex-col gap-2 text-lg font-extralight leading-[1.5]">
                   <p>
-                    &#34;Leo is a deep thinker who lives in-between design and
+                    &#34;Leo is a deep thinker who lives in between design and
                     code. While at BitGo, Leo took ownership of the design
                     system by streamlining components, testing new UI elements
                     within the product, and bridging those components with our
@@ -699,5 +760,6 @@ export default async function Home() {
         </div>
       </div>
     </div>
+    </ProjectsWrapper>
   );
 }

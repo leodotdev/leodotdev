@@ -10,5 +10,6 @@ export type Project = {
     image: string;
     embed: string;
     categories?: string[];
+    description?: string;
     content: PortableTextBlock[];
 }
