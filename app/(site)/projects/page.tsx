@@ -47,6 +47,7 @@ import {
 import Link from "next/link";
 
 import { TbArrowUpRight, TbChevronDown, TbCopy } from "react-icons/tb";
+import { ProjectsClient } from "./projects-client";
 
 export default async function Home() {
   const projects = await getProjects();
@@ -88,7 +89,7 @@ export default async function Home() {
               className="text-md flex items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary"
             >
               My Twitter
-              <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+              <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
             </Link>
             <Link
               href="https://www.linkedin.com/in/leosuccarferre/"
@@ -96,7 +97,7 @@ export default async function Home() {
               className="text-md flex items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary"
             >
               My LinkedIn
-              <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+              <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
             </Link>
             <Link
               href="https://cal.com/leo.dev/20min"
@@ -104,7 +105,7 @@ export default async function Home() {
               className="text-md flex items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary"
             >
               Book a call w/ me
-              <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+              <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
             </Link>
             <Link
               href=""
@@ -112,13 +113,13 @@ export default async function Home() {
             >
               <CopyToClipboard className="flex" textToCopy="leo@leo.dev">
                 Copy my email
-                <TbCopy className="h-4 w-4 self-start text-stone-500" />
+                <TbCopy className="h-4 w-4 self-start text-muted-foreground" />
               </CopyToClipboard>
             </Link>
             <DropdownMenu>
               <DropdownMenuTrigger className="text-md flex items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary hover:no-underline ">
                 My résumés
-                <TbChevronDown className="h-4 w-4 text-stone-500" />
+                <TbChevronDown className="h-4 w-4 text-muted-foreground" />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem>
@@ -128,7 +129,7 @@ export default async function Home() {
                     className="flex pr-0"
                   >
                     Adobe PDF
-                    <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+                    <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
@@ -138,7 +139,7 @@ export default async function Home() {
                     className="flex pr-0"
                   >
                     Word DOCX
-                    <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+                    <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
@@ -148,7 +149,7 @@ export default async function Home() {
                     className="flex pr-0"
                   >
                     Google DOC
-                    <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+                    <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
                   </Link>
                 </DropdownMenuItem>
 
@@ -159,7 +160,7 @@ export default async function Home() {
                     className="flex pr-0"
                   >
                     Read.cv
-                    <TbArrowUpRight className="h-4 w-4 self-start text-stone-500" />
+                    <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -188,7 +189,7 @@ export default async function Home() {
       <div className="mt-16 flex flex-col gap-12">
         <div className="flex flex-col px-6 md:px-12">
           <p className="font-semibold">Leo Succar</p>
-          <p className=" max-w-xl text-stone-500">
+          <p className=" max-w-xl text-muted-foreground">
             Product Designer experienced in systems and tools, focused on
             AI-first workflows, crafting design systems and end-to-end
             experiences across web and native. Currently with{" "}
@@ -235,7 +236,7 @@ export default async function Home() {
         <div>
           <div className="px-6 pb-12 md:px-12">
             <div className="font-semibold">Experience</div>
-            <div className=" text-stone-500">
+            <div className=" text-muted-foreground">
               My work and employment history.
             </div>
           </div>
@@ -245,7 +246,7 @@ export default async function Home() {
               <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-me.svg" />
-                  <AvatarFallback className="text-stone-500">P</AvatarFallback>
+                  <AvatarFallback className="text-muted-foreground">P</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
                   <a
@@ -255,14 +256,14 @@ export default async function Home() {
                   >
                     Meta
                   </a>
-                  <div className="italic text-stone-500">
+                  <div className="italic text-muted-foreground">
                     Product Designer (Contract)
                   </div>
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
                 <p>2024–Present</p>
-                <p className="text-stone-500">Remote</p>
+                <p className="text-muted-foreground">Remote</p>
               </div>
             </li>
             <Separator />
@@ -270,7 +271,7 @@ export default async function Home() {
               <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-pl.svg" />
-                  <AvatarFallback className="text-stone-500">P</AvatarFallback>
+                  <AvatarFallback className="text-muted-foreground">P</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
                   <a
@@ -280,12 +281,12 @@ export default async function Home() {
                   >
                     Plasmic
                   </a>
-                  <div className="italic text-stone-500">Founding Designer</div>
+                  <div className="italic text-muted-foreground">Founding Designer</div>
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
                 <p>2020–Present</p>
-                <p className="text-stone-500">Remote</p>
+                <p className="text-muted-foreground">Remote</p>
               </div>
             </li>
             <Separator />
@@ -293,7 +294,7 @@ export default async function Home() {
               <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-bg.svg" />
-                  <AvatarFallback className="text-stone-500">B</AvatarFallback>
+                  <AvatarFallback className="text-muted-foreground">B</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
                   <a
@@ -303,14 +304,14 @@ export default async function Home() {
                   >
                     BitGo
                   </a>
-                  <div className="italic text-stone-500">
+                  <div className="italic text-muted-foreground">
                     Senior Product & Design Systems Designer (Contract)
                   </div>
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
                 <p>2023–&#39;24</p>
-                <p className="text-stone-500">Remote</p>
+                <p className="text-muted-foreground">Remote</p>
               </div>
             </li>
             <Separator />
@@ -318,7 +319,7 @@ export default async function Home() {
               <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-fb.svg" />
-                  <AvatarFallback className="text-stone-500">F</AvatarFallback>
+                  <AvatarFallback className="text-muted-foreground">F</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
                   <div>
@@ -332,7 +333,7 @@ export default async function Home() {
                     </a>
                     )
                   </div>
-                  <div className="text-stone-500">
+                  <div className="text-muted-foreground">
                     <i>Product & Design Systems Designer</i>, xDesign & Core
                     Systems
                   </div>
@@ -340,7 +341,7 @@ export default async function Home() {
               </div>
               <div className="flex flex-col items-end text-end">
                 <p>2018–&#39;20</p>
-                <p className="text-stone-500">Menlo Park, CA</p>
+                <p className="text-muted-foreground">Menlo Park, CA</p>
               </div>
             </li>
             <Separator />
@@ -348,7 +349,7 @@ export default async function Home() {
               <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-sg.svg" />
-                  <AvatarFallback className="text-stone-500">S</AvatarFallback>
+                  <AvatarFallback className="text-muted-foreground">S</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
                   <a
@@ -358,14 +359,14 @@ export default async function Home() {
                   >
                     Sourcegraph
                   </a>
-                  <div className="italic text-stone-500">
+                  <div className="italic text-muted-foreground">
                     Lead Product Designer
                   </div>
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
                 <p>2017–&#39;18</p>
-                <p className="text-stone-500">San Francisco, CA</p>
+                <p className="text-muted-foreground">San Francisco, CA</p>
               </div>
             </li>
             <Separator />
@@ -373,7 +374,7 @@ export default async function Home() {
               <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-ze.svg" />
-                  <AvatarFallback className="text-stone-500">Z</AvatarFallback>
+                  <AvatarFallback className="text-muted-foreground">Z</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
                   <div>
@@ -387,14 +388,14 @@ export default async function Home() {
                     </a>
                     )
                   </div>
-                  <div className="text-stone-500">
+                  <div className="text-muted-foreground">
                     <i>Senior Product Designer</i>
                   </div>
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
                 <p>2016</p>
-                <p className="text-stone-500">San Francisco, CA</p>
+                <p className="text-muted-foreground">San Francisco, CA</p>
               </div>
             </li>
             <Separator />
@@ -402,7 +403,7 @@ export default async function Home() {
               <div className="flex flex-row items-center gap-3">
                 <Avatar>
                   <AvatarImage src="/logo-sd.svg" />
-                  <AvatarFallback className="text-stone-500">S</AvatarFallback>
+                  <AvatarFallback className="text-muted-foreground">S</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
                   <div>
@@ -416,12 +417,12 @@ export default async function Home() {
                     </a>
                     )
                   </div>
-                  <div className="italic text-stone-500">Product Designer</div>
+                  <div className="italic text-muted-foreground">Product Designer</div>
                 </div>
               </div>
               <div className="flex flex-col items-end text-end">
                 <p>2014–&#39;15</p>
-                <p className="text-stone-500">Miami, FL</p>
+                <p className="text-muted-foreground">Miami, FL</p>
               </div>
             </li>
           </ul>
@@ -433,19 +434,19 @@ export default async function Home() {
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <div className="flex flex-col gap-1">
-              <h4 className=" text-stone-500">Design</h4>
+              <h4 className=" text-muted-foreground">Design</h4>
               <p>
                 Figma, Photoshop, Illustrator, Play, Procreate, FigJam, tldraw
               </p>
             </div>
             <Separator />
             <div className="flex flex-col gap-1">
-              <h4 className=" text-stone-500">Low-code</h4>
+              <h4 className=" text-muted-foreground">Low-code</h4>
               <p>Framer, Webflow, Toddle, Plasmic</p>
             </div>
             <Separator />
             <div className="flex flex-col gap-1">
-              <h4 className=" text-stone-500">Development</h4>
+              <h4 className=" text-muted-foreground">Development</h4>
               <p>HTML, CSS, Tailwind CSS, shadcn/ui, Radix, Cody, Copilot</p>
             </div>
           </CardContent>
@@ -456,7 +457,7 @@ export default async function Home() {
         <div>
           <div className="px-6 pb-12 md:px-12">
             <div className="font-semibold">References</div>
-            <div className=" text-stone-500">
+            <div className=" text-muted-foreground">
               Folks I&#39;ve had the pleasure of working with.
             </div>
           </div>
@@ -634,11 +635,11 @@ export default async function Home() {
                   />
                 )}
                 <div className="flex items-end justify-between">
-                <div className="flex flex-col text-left font-medium text-stone-950 dark:text-stone-50">
+                <div className="flex flex-col text-left font-medium text-zinc-950 dark:text-zinc-50">
                   <div>{book.name}</div>
-                  <div className=" text-stone-500">{book.client}</div>
+                  <div className=" text-muted-foreground">{book.client}</div>
                 </div>
-                <div className=" text-stone-500">{book.year}</div>
+                <div className=" text-muted-foreground">{book.year}</div>
               </div>
               </div>
             </div>
@@ -649,71 +650,10 @@ export default async function Home() {
 
         <Separator />
 
-        <div>
-          <div className="px-6 pb-12 md:px-12">
-            <div className="font-semibold">Projects</div>
-            <div className=" text-stone-500">
-              Shots and embeds of my past work.
-            </div>
-          </div>
-
-          <div className="auto-rows grid grid-cols-1 gap-6 md:grid-cols-2 md:px-12">
-            {projects.map((project) => (
-              // project card
-              <Dialog key={project._id}>
-                <DialogTrigger className="group flex flex-col items-stretch gap-6 overflow-clip rounded-xl border bg-secondary p-6 hover:bg-secondary/40 dark:bg-secondary/40 dark:hover:bg-secondary">
-                  <div className="flex flex-col text-left  text-stone-950 dark:text-stone-50">
-                    <div className="truncate">{project.name}</div>
-                    <div className="flex flex-row justify-between text-stone-500">
-                      <div className="flex-1">{project.client}</div>
-                      <div className="text-right">{project.year}</div>
-                    </div>
-                  </div>
-
-                  {project.image && (
-                    <Image
-                      src={project.image}
-                      alt={project.name}
-                      width={800}
-                      height={400}
-                      loading="lazy"
-                      className="-mb-40 aspect-[4/3] rounded-sm object-cover transition group-hover:-translate-y-[44px] group-hover:shadow-2xl md:-mb-28"
-                    />
-                  )}
-                </DialogTrigger>
-
-                <DialogContent className="max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] overflow-auto rounded-lg md:max-w-5xl">
-                  <DialogHeader>{project.name}</DialogHeader>
-                  <Image
-                    src={project.image}
-                    alt={project.name}
-                    width={1200}
-                    height={800}
-                    loading="lazy"
-                    className="w-100 object-cover"
-                  />
-                  <div className="text-md flex flex-col gap-6 text-stone-950 dark:text-stone-50">
-                    {project.embed && (
-                      <iframe
-                        height="600"
-                        src={project.embed}
-                        allowFullScreen
-                        className="hidden md:inline"
-                      ></iframe>
-                    )}
-                    <PortableText
-                      value={project.content}
-                      components={components}
-                    />
-                  </div>
-                </DialogContent>
-              </Dialog>
-            ))}
-          </div>
-        </div>
+        <ProjectsClient projects={projects} />
 
         <div className="flex flex-col gap-4 p-6 md:p-12">
-          <div className=" text-stone-500">
+          <div className=" text-muted-foreground">
             Built using{" "}
             <a
               className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"

@@ -37,11 +37,11 @@ export default function RootLayout({
             <div className="flex flex-wrap items-center justify-between gap-4 p-6 sm:w-full md:p-0">
               <div className="flex flex-grow">
                 <Link href="/" className="flex flex-col">
-                  <h2 className="text-2xl font-semibold text-stone-950 dark:text-stone-50">
+                  <h2 className="text-2xl font-semibold text-foreground">
                     leo.dev
                   </h2>
-                  <small className="text-stone-500">Est. 2024</small>
-                  {/* <span className="text-stone-500">Product Designer</span> */}
+                  <small className="text-muted-foreground">Est. 2024</small>
+                  {/* <span className="text-muted-foreground">Product Designer</span> */}
                 </Link>
               </div>
 
@@ -49,7 +49,7 @@ export default function RootLayout({
                 <Link
                   href="https://cal.com/leo.dev/20min"
                   target="_blank"
-                  className="cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                  className="cursor-pointer rounded-full bg-muted p-3 px-5 text-foreground hover:bg-accent hover:underline dark:bg-muted dark:text-foreground dark:hover:bg-accent"
                 >
                   Book a Call
                 </Link>

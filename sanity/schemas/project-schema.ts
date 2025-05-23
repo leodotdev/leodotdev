@@ -19,6 +19,24 @@ const project = {
             type:'string'
         },
         {
+            name: 'categories',
+            title: 'Categories',
+            type: 'array',
+            of: [{type: 'string'}],
+            options: {
+                list: [
+                    {title: 'Product Design', value: 'product-design'},
+                    {title: 'Visual Design', value: 'visual-design'},
+                    {title: 'Prototyping', value: 'prototyping'},
+                    {title: 'Ideating & Wireframing', value: 'ideating-wireframing'},
+                    {title: 'Web Design', value: 'web-design'},
+                    {title: 'No-code Web Development', value: 'web-development'},
+                    {title: 'Graphic Design', value: 'graphic-design'},
+                    {title: 'Design System', value: 'design-system'}
+                ]
+            }
+        },
+        {
             name: 'slug',
             title: 'Slug',
             type:'slug',

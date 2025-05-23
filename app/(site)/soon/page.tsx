@@ -120,7 +120,7 @@ export default function Soon() {
         </Card>
       </section>
 
-      <section className="flex flex-col items-center gap-6 rounded-[60px] bg-stone-50 p-12  dark:bg-stone-950">
+      <section className="flex flex-col items-center gap-6 rounded-[60px] bg-muted p-12  dark:bg-background">
         <div className="flex flex-col items-center gap-6">
           <Badge>Plans</Badge>
           <h2 className="text-4xl font-semibold">
@@ -143,7 +143,7 @@ export default function Soon() {
               </div>
               <div className="flex items-baseline gap-1 text-3xl font-semibold">
                 $4,900.00{" "}
-                <span className="text-sm font-normal text-stone-500">
+                <span className="text-sm font-normal text-muted-foreground">
                   /month
                 </span>
               </div>
@@ -189,7 +189,7 @@ export default function Soon() {
               <Link
                 href="https://cal.com/leo.dev/20min"
                 target="_blank"
-                className="w-full cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-center text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                className="w-full cursor-pointer rounded-full bg-muted p-3 px-5 text-center text-foreground hover:bg-accent hover:underline dark:bg-muted dark:text-foreground dark:hover:bg-accent"
               >
                 Book a Call
               </Link>
@@ -201,7 +201,7 @@ export default function Soon() {
               <Link
                 href="https://cal.com/leo.dev/20min"
                 target="_blank"
-                className="w-full cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-center text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                className="w-full cursor-pointer rounded-full bg-muted p-3 px-5 text-center text-foreground hover:bg-accent hover:underline dark:bg-muted dark:text-foreground dark:hover:bg-accent"
               >
                 Subscribe Now
               </Link>
@@ -218,7 +218,7 @@ export default function Soon() {
               </div>
               <div className="flex items-baseline gap-1 text-3xl font-semibold">
                 $6,900.00{" "}
-                <span className="text-sm font-normal text-stone-500">
+                <span className="text-sm font-normal text-muted-foreground">
                   /month
                 </span>
               </div>
@@ -286,7 +286,7 @@ export default function Soon() {
               <Link
                 href="https://cal.com/leo.dev/20min"
                 target="_blank"
-                className="w-full cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-center text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                className="w-full cursor-pointer rounded-full bg-muted p-3 px-5 text-center text-foreground hover:bg-accent hover:underline dark:bg-muted dark:text-foreground dark:hover:bg-accent"
               >
                 Book a Call
               </Link>
@@ -298,14 +298,14 @@ export default function Soon() {
               <Link
                 href="https://cal.com/leo.dev/20min"
                 target="_blank"
-                className="w-full cursor-pointer rounded-full bg-stone-200/50 p-3 px-5 text-center text-stone-950 hover:bg-stone-200 hover:underline dark:bg-stone-800/50 dark:text-stone-50 dark:hover:bg-stone-800"
+                className="w-full cursor-pointer rounded-full bg-muted p-3 px-5 text-center text-foreground hover:bg-accent hover:underline dark:bg-muted dark:text-foreground dark:hover:bg-accent"
               >
                 Subscribe Now
               </Link>
             </CardFooter>
           </Card>
         </div>
-        <span className=" text-stone-500">Pause or cancel anytime</span>
+        <span className=" text-muted-foreground">Pause or cancel anytime</span>
       </section>
       <section>
         <Accordion type="multiple">

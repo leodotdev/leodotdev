@@ -31,8 +31,8 @@
     --border: 20 5.9% 90%;
     --input: 20 5.9% 90%;
  
-    --primary: 24 9.8% 10%;
-    --primary-foreground: 60 9.1% 97.8%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
  
     --secondary: 60 4.8% 95.9%;
     --secondary-foreground: 24 9.8% 10%;
@@ -46,6 +46,13 @@
     --ring: 24 5.4% 63.9%;
  
     --radius: 0.5rem;
+
+    /* Semantic color additions */
+    --subtle: 240 4.8% 95.9%;
+    --subtle-foreground: 240 5.9% 10%;
+    
+    --emphasis: 240 5.9% 10%;
+    --emphasis-foreground: 0 0% 98%;
   }
  
   .dark {
@@ -64,8 +71,8 @@
     --border: 12 6.5% 15.1%;
     --input: 12 6.5% 15.1%;
  
-    --primary: 60 9.1% 97.8%;
-    --primary-foreground: 24 9.8% 10%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
  
     --secondary: 12 6.5% 15.1%;
     --secondary-foreground: 60 9.1% 97.8%;
@@ -77,6 +84,13 @@
     --destructive-foreground: 0 85.7% 97.3%;
  
     --ring: 12 6.5% 15.1%;
+
+    /* Semantic color additions */
+    --subtle: 240 10% 3.9%;
+    --subtle-foreground: 0 0% 98%;
+    
+    --emphasis: 0 0% 98%;
+    --emphasis-foreground: 240 5.9% 10%;
   }
 }
  
@@ -86,6 +100,46 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  /* Text colors */
+  .text-subtle {
+    color: hsl(var(--subtle-foreground));
+  }
+  .text-emphasis {
+    color: hsl(var(--emphasis));
+  }
+  
+  /* Background colors */
+  .bg-subtle {
+    background-color: hsl(var(--subtle));
+  }
+  .bg-emphasis {
+    background-color: hsl(var(--emphasis));
+  }
+  
+  /* Border colors */
+  .border-subtle {
+    border-color: hsl(var(--subtle));
+  }
+  .border-emphasis {
+    border-color: hsl(var(--emphasis));
+  }
+  
+  /* Hover states */
+  .hover\:bg-subtle:hover {
+    background-color: hsl(var(--subtle));
+  }
+  .hover\:bg-emphasis:hover {
+    background-color: hsl(var(--emphasis));
+  }
+  .hover\:text-subtle:hover {
+    color: hsl(var(--subtle-foreground));
+  }
+  .hover\:text-emphasis:hover {
+    color: hsl(var(--emphasis));
   }
 }
 

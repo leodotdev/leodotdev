@@ -9,5 +9,6 @@ export type Project = {
     slug: string;
     image: string;
     embed: string;
+    categories?: string[];
     content: PortableTextBlock[];
 }
