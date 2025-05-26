@@ -67,7 +67,7 @@ export default async function Home() {
         className="-mt-12 w-full mix-blend-exclusion dark:mix-blend-lighten"
       ></iframe> */}
 
-        <div className="mt-16 flex flex-col gap-12">
+        <div className="mt-12 flex flex-col gap-12">
           <div className="flex flex-col px-6 md:px-12">
             <p className="font-semibold">Leo Succar</p>
             <p className=" max-w-xl text-muted-foreground">

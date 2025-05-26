@@ -21,37 +21,23 @@ interface NavigationProps {
 
 export function Navigation({ children }: NavigationProps) {
   return (
-    <div className="sticky left-4 right-4 top-4 z-50 px-6 md:px-12">
-      <div className="flex w-full justify-between rounded-3xl border bg-secondary/20 p-1 backdrop-blur-md">
-        <div className="flex w-full flex-1 flex-wrap content-stretch items-stretch justify-stretch gap-1">
+    <div className="sticky left-0 right-0 top-0 z-50">
+      <div className="flex w-full justify-between border-b bg-secondary/20 py-4 backdrop-blur-md md:px-12">
+        <div className="flex w-full flex-1 flex-wrap content-stretch items-stretch justify-stretch gap-4">
           {children}
-          <Link
-            href="https://twitter.com/leosuccarferre"
-            target="_blank"
-            className="text-md flex items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary"
-          >
-            My Twitter
-            <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
-          </Link>
-          <Link
-            href="https://www.linkedin.com/in/leosuccarferre/"
-            target="_blank"
-            className="text-md flex items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary"
-          >
-            My LinkedIn
-            <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
-          </Link>
+
           <Link
             href="https://cal.com/leo.dev/20min"
             target="_blank"
-            className="text-md flex items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary"
+            className="text-md flex items-center hover:underline"
           >
-            Let&apos;s Chat
+            Let&apos;s chat
             <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
           </Link>
+
           <Link
             href=""
-            className="text-md flex cursor-pointer items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary"
+            className="text-md flex cursor-pointer items-center bg-transparent hover:underline "
           >
             <CopyToClipboard className="flex" textToCopy="leo@leo.dev">
               Copy my email
@@ -59,7 +45,7 @@ export function Navigation({ children }: NavigationProps) {
             </CopyToClipboard>
           </Link>
           <DropdownMenu>
-            <DropdownMenuTrigger className="text-md flex items-center rounded-full bg-transparent px-4 py-2 pr-3 hover:bg-secondary hover:no-underline">
+            <DropdownMenuTrigger className="text-md flex items-center hover:underline">
               My résumés
               <TbChevronDown className="h-4 w-4 text-muted-foreground" />
             </DropdownMenuTrigger>
@@ -106,6 +92,22 @@ export function Navigation({ children }: NavigationProps) {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          <Link
+            href="https://twitter.com/leosuccarferre"
+            target="_blank"
+            className="text-md flex items-center hover:underline"
+          >
+            Twitter
+            <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
+          </Link>
+          <Link
+            href="https://www.linkedin.com/in/leosuccarferre/"
+            target="_blank"
+            className="text-md flex items-center hover:underline"
+          >
+            LinkedIn
+            <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
+          </Link>
         </div>
         <TooltipProvider>
           <Tooltip>

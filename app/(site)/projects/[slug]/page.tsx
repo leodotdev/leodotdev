@@ -63,7 +63,32 @@ export default async function ProjectPage({
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-start justify-between gap-4">
-            <h1 className="text-6xl font-bold ">{project.name}</h1>
+            <div>
+              <h1 className="mb-2 text-6xl font-bold">{project.name}</h1>
+              <div className="flex flex-wrap items-center gap-2 text-muted-foreground">
+                <span>{project.client}</span>
+                <span>·</span>
+                <span>{project.year}</span>
+                {project.categories && project.categories.length > 0 && (
+                  <>
+                    {project.categories.map((category: string) => (
+                      <React.Fragment key={category}>
+                        <span>·</span>
+                        <span>
+                          {category
+                            .split("-")
+                            .map(
+                              (word) =>
+                                word.charAt(0).toUpperCase() + word.slice(1),
+                            )
+                            .join(" ")}
+                        </span>
+                      </React.Fragment>
+                    ))}
+                  </>
+                )}
+              </div>
+            </div>
             {nextProject && (
               <Link
                 href={`/projects/${nextProject.slug}`}
@@ -77,9 +102,6 @@ export default async function ProjectPage({
                   <h3 className="truncate text-sm font-semibold">
                     {nextProject.name}
                   </h3>
-                  {/* <p className="truncate text-sm text-muted-foreground">
-                    {nextProject.client}
-                  </p> */}
                 </div>
                 {nextProject.image && (
                   <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-sm">
@@ -97,48 +119,10 @@ export default async function ProjectPage({
           </div>
         </div>
 
-        {/* Project Metadata and Description */}
-        <div className="mb-8 flex flex-col gap-8 md:flex-row md:gap-12">
-          <div className="md:flex-shrink-0">
-            <dl className="divide-y divide-border">
-              <div className="flex gap-4 py-3">
-                <dt className="w-32 flex-shrink-0 text-sm font-medium">Client</dt>
-                <dd className="flex-1 text-sm text-muted-foreground">
-                  {project.client}
-                </dd>
-              </div>
-              <div className="flex gap-4 py-3">
-                <dt className="w-32 flex-shrink-0 text-sm font-medium">Year</dt>
-                <dd className="flex-1 text-sm text-muted-foreground">
-                  {project.year}
-                </dd>
-              </div>
-              {project.categories && project.categories.length > 0 && (
-                <div className="flex gap-4 py-3">
-                  <dt className="w-32 flex-shrink-0 text-sm font-medium">Categories</dt>
-                  <dd className="flex-1 text-sm text-muted-foreground">
-                    {project.categories.map((category: string, index: number) => (
-                      <span key={category}>
-                        {category
-                          .split("-")
-                          .map(
-                            (word) =>
-                              word.charAt(0).toUpperCase() + word.slice(1),
-                          )
-                          .join(" ")}
-                        {index < project.categories!.length - 1 && ", "}
-                      </span>
-                    ))}
-                  </dd>
-                </div>
-              )}
-            </dl>
-          </div>
-
-          {project.description && (
-            <p className="flex-1 text-base md:max-w-xl">{project.description}</p>
-          )}
-        </div>
+        {/* Description */}
+        {project.description && (
+          <p className="mb-8 max-w-3xl text-base">{project.description}</p>
+        )}
 
         {/* Hero Image */}
         {project.image && (
