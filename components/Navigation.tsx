@@ -111,7 +111,7 @@ export function Navigation({ children }: NavigationProps) {
         </div>
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <ThemeSwitcher />
             </TooltipTrigger>
             <TooltipContent side="bottom">Theme</TooltipContent>

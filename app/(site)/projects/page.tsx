@@ -68,9 +68,9 @@ export default async function Home() {
           <div className="flex flex-col px-6 md:px-12">
             <p className="font-semibold">Leo Succar</p>
             <p className=" max-w-xl text-muted-foreground">
-              Product Designer experienced in systems and tools, focused on
-              AI-first workflows, crafting design systems and end-to-end
-              experiences across web and native. Currently with{" "}
+              Product Designer experienced in front-end development, design
+              systems and tools, and crafting end-to-end experiences across web
+              and native. Currently with{" "}
               <Link href="https://meta.com" target="_blank">
                 <span className="text-blue-500 underline decoration-dotted hover:decoration-solid">
                   Meta

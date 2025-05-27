@@ -65,7 +65,7 @@ export default async function ProjectPage({
       <div className="mx-auto px-6 py-12 md:px-12">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-start justify-between gap-4">
+          <div className="flex items-start justify-between gap-12">
             <div>
               <h1 className="mb-2 text-6xl font-bold">{project.name}</h1>
               <div className="flex flex-wrap items-center gap-2 text-muted-foreground">
@@ -138,9 +138,11 @@ export default async function ProjectPage({
 
         {/* Content Text */}
         {project.content && (
-          <div className="flex max-w-none flex-col gap-8 mb-12">
+          <div className="mb-12 flex max-w-none flex-col gap-8">
             <PortableText
-              value={project.content.filter((block: any) => block._type !== "image")}
+              value={project.content.filter(
+                (block: any) => block._type !== "image",
+              )}
               components={components}
             />
           </div>

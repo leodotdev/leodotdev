@@ -29,7 +29,9 @@ interface ProjectImageGridProps {
 }
 
 export function ProjectImageGrid({ images }: ProjectImageGridProps) {
-  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
+    null,
+  );
 
   const openLightbox = (index: number) => {
     setSelectedImageIndex(index);
@@ -44,21 +46,21 @@ export function ProjectImageGrid({ images }: ProjectImageGridProps) {
   const goToPrevious = () => {
     if (selectedImageIndex === null) return;
     setSelectedImageIndex(
-      selectedImageIndex === 0 ? images.length - 1 : selectedImageIndex - 1
+      selectedImageIndex === 0 ? images.length - 1 : selectedImageIndex - 1,
     );
   };
 
   const goToNext = () => {
     if (selectedImageIndex === null) return;
     setSelectedImageIndex(
-      selectedImageIndex === images.length - 1 ? 0 : selectedImageIndex + 1
+      selectedImageIndex === images.length - 1 ? 0 : selectedImageIndex + 1,
     );
   };
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (selectedImageIndex === null) return;
-      
+
       switch (e.key) {
         case "Escape":
           closeLightbox();
@@ -98,7 +100,7 @@ export function ProjectImageGrid({ images }: ProjectImageGridProps) {
 
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 auto-rows-[200px]">
+      <div className="grid auto-rows-[200px] grid-cols-2 gap-4 md:grid-cols-3">
         {images.map((image, index) => (
           <motion.div
             key={image._key}
@@ -109,7 +111,7 @@ export function ProjectImageGrid({ images }: ProjectImageGridProps) {
             whileHover={{ scale: 1.02 }}
             onClick={() => openLightbox(index)}
           >
-            <div className="relative w-full h-full">
+            <div className="relative h-full w-full">
               <Image
                 src={getImageUrl(image, 800)}
                 alt={image.alt || "Project image"}
@@ -134,23 +136,23 @@ export function ProjectImageGrid({ images }: ProjectImageGridProps) {
             {/* Close button */}
             <button
               onClick={closeLightbox}
-              className="absolute top-4 right-4 z-50 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+              className="absolute right-4 top-4 z-50 rounded-full bg-white/10 p-2 transition-colors hover:bg-white/20"
               aria-label="Close lightbox"
             >
-              <TbX className="w-6 h-6 text-white" />
+              <TbX className="h-6 w-6 text-white" />
             </button>
 
             {/* Main image */}
             <div
-              className="flex-1 flex items-center justify-center p-4"
+              className="flex flex-1 items-center justify-center p-4"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={goToPrevious}
-                className="absolute left-4 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                className="absolute left-4 rounded-full bg-white/10 p-2 transition-colors hover:bg-white/20"
                 aria-label="Previous image"
               >
-                <TbChevronLeft className="w-6 h-6 text-white" />
+                <TbChevronLeft className="h-6 w-6 text-white" />
               </button>
 
               <motion.div
@@ -159,28 +161,28 @@ export function ProjectImageGrid({ images }: ProjectImageGridProps) {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.2 }}
-                className="relative max-w-[90vw] max-h-[70vh]"
+                className="relative max-h-[70vh] max-w-[90vw]"
               >
                 <Image
                   src={getImageUrl(images[selectedImageIndex])}
                   alt={images[selectedImageIndex].alt || "Project image"}
                   width={1920}
                   height={1080}
-                  className="max-w-full max-h-[70vh] w-auto h-auto object-contain"
+                  className="h-auto max-h-[70vh] w-auto max-w-full object-contain"
                 />
               </motion.div>
 
               <button
                 onClick={goToNext}
-                className="absolute right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                className="absolute right-4 rounded-full bg-white/10 p-2 transition-colors hover:bg-white/20"
                 aria-label="Next image"
               >
-                <TbChevronRight className="w-6 h-6 text-white" />
+                <TbChevronRight className="h-6 w-6 text-white" />
               </button>
             </div>
 
             {/* Thumbnail strip */}
-            <div className="p-4 bg-black/50">
+            <div className="bg-black/50 p-4">
               <div className="flex gap-2 overflow-x-auto pb-2">
                 {images.map((image, index) => (
                   <button
@@ -189,9 +191,9 @@ export function ProjectImageGrid({ images }: ProjectImageGridProps) {
                       e.stopPropagation();
                       setSelectedImageIndex(index);
                     }}
-                    className={`relative flex-shrink-0 w-20 h-20 rounded overflow-hidden transition-all ${
+                    className={`relative h-20 w-20 flex-shrink-0 overflow-hidden rounded transition-all ${
                       index === selectedImageIndex
-                        ? "ring-2 ring-white opacity-100"
+                        ? "opacity-100 ring-2 ring-white"
                         : "opacity-50 hover:opacity-75"
                     }`}
                   >
