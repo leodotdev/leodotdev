@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { forwardRef } from "react";
 import { Button } from "@/components/ui/button";
-import { TbSun, TbMoon } from "react-icons/tb";
+import Image from "next/image";
 
 export const ThemeSwitcher = forwardRef<
   HTMLButtonElement,
@@ -28,11 +28,13 @@ export const ThemeSwitcher = forwardRef<
       className="rounded-full bg-transparent hover:bg-secondary/80"
       {...props}
     >
-      {theme === "light" ? (
-        <TbMoon className="h-5 w-5" />
-      ) : (
-        <TbSun className="h-5 w-5" />
-      )}
+      <Image
+        src={theme === "light" ? "/new-moon-face.svg" : "/sun-with-face.svg"}
+        alt={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
+        width={20}
+        height={20}
+        className="transition-opacity"
+      />
     </Button>
   );
 });

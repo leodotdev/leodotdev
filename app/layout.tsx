@@ -28,10 +28,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen bg-white dark:bg-black">
-            <div className="mx-auto max-w-[960px]">
-              {children}
-            </div>
+          <div className=" mx-auto min-h-screen max-w-[960px] border-x bg-white dark:bg-black">
+            {children}
             <Analytics />
           </div>
         </ThemeProvider>
