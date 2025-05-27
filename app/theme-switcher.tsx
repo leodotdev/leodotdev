@@ -10,7 +10,7 @@ export const ThemeSwitcher = forwardRef<
   React.ComponentPropsWithoutRef<typeof Button>
 >((props, ref) => {
   const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
@@ -20,21 +20,25 @@ export const ThemeSwitcher = forwardRef<
     return null;
   }
 
+  // Use resolvedTheme for display but check actual theme for logic
+  const currentTheme = resolvedTheme || "light";
+  
   return (
     <Button
       ref={ref}
       size="icon"
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      onClick={() => {
+        // Simply toggle between light and dark
+        setTheme(currentTheme === "dark" ? "light" : "dark");
+      }}
       className="rounded-full bg-transparent hover:bg-secondary/80"
       {...props}
     >
-      <Image
-        src={theme === "light" ? "/new-moon-face.svg" : "/sun-with-face.svg"}
-        alt={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
-        width={20}
-        height={20}
-        className="transition-opacity"
-      />
+      {currentTheme === "light" ? (
+        <Image src="/new-moon-face.svg" alt="Dark" width={24} height={24} />
+      ) : (
+        <Image src="/sun-with-face.svg" alt="Light" width={24} height={24} />
+      )}
     </Button>
   );
 });

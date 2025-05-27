@@ -8,12 +8,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 interface NavigationProps {
   children?: React.ReactNode; // For custom first item like BackButton
@@ -109,14 +103,7 @@ export function Navigation({ children }: NavigationProps) {
             <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
           </Link>
         </div>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <ThemeSwitcher />
-            </TooltipTrigger>
-            <TooltipContent side="bottom">Theme</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <ThemeSwitcher />
       </div>
     </div>
   );

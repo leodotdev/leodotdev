@@ -63,5 +63,5 @@ export function ProjectsWrapper({ children }: { children: React.ReactNode }) {
     return () => clearTimeout(timeoutId);
   }, [pathname]);
   
-  return <>{children}</>;
+  return children;
 }
