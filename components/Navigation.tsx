@@ -21,8 +21,8 @@ interface NavigationProps {
 
 export function Navigation({ children }: NavigationProps) {
   return (
-    <div className="sticky left-0 right-0 top-0 z-50">
-      <div className="flex w-full justify-between border-b bg-secondary/20 py-4 backdrop-blur-md md:px-12">
+    <div className="sticky left-0 right-0 top-0 z-50 border-b bg-secondary/20 backdrop-blur-md">
+      <div className="mx-auto flex max-w-[960px] justify-between px-6 py-4 md:px-12">
         <div className="flex w-full flex-1 flex-wrap content-stretch items-stretch justify-stretch gap-4">
           {children}
 

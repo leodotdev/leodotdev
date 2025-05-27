@@ -13,8 +13,12 @@ export function useSaveScrollPosition() {
     if (pathname !== '/projects') return;
 
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      localStorage.setItem(SCROLL_POSITION_KEY, scrollPosition.toString());
+      try {
+        const scrollPosition = window.scrollY;
+        localStorage.setItem(SCROLL_POSITION_KEY, scrollPosition.toString());
+      } catch (error) {
+        console.error('Error saving scroll position:', error);
+      }
     };
 
     // Save scroll position with debounce
@@ -40,14 +44,18 @@ export function useRestoreScrollPosition() {
     // Only restore on the projects page
     if (pathname !== '/projects') return;
 
-    const savedPosition = localStorage.getItem(SCROLL_POSITION_KEY);
-    if (savedPosition) {
-      const scrollY = parseInt(savedPosition, 10);
-      
-      // Use requestAnimationFrame to ensure DOM is ready
-      requestAnimationFrame(() => {
-        window.scrollTo(0, scrollY);
-      });
+    try {
+      const savedPosition = localStorage.getItem(SCROLL_POSITION_KEY);
+      if (savedPosition) {
+        const scrollY = parseInt(savedPosition, 10);
+        
+        // Use setTimeout to ensure DOM is ready after hydration
+        setTimeout(() => {
+          window.scrollTo(0, scrollY);
+        }, 0);
+      }
+    } catch (error) {
+      console.error('Error restoring scroll position:', error);
     }
   }, [pathname]);
 }

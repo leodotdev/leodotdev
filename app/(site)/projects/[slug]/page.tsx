@@ -8,6 +8,7 @@ import React from "react";
 import { TbChevronLeft, TbChevronRight } from "react-icons/tb";
 import { BackButton } from "@/components/BackButton";
 import { Navigation } from "@/components/Navigation";
+import { ProjectMediaGallery } from "@/components/ProjectMediaGallery";
 
 export default async function ProjectPage({
   params,
@@ -32,17 +33,19 @@ export default async function ProjectPage({
     useCdn: true,
   });
 
+  const contentImages = project.content
+    ? project.content
+        .filter((block: any) => block._type === "image")
+        .map((image: any) => ({
+          _key: image._key,
+          _type: image._type,
+          asset: image.asset,
+          alt: image.alt,
+        }))
+    : [];
+
   const ContentImageComponent = ({ value }: { value: any }) => {
-    return (
-      <Image
-        src={urlBuilder(client).image(value).fit("max").auto("format").url()}
-        alt={value.alt || " "}
-        width={0}
-        height={0}
-        sizes="100vw"
-        className="w-full rounded-lg"
-      />
-    );
+    return null;
   };
 
   const components = {
@@ -124,34 +127,24 @@ export default async function ProjectPage({
           <p className="mb-8 max-w-3xl text-base">{project.description}</p>
         )}
 
-        {/* Hero Image */}
-        {project.image && (
-          <div className="mb-8">
-            <Image
-              src={project.image}
-              alt={project.name}
-              width={1200}
-              height={800}
-              className="w-full rounded-lg object-cover"
+        {/* Media Gallery - Hero Image, Embed, and Content Images */}
+        <ProjectMediaGallery
+          heroImage={project.image}
+          heroImageAlt={project.name}
+          embedUrl={project.embed}
+          contentImages={contentImages}
+          projectName={project.name}
+        />
+
+        {/* Content Text */}
+        {project.content && (
+          <div className="flex max-w-none flex-col gap-8 mb-12">
+            <PortableText
+              value={project.content.filter((block: any) => block._type !== "image")}
+              components={components}
             />
           </div>
         )}
-
-        {/* Embed */}
-        {project.embed && (
-          <div className="mb-8">
-            <iframe
-              src={project.embed}
-              className="aspect-video w-full rounded-lg"
-              allowFullScreen
-            />
-          </div>
-        )}
-
-        {/* Content */}
-        <div className="flex max-w-none flex-col gap-8">
-          <PortableText value={project.content} components={components} />
-        </div>
 
         {/* Navigation */}
         <div className="mt-16">

@@ -1,11 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
-
+import { forwardRef } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
-export const ThemeSwitcher = () => {
+export const ThemeSwitcher = forwardRef<
+  HTMLButtonElement,
+  React.ComponentPropsWithoutRef<typeof Button>
+>((props, ref) => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
@@ -19,9 +22,11 @@ export const ThemeSwitcher = () => {
 
   return (
     <Button
+      ref={ref}
       size="icon"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       className="rounded-full bg-transparent hover:bg-secondary/80"
+      {...props}
     >
       {theme === "light" ? (
         <Image src="/new-moon-face.svg" alt="Dark" width={24} height={24} />
@@ -30,4 +35,6 @@ export const ThemeSwitcher = () => {
       )}
     </Button>
   );
-};
+});
+
+ThemeSwitcher.displayName = "ThemeSwitcher";

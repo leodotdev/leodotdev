@@ -47,7 +47,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
         );
 
   return (
-    <div>
+    <div id="projects">
       <div className="px-6 pb-12 md:px-12">
         <div className="font-semibold">Projects</div>
         <div className="text-muted-foreground">

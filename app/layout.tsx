@@ -1,18 +1,10 @@
-import "../../globals.css";
+import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-// import { Space_Mono } from "next/font/google";
-import { ThemeProvider } from "../../theme-provider";
-import Link from "next/link";
-import { TbArrowUpRight, TbCopy, TbChevronDown } from "react-icons/tb";
+import { ThemeProvider } from "./theme-provider";
 import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
-
-// const spaceMono = Space_Mono({
-//   subsets: ["latin"],
-//   weight: "400",
-// });
 
 export const metadata: Metadata = {
   title: "leo.dev",
@@ -27,19 +19,20 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const textToCopy = "Text you want to copy to clipboard";
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        {/* <body className={spaceMono.className}> */}
-        {/* <body className="font-mono"> */}
-        <ThemeProvider attribute="class" defaultTheme="dark">
-          <div className="mx-auto flex max-w-screen-lg flex-col gap-12 bg-white dark:bg-black md:border-l md:border-r">
-            {" "}
-            <main>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="min-h-screen bg-white dark:bg-black">
+            <div className="mx-auto max-w-[960px]">
               {children}
-              <Analytics />
-            </main>
+            </div>
+            <Analytics />
           </div>
         </ThemeProvider>
         <svg id="texture">

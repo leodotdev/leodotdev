@@ -22,7 +22,7 @@ import Link from "next/link";
 import { TbArrowUpRight } from "react-icons/tb";
 import { ProjectsClient } from "./projects-client";
 import { ProjectsWrapper } from "./projects-wrapper";
-import { Navigation } from "@/components/Navigation";
+import { ProjectsPageClient } from "./projects-page-client";
 
 export default async function Home() {
   const projects = await getProjects();
@@ -54,10 +54,7 @@ export default async function Home() {
 
   return (
     <ProjectsWrapper>
-      <div>
-        {/* navigation */}
-        <Navigation />
-
+      <ProjectsPageClient>
         {/* unicorn
       <iframe
         src="https://unicorn.studio/embed/AyFghFWYp37UJfD7Sn7P?preview=true"
@@ -114,7 +111,7 @@ export default async function Home() {
           <Separator />
 
           {/* experience */}
-          <div>
+          <div id="experience">
             <div className="px-6 pb-12 md:px-12">
               <div className="font-semibold">Experience</div>
               <div className=" text-muted-foreground">
@@ -394,7 +391,7 @@ export default async function Home() {
 
           <Separator />
 
-          <div>
+          <div id="references">
             <div className="px-6 pb-12 md:px-12">
               <div className="font-semibold">References</div>
               <div className=" text-muted-foreground">
@@ -638,7 +635,7 @@ export default async function Home() {
             </div>
           </div>
         </div>
-      </div>
+      </ProjectsPageClient>
     </ProjectsWrapper>
   );
 }
