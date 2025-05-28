@@ -59,6 +59,7 @@ export function ProjectMediaGallery({
   const [magnifierPosition, setMagnifierPosition] = useState({ x: 0, y: 0 });
   const [showMagnifier, setShowMagnifier] = useState(false);
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
+  const [originalBodyOverflow, setOriginalBodyOverflow] = useState<string>("");
 
   // Combine all media into a single array
   const allMedia: MediaItem[] = [];
@@ -92,6 +93,8 @@ export function ProjectMediaGallery({
 
   const openLightbox = (index: number) => {
     setSelectedIndex(index);
+    // Save the original overflow value
+    setOriginalBodyOverflow(document.body.style.overflow || "");
     document.body.style.overflow = "hidden";
     setLoadingStates({ [index]: true });
     setLoadingProgress({ [index]: 0 });
@@ -109,7 +112,8 @@ export function ProjectMediaGallery({
     });
 
     setSelectedIndex(null);
-    document.body.style.overflow = "unset";
+    // Restore the original overflow value
+    document.body.style.overflow = originalBodyOverflow;
   };
 
   const goToPrevious = () => {
