@@ -24,6 +24,7 @@ import { ProjectsClient } from "./projects-client";
 import { ProjectsWrapper } from "./projects-wrapper";
 import { ProjectsPageClient } from "./projects-page-client";
 import { ExperienceClient } from "./experience-client";
+import { HeroSection } from "./hero-section";
 
 export default async function Home() {
   const projects = await getProjects();
@@ -65,49 +66,9 @@ export default async function Home() {
         className="-mt-12 w-full mix-blend-exclusion dark:mix-blend-lighten"
       ></iframe> */}
 
-        <div className="mt-12 flex flex-col gap-12">
-          <div className="flex flex-col px-6 md:px-12">
-            <p className="font-semibold">Leo Succar</p>
-            <p className=" max-w-xl text-muted-foreground">
-              Product Designer experienced in front-end development, design
-              systems and tools, and crafting end-to-end experiences across web
-              and native. Currently with{" "}
-              <Link href="https://meta.com" target="_blank">
-                <span className="text-blue-500 underline decoration-dotted hover:decoration-solid">
-                  Meta
-                </span>
-              </Link>{" "}
-              and{" "}
-              <Link href="https://plasmic.app" target="_blank">
-                <span className="text-pink-500 underline decoration-dotted hover:decoration-solid">
-                  Plasmic
-                </span>
-              </Link>
-              .
-            </p>
-
-            {/* <div>
-            Formerly with{" "}
-            <Link href="https://meta.com" target="_blank">
-              <span className="text-blue-500 underline decoration-dotted hover:decoration-solid">
-                Meta
-              </span>
-            </Link>
-            ,{" "}
-            <Link href="https://sourcegraph.com" target="_blank">
-              <span className="text-violet-500 underline decoration-dotted hover:decoration-solid">
-                Sourcegraph
-              </span>
-            </Link>
-            , and{" "}
-            <Link href="https://bitgo.com" target="_blank">
-              <span className="text-sky-500 underline decoration-dotted hover:decoration-solid">
-                BitGo
-              </span>
-            </Link>
-            .
-          </div> */}
-          </div>
+        <div className="flex flex-col gap-12">
+          {/* Hero section with photos */}
+          <HeroSection />
 
           <Separator />
 

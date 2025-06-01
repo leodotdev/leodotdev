@@ -67,6 +67,10 @@ const experiences: ExperienceItem[] = [
     location: "San Francisco, CA",
     duration: "2016",
   },
+];
+
+// Additional experiences (duplicating some for demo purposes)
+const additionalExperiences: ExperienceItem[] = [
   {
     logo: "/logo-sd.svg",
     displayName: "SeamlessDocs",
@@ -76,10 +80,6 @@ const experiences: ExperienceItem[] = [
     location: "Miami, FL",
     duration: "2014–'15",
   },
-];
-
-// Additional experiences (duplicating some for demo purposes)
-const additionalExperiences: ExperienceItem[] = [
   {
     logo: "/logo-sa.svg",
     displayName: "Sapient",
@@ -101,8 +101,8 @@ const additionalExperiences: ExperienceItem[] = [
 
 export function ExperienceClient() {
   const [showMore, setShowMore] = useState(false);
-  const displayedExperiences = showMore 
-    ? [...experiences, ...additionalExperiences] 
+  const displayedExperiences = showMore
+    ? [...experiences, ...additionalExperiences]
     : experiences;
 
   return (
@@ -163,10 +163,12 @@ export function ExperienceClient() {
                 <p>{exp.duration}</p>
               </div>
             </div>
-            {index < displayedExperiences.length - 1 && <Separator className="mt-4" />}
+            {index < displayedExperiences.length - 1 && (
+              <Separator className="mt-4" />
+            )}
           </div>
         ))}
-        
+
         <button
           onClick={() => setShowMore(!showMore)}
           className="group mt-4 flex items-center justify-center py-2 text-muted-foreground transition-colors hover:text-foreground"

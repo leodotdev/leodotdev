@@ -40,8 +40,7 @@ const project = {
             name: 'description',
             title: 'Description',
             type: 'text',
-            rows: 3,
-            description: 'A brief description of the project (shows on project cards and detail pages)'
+            rows: 3
         },
         {
             name: 'slug',
