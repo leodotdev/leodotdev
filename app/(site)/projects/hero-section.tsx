@@ -9,7 +9,7 @@ export function HeroSection() {
   const [hasPhotoBackground, setHasPhotoBackground] = useState(false);
 
   return (
-    <div className="relative -my-12 min-h-[500px]">
+    <div className="relative -my-12 min-h-[600px]">
       <ScatteredPhotos onBackgroundChange={setHasPhotoBackground} />
       <div className="pointer-events-none relative z-30 flex flex-col px-6 py-24 md:px-12">
         <p

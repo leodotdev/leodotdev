@@ -1,37 +1,36 @@
 export default function Loading() {
   return (
-    <div className="min-h-screen">
+    <div>
       {/* Navigation skeleton */}
-      <div className="sticky left-0 right-0 top-0 z-50">
-        <div className="flex w-full justify-between border-b bg-secondary/20 py-4 backdrop-blur-md md:px-12">
-          <div className="flex w-full flex-1 flex-wrap content-stretch items-stretch justify-stretch gap-4">
-            <div className="h-6 w-32 animate-pulse rounded bg-muted" />
-            <div className="h-6 w-20 animate-pulse rounded bg-muted" />
+      <div className="sticky left-0 right-0 top-0 z-50 border-b bg-background/80 backdrop-blur-md">
+        <div className="flex h-16 items-center justify-between px-6 md:px-12">
+          {/* Back button */}
+          <div className="flex items-center gap-4">
+            <div className="h-10 w-10 animate-pulse rounded-lg bg-muted" />
             <div className="h-6 w-24 animate-pulse rounded bg-muted" />
-            <div className="h-6 w-20 animate-pulse rounded bg-muted" />
-            <div className="h-6 w-16 animate-pulse rounded bg-muted" />
-            <div className="h-6 w-20 animate-pulse rounded bg-muted" />
           </div>
-          <div className="h-8 w-8 animate-pulse rounded-full bg-muted" />
+          {/* Theme toggle */}
+          <div className="h-10 w-10 animate-pulse rounded-lg bg-muted" />
         </div>
       </div>
       
-      {/* Content skeleton */}
+      {/* Project Content */}
       <div className="mx-auto px-6 py-12 md:px-12">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-start justify-between gap-4">
+          <div className="flex items-start justify-between gap-12">
             <div>
-              <div className="mb-2 h-16 w-96 animate-pulse rounded bg-muted" />
+              <div className="mb-2 h-[72px] w-[400px] animate-pulse rounded bg-muted" />
               <div className="flex items-center gap-2">
-                <div className="h-5 w-24 animate-pulse rounded bg-muted" />
-                <div className="h-5 w-1 animate-pulse rounded bg-muted" />
-                <div className="h-5 w-16 animate-pulse rounded bg-muted" />
-                <div className="h-5 w-1 animate-pulse rounded bg-muted" />
-                <div className="h-5 w-32 animate-pulse rounded bg-muted" />
+                <div className="h-5 w-32 animate-pulse rounded bg-muted/60" />
+                <div className="h-5 w-1 animate-pulse rounded bg-muted/60" />
+                <div className="h-5 w-16 animate-pulse rounded bg-muted/60" />
+                <div className="h-5 w-1 animate-pulse rounded bg-muted/60" />
+                <div className="h-5 w-24 animate-pulse rounded bg-muted/60" />
               </div>
             </div>
-            <div className="h-14 w-48 animate-pulse rounded-xl bg-muted" />
+            {/* Next project card */}
+            <div className="hidden h-14 w-48 animate-pulse rounded-xl bg-muted md:block" />
           </div>
         </div>
         
@@ -39,17 +38,44 @@ export default function Loading() {
         <div className="mb-8 max-w-3xl space-y-2">
           <div className="h-4 w-full animate-pulse rounded bg-muted" />
           <div className="h-4 w-5/6 animate-pulse rounded bg-muted" />
-          <div className="h-4 w-4/6 animate-pulse rounded bg-muted" />
+          <div className="h-4 w-3/6 animate-pulse rounded bg-muted" />
         </div>
         
-        {/* Hero Image */}
-        <div className="mb-8 aspect-video animate-pulse rounded-lg bg-muted" />
+        {/* Media Gallery - Hero Image and thumbnails */}
+        <div className="mb-12">
+          <div className="relative aspect-[16/10] animate-pulse overflow-hidden rounded-xl bg-muted" />
+          {/* Thumbnail strip */}
+          <div className="mt-4 flex gap-2 overflow-hidden">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="h-20 w-20 animate-pulse rounded bg-muted/60" />
+            ))}
+          </div>
+        </div>
         
-        {/* Content */}
-        <div className="space-y-4">
-          <div className="h-4 w-full animate-pulse rounded bg-muted" />
-          <div className="h-4 w-5/6 animate-pulse rounded bg-muted" />
-          <div className="h-4 w-4/6 animate-pulse rounded bg-muted" />
+        {/* Content blocks */}
+        <div className="mb-12 space-y-8">
+          <div className="space-y-2">
+            <div className="h-6 w-48 animate-pulse rounded bg-muted" />
+            <div className="h-4 w-full animate-pulse rounded bg-muted/60" />
+            <div className="h-4 w-5/6 animate-pulse rounded bg-muted/60" />
+            <div className="h-4 w-4/6 animate-pulse rounded bg-muted/60" />
+          </div>
+          
+          <div className="space-y-2">
+            <div className="h-4 w-full animate-pulse rounded bg-muted/60" />
+            <div className="h-4 w-full animate-pulse rounded bg-muted/60" />
+            <div className="h-4 w-3/6 animate-pulse rounded bg-muted/60" />
+          </div>
+        </div>
+        
+        {/* Navigation cards */}
+        <div className="mt-16">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {/* Previous project */}
+            <div className="h-28 animate-pulse rounded-xl bg-muted" />
+            {/* Next project */}
+            <div className="h-28 animate-pulse rounded-xl bg-muted" />
+          </div>
         </div>
       </div>
     </div>
