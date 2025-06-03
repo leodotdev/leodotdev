@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "./theme-provider";
 import { Analytics } from "@vercel/analytics/react";
+import { playfairDisplay } from "@/lib/fonts";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={`${inter.className} ${playfairDisplay.variable}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

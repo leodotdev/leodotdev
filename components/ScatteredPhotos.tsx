@@ -184,14 +184,14 @@ function ScatteredPhoto({
   // Calculate positions for animations
   const yOffset = !hasAnimatedIn ? "400%" : "0%";
 
-  // Calculate parallax offset - different speed for each photo based on index
-  const parallaxSpeed = 0.05 + (index % 10) * 0.03; // Speed varies from 0.05 to 0.32, cycling every 10 photos
-  const parallaxOffset = scrollY * parallaxSpeed;
+  // Calculate parallax offset - different Y speed for each photo based on index (staggered)
+  const parallaxSpeed = 0.02 + (index % 8) * 0.015; // Speed varies from 0.02 to 0.125, cycling every 8 photos
+  const parallaxOffsetY = scrollY * parallaxSpeed;
 
   // When expanded, move photos to bottom in a scattered line
   const expandedPosition = isExpanded
     ? {
-        x: -5 + (index * 100) / (scrollY > 0 ? 40 : 20), // Dynamic spacing based on total photos
+        x: -5 + (index * 100) / 20, // Fixed spacing, not dependent on scroll
         y: 88 + (index % 5) * 2, // More varied heights (88%, 90%, 92%, 94%, 96%)
         rotation: [
           -15, 10, -5, 12, -8, 15, -10, 5, -12, 8,
@@ -220,7 +220,7 @@ function ScatteredPhoto({
           left: `${expandedPosition ? expandedPosition.x : photo.x}%`,
           top: `${expandedPosition ? expandedPosition.y : photo.y}%`,
           transform: `
-        translate(-50%, calc(-50% + var(--y-offset) - ${parallaxOffset}px))
+        translate(-50%, calc(-50% + var(--y-offset) + ${parallaxOffsetY}px))
         rotate(var(--rotation)) 
         scale(var(--scale))
       `,
@@ -373,65 +373,71 @@ export function ScatteredPhotos({
 
   const expandedPhoto = photos.find((p) => p.id === expandedPhotoId);
 
+  // Background photo is either the expanded photo or the first photo as default
+  const backgroundPhoto = expandedPhoto || (photos.length > 0 ? photos[0] : null);
+  const isExpanded = !!expandedPhoto;
+
   return (
     <>
-      {/* Expanded photo background */}
-      {expandedPhoto && (
+      {/* Background photo with parallax - always present, replaced when photo clicked */}
+      {backgroundPhoto && (
         <div
-          className="absolute inset-0 z-[15] cursor-pointer overflow-hidden"
-          onClick={() => {
+          className={`absolute inset-0 overflow-hidden ${isExpanded ? 'z-[15] cursor-pointer' : 'z-[5]'}`}
+          onClick={isExpanded ? () => {
             setExpandedPhotoId(null);
             onBackgroundChange?.(false);
-          }}
+          } : undefined}
         >
           {/* Loading indicator */}
-          {isBackgroundLoading && (
+          {isBackgroundLoading && isExpanded && (
             <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/40">
               <Loader2 className="h-12 w-12 animate-spin text-white" />
             </div>
           )}
           <div
-            className="absolute inset-0 scale-110"
+            className="absolute inset-0"
             style={{
-              transform: `translateY(${scrollY * 0.3}px) scale(1.1)`,
+              transform: `translateY(${scrollY * 0.5}px)`,
             }}
           >
-            {expandedPhoto.isVideo ? (
+            {backgroundPhoto.isVideo ? (
               <video
-                src={`/photos/${expandedPhoto.filename}`}
-                className="absolute inset-0 h-full w-full object-cover object-center"
+                src={`/photos/${backgroundPhoto.filename}`}
+                className={`h-full w-full object-cover ${isExpanded ? '' : 'opacity-20'}`}
                 autoPlay
                 loop
                 muted
                 playsInline
-                onLoadedData={() => setIsBackgroundLoading(false)}
+                onLoadedData={() => isExpanded && setIsBackgroundLoading(false)}
                 onError={(e) => {
                   console.error(
-                    `Failed to load expanded video: ${expandedPhoto.filename}`,
+                    `Failed to load background video: ${backgroundPhoto.filename}`,
                   );
-                  setIsBackgroundLoading(false);
+                  isExpanded && setIsBackgroundLoading(false);
                 }}
               />
             ) : (
               <Image
-                src={`/photos/${expandedPhoto.filename}`}
-                alt={`Expanded photo ${expandedPhoto.id}`}
+                src={`/photos/${backgroundPhoto.filename}`}
+                alt={isExpanded ? `Expanded photo ${backgroundPhoto.id}` : "Background"}
                 fill
-                className="object-cover object-center"
+                className={`object-cover ${isExpanded ? '' : 'opacity-20'}`}
                 sizes="100vw"
                 priority
-                onLoad={() => setIsBackgroundLoading(false)}
+                onLoad={() => isExpanded && setIsBackgroundLoading(false)}
                 onError={(e) => {
                   console.error(
-                    `Failed to load expanded photo: ${expandedPhoto.filename}`,
+                    `Failed to load background photo: ${backgroundPhoto.filename}`,
                   );
-                  setIsBackgroundLoading(false);
+                  isExpanded && setIsBackgroundLoading(false);
                 }}
               />
             )}
           </div>
-          {/* Dark overlay for text readability - gradient darker at top */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-transparent" />
+          {/* Dark overlay for text readability - only when expanded */}
+          {isExpanded && (
+            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-transparent" />
+          )}
         </div>
       )}
 

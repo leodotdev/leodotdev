@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.font-playfair {
+  font-family: var(--font-playfair), 'Playfair Display', serif;
+}
+
 /* @font-face {
   font-family: 'DepartureMono-Regular';
   src: url('/fonts/DepartureMono-Regular.woff2') format('woff2'),
