@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 interface ExperienceItem {
   logo: string;
   company: string;
-  companyUrl: string;
+  companyUrl?: string;
   position: string;
   location: string;
   duration: string;
@@ -81,6 +81,13 @@ const additionalExperiences: ExperienceItem[] = [
     duration: "2014–'15",
   },
   {
+    logo: "/horse.svg",
+    company: "Freelance",
+    position: "Web, App, Visual Designer",
+    location: "Miami, FL",
+    duration: "2010–'14",
+  },
+  {
     logo: "/logo-sa.svg",
     displayName: "Sapient",
     company: "Publicis Sapient",
@@ -129,23 +136,33 @@ export function ExperienceClient() {
                   {exp.displayName ? (
                     <div>
                       {exp.displayName} (now{" "}
-                      <a
-                        className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
-                        href={exp.companyUrl}
-                        target="_blank"
-                      >
-                        {exp.company}
-                      </a>
+                      {exp.companyUrl ? (
+                        <a
+                          className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+                          href={exp.companyUrl}
+                          target="_blank"
+                        >
+                          {exp.company}
+                        </a>
+                      ) : (
+                        <span>{exp.company}</span>
+                      )}
                       )
                     </div>
                   ) : (
-                    <a
-                      className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
-                      href={exp.companyUrl}
-                      target="_blank"
-                    >
-                      {exp.company}
-                    </a>
+                    <>
+                      {exp.companyUrl ? (
+                        <a
+                          className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+                          href={exp.companyUrl}
+                          target="_blank"
+                        >
+                          {exp.company}
+                        </a>
+                      ) : (
+                        <span>{exp.company}</span>
+                      )}
+                    </>
                   )}
                   <span className="hidden text-muted-foreground md:inline">
                     ·

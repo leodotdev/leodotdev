@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Project } from "@/types/Project";
 import Link from "next/link";
 
 const categories = [
+  { title: "All", value: "all" },
   { title: "Product Design", value: "product-design" },
   { title: "Visual Design", value: "visual-design" },
   { title: "Prototyping", value: "prototyping" },
@@ -18,32 +18,32 @@ const categories = [
 ];
 
 export function ProjectsClient({ projects }: { projects: Project[] }) {
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   // Calculate category counts
   const categoryCounts = categories.reduce(
     (acc, category) => {
-      acc[category.value] = projects.filter((project) =>
-        project.categories?.includes(category.value),
-      ).length;
+      if (category.value === "all") {
+        acc[category.value] = projects.length;
+      } else {
+        acc[category.value] = projects.filter((project) =>
+          project.categories?.includes(category.value),
+        ).length;
+      }
       return acc;
     },
     {} as Record<string, number>,
   );
 
-  const toggleCategory = (categoryValue: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(categoryValue)
-        ? prev.filter((c) => c !== categoryValue)
-        : [...prev, categoryValue],
-    );
+  const handleCategoryClick = (categoryValue: string) => {
+    setSelectedCategory(categoryValue);
   };
 
   const filteredProjects =
-    selectedCategories.length === 0
+    selectedCategory === "all"
       ? projects
       : projects.filter((project) =>
-          project.categories?.some((cat) => selectedCategories.includes(cat)),
+          project.categories?.includes(selectedCategory),
         );
 
   return (
@@ -54,42 +54,37 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
           Shots and embeds of my past work.
         </div>
 
-        <div className="mt-6 flex flex-wrap gap-[1px]">
+        <div className="mt-6 flex flex-wrap gap-1">
           {categories.map((category) => (
-            <label
+            <button
               key={category.value}
+              onClick={() => handleCategoryClick(category.value)}
               className={`
-                flex cursor-pointer items-center gap-2 rounded-sm px-3 py-2 pr-2 text-sm transition-all
+                flex cursor-pointer items-center rounded-sm py-2 pl-3 pr-2.5 text-sm transition-all
                 ${
-                  selectedCategories.includes(category.value)
+                  selectedCategory === category.value
                     ? "bg-muted"
                     : " text-foreground hover:bg-accent "
                 }
               `}
             >
-              <Checkbox
-                checked={selectedCategories.includes(category.value)}
-                onCheckedChange={() => toggleCategory(category.value)}
-                className="h-4 w-4"
-              />
-              <div className="flex flex-row gap-1">
-                <span>{category.title} </span>
-                <span className="text-zinc-500">
-                  {" "}
-                  ({categoryCounts[category.value] || 0})
-                </span>
+              <div className="flex items-baseline">
+                <span>{category.title}</span>
+                <sup className="ml-0.5 text-xs text-zinc-500">
+                  {categoryCounts[category.value] || 0}
+                </sup>
               </div>
-            </label>
+            </button>
           ))}
         </div>
       </div>
 
       <div className="auto-rows grid grid-cols-1 gap-6 md:grid-cols-2 md:px-12">
         {filteredProjects.map((project) => (
-          <Link 
+          <Link
             key={project._id}
             href={`/projects/${project.slug}`}
-            className="group flex flex-col items-stretch gap-6 overflow-clip rounded-xl border bg-secondary p-6 hover:bg-secondary/40 dark:bg-secondary/40 dark:hover:bg-secondary transition-colors"
+            className="group flex flex-col items-stretch gap-6 overflow-clip rounded-xl border bg-secondary p-6 transition-colors hover:bg-secondary/40 dark:bg-secondary/40 dark:hover:bg-secondary"
           >
             <div className="flex flex-col text-left text-foreground">
               <div className="truncate">{project.name}</div>

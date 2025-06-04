@@ -22,7 +22,7 @@ export const ThemeSwitcher = forwardRef<
 
   // Use resolvedTheme for display but check actual theme for logic
   const currentTheme = resolvedTheme || "light";
-  
+
   return (
     <Button
       ref={ref}
@@ -35,9 +35,9 @@ export const ThemeSwitcher = forwardRef<
       {...props}
     >
       {currentTheme === "light" ? (
-        <Image src="/new-moon-face.svg" alt="Dark" width={24} height={24} />
+        <Image src="/crescent-moon.svg" alt="Dark" width={24} height={24} />
       ) : (
-        <Image src="/sun-with-face.svg" alt="Light" width={24} height={24} />
+        <Image src="/sun.svg" alt="Light" width={24} height={24} />
       )}
     </Button>
   );

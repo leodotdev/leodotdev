@@ -1,31 +1,10 @@
 import { Navigation } from "@/components/Navigation";
-import { StickySectionHeader } from "@/components/StickySectionHeader";
 import Link from "next/link";
-
-const sections = [
-  {
-    id: "experience",
-    name: "Experience",
-    description: "My work and employment history.",
-  },
-  {
-    id: "references",
-    name: "References",
-    description: "Folks I've had the pleasure of working with.",
-  },
-  {
-    id: "projects",
-    name: "Projects",
-    description: "Shots and embeds of my past work.",
-  },
-];
 
 export default function HomePage() {
   return (
     <div>
       <Navigation />
-
-      <StickySectionHeader sections={sections} />
 
       <main className="mx-auto max-w-screen-lg px-6 md:px-12">
         {/* Hero Section */}

@@ -352,7 +352,12 @@ export function ProjectMediaGallery({
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.2 }}
-                className="relative flex max-h-[70vh] max-w-[90vw] items-center justify-center"
+                className={cn(
+                  "relative flex items-center justify-center",
+                  allMedia[selectedIndex].type === "image" 
+                    ? "max-h-[70vh] max-w-[90vw]" 
+                    : "max-h-[85vh] max-w-[90vw]"
+                )}
               >
                 {/* Content */}
                 <div
@@ -397,21 +402,12 @@ export function ProjectMediaGallery({
                               backgroundSize: `${imageSize.width * 2.5}px ${imageSize.height * 2.5}px`,
                               backgroundRepeat: "no-repeat",
                             }}
-                          >
-                            {/* Outer glow */}
-                            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-white/10 to-transparent"></div>
-
-                            {/* Crosshair */}
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <div className="h-6 w-[1px] bg-white/40"></div>
-                              <div className="absolute h-[1px] w-6 bg-white/40"></div>
-                            </div>
-                          </motion.div>
+                          />
                         )}
                       </AnimatePresence>
                     </div>
                   ) : (
-                    <div className="w-[90vw] max-w-6xl">
+                    <div className="w-[90vw] max-w-7xl">
                       <div className="relative aspect-video">
                         <iframe
                           src={allMedia[selectedIndex].embedUrl}

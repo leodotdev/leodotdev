@@ -191,8 +191,8 @@ function ScatteredPhoto({
   // When expanded, move photos to bottom in a scattered line
   const expandedPosition = isExpanded
     ? {
-        x: -5 + (index * 100) / 20, // Fixed spacing, not dependent on scroll
-        y: 88 + (index % 5) * 2, // More varied heights (88%, 90%, 92%, 94%, 96%)
+        x: (index * 100) / 10, // Spread evenly across full width (0% to 100%)
+        y: 90 + (index % 3) * 1, // Roughly same Y with slight variation (90%, 91%, 92%)
         rotation: [
           -15, 10, -5, 12, -8, 15, -10, 5, -12, 8,
           -18, 14, -7, 16, -11, 9, -13, 6, -9, 11
@@ -206,9 +206,7 @@ function ScatteredPhoto({
       ref={photoRef}
       className={cn(
         "group absolute",
-        photo.isPanoramic
-          ? "w-52 md:w-64" // Even larger for panoramic photos
-          : "w-28 md:w-36", // Smaller for regular photos
+        "w-24 md:w-32", // Smaller size for all photos
         isClickable ? "cursor-pointer" : "cursor-default",
         "transition-all ease-out",
       )}
@@ -225,12 +223,12 @@ function ScatteredPhoto({
         scale(var(--scale))
       `,
           zIndex: isHovered
-            ? 100
+            ? 45
             : isExpanded && photo.id === expandedPhotoId
-              ? 100
+              ? 45
               : isExpanded
-                ? 50 + index
-                : photo.z + 20,
+                ? 20 + index
+                : photo.z + 10,
           transition: `transform ${600 + index * 80}ms cubic-bezier(0.34, 1.56, 0.64, 1), left ${600 + index * 80}ms cubic-bezier(0.34, 1.56, 0.64, 1), top ${600 + index * 80}ms cubic-bezier(0.34, 1.56, 0.64, 1)`,
         } as React.CSSProperties
       }
