@@ -99,17 +99,17 @@ export function StickySectionHeader({
   return (
     <div
       className={cn(
-        "sticky z-40 border-b border-black/10 dark:border-white/10 bg-secondary/20 backdrop-blur-md transition-all duration-200",
+        "sticky top-0 z-40 border-b border-black/10 dark:border-white/10 bg-secondary/20 backdrop-blur-md transition-all duration-200",
         isVisible && currentSectionName
           ? "translate-y-0 opacity-100"
           : "-translate-y-full opacity-0",
         className,
       )}
     >
-      <div className="mx-auto max-w-[960px] px-6 md:px-12">
+      <div className="mx-auto max-w-[960px] px-6 py-3 md:px-12">
         <div className="font-semibold">{currentSectionName}</div>
         {currentSectionDescription && (
-          <div className="text-muted-foreground">
+          <div className="text-muted-foreground text-sm">
             {currentSectionDescription}
           </div>
         )}

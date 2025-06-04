@@ -40,7 +40,7 @@ export function Navigation({ children }: NavigationProps) {
           </Link>
           <DropdownMenu>
             <DropdownMenuTrigger className="text-md flex items-center hover:underline">
-              My résumés
+              Resumés
               <TbChevronDown className="h-4 w-4 text-muted-foreground" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
