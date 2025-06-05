@@ -126,7 +126,7 @@ export function ExperienceClient() {
           <div key={index}>
             <div className="flex w-full items-center justify-between">
               <div className="flex flex-row items-center gap-3">
-                <Avatar>
+                <Avatar className="rounded-md">
                   <AvatarImage src={exp.logo} />
                   <AvatarFallback className="text-muted-foreground">
                     {exp.company.charAt(0)}

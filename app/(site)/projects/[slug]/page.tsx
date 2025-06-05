@@ -9,6 +9,8 @@ import { TbChevronLeft, TbChevronRight } from "react-icons/tb";
 import { BackButton } from "@/components/BackButton";
 import { Navigation } from "@/components/Navigation";
 import { ProjectMediaGallery } from "@/components/ProjectMediaGallery";
+import { ProjectNavigation } from "./project-navigation";
+import { NextProjectLink } from "./next-project-link";
 
 export default async function ProjectPage({
   params,
@@ -93,31 +95,7 @@ export default async function ProjectPage({
               </div>
             </div>
             {nextProject && (
-              <Link
-                href={`/projects/${nextProject.slug}`}
-                className="group flex max-w-xs flex-row-reverse gap-4 rounded-xl border bg-secondary/50 p-2 transition-colors hover:bg-secondary"
-              >
-                <div className="flex items-center">
-                  <TbChevronRight className="h-6 w-6 text-muted-foreground transition-colors group-hover:text-foreground" />
-                </div>
-                <div className="min-w-0 flex-1 text-right">
-                  <p className="text-sm text-muted-foreground">Next</p>
-                  <h3 className="truncate text-sm font-semibold">
-                    {nextProject.name}
-                  </h3>
-                </div>
-                {nextProject.image && (
-                  <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-sm">
-                    <Image
-                      src={nextProject.image}
-                      alt={nextProject.name}
-                      fill
-                      sizes="40px"
-                      className="object-cover"
-                    />
-                  </div>
-                )}
-              </Link>
+              <NextProjectLink nextProject={nextProject} />
             )}
           </div>
         </div>
@@ -149,73 +127,7 @@ export default async function ProjectPage({
         )}
 
         {/* Navigation */}
-        <div className="mt-16">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {/* Previous Project */}
-            {prevProject ? (
-              <Link
-                href={`/projects/${prevProject.slug}`}
-                className="group flex gap-4 rounded-xl border bg-secondary/50 p-4 transition-colors hover:bg-secondary"
-              >
-                <div className="flex items-center">
-                  <TbChevronLeft className="h-6 w-6 text-muted-foreground transition-colors group-hover:text-foreground" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="mb-1 text-sm text-muted-foreground">Previous</p>
-                  <h3 className="truncate font-semibold">{prevProject.name}</h3>
-                  <p className="truncate text-sm text-muted-foreground">
-                    {prevProject.client}
-                  </p>
-                </div>
-                {prevProject.image && (
-                  <div className="relative aspect-[4/3] flex-shrink-0 overflow-hidden rounded-sm">
-                    <Image
-                      src={prevProject.image}
-                      alt={prevProject.name}
-                      fill
-                      sizes="80px"
-                      className="object-cover"
-                    />
-                  </div>
-                )}
-              </Link>
-            ) : (
-              <div />
-            )}
-
-            {/* Next Project */}
-            {nextProject ? (
-              <Link
-                href={`/projects/${nextProject.slug}`}
-                className="group flex items-center gap-4 rounded-xl border bg-secondary/50 p-4 transition-colors hover:bg-secondary md:flex-row-reverse"
-              >
-                <div className="flex items-center">
-                  <TbChevronRight className="h-6 w-6 text-muted-foreground transition-colors group-hover:text-foreground" />
-                </div>
-                <div className="min-w-0 flex-1 gap-0 text-right">
-                  <p className="text-sm text-muted-foreground">Next</p>
-                  <h3 className="truncate font-semibold">{nextProject.name}</h3>
-                  <p className="truncate text-sm text-muted-foreground">
-                    {nextProject.client}
-                  </p>
-                </div>
-                {nextProject.image && (
-                  <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-sm">
-                    <Image
-                      src={nextProject.image}
-                      alt={nextProject.name}
-                      fill
-                      sizes="80px"
-                      className="object-cover"
-                    />
-                  </div>
-                )}
-              </Link>
-            ) : (
-              <div />
-            )}
-          </div>
-        </div>
+        <ProjectNavigation prevProject={prevProject} nextProject={nextProject} />
       </div>
     </div>
   );

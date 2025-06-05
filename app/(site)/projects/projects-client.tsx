@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Project } from "@/types/Project";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
 
 const categories = [
   { title: "All", value: "all" },
@@ -19,6 +20,9 @@ const categories = [
 
 export function ProjectsClient({ projects }: { projects: Project[] }) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [visibleCount, setVisibleCount] = useState(9);
+  const [isLoading, setIsLoading] = useState(false);
+  const loadingRef = useRef<HTMLDivElement>(null);
 
   // Calculate category counts
   const categoryCounts = categories.reduce(
@@ -37,6 +41,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
 
   const handleCategoryClick = (categoryValue: string) => {
     setSelectedCategory(categoryValue);
+    setVisibleCount(9); // Reset to show first 9 when category changes
   };
 
   const filteredProjects =
@@ -45,6 +50,40 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
       : projects.filter((project) =>
           project.categories?.includes(selectedCategory),
         );
+
+  const visibleProjects = filteredProjects.slice(0, visibleCount);
+  const hasMoreProjects = visibleCount < filteredProjects.length;
+
+  // Load more projects when scrolling near the bottom
+  useEffect(() => {
+    if (!loadingRef.current || !hasMoreProjects) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isLoading && hasMoreProjects) {
+          setIsLoading(true);
+          
+          // Simulate a small delay for loading
+          setTimeout(() => {
+            setVisibleCount(prev => Math.min(prev + 9, filteredProjects.length));
+            setIsLoading(false);
+          }, 500);
+        }
+      },
+      {
+        rootMargin: "100px", // Start loading when 100px away from the trigger
+      }
+    );
+
+    observer.observe(loadingRef.current);
+
+    return () => observer.disconnect();
+  }, [hasMoreProjects, isLoading, filteredProjects.length]);
+
+  // Reset visible count when filtered projects change
+  useEffect(() => {
+    setVisibleCount(9);
+  }, [filteredProjects.length]);
 
   return (
     <div id="projects">
@@ -80,7 +119,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
       </div>
 
       <div className="auto-rows grid grid-cols-1 gap-6 md:grid-cols-2 md:px-12">
-        {filteredProjects.map((project) => (
+        {visibleProjects.map((project) => (
           <Link
             key={project._id}
             href={`/projects/${project.slug}`}
@@ -107,6 +146,21 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
           </Link>
         ))}
       </div>
+
+      {/* Loading trigger and indicator */}
+      {hasMoreProjects && (
+        <div 
+          ref={loadingRef}
+          className="flex justify-center py-8"
+        >
+          {isLoading && (
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span>Loading more projects...</span>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
