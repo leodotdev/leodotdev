@@ -25,7 +25,7 @@ export default function RootLayout({
       <body className={`${inter.className} ${playfairDisplay.variable}`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
