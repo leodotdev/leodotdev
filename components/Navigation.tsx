@@ -74,16 +74,6 @@ export function Navigation({ children }: NavigationProps) {
                   <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link
-                  href="https://read.cv/leo.dev"
-                  target="_blank"
-                  className="flex pr-0"
-                >
-                  Read.cv
-                  <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
-                </Link>
-              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           <Link

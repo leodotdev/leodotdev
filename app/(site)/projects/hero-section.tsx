@@ -28,7 +28,7 @@ export function HeroSection() {
         >
           Product Designer experienced in front-end development, design systems
           and tools, and crafting end-to-end experiences across web and native.
-          Currently with{" "}
+          Formerly with{" "}
           <Link href="https://meta.com" target="_blank">
             <span
               className={cn(

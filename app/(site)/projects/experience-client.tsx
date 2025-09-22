@@ -14,6 +14,7 @@ interface ExperienceItem {
   displayName?: string;
   altCompany?: string;
   altCompanyUrl?: string;
+  team?: string;
 }
 
 const experiences: ExperienceItem[] = [
@@ -23,15 +24,8 @@ const experiences: ExperienceItem[] = [
     companyUrl: "https://www.meta.com",
     position: "Product Designer (Contract)",
     location: "Remote",
-    duration: "2024–Present",
-  },
-  {
-    logo: "/logo-pl.svg",
-    company: "Plasmic",
-    companyUrl: "https://plasmic.app",
-    position: "Founding Designer",
-    location: "Remote",
-    duration: "2020–Present",
+    duration: "2024–'25",
+    team: "Team: Identity & Multi-profile Experience",
   },
   {
     logo: "/logo-bg.svg",
@@ -42,6 +36,14 @@ const experiences: ExperienceItem[] = [
     duration: "2023–'24",
   },
   {
+    logo: "/logo-pl.svg",
+    company: "Plasmic",
+    companyUrl: "https://plasmic.app",
+    position: "Founding Designer",
+    location: "Remote",
+    duration: "2020–'25",
+  },
+  {
     logo: "/logo-fb.svg",
     displayName: "Facebook",
     company: "Meta",
@@ -49,6 +51,7 @@ const experiences: ExperienceItem[] = [
     position: "Product & Design Systems Designer",
     location: "Menlo Park, CA",
     duration: "2018–'20",
+    team: "Teams: Core Systems UI, xDesign",
   },
   {
     logo: "/logo-sg.svg",
@@ -132,44 +135,53 @@ export function ExperienceClient() {
                     {exp.company.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col md:flex-row md:gap-2">
-                  {exp.displayName ? (
-                    <div>
-                      {exp.displayName} (now{" "}
-                      {exp.companyUrl ? (
-                        <a
-                          className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
-                          href={exp.companyUrl}
-                          target="_blank"
-                        >
-                          {exp.company}
-                        </a>
-                      ) : (
-                        <span>{exp.company}</span>
-                      )}
-                      )
+                <div className="flex flex-col">
+                  <div className="flex flex-col md:flex-row md:gap-2">
+                    {exp.displayName ? (
+                      <div>
+                        {exp.displayName} (now{" "}
+                        {exp.companyUrl ? (
+                          <a
+                            className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+                            href={exp.companyUrl}
+                            target="_blank"
+                          >
+                            {exp.company}
+                          </a>
+                        ) : (
+                          <span>{exp.company}</span>
+                        )}
+                        )
+                      </div>
+                    ) : (
+                      <>
+                        {exp.companyUrl ? (
+                          <a
+                            className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+                            href={exp.companyUrl}
+                            target="_blank"
+                          >
+                            {exp.company}
+                          </a>
+                        ) : (
+                          <span>{exp.company}</span>
+                        )}
+                      </>
+                    )}
+                    <span className="hidden text-muted-foreground md:inline">
+                      ·
+                    </span>
+                    <div className="flex flex-col">
+                      <div className="italic text-muted-foreground">
+                        {exp.position}
+                      </div>
                     </div>
-                  ) : (
-                    <>
-                      {exp.companyUrl ? (
-                        <a
-                          className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
-                          href={exp.companyUrl}
-                          target="_blank"
-                        >
-                          {exp.company}
-                        </a>
-                      ) : (
-                        <span>{exp.company}</span>
-                      )}
-                    </>
-                  )}
-                  <span className="hidden text-muted-foreground md:inline">
-                    ·
-                  </span>
-                  <div className="italic text-muted-foreground">
-                    {exp.position}
                   </div>
+                  {exp.team && (
+                    <div className="text-sm text-muted-foreground">
+                      {exp.team}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="flex flex-col items-end text-end md:flex-row md:gap-2">

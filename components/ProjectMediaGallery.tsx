@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -56,9 +56,6 @@ export function ProjectMediaGallery({
   const [loadingProgress, setLoadingProgress] = useState<
     Record<number, number>
   >({});
-  const [magnifierPosition, setMagnifierPosition] = useState({ x: 0, y: 0 });
-  const [showMagnifier, setShowMagnifier] = useState(false);
-  const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
   const [originalBodyOverflow, setOriginalBodyOverflow] = useState<string>("");
 
   // Combine all media into a single array
@@ -202,33 +199,6 @@ export function ProjectMediaGallery({
     }, 200);
   };
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (selectedIndex === null || allMedia[selectedIndex].type !== "image")
-      return;
-
-    const elem = e.currentTarget;
-    const { left, top, width, height } = elem.getBoundingClientRect();
-
-    const x = e.clientX - left;
-    const y = e.clientY - top;
-
-    setMagnifierPosition({ x, y });
-    setImageSize({ width, height });
-  };
-
-  const handleMouseEnter = () => {
-    if (
-      selectedIndex !== null &&
-      allMedia[selectedIndex].type === "image" &&
-      !loadingStates[selectedIndex]
-    ) {
-      setShowMagnifier(true);
-    }
-  };
-
-  const handleMouseLeave = () => {
-    setShowMagnifier(false);
-  };
 
   return (
     <>
@@ -367,12 +337,7 @@ export function ProjectMediaGallery({
                   )}
                 >
                   {allMedia[selectedIndex].type === "image" ? (
-                    <div
-                      className="relative cursor-zoom-in"
-                      onMouseMove={handleMouseMove}
-                      onMouseEnter={handleMouseEnter}
-                      onMouseLeave={handleMouseLeave}
-                    >
+                    <div className="relative">
                       <Image
                         src={getImageUrl(allMedia[selectedIndex])}
                         alt={allMedia[selectedIndex].alt || "Project image"}
@@ -382,40 +347,19 @@ export function ProjectMediaGallery({
                         onLoad={() => handleImageLoad(selectedIndex)}
                         priority
                       />
-
-                      {/* Magnifier */}
-                      <AnimatePresence>
-                        {showMagnifier && (
-                          <motion.div
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.8 }}
-                            transition={{ duration: 0.1 }}
-                            className="pointer-events-none absolute overflow-hidden rounded-full border-2 border-white/50 shadow-2xl backdrop-blur-sm"
-                            style={{
-                              width: "400px",
-                              height: "400px",
-                              left: `${magnifierPosition.x - 200}px`,
-                              top: `${magnifierPosition.y - 200}px`,
-                              backgroundImage: `url(${getImageUrl(allMedia[selectedIndex])})`,
-                              backgroundPosition: `${-magnifierPosition.x * 2.5 + 200}px ${-magnifierPosition.y * 2.5 + 200}px`,
-                              backgroundSize: `${imageSize.width * 2.5}px ${imageSize.height * 2.5}px`,
-                              backgroundRepeat: "no-repeat",
-                            }}
-                          />
-                        )}
-                      </AnimatePresence>
                     </div>
                   ) : (
-                    <div className="w-[90vw] max-w-7xl">
-                      <div className="relative aspect-video">
-                        <iframe
-                          src={allMedia[selectedIndex].embedUrl}
-                          className="h-full w-full rounded-lg"
-                          allowFullScreen
-                          onLoad={() => handleImageLoad(selectedIndex)}
-                        />
-                      </div>
+                    <div className="flex h-full w-full items-center justify-center">
+                      <iframe
+                        src={allMedia[selectedIndex].embedUrl}
+                        className={`w-[90vw] max-w-7xl rounded-lg ${
+                          allMedia.length > 1 
+                            ? "h-[calc(100vh-theme(spacing.36))]" 
+                            : "h-[calc(100vh-theme(spacing.8))]"
+                        }`}
+                        allowFullScreen
+                        onLoad={() => handleImageLoad(selectedIndex)}
+                      />
                     </div>
                   )}
                 </div>
