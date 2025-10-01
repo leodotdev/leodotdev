@@ -15,9 +15,39 @@ interface ExperienceItem {
   altCompany?: string;
   altCompanyUrl?: string;
   team?: string;
+  project?: string;
+  projectUrl?: string;
+  projectCompany?: string;
+  projectCompanyUrl?: string;
+  roundLogo?: boolean;
 }
 
 const experiences: ExperienceItem[] = [
+  {
+    logo: "/logo-dbco.jpg",
+    company: "Design Business Company",
+    companyUrl: "https://dbco.online/",
+    position: "Web Designer (Contract)",
+    location: "Remote",
+    duration: "2025",
+    project: "Claude.ai",
+    projectUrl: "https://claude.ai",
+    projectCompany: "Anthropic",
+    projectCompanyUrl: "https://www.anthropic.com/",
+  },
+  {
+    logo: "/logo-sania.jpg",
+    company: "Sania Saleh",
+    companyUrl: "http://sania.io/",
+    position: "Web and Product Designer (Contract)",
+    location: "Remote",
+    duration: "2025",
+    project: "Earn.sapien.io",
+    projectUrl: "https://earn.sapien.io/",
+    projectCompany: "Sapien",
+    projectCompanyUrl: "https://sapien.io",
+    roundLogo: true,
+  },
   {
     logo: "/logo-me.svg",
     company: "Meta",
@@ -61,6 +91,10 @@ const experiences: ExperienceItem[] = [
     location: "San Francisco, CA",
     duration: "2017–'18",
   },
+];
+
+// Additional experiences (duplicating some for demo purposes)
+const additionalExperiences: ExperienceItem[] = [
   {
     logo: "/logo-ze.svg",
     displayName: "Zenefits",
@@ -70,10 +104,6 @@ const experiences: ExperienceItem[] = [
     location: "San Francisco, CA",
     duration: "2016",
   },
-];
-
-// Additional experiences (duplicating some for demo purposes)
-const additionalExperiences: ExperienceItem[] = [
   {
     logo: "/logo-sd.svg",
     displayName: "SeamlessDocs",
@@ -129,7 +159,7 @@ export function ExperienceClient() {
           <div key={index}>
             <div className="flex w-full items-center justify-between">
               <div className="flex flex-row items-center gap-3">
-                <Avatar className="rounded-md">
+                <Avatar className={exp.roundLogo ? "" : "rounded-md"}>
                   <AvatarImage src={exp.logo} />
                   <AvatarFallback className="text-muted-foreground">
                     {exp.company.charAt(0)}
@@ -180,6 +210,39 @@ export function ExperienceClient() {
                   {exp.team && (
                     <div className="text-sm text-muted-foreground">
                       {exp.team}
+                    </div>
+                  )}
+                  {exp.project && (
+                    <div className="text-sm text-muted-foreground">
+                      {exp.projectCompany && (
+                        <>
+                          Client:{" "}
+                          {exp.projectCompanyUrl ? (
+                            <a
+                              className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+                              href={exp.projectCompanyUrl}
+                              target="_blank"
+                            >
+                              {exp.projectCompany}
+                            </a>
+                          ) : (
+                            <span>{exp.projectCompany}</span>
+                          )}
+                          , Project:{" "}
+                        </>
+                      )}
+                      {!exp.projectCompany && "Project: "}
+                      {exp.projectUrl ? (
+                        <a
+                          className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+                          href={exp.projectUrl}
+                          target="_blank"
+                        >
+                          {exp.project}
+                        </a>
+                      ) : (
+                        <span>{exp.project}</span>
+                      )}
                     </div>
                   )}
                 </div>

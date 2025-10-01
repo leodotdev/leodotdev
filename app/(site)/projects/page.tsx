@@ -142,14 +142,6 @@ export default async function Home() {
               <a
                 className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
                 target="_blank"
-                href="https://nextjs.org/"
-              >
-                NextJS
-              </a>
-              ,{" "}
-              <a
-                className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
-                target="_blank"
                 href="https://tailwindcss.com/"
               >
                 TailwindCSS
