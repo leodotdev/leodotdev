@@ -66,7 +66,7 @@ export function Navigation({ children }: NavigationProps) {
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Link
-                  href="https://docs.google.com/document/d/1H6ypwEoEqV9trkDmvr7iopD4s4UeYAAMFbj8JtnuGJQ/edit?tab=t.0"
+                  href="https://docs.google.com/document/d/1H6ypwEoEqV9trkDmvr7iopD4s4UeYAAMFbj8JtnuGJQ/edit?usp=sharing"
                   target="_blank"
                   className="flex pr-0"
                 >
