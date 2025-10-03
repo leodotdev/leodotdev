@@ -12,6 +12,19 @@ export const metadata: Metadata = {
   icons: {
     icon: { url: "/favicon.svg", type: "image/svg+xml", sizes: "any" },
   },
+  openGraph: {
+    title: "Leo SF",
+    description: "Web, Software, Product Designer",
+    url: "https://leo.dev",
+    siteName: "leo.dev",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Leo SF",
+    description: "Web, Software, Product Designer",
+  },
 };
 
 export default function RootLayout({
