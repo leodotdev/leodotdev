@@ -9,7 +9,6 @@ const config = defineConfig({
     dataset: "production",
     title: "leo.dev",
     apiVersion: "2023-10-07",
-    basePath: "/admin",
     plugins: [deskTool(), visionTool()],
     schema: { types:[project, book] }
 })
