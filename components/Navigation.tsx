@@ -1,13 +1,7 @@
 import Link from "next/link";
-import { TbArrowUpRight, TbChevronDown, TbCopy } from "react-icons/tb";
+import { TbArrowUpRight, TbCopy } from "react-icons/tb";
 import { ThemeSwitcher } from "@/app/theme-switcher";
 import CopyToClipboard from "@/components/CopyToClipboard";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 interface NavigationProps {
   children?: React.ReactNode; // For custom first item like BackButton
@@ -38,44 +32,12 @@ export function Navigation({ children }: NavigationProps) {
               <TbCopy className="h-4 w-4 self-start text-muted-foreground" />
             </CopyToClipboard>
           </Link>
-          <DropdownMenu>
-            <DropdownMenuTrigger className="text-md flex items-center hover:underline">
-              Resumés
-              <TbChevronDown className="h-4 w-4 text-muted-foreground" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem>
-                <Link
-                  href="/Leo-SF-Resume-May-2025.pdf"
-                  target="_blank"
-                  className="flex pr-0"
-                >
-                  Adobe PDF
-                  <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link
-                  href="/Leo-SF-Resume-May-2025.docx"
-                  target="_blank"
-                  className="flex pr-0"
-                >
-                  Word DOCX
-                  <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link
-                  href="https://docs.google.com/document/d/1H6ypwEoEqV9trkDmvr7iopD4s4UeYAAMFbj8JtnuGJQ/edit?usp=sharing"
-                  target="_blank"
-                  className="flex pr-0"
-                >
-                  Google DOC
-                  <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Link
+            href="/resume"
+            className="text-md flex items-center hover:underline"
+          >
+            Resume
+          </Link>
           <Link
             href="https://twitter.com/leosuccarferre"
             target="_blank"
