@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 
@@ -15,6 +15,7 @@ interface ExperienceItem {
   altCompany?: string;
   altCompanyUrl?: string;
   team?: string;
+  contract?: boolean;
   project?: string;
   projectUrl?: string;
   projectCompany?: string;
@@ -27,21 +28,24 @@ const experiences: ExperienceItem[] = [
     logo: "/logo-dbco.jpg",
     company: "Design Business Company",
     companyUrl: "https://dbco.online/",
-    position: "Web Designer (Contract)",
+    position: "Web Designer",
     location: "Remote",
     duration: "2025",
+    contract: true,
     project: "Claude.ai",
     projectUrl: "https://claude.ai",
     projectCompany: "Anthropic",
     projectCompanyUrl: "https://www.anthropic.com/",
+    roundLogo: true,
   },
   {
     logo: "/logo-sania.jpg",
-    company: "Sania Saleh",
+    company: "Sania Saleh Studio",
     companyUrl: "http://sania.io/",
-    position: "Web and Product Designer (Contract)",
+    position: "Web and Product Designer",
     location: "Remote",
     duration: "2025",
+    contract: true,
     project: "Earn.sapien.io",
     projectUrl: "https://earn.sapien.io/",
     projectCompany: "Sapien",
@@ -52,18 +56,20 @@ const experiences: ExperienceItem[] = [
     logo: "/logo-me.svg",
     company: "Meta",
     companyUrl: "https://www.meta.com",
-    position: "Product Designer (Contract)",
+    position: "Product Designer",
     location: "Remote",
     duration: "2024–'25",
+    contract: true,
     team: "Team: Identity & Multi-profile Experience",
   },
   {
     logo: "/logo-bg.svg",
     company: "BitGo",
     companyUrl: "https://www.bitgo.com/",
-    position: "Senior Product & Design Systems Designer (Contract)",
+    position: "Senior Product & Design Systems Designer",
     location: "Remote",
     duration: "2023–'24",
+    contract: true,
   },
   {
     logo: "/logo-pl.svg",
@@ -93,7 +99,6 @@ const experiences: ExperienceItem[] = [
   },
 ];
 
-// Additional experiences (duplicating some for demo purposes)
 const additionalExperiences: ExperienceItem[] = [
   {
     logo: "/logo-ze.svg",
@@ -135,15 +140,17 @@ const additionalExperiences: ExperienceItem[] = [
     companyUrl: "https://emerson.edu",
     position: "Education, BA: New Media",
     location: "Boston, MA",
-    duration: "2003–'07",
+    duration: "",
   },
 ];
 
+const allExperiences = [...experiences, ...additionalExperiences];
+const EXPERIENCE_PAGE_SIZE = 4;
+
 export function ExperienceClient() {
-  const [showMore, setShowMore] = useState(false);
-  const displayedExperiences = showMore
-    ? [...experiences, ...additionalExperiences]
-    : experiences;
+  const [visibleCount, setVisibleCount] = useState(EXPERIENCE_PAGE_SIZE);
+  const displayedExperiences = allExperiences.slice(0, visibleCount);
+  const hasMore = visibleCount < allExperiences.length;
 
   return (
     <div id="experience">
@@ -154,10 +161,17 @@ export function ExperienceClient() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-4 px-6 md:px-12">
+      <div className="flex flex-col [&:hover>*]:opacity-50">
         {displayedExperiences.map((exp, index) => (
-          <div key={index}>
-            <div className="flex w-full items-center justify-between">
+          <React.Fragment key={index}>
+          <div
+            className="group/item cursor-pointer transition-opacity hover:!opacity-100"
+            onClick={() => {
+              const url = exp.companyUrl;
+              if (url) window.open(url, "_blank");
+            }}
+          >
+            <div className="flex w-full items-center justify-between px-6 py-4 md:px-12">
               <div className="flex flex-row items-center gap-3">
                 <Avatar className={exp.roundLogo ? "" : "rounded-md"}>
                   <AvatarImage src={exp.logo} />
@@ -169,12 +183,14 @@ export function ExperienceClient() {
                   <div className="flex flex-col md:flex-row md:gap-2">
                     {exp.displayName ? (
                       <div>
-                        {exp.displayName} (now{" "}
+                        {exp.displayName}{" "}
+                        (now{" "}
                         {exp.companyUrl ? (
                           <a
-                            className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+                            className="underline decoration-dotted group-hover/item:text-blue-500 group-hover/item:decoration-solid"
                             href={exp.companyUrl}
                             target="_blank"
+                            onClick={(e) => e.stopPropagation()}
                           >
                             {exp.company}
                           </a>
@@ -187,9 +203,10 @@ export function ExperienceClient() {
                       <>
                         {exp.companyUrl ? (
                           <a
-                            className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+                            className="underline decoration-dotted group-hover/item:text-blue-500 group-hover/item:decoration-solid"
                             href={exp.companyUrl}
                             target="_blank"
+                            onClick={(e) => e.stopPropagation()}
                           >
                             {exp.company}
                           </a>
@@ -207,13 +224,11 @@ export function ExperienceClient() {
                       </div>
                     </div>
                   </div>
-                  {exp.team && (
+                  {(exp.contract || exp.team || exp.project) && (
                     <div className="text-sm text-muted-foreground">
-                      {exp.team}
-                    </div>
-                  )}
-                  {exp.project && (
-                    <div className="text-sm text-muted-foreground">
+                      {exp.contract && "Contract"}
+                      {exp.contract && (exp.projectCompany || exp.project || exp.team) && ", "}
+                      {exp.team && exp.team}
                       {exp.projectCompany && (
                         <>
                           Client:{" "}
@@ -228,48 +243,69 @@ export function ExperienceClient() {
                           ) : (
                             <span>{exp.projectCompany}</span>
                           )}
-                          , Project:{" "}
+                          {exp.project && ", "}
                         </>
                       )}
-                      {!exp.projectCompany && "Project: "}
-                      {exp.projectUrl ? (
-                        <a
-                          className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
-                          href={exp.projectUrl}
-                          target="_blank"
-                        >
-                          {exp.project}
-                        </a>
-                      ) : (
-                        <span>{exp.project}</span>
+                      {exp.project && (
+                        <>
+                          {!exp.projectCompany && "Project: "}
+                          {exp.projectCompany && "Project: "}
+                          {exp.projectUrl ? (
+                            <a
+                              className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+                              href={exp.projectUrl}
+                              target="_blank"
+                            >
+                              {exp.project}
+                            </a>
+                          ) : (
+                            <span>{exp.project}</span>
+                          )}
+                        </>
                       )}
                     </div>
                   )}
                 </div>
               </div>
-              <div className="flex flex-col items-end text-end md:flex-row md:gap-2">
+              <div className="flex shrink-0 flex-col items-end text-end md:flex-row md:gap-2">
                 <p className="text-muted-foreground">{exp.location}</p>
-                <span className="hidden text-muted-foreground md:inline">
-                  ·
-                </span>
-                <p>{exp.duration}</p>
+                {exp.duration && (
+                  <>
+                    <span className="hidden text-muted-foreground md:inline">
+                      ·
+                    </span>
+                    <p>{exp.duration}</p>
+                  </>
+                )}
               </div>
             </div>
-            {index < displayedExperiences.length - 1 && (
-              <Separator className="mt-4" />
-            )}
           </div>
+            {index < displayedExperiences.length - 1 && (
+              <Separator className="transition-opacity" />
+            )}
+          </React.Fragment>
         ))}
+      </div>
 
+      {hasMore ? (
         <button
-          onClick={() => setShowMore(!showMore)}
-          className="group mt-4 flex items-center justify-center py-2 text-muted-foreground transition-colors hover:text-foreground"
+          onClick={() => setVisibleCount((prev) => prev + EXPERIENCE_PAGE_SIZE)}
+          className="group mt-4 flex w-full items-center justify-center py-2 text-muted-foreground transition-colors hover:text-foreground"
         >
           <span className="opacity-50 transition-opacity group-hover:opacity-100">
-            {showMore ? "Show less" : "Show more"}
+            Show more
           </span>
         </button>
-      </div>
+      ) : visibleCount > EXPERIENCE_PAGE_SIZE ? (
+        <button
+          onClick={() => setVisibleCount(EXPERIENCE_PAGE_SIZE)}
+          className="group mt-4 flex w-full items-center justify-center py-2 text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <span className="opacity-50 transition-opacity group-hover:opacity-100">
+            Show less
+          </span>
+        </button>
+      ) : null}
     </div>
   );
 }

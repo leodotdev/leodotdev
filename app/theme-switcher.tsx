@@ -3,14 +3,13 @@ import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { forwardRef } from "react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 
 export const ThemeSwitcher = forwardRef<
   HTMLButtonElement,
   React.ComponentPropsWithoutRef<typeof Button>
 >((props, ref) => {
   const [mounted, setMounted] = useState(false);
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
@@ -20,25 +19,21 @@ export const ThemeSwitcher = forwardRef<
     return null;
   }
 
-  // Use resolvedTheme for display but check actual theme for logic
   const currentTheme = resolvedTheme || "light";
 
   return (
     <Button
       ref={ref}
       size="icon"
-      onClick={() => {
-        // Simply toggle between light and dark
-        setTheme(currentTheme === "dark" ? "light" : "dark");
-      }}
-      className="rounded-full bg-transparent hover:bg-secondary/80"
+      onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
+      className="rounded-full [corner-shape:round] bg-transparent hover:bg-transparent"
       {...props}
     >
-      {currentTheme === "light" ? (
-        <Image src="/crescent-moon.svg" alt="Dark" width={24} height={24} />
-      ) : (
-        <Image src="/sun.svg" alt="Light" width={24} height={24} />
-      )}
+      <div
+        className={`h-5 w-5 rounded-full [corner-shape:round] ${
+          currentTheme === "dark" ? "bg-white" : "bg-black"
+        }`}
+      />
     </Button>
   );
 });

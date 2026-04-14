@@ -45,18 +45,6 @@ export default function RootLayout({
             {children}
           </div>
         </ThemeProvider>
-        <svg id="texture">
-          <filter id="noise">
-            <feTurbulence
-              type="turbulence"
-              baseFrequency="0.5"
-              numOctaves="1"
-              stitchTiles="stitch"
-            ></feTurbulence>
-            <feColorMatrix type="saturate" values="0"></feColorMatrix>
-          </filter>
-          <rect width="100%" height="100%" filter="url(#noise)"></rect>
-        </svg>
       </body>
     </html>
   );

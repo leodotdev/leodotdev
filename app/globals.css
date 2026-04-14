@@ -101,6 +101,7 @@
 @layer base {
   * {
     @apply border-border;
+    corner-shape: squircle;
   }
   body {
     @apply bg-background text-foreground;
@@ -158,14 +159,3 @@
   }
 }
 
-#texture {
-  position:fixed;
-  inset: 0;
-  z-index: -1;
-  width: 100vw;
-  min-height: 100vh;
-  opacity: 0.125;
-  pointer-events: none;
-  transform: translateY(0);
-  filter: contrast(10%) brightness(90%);
-}

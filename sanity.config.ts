@@ -1,5 +1,5 @@
 import {defineConfig} from 'sanity';
-import {deskTool} from 'sanity/desk';
+import {structureTool} from 'sanity/structure';
 import {visionTool} from '@sanity/vision';
 import project from './sanity/schemas/project-schema';
 import book from './sanity/schemas/book-schema';
@@ -9,7 +9,8 @@ const config = defineConfig({
     dataset: "production",
     title: "leo.dev",
     apiVersion: "2023-10-07",
-    plugins: [deskTool(), visionTool()],
+    basePath: "/studio",
+    plugins: [structureTool(), visionTool()],
     schema: { types:[project, book] }
 })
 

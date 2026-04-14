@@ -30,7 +30,7 @@ export function BackButton() {
 
   return (
     <div
-      className={`overflow-hidden transition-all duration-500 ease-out ${
+      className={`overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:!opacity-100 ${
         isVisible ? "max-w-xs opacity-100" : "max-w-0 opacity-0"
       }`}
     >

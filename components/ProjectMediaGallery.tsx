@@ -229,7 +229,7 @@ export function ProjectMediaGallery({
               allowFullScreen
             />
             <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/0 transition-colors group-hover:bg-black/10">
-              <div className="rounded-full bg-white/90 p-3 opacity-0 transition-opacity group-hover:opacity-100">
+              <div className="rounded-full [corner-shape:round] bg-white/90 p-3 opacity-0 transition-opacity group-hover:opacity-100">
                 <TbEye className="h-6 w-6" />
               </div>
             </div>
@@ -280,7 +280,7 @@ export function ProjectMediaGallery({
             {/* Close button */}
             <button
               onClick={closeLightbox}
-              className="absolute right-4 top-4 z-50 rounded-full bg-white/10 p-2 transition-colors hover:bg-white/20"
+              className="absolute right-4 top-4 z-50 rounded-full [corner-shape:round] bg-white/10 p-2 transition-colors hover:bg-white/20"
               aria-label="Close lightbox"
             >
               <TbX className="h-6 w-6 text-white" />
@@ -291,25 +291,15 @@ export function ProjectMediaGallery({
               className="relative flex flex-1 items-center justify-center p-4"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Single loading indicator for all content */}
               {loadingStates[selectedIndex] && (
-                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center">
-                  <div className="rounded-lg bg-black/80 p-8">
-                    <Progress
-                      value={loadingProgress[selectedIndex] || 0}
-                      className="h-2 w-48"
-                    />
-                    <p className="mt-3 text-center text-sm text-white/80">
-                      Loading...{" "}
-                      {Math.round(loadingProgress[selectedIndex] || 0)}%
-                    </p>
-                  </div>
+                <div className="absolute inset-0 z-10 flex items-center justify-center">
+                  <div className="h-8 w-8 animate-spin rounded-full [corner-shape:round] border-2 border-white/20 border-t-white" />
                 </div>
               )}
               {allMedia.length > 1 && (
                 <button
                   onClick={goToPrevious}
-                  className="absolute left-4 rounded-full bg-white/10 p-2 transition-colors hover:bg-white/20"
+                  className="absolute left-4 rounded-full [corner-shape:round] bg-white/10 p-2 transition-colors hover:bg-white/20"
                   aria-label="Previous"
                 >
                   <TbChevronLeft className="h-6 w-6 text-white" />
@@ -368,7 +358,7 @@ export function ProjectMediaGallery({
               {allMedia.length > 1 && (
                 <button
                   onClick={goToNext}
-                  className="absolute right-4 rounded-full bg-white/10 p-2 transition-colors hover:bg-white/20"
+                  className="absolute right-4 rounded-full [corner-shape:round] bg-white/10 p-2 transition-colors hover:bg-white/20"
                   aria-label="Next"
                 >
                   <TbChevronRight className="h-6 w-6 text-white" />

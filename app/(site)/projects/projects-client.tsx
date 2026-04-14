@@ -1,10 +1,32 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { Project } from "@/types/Project";
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { createClient } from "next-sanity";
+import urlBuilder from "@sanity/image-url";
+import { motion, AnimatePresence } from "framer-motion";
+import { TbX, TbChevronLeft, TbChevronRight } from "react-icons/tb";
+
+const clientLogos: Record<string, string> = {
+  "Anthropic": "/logo-dbco.jpg",
+  "Meta": "/logo-me.svg",
+  "Facebook": "/logo-fb.svg",
+  "BitGo": "/logo-bg.svg",
+  "Plasmic": "/logo-pl.svg",
+  "Sourcegraph": "/logo-sg.svg",
+  "Zenefits": "/logo-ze.svg",
+  "Sapien": "/logo-sania.jpg",
+};
+
+const client = createClient({
+  projectId: "jyqe7nab",
+  dataset: "production",
+  apiVersion: "2023-10-07",
+});
 
 const categories = [
   { title: "All", value: "all" },
@@ -18,13 +40,76 @@ const categories = [
   { title: "Design System", value: "design-system" },
 ];
 
+function getContentImageThumbs(project: Project): string[] {
+  if (!project.content) return [];
+  return project.content
+    .filter((block: any) => block._type === "image" && block.asset)
+    .map((block: any) =>
+      urlBuilder(client).image(block).width(200).height(200).fit("crop").auto("format").url()
+    );
+}
+
+function getFullResImages(project: Project): string[] {
+  const images: string[] = [];
+  if (project.image) images.push(project.image);
+  if (project.content) {
+    project.content
+      .filter((block: any) => block._type === "image" && block.asset)
+      .forEach((block: any) => {
+        images.push(
+          urlBuilder(client).image(block).fit("max").auto("format").url()
+        );
+      });
+  }
+  return images;
+}
+
+const PROJECTS_PAGE_SIZE = 8;
+
 export function ProjectsClient({ projects }: { projects: Project[] }) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [visibleCount, setVisibleCount] = useState(9);
-  const [isLoading, setIsLoading] = useState(false);
-  const loadingRef = useRef<HTMLDivElement>(null);
+  const [visibleCount, setVisibleCount] = useState(PROJECTS_PAGE_SIZE);
+  const [lightboxImages, setLightboxImages] = useState<string[]>([]);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
-  // Calculate category counts
+  const openLightbox = (images: string[], index: number) => {
+    setLightboxImages(images);
+    setLightboxIndex(index);
+    setImageLoaded(false);
+    document.body.style.overflow = "hidden";
+  };
+
+  const closeLightbox = useCallback(() => {
+    setLightboxIndex(null);
+    setLightboxImages([]);
+    setImageLoaded(false);
+    document.body.style.overflow = "";
+  }, []);
+
+  const goToPrevious = useCallback(() => {
+    if (lightboxIndex === null) return;
+    setImageLoaded(false);
+    setLightboxIndex(lightboxIndex === 0 ? lightboxImages.length - 1 : lightboxIndex - 1);
+  }, [lightboxIndex, lightboxImages.length]);
+
+  const goToNext = useCallback(() => {
+    if (lightboxIndex === null) return;
+    setImageLoaded(false);
+    setLightboxIndex(lightboxIndex === lightboxImages.length - 1 ? 0 : lightboxIndex + 1);
+  }, [lightboxIndex, lightboxImages.length]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (lightboxIndex === null) return;
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") goToPrevious();
+      if (e.key === "ArrowRight") goToNext();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [lightboxIndex, closeLightbox, goToPrevious, goToNext]);
+
   const categoryCounts = categories.reduce(
     (acc, category) => {
       if (category.value === "all") {
@@ -41,7 +126,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
 
   const handleCategoryClick = (categoryValue: string) => {
     setSelectedCategory(categoryValue);
-    setVisibleCount(9); // Reset to show first 9 when category changes
+    setVisibleCount(PROJECTS_PAGE_SIZE);
   };
 
   const filteredProjects =
@@ -52,38 +137,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
         );
 
   const visibleProjects = filteredProjects.slice(0, visibleCount);
-  const hasMoreProjects = visibleCount < filteredProjects.length;
-
-  // Load more projects when scrolling near the bottom
-  useEffect(() => {
-    if (!loadingRef.current || !hasMoreProjects) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && !isLoading && hasMoreProjects) {
-          setIsLoading(true);
-          
-          // Simulate a small delay for loading
-          setTimeout(() => {
-            setVisibleCount(prev => Math.min(prev + 9, filteredProjects.length));
-            setIsLoading(false);
-          }, 500);
-        }
-      },
-      {
-        rootMargin: "100px", // Start loading when 100px away from the trigger
-      }
-    );
-
-    observer.observe(loadingRef.current);
-
-    return () => observer.disconnect();
-  }, [hasMoreProjects, isLoading, filteredProjects.length]);
-
-  // Reset visible count when filtered projects change
-  useEffect(() => {
-    setVisibleCount(9);
-  }, [filteredProjects.length]);
+  const hasMore = visibleCount < filteredProjects.length;
 
   return (
     <div id="projects">
@@ -98,14 +152,11 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
             <button
               key={category.value}
               onClick={() => handleCategoryClick(category.value)}
-              className={`
-                flex cursor-pointer items-center rounded-sm py-2 pl-3 pr-2.5 text-sm transition-all
-                ${
-                  selectedCategory === category.value
-                    ? "bg-muted"
-                    : " text-foreground hover:bg-accent "
-                }
-              `}
+              className={`flex cursor-pointer items-center rounded-full [corner-shape:round] px-4 py-2 text-sm transition-all ${
+                selectedCategory === category.value
+                  ? "bg-muted"
+                  : "text-foreground hover:bg-accent"
+              }`}
             >
               <div className="flex items-baseline">
                 <span>{category.title}</span>
@@ -118,49 +169,208 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
         </div>
       </div>
 
-      <div className="auto-rows grid grid-cols-1 gap-6 md:grid-cols-2 md:px-12">
-        {visibleProjects.map((project) => (
-          <Link
-            key={project._id}
-            href={`/projects/${project.slug}`}
-            className="group flex flex-col items-stretch gap-6 overflow-clip rounded-xl border bg-secondary p-6 transition-colors hover:bg-secondary/40 dark:bg-secondary/40 dark:hover:bg-secondary"
-          >
-            <div className="flex flex-col text-left text-foreground">
-              <div className="truncate">{project.name}</div>
-              <div className="flex flex-row justify-between text-muted-foreground">
-                <div className="flex-1">{project.client}</div>
-                <div className="text-right">{project.year}</div>
-              </div>
-            </div>
+      <div className="flex flex-col [&:hover>*]:opacity-50">
+        {visibleProjects.map((project, index) => {
+          const contentThumbs = getContentImageThumbs(project);
+          const allThumbs = [
+            ...(project.image ? [project.image] : []),
+            ...contentThumbs,
+          ].slice(0, 6);
+          const fullResImages = getFullResImages(project);
 
-            {project.image && (
-              <Image
-                src={project.image}
-                alt={project.name}
-                width={800}
-                height={400}
-                loading="lazy"
-                className="-mb-40 aspect-[4/3] rounded-sm object-cover transition group-hover:-translate-y-[44px] group-hover:shadow-2xl md:-mb-28"
-              />
-            )}
-          </Link>
-        ))}
+          return (
+            <React.Fragment key={project._id}>
+            <div className="transition-opacity hover:!opacity-100">
+              <Link
+                href={`/projects/${project.slug}`}
+                className="block px-6 py-4 md:px-12"
+              >
+                <div className="flex w-full items-start justify-between gap-6">
+                  <div className="flex flex-row items-start gap-3">
+                    <Avatar className="mt-0.5 rounded-md">
+                      <AvatarImage src={clientLogos[project.client]} />
+                      <AvatarFallback className="rounded-md text-muted-foreground">
+                        {project.client?.charAt(0) || "?"}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col">
+                      <div className="flex flex-col md:flex-row md:gap-2">
+                        <div>{project.name}</div>
+                        <span className="hidden text-muted-foreground md:inline">
+                          ·
+                        </span>
+                        <div className="italic text-muted-foreground">
+                          {project.client}
+                        </div>
+                      </div>
+                      {project.description && (
+                        <div className="text-sm text-muted-foreground">
+                          {project.description}
+                        </div>
+                      )}
+
+                      {allThumbs.length > 0 && (
+                        <div className="mt-3 flex gap-2 overflow-x-auto [&:hover>*]:opacity-50">
+                          {allThumbs.map((img, imgIndex) => (
+                            <div
+                              key={imgIndex}
+                              className="relative h-16 w-16 shrink-0 cursor-pointer overflow-hidden rounded-lg bg-secondary transition-opacity hover:!opacity-100"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                openLightbox(fullResImages, imgIndex);
+                              }}
+                            >
+                              <Image
+                                src={img}
+                                alt={`${project.name} thumbnail ${imgIndex + 1}`}
+                                fill
+                                sizes="96px"
+                                className="object-cover"
+                                loading="lazy"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex w-[132px] shrink-0 flex-col items-end text-end">
+                    <p className="text-muted-foreground">{project.year}</p>
+                  </div>
+                </div>
+              </Link>
+
+            </div>
+              {index < visibleProjects.length - 1 && (
+                <Separator className="transition-opacity" />
+              )}
+            </React.Fragment>
+          );
+        })}
       </div>
 
-      {/* Loading trigger and indicator */}
-      {hasMoreProjects && (
-        <div 
-          ref={loadingRef}
-          className="flex justify-center py-8"
-        >
-          {isLoading && (
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              <span>Loading more projects...</span>
+      <div className="px-6 md:px-12">
+        {hasMore ? (
+          <button
+            onClick={() => setVisibleCount((prev) => prev + PROJECTS_PAGE_SIZE)}
+            className="group mt-4 flex w-full items-center justify-center py-2 text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <span className="opacity-50 transition-opacity group-hover:opacity-100">
+              Show more
+            </span>
+          </button>
+        ) : visibleCount > PROJECTS_PAGE_SIZE ? (
+          <button
+            onClick={() => setVisibleCount(PROJECTS_PAGE_SIZE)}
+            className="group mt-4 flex w-full items-center justify-center py-2 text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <span className="opacity-50 transition-opacity group-hover:opacity-100">
+              Show less
+            </span>
+          </button>
+        ) : null}
+      </div>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightboxIndex !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex flex-col bg-black/95"
+            onClick={closeLightbox}
+          >
+            <button
+              onClick={closeLightbox}
+              className="absolute right-4 top-4 z-50 rounded-full [corner-shape:round] bg-white/10 p-2 transition-colors hover:bg-white/20"
+              aria-label="Close lightbox"
+            >
+              <TbX className="h-6 w-6 text-white" />
+            </button>
+
+            <div
+              className="relative flex flex-1 items-center justify-center p-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {!imageLoaded && (
+                <div className="absolute inset-0 z-10 flex items-center justify-center">
+                  <div className="h-8 w-8 animate-spin rounded-full [corner-shape:round] border-2 border-white/20 border-t-white" />
+                </div>
+              )}
+
+              {lightboxImages.length > 1 && (
+                <button
+                  onClick={goToPrevious}
+                  className="absolute left-4 rounded-full [corner-shape:round] bg-white/10 p-2 transition-colors hover:bg-white/20"
+                  aria-label="Previous"
+                >
+                  <TbChevronLeft className="h-6 w-6 text-white" />
+                </button>
+              )}
+
+              <motion.div
+                key={lightboxIndex}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: imageLoaded ? 1 : 0, scale: imageLoaded ? 1 : 0.9 }}
+                transition={{ duration: 0.2 }}
+                className="relative max-h-[70vh] max-w-[90vw]"
+              >
+                <Image
+                  src={lightboxImages[lightboxIndex]}
+                  alt={`Image ${lightboxIndex + 1}`}
+                  width={1920}
+                  height={1080}
+                  className="h-auto max-h-[70vh] w-auto max-w-full object-contain"
+                  onLoad={() => setImageLoaded(true)}
+                  priority
+                />
+              </motion.div>
+
+              {lightboxImages.length > 1 && (
+                <button
+                  onClick={goToNext}
+                  className="absolute right-4 rounded-full [corner-shape:round] bg-white/10 p-2 transition-colors hover:bg-white/20"
+                  aria-label="Next"
+                >
+                  <TbChevronRight className="h-6 w-6 text-white" />
+                </button>
+              )}
             </div>
-          )}
-        </div>
-      )}
+
+            {lightboxImages.length > 1 && (
+              <div className="bg-black/50 p-4">
+                <div className="flex justify-center gap-2 overflow-x-auto pb-2">
+                  {lightboxImages.map((img, i) => (
+                    <button
+                      key={i}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setImageLoaded(false);
+                        setLightboxIndex(i);
+                      }}
+                      className={`relative h-20 w-20 flex-shrink-0 overflow-hidden rounded transition-all ${
+                        i === lightboxIndex
+                          ? "opacity-100 ring-2 ring-white"
+                          : "opacity-50 hover:opacity-75"
+                      }`}
+                    >
+                      <Image
+                        src={img}
+                        alt={`Thumbnail ${i + 1}`}
+                        fill
+                        sizes="80px"
+                        className="object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -27,7 +27,7 @@ const CopyToClipboard = ({
   };
 
   return (
-    <div className={className} onClick={copyToClipboard}>
+    <div className={`cursor-pointer ${className}`} onClick={copyToClipboard}>
       {children}
     </div>
   );
