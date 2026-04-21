@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { TbX, TbChevronLeft, TbChevronRight } from "react-icons/tb";
 import { createClient } from "next-sanity";
 import urlBuilder from "@sanity/image-url";
+import { Button } from "@/components/ui/button";
 
 const client = createClient({
   projectId: "jyqe7nab",
@@ -130,30 +131,32 @@ export function ProjectImageGrid({ images }: ProjectImageGridProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex flex-col bg-black/95"
+            className="fixed inset-0 z-50 flex flex-col bg-black/60 backdrop-blur-2xl"
             onClick={closeLightbox}
           >
-            {/* Close button */}
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={closeLightbox}
-              className="absolute right-4 top-4 z-50 rounded-full bg-white/10 p-2 transition-colors hover:bg-white/20"
+              className="absolute right-4 top-4 z-50 rounded-full bg-white/10 text-white hover:bg-white/20 hover:text-white"
               aria-label="Close lightbox"
             >
-              <TbX className="h-6 w-6 text-white" />
-            </button>
+              <TbX className="h-6 w-6" />
+            </Button>
 
-            {/* Main image */}
             <div
               className="flex flex-1 items-center justify-center p-4"
               onClick={(e) => e.stopPropagation()}
             >
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={goToPrevious}
-                className="absolute left-4 rounded-full bg-white/10 p-2 transition-colors hover:bg-white/20"
+                className="absolute left-4 rounded-full bg-white/10 text-white hover:bg-white/20 hover:text-white"
                 aria-label="Previous image"
               >
-                <TbChevronLeft className="h-6 w-6 text-white" />
-              </button>
+                <TbChevronLeft className="h-6 w-6" />
+              </Button>
 
               <motion.div
                 key={selectedImageIndex}
@@ -172,39 +175,47 @@ export function ProjectImageGrid({ images }: ProjectImageGridProps) {
                 />
               </motion.div>
 
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={goToNext}
-                className="absolute right-4 rounded-full bg-white/10 p-2 transition-colors hover:bg-white/20"
+                className="absolute right-4 rounded-full bg-white/10 text-white hover:bg-white/20 hover:text-white"
                 aria-label="Next image"
               >
-                <TbChevronRight className="h-6 w-6 text-white" />
-              </button>
+                <TbChevronRight className="h-6 w-6" />
+              </Button>
             </div>
 
-            {/* Thumbnail strip */}
             <div className="bg-black/50 p-4">
-              <div className="flex gap-2 overflow-x-auto pb-2">
+              <div
+                className="grid gap-2"
+                style={{
+                  gridTemplateColumns: `repeat(${images.length}, minmax(0, 1fr))`,
+                }}
+              >
                 {images.map((image, index) => (
-                  <button
+                  <Button
                     key={image._key}
+                    variant="ghost"
                     onClick={(e) => {
                       e.stopPropagation();
                       setSelectedImageIndex(index);
                     }}
-                    className={`relative h-20 w-20 flex-shrink-0 overflow-hidden rounded transition-all ${
+                    className={`relative h-24 overflow-hidden rounded-lg p-0 transition-all hover:bg-transparent ${
                       index === selectedImageIndex
                         ? "opacity-100 ring-2 ring-white"
                         : "opacity-50 hover:opacity-75"
                     }`}
+                    aria-label={`View image ${index + 1}`}
                   >
                     <Image
                       src={getImageUrl(image, 200)}
                       alt={image.alt || `Thumbnail ${index + 1}`}
                       fill
-                      sizes="80px"
+                      sizes="120px"
                       className="object-cover"
                     />
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>

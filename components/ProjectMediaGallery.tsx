@@ -14,6 +14,7 @@ import { createClient } from "next-sanity";
 import urlBuilder from "@sanity/image-url";
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
 
 const client = createClient({
   projectId: "jyqe7nab",
@@ -267,143 +268,166 @@ export function ProjectMediaGallery({
         </div>
       )}
 
-      {/* Lightbox */}
+      {/* Lightbox drawer */}
       <AnimatePresence>
         {selectedIndex !== null && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex flex-col bg-black/95"
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 flex flex-col bg-black/60 backdrop-blur-2xl"
             onClick={closeLightbox}
           >
-            {/* Close button */}
-            <button
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="relative flex flex-1 flex-col"
               onClick={closeLightbox}
-              className="absolute right-4 top-4 z-50 rounded-full [corner-shape:round] bg-white/10 p-2 transition-colors hover:bg-white/20"
-              aria-label="Close lightbox"
             >
-              <TbX className="h-6 w-6 text-white" />
-            </button>
-
-            {/* Main content area */}
-            <div
-              className="relative flex flex-1 items-center justify-center p-4"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {loadingStates[selectedIndex] && (
-                <div className="absolute inset-0 z-10 flex items-center justify-center">
-                  <div className="h-8 w-8 animate-spin rounded-full [corner-shape:round] border-2 border-white/20 border-t-white" />
-                </div>
-              )}
-              {allMedia.length > 1 && (
-                <button
-                  onClick={goToPrevious}
-                  className="absolute left-4 rounded-full [corner-shape:round] bg-white/10 p-2 transition-colors hover:bg-white/20"
-                  aria-label="Previous"
-                >
-                  <TbChevronLeft className="h-6 w-6 text-white" />
-                </button>
-              )}
-
-              <motion.div
-                key={selectedIndex}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.2 }}
-                className={cn(
-                  "relative flex items-center justify-center",
-                  allMedia[selectedIndex].type === "image" 
-                    ? "max-h-[70vh] max-w-[90vw]" 
-                    : "max-h-[85vh] max-w-[90vw]"
-                )}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  closeLightbox();
+                }}
+                className="absolute right-4 top-4 z-50 rounded-full [corner-shape:round] bg-white/10 text-white hover:bg-white/20 hover:text-white"
+                aria-label="Close"
               >
-                {/* Content */}
-                <div
+                <TbX className="h-6 w-6" />
+              </Button>
+
+              <div className="relative flex flex-1 items-center justify-center p-4">
+                {loadingStates[selectedIndex] && (
+                  <div className="absolute inset-0 z-10 flex items-center justify-center">
+                    <div className="h-8 w-8 animate-spin rounded-full [corner-shape:round] border-2 border-white/20 border-t-white" />
+                  </div>
+                )}
+                {allMedia.length > 1 && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      goToPrevious();
+                    }}
+                    className="absolute left-4 z-20 rounded-full [corner-shape:round] bg-white/10 text-white hover:bg-white/20 hover:text-white"
+                    aria-label="Previous"
+                  >
+                    <TbChevronLeft className="h-6 w-6" />
+                  </Button>
+                )}
+
+                <motion.div
+                  key={selectedIndex}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
                   className={cn(
-                    "transition-opacity duration-300",
-                    loadingStates[selectedIndex] ? "opacity-0" : "opacity-100",
+                    "relative flex items-center justify-center",
+                    allMedia[selectedIndex].type === "image"
+                      ? "max-h-[80vh] max-w-[90vw]"
+                      : "max-h-[85vh] max-w-[90vw]",
                   )}
+                  onClick={(e) => {
+                    if (allMedia[selectedIndex].type !== "image") e.stopPropagation();
+                  }}
                 >
-                  {allMedia[selectedIndex].type === "image" ? (
-                    <div className="relative">
+                  <div
+                    className={cn(
+                      "transition-opacity duration-300",
+                      loadingStates[selectedIndex] ? "opacity-0" : "opacity-100",
+                    )}
+                  >
+                    {allMedia[selectedIndex].type === "image" ? (
                       <Image
                         src={getImageUrl(allMedia[selectedIndex])}
                         alt={allMedia[selectedIndex].alt || "Project image"}
                         width={1920}
                         height={1080}
-                        className="h-auto max-h-[70vh] w-auto max-w-full object-contain"
+                        className="h-auto max-h-[80vh] w-auto max-w-full object-contain"
                         onLoad={() => handleImageLoad(selectedIndex)}
                         priority
                       />
-                    </div>
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center">
+                    ) : (
                       <iframe
                         src={allMedia[selectedIndex].embedUrl}
                         className={`w-[90vw] max-w-7xl rounded-lg ${
-                          allMedia.length > 1 
-                            ? "h-[calc(100vh-theme(spacing.36))]" 
+                          allMedia.length > 1
+                            ? "h-[calc(100vh-theme(spacing.36))]"
                             : "h-[calc(100vh-theme(spacing.8))]"
                         }`}
                         allowFullScreen
                         onLoad={() => handleImageLoad(selectedIndex)}
                       />
-                    </div>
-                  )}
-                </div>
-              </motion.div>
+                    )}
+                  </div>
+                </motion.div>
+
+                {allMedia.length > 1 && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      goToNext();
+                    }}
+                    className="absolute right-4 z-20 rounded-full [corner-shape:round] bg-white/10 text-white hover:bg-white/20 hover:text-white"
+                    aria-label="Next"
+                  >
+                    <TbChevronRight className="h-6 w-6" />
+                  </Button>
+                )}
+              </div>
 
               {allMedia.length > 1 && (
-                <button
-                  onClick={goToNext}
-                  className="absolute right-4 rounded-full [corner-shape:round] bg-white/10 p-2 transition-colors hover:bg-white/20"
-                  aria-label="Next"
-                >
-                  <TbChevronRight className="h-6 w-6 text-white" />
-                </button>
-              )}
-            </div>
-
-            {/* Thumbnail strip - only show if more than 1 item */}
-            {allMedia.length > 1 && (
-              <div className="bg-black/50 p-4">
-                <div className="flex gap-2 overflow-x-auto pb-2">
-                  {allMedia.map((item, index) => (
-                    <button
-                      key={item._key || index}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedIndex(index);
-                        setLoadingStates({ ...loadingStates, [index]: true });
-                        setLoadingProgress({ ...loadingProgress, [index]: 0 });
-                        simulateProgress(index);
-                      }}
-                      className={`relative h-20 w-20 flex-shrink-0 overflow-hidden rounded transition-all ${
-                        index === selectedIndex
-                          ? "opacity-100 ring-2 ring-white"
-                          : "opacity-50 hover:opacity-75"
-                      }`}
-                    >
-                      {item.type === "image" ? (
-                        <Image
-                          src={getImageUrl(item, 200)}
-                          alt={item.alt || `Thumbnail ${index + 1}`}
-                          fill
-                          sizes="80px"
-                          className="object-cover"
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-secondary">
-                          <TbBrandFigma className="h-8 w-8 text-muted-foreground" />
-                        </div>
-                      )}
-                    </button>
-                  ))}
+                <div className="p-4" onClick={(e) => e.stopPropagation()}>
+                  <div
+                    className="grid gap-2"
+                    style={{
+                      gridTemplateColumns: `repeat(${allMedia.length}, minmax(0, 1fr))`,
+                    }}
+                  >
+                    {allMedia.map((item, index) => (
+                      <Button
+                        key={item._key || index}
+                        variant="ghost"
+                        onClick={() => {
+                          setSelectedIndex(index);
+                          setLoadingStates({ ...loadingStates, [index]: true });
+                          setLoadingProgress({ ...loadingProgress, [index]: 0 });
+                          simulateProgress(index);
+                        }}
+                        className={`relative h-24 overflow-hidden rounded-lg p-0 transition-all hover:bg-transparent ${
+                          index === selectedIndex
+                            ? "opacity-100 ring-2 ring-white"
+                            : "opacity-50 hover:opacity-75"
+                        }`}
+                        aria-label={`View item ${index + 1}`}
+                      >
+                        {item.type === "image" ? (
+                          <Image
+                            src={getImageUrl(item, 200)}
+                            alt={item.alt || `Thumbnail ${index + 1}`}
+                            fill
+                            sizes="120px"
+                            className="object-cover"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center bg-secondary">
+                            <TbBrandFigma className="h-8 w-8 text-muted-foreground" />
+                          </div>
+                        )}
+                      </Button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

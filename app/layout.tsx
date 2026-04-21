@@ -37,11 +37,11 @@ export default function RootLayout({
       <body className={`${inter.className} ${playfairDisplay.variable}`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <div className="mx-auto min-h-screen max-w-[960px] border-x bg-white dark:bg-black">
+          <div className="mx-auto min-h-screen max-w-[960px] border-x bg-background">
             {children}
           </div>
         </ThemeProvider>

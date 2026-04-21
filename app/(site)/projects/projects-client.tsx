@@ -10,6 +10,7 @@ import { createClient } from "next-sanity";
 import urlBuilder from "@sanity/image-url";
 import { motion, AnimatePresence } from "framer-motion";
 import { TbX, TbChevronLeft, TbChevronRight } from "react-icons/tb";
+import { Button } from "@/components/ui/button";
 
 const clientLogos: Record<string, string> = {
   "Anthropic": "/logo-dbco.jpg",
@@ -45,7 +46,7 @@ function getContentImageThumbs(project: Project): string[] {
   return project.content
     .filter((block: any) => block._type === "image" && block.asset)
     .map((block: any) =>
-      urlBuilder(client).image(block).width(200).height(200).fit("crop").auto("format").url()
+      urlBuilder(client).image(block).width(256).height(256).fit("crop").auto("format").url(),
     );
 }
 
@@ -149,13 +150,15 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
 
         <div className="mt-6 flex flex-wrap gap-1">
           {categories.map((category) => (
-            <button
+            <Button
               key={category.value}
+              variant="ghost"
+              size="sm"
               onClick={() => handleCategoryClick(category.value)}
-              className={`flex cursor-pointer items-center rounded-full [corner-shape:round] px-4 py-2 text-sm transition-all ${
+              className={`h-auto rounded-full [corner-shape:round] px-4 py-2 ${
                 selectedCategory === category.value
-                  ? "bg-muted"
-                  : "text-foreground hover:bg-accent"
+                  ? "bg-muted hover:bg-muted"
+                  : ""
               }`}
             >
               <div className="flex items-baseline">
@@ -164,7 +167,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                   {categoryCounts[category.value] || 0}
                 </sup>
               </div>
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -185,9 +188,9 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                 href={`/projects/${project.slug}`}
                 className="block px-6 py-4 md:px-12"
               >
-                <div className="flex w-full items-start justify-between gap-6">
-                  <div className="flex flex-row items-start gap-3">
-                    <Avatar className="mt-0.5 rounded-md">
+                <div className="flex w-full items-center justify-between gap-6">
+                  <div className="flex flex-row items-center gap-3">
+                    <Avatar className="rounded-md">
                       <AvatarImage src={clientLogos[project.client]} />
                       <AvatarFallback className="rounded-md text-muted-foreground">
                         {project.client?.charAt(0) || "?"}
@@ -208,37 +211,37 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                           {project.description}
                         </div>
                       )}
-
-                      {allThumbs.length > 0 && (
-                        <div className="mt-3 flex gap-2 overflow-x-auto [&:hover>*]:opacity-50">
-                          {allThumbs.map((img, imgIndex) => (
-                            <div
-                              key={imgIndex}
-                              className="relative h-16 w-16 shrink-0 cursor-pointer overflow-hidden rounded-lg bg-secondary transition-opacity hover:!opacity-100"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                openLightbox(fullResImages, imgIndex);
-                              }}
-                            >
-                              <Image
-                                src={img}
-                                alt={`${project.name} thumbnail ${imgIndex + 1}`}
-                                fill
-                                sizes="96px"
-                                className="object-cover"
-                                loading="lazy"
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      )}
                     </div>
                   </div>
                   <div className="flex w-[132px] shrink-0 flex-col items-end text-end">
                     <p className="text-muted-foreground">{project.year}</p>
                   </div>
                 </div>
+
+                {allThumbs.length > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-2 [&:hover>*]:opacity-50">
+                    {allThumbs.map((img, imgIndex) => (
+                      <div
+                        key={imgIndex}
+                        className="relative h-32 w-32 cursor-pointer overflow-hidden rounded-lg bg-secondary transition-opacity hover:!opacity-100"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          openLightbox(fullResImages, imgIndex);
+                        }}
+                      >
+                        <Image
+                          src={img}
+                          alt={`${project.name} thumbnail ${imgIndex + 1}`}
+                          fill
+                          sizes="(max-width: 768px) 15vw, 128px"
+                          className="object-cover"
+                          loading="lazy"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </Link>
 
             </div>
@@ -252,122 +255,152 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
 
       <div className="px-6 md:px-12">
         {hasMore ? (
-          <button
+          <Button
+            variant="ghost"
             onClick={() => setVisibleCount((prev) => prev + PROJECTS_PAGE_SIZE)}
-            className="group mt-4 flex w-full items-center justify-center py-2 text-muted-foreground transition-colors hover:text-foreground"
+            className="group mt-4 h-auto w-full py-2 text-muted-foreground hover:bg-transparent hover:text-foreground"
           >
             <span className="opacity-50 transition-opacity group-hover:opacity-100">
               Show more
             </span>
-          </button>
+          </Button>
         ) : visibleCount > PROJECTS_PAGE_SIZE ? (
-          <button
+          <Button
+            variant="ghost"
             onClick={() => setVisibleCount(PROJECTS_PAGE_SIZE)}
-            className="group mt-4 flex w-full items-center justify-center py-2 text-muted-foreground transition-colors hover:text-foreground"
+            className="group mt-4 h-auto w-full py-2 text-muted-foreground hover:bg-transparent hover:text-foreground"
           >
             <span className="opacity-50 transition-opacity group-hover:opacity-100">
               Show less
             </span>
-          </button>
+          </Button>
         ) : null}
       </div>
 
-      {/* Lightbox */}
+      {/* Lightbox drawer */}
       <AnimatePresence>
         {lightboxIndex !== null && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex flex-col bg-black/95"
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 flex flex-col bg-black/60 backdrop-blur-2xl"
             onClick={closeLightbox}
           >
-            <button
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="relative flex flex-1 flex-col"
               onClick={closeLightbox}
-              className="absolute right-4 top-4 z-50 rounded-full [corner-shape:round] bg-white/10 p-2 transition-colors hover:bg-white/20"
-              aria-label="Close lightbox"
             >
-              <TbX className="h-6 w-6 text-white" />
-            </button>
-
-            <div
-              className="relative flex flex-1 items-center justify-center p-4"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {!imageLoaded && (
-                <div className="absolute inset-0 z-10 flex items-center justify-center">
-                  <div className="h-8 w-8 animate-spin rounded-full [corner-shape:round] border-2 border-white/20 border-t-white" />
-                </div>
-              )}
-
-              {lightboxImages.length > 1 && (
-                <button
-                  onClick={goToPrevious}
-                  className="absolute left-4 rounded-full [corner-shape:round] bg-white/10 p-2 transition-colors hover:bg-white/20"
-                  aria-label="Previous"
-                >
-                  <TbChevronLeft className="h-6 w-6 text-white" />
-                </button>
-              )}
-
-              <motion.div
-                key={lightboxIndex}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: imageLoaded ? 1 : 0, scale: imageLoaded ? 1 : 0.9 }}
-                transition={{ duration: 0.2 }}
-                className="relative max-h-[70vh] max-w-[90vw]"
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  closeLightbox();
+                }}
+                className="absolute right-4 top-4 z-50 rounded-full [corner-shape:round] bg-white/10 text-white hover:bg-white/20 hover:text-white"
+                aria-label="Close"
               >
-                <Image
-                  src={lightboxImages[lightboxIndex]}
-                  alt={`Image ${lightboxIndex + 1}`}
-                  width={1920}
-                  height={1080}
-                  className="h-auto max-h-[70vh] w-auto max-w-full object-contain"
-                  onLoad={() => setImageLoaded(true)}
-                  priority
-                />
-              </motion.div>
+                <TbX className="h-6 w-6" />
+              </Button>
+
+              <div className="relative flex flex-1 items-center justify-center p-4">
+                {!imageLoaded && (
+                  <div className="absolute inset-0 z-10 flex items-center justify-center">
+                    <div className="h-8 w-8 animate-spin rounded-full [corner-shape:round] border-2 border-white/20 border-t-white" />
+                  </div>
+                )}
+
+                {lightboxImages.length > 1 && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      goToPrevious();
+                    }}
+                    className="absolute left-4 z-20 rounded-full [corner-shape:round] bg-white/10 text-white hover:bg-white/20 hover:text-white"
+                    aria-label="Previous"
+                  >
+                    <TbChevronLeft className="h-6 w-6" />
+                  </Button>
+                )}
+
+                <motion.div
+                  key={lightboxIndex}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: imageLoaded ? 1 : 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="relative max-h-[80vh] max-w-[90vw]"
+                >
+                  <Image
+                    src={lightboxImages[lightboxIndex]}
+                    alt={`Image ${lightboxIndex + 1}`}
+                    width={1920}
+                    height={1080}
+                    className="h-auto max-h-[80vh] w-auto max-w-full object-contain"
+                    onLoad={() => setImageLoaded(true)}
+                    priority
+                  />
+                </motion.div>
+
+                {lightboxImages.length > 1 && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      goToNext();
+                    }}
+                    className="absolute right-4 z-20 rounded-full [corner-shape:round] bg-white/10 text-white hover:bg-white/20 hover:text-white"
+                    aria-label="Next"
+                  >
+                    <TbChevronRight className="h-6 w-6" />
+                  </Button>
+                )}
+              </div>
 
               {lightboxImages.length > 1 && (
-                <button
-                  onClick={goToNext}
-                  className="absolute right-4 rounded-full [corner-shape:round] bg-white/10 p-2 transition-colors hover:bg-white/20"
-                  aria-label="Next"
-                >
-                  <TbChevronRight className="h-6 w-6 text-white" />
-                </button>
-              )}
-            </div>
-
-            {lightboxImages.length > 1 && (
-              <div className="bg-black/50 p-4">
-                <div className="flex justify-center gap-2 overflow-x-auto pb-2">
-                  {lightboxImages.map((img, i) => (
-                    <button
-                      key={i}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setImageLoaded(false);
-                        setLightboxIndex(i);
-                      }}
-                      className={`relative h-20 w-20 flex-shrink-0 overflow-hidden rounded transition-all ${
-                        i === lightboxIndex
-                          ? "opacity-100 ring-2 ring-white"
-                          : "opacity-50 hover:opacity-75"
-                      }`}
-                    >
-                      <Image
-                        src={img}
-                        alt={`Thumbnail ${i + 1}`}
-                        fill
-                        sizes="80px"
-                        className="object-cover"
-                      />
-                    </button>
-                  ))}
+                <div className="p-4" onClick={(e) => e.stopPropagation()}>
+                  <div
+                    className="grid gap-2"
+                    style={{
+                      gridTemplateColumns: `repeat(${lightboxImages.length}, minmax(0, 1fr))`,
+                    }}
+                  >
+                    {lightboxImages.map((img, i) => (
+                      <Button
+                        key={i}
+                        variant="ghost"
+                        onClick={() => {
+                          setImageLoaded(false);
+                          setLightboxIndex(i);
+                        }}
+                        className={`relative h-24 overflow-hidden rounded-lg p-0 transition-all hover:bg-transparent ${
+                          i === lightboxIndex
+                            ? "opacity-100 ring-2 ring-white"
+                            : "opacity-50 hover:opacity-75"
+                        }`}
+                        aria-label={`View image ${i + 1}`}
+                      >
+                        <Image
+                          src={img}
+                          alt={`Thumbnail ${i + 1}`}
+                          fill
+                          sizes="120px"
+                          className="object-cover"
+                        />
+                      </Button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

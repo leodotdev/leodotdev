@@ -203,15 +203,15 @@ export function LifeCalendar() {
   return (
     <div className="fixed inset-0 flex flex-col bg-background">
       {/* Fixed header with day labels */}
-      <div className="sticky top-0 z-20 bg-background border-b border-black/10 dark:border-white/10">
+      <div className="sticky top-0 z-20 bg-background border-b">
         <div className="grid grid-cols-[80px_repeat(35,_1fr)] gap-0">
-          <div className="p-2 font-semibold text-right border-r border-black/10 dark:border-white/10"></div>
+          <div className="p-2 font-semibold text-right border-r"></div>
           {Array.from({ length: 5 }, (_, weekIndex) => 
             dayHeaders.map((day, dayIndex) => (
               <div 
                 key={`${weekIndex}-${dayIndex}`} 
                 className={cn(
-                  "border-r border-black/10 dark:border-white/10 py-2 text-center text-xs font-semibold",
+                  "border-r py-2 text-center text-xs font-semibold",
                   (dayIndex === 0 || dayIndex === 6) && "bg-orange-100 dark:bg-orange-900/20"
                 )}
               >
@@ -233,7 +233,7 @@ export function LifeCalendar() {
             <div key={year} id={`year-${year}`}>
               {/* Load previous year button */}
               {year === currentYear && yearIndex > 0 && (
-                <div className="flex justify-center py-4 bg-background border-b border-black/5 dark:border-white/5">
+                <div className="flex justify-center py-4 bg-background border-b">
                   <Button
                     variant="outline"
                     size="sm"
@@ -247,7 +247,7 @@ export function LifeCalendar() {
               )}
               
               {/* Year header - smaller, plainer, left-aligned */}
-              <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm px-4 py-2 text-sm text-muted-foreground border-b border-black/5 dark:border-white/5">
+              <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm px-4 py-2 text-sm text-muted-foreground border-b">
                 {year}
               </div>
               
@@ -259,12 +259,12 @@ export function LifeCalendar() {
                   <div 
                     key={`${year}-${month.month}`}
                     ref={hasToday ? todayRef : undefined}
-                    className="grid grid-cols-[80px_repeat(35,_1fr)] gap-0 border-b border-black/5 dark:border-white/5"
+                    className="grid grid-cols-[80px_repeat(35,_1fr)] gap-0 border-b"
                   >
                     {/* Month name */}
                     <div className={cn(
                       monthColors[month.month],
-                      "py-3 px-2 font-semibold text-right border-r border-black/10 dark:border-white/10 text-sm"
+                      "py-3 px-2 font-semibold text-right border-r text-sm"
                     )}>
                       {month.monthName}
                     </div>
@@ -275,7 +275,7 @@ export function LifeCalendar() {
                         key={index}
                         data-today={day.isToday}
                         className={cn(
-                          "border-r border-black/5 dark:border-white/5 py-2 text-center text-xs transition-all",
+                          "border-r py-2 text-center text-xs transition-all",
                           !day.isCurrentMonth || day.dayNumber === 0 && "bg-muted/50 text-muted-foreground",
                           day.isCurrentMonth && day.dayNumber > 0 && !day.isToday && "bg-background",
                           day.isWeekend && day.isCurrentMonth && day.dayNumber > 0 && !day.isToday && "bg-orange-100 dark:bg-orange-900/20",
@@ -291,7 +291,7 @@ export function LifeCalendar() {
               
               {/* Load next year button */}
               {year === currentYear && yearIndex < sortedYears.length - 1 && (
-                <div className="flex justify-center py-4 bg-background border-b border-black/5 dark:border-white/5">
+                <div className="flex justify-center py-4 bg-background border-b">
                   <Button
                     variant="outline"
                     size="sm"

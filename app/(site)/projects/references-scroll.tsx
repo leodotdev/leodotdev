@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 
 interface Reference {
   name: string;
@@ -130,23 +131,25 @@ export function ReferencesScroll() {
       </div>
 
       {hasMore ? (
-        <button
+        <Button
+          variant="ghost"
           onClick={() => setVisibleCount((prev) => prev + REFERENCES_PAGE_SIZE)}
-          className="group mt-4 flex w-full items-center justify-center py-2 text-muted-foreground transition-colors hover:text-foreground"
+          className="group mt-4 h-auto w-full py-2 text-muted-foreground hover:bg-transparent hover:text-foreground"
         >
           <span className="opacity-50 transition-opacity group-hover:opacity-100">
             Show more
           </span>
-        </button>
+        </Button>
       ) : visibleCount > REFERENCES_PAGE_SIZE ? (
-        <button
+        <Button
+          variant="ghost"
           onClick={() => setVisibleCount(REFERENCES_PAGE_SIZE)}
-          className="group mt-4 flex w-full items-center justify-center py-2 text-muted-foreground transition-colors hover:text-foreground"
+          className="group mt-4 h-auto w-full py-2 text-muted-foreground hover:bg-transparent hover:text-foreground"
         >
           <span className="opacity-50 transition-opacity group-hover:opacity-100">
             Show less
           </span>
-        </button>
+        </Button>
       ) : null}
     </div>
   );
