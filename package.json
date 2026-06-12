@@ -23,12 +23,10 @@
     "@types/react-dom": "18.2.21",
     "autoprefixer": "10.4.18",
     "class-variance-authority": "^0.7.0",
-    "clipboard-copy": "^4.0.1",
     "clsx": "^2.1.0",
     "eslint": "8.57.0",
     "eslint-config-next": "^14.1.3",
     "framer-motion": "^11.9.0",
-    "latest": "^0.2.0",
     "lucide-react": "^0.356.0",
     "next": "^14.2.4",
     "next-sanity": "^8.3.2",
@@ -42,8 +40,7 @@
     "tailwind-merge": "^2.2.1",
     "tailwindcss": "^3.4.1",
     "tailwindcss-animate": "^1.0.7",
-    "typescript": "5.4.2",
-    "vaul": "^0.9.0"
+    "typescript": "5.4.2"
   },
   "devDependencies": {
     "prettier": "^3.2.5",
