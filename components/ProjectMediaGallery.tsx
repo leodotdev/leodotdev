@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -58,6 +58,7 @@ export function ProjectMediaGallery({
     Record<number, number>
   >({});
   const [originalBodyOverflow, setOriginalBodyOverflow] = useState<string>("");
+  const progressIntervals = useRef<Record<number, ReturnType<typeof setInterval>>>({});
 
   // Combine all media into a single array
   const allMedia: MediaItem[] = [];
@@ -99,43 +100,44 @@ export function ProjectMediaGallery({
     simulateProgress(index);
   };
 
-  const closeLightbox = () => {
+  const closeLightbox = useCallback(() => {
     // Clear any running progress intervals
-    allMedia.forEach((_, index) => {
-      const intervalId = (window as any)[`progressInterval_${index}`];
-      if (intervalId) {
-        clearInterval(intervalId);
-        delete (window as any)[`progressInterval_${index}`];
-      }
+    Object.keys(progressIntervals.current).forEach((key) => {
+      clearInterval(progressIntervals.current[Number(key)]);
+      delete progressIntervals.current[Number(key)];
     });
 
     setSelectedIndex(null);
     // Restore the original overflow value
     document.body.style.overflow = originalBodyOverflow;
-  };
+  }, [originalBodyOverflow]);
 
-  const goToPrevious = () => {
+  const goToPrevious = useCallback(() => {
     if (selectedIndex === null) return;
     const newIndex =
       selectedIndex === 0 ? allMedia.length - 1 : selectedIndex - 1;
     setSelectedIndex(newIndex);
-    setLoadingStates({ ...loadingStates, [newIndex]: true });
-    setLoadingProgress({ ...loadingProgress, [newIndex]: 0 });
+    setLoadingStates((prev) => ({ ...prev, [newIndex]: true }));
+    setLoadingProgress((prev) => ({ ...prev, [newIndex]: 0 }));
     simulateProgress(newIndex);
-  };
+  }, [selectedIndex, allMedia.length]);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     if (selectedIndex === null) return;
     const newIndex =
       selectedIndex === allMedia.length - 1 ? 0 : selectedIndex + 1;
     setSelectedIndex(newIndex);
-    setLoadingStates({ ...loadingStates, [newIndex]: true });
-    setLoadingProgress({ ...loadingProgress, [newIndex]: 0 });
+    setLoadingStates((prev) => ({ ...prev, [newIndex]: true }));
+    setLoadingProgress((prev) => ({ ...prev, [newIndex]: 0 }));
     simulateProgress(newIndex);
-  };
+  }, [selectedIndex, allMedia.length]);
 
   // Simulate loading progress
   const simulateProgress = (index: number) => {
+    // Clear any existing interval for this index before starting a new one
+    if (progressIntervals.current[index]) {
+      clearInterval(progressIntervals.current[index]);
+    }
     let progress = 0;
     const interval = setInterval(() => {
       progress += Math.random() * 30;
@@ -149,10 +151,10 @@ export function ProjectMediaGallery({
     }, 200);
 
     // Store interval ID for cleanup
-    (window as any)[`progressInterval_${index}`] = interval;
+    progressIntervals.current[index] = interval;
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (selectedIndex === null) return;
 
@@ -171,7 +173,17 @@ export function ProjectMediaGallery({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedIndex, goToPrevious, goToNext]);
+  }, [selectedIndex, closeLightbox, goToPrevious, goToNext]);
+
+  // Unmount cleanup: clear any leftover intervals and restore scroll
+  useEffect(() => {
+    const intervals = progressIntervals.current;
+    return () => {
+      Object.values(intervals).forEach(clearInterval);
+      progressIntervals.current = {};
+      document.body.style.overflow = "";
+    };
+  }, []);
 
   const getImageUrl = (item: MediaItem, width?: number) => {
     if (item.url) return item.url; // For hero image
@@ -187,10 +199,10 @@ export function ProjectMediaGallery({
 
   const handleImageLoad = (index: number) => {
     // Clear the progress interval
-    const intervalId = (window as any)[`progressInterval_${index}`];
+    const intervalId = progressIntervals.current[index];
     if (intervalId) {
       clearInterval(intervalId);
-      delete (window as any)[`progressInterval_${index}`];
+      delete progressIntervals.current[index];
     }
 
     // Set progress to 100% and hide loading
