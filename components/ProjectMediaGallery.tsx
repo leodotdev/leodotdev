@@ -13,6 +13,7 @@ import {
 import { client } from "@/sanity/client";
 import urlBuilder from "@sanity/image-url";
 import { cn } from "@/lib/utils";
+import { safeEmbedUrl } from "@/lib/embed";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 
@@ -43,6 +44,7 @@ export function ProjectMediaGallery({
   contentImages,
   projectName,
 }: ProjectMediaGalleryProps) {
+  const sanitizedEmbedUrl = safeEmbedUrl(embedUrl);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [loadingStates, setLoadingStates] = useState<Record<number, boolean>>(
     {},
@@ -66,11 +68,11 @@ export function ProjectMediaGallery({
     });
   }
 
-  // Add embed if exists
-  if (embedUrl) {
+  // Add embed if exists (only if it passes the allowlist)
+  if (sanitizedEmbedUrl) {
     allMedia.push({
       type: "embed",
-      embedUrl: embedUrl,
+      embedUrl: sanitizedEmbedUrl,
       _key: "embed",
     });
   }
@@ -223,14 +225,14 @@ export function ProjectMediaGallery({
       )}
 
       {/* Embed - Clickable */}
-      {embedUrl && (
+      {sanitizedEmbedUrl && (
         <div className="mb-8">
           <div
             className="group relative cursor-pointer"
             onClick={() => openLightbox(heroImage ? 1 : 0)}
           >
             <iframe
-              src={embedUrl}
+              src={sanitizedEmbedUrl}
               className="pointer-events-none aspect-video w-full rounded-lg"
               allowFullScreen
             />
@@ -247,7 +249,7 @@ export function ProjectMediaGallery({
       {contentImages.length > 0 && (
         <div className="mb-12 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           {contentImages.map((image, index) => {
-            const gridIndex = (heroImage ? 1 : 0) + (embedUrl ? 1 : 0) + index;
+            const gridIndex = (heroImage ? 1 : 0) + (sanitizedEmbedUrl ? 1 : 0) + index;
             return (
               <motion.div
                 key={image._key}
