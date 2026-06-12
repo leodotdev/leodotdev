@@ -1,5 +1,7 @@
 import { getProjects } from "@/sanity/sanity-utils";
 import { getBooks } from "@/sanity/sanity-utils";
+import { getExperiences } from "@/sanity/sanity-utils";
+import { getReferences } from "@/sanity/sanity-utils";
 import Image from "next/image";
 import { PortableText } from "@portabletext/react";
 import { client } from "@/sanity/client";
@@ -26,6 +28,8 @@ import { ReferencesScroll } from "./references-scroll";
 export default async function Home() {
   const projects = await getProjects();
   const books = await getBooks();
+  const experiences = await getExperiences();
+  const references = await getReferences();
   const ContentImageComponent = ({ value }: { value: any }) => {
     return (
       <Image
@@ -64,7 +68,7 @@ export default async function Home() {
           <Separator />
 
           {/* experience */}
-          <ExperienceClient />
+          <ExperienceClient experiences={experiences} />
 
           {/* <Card className="rounded-3xl bg-white dark:bg-black/50 shadow-none dark:bg-black/50">
           <CardHeader>
@@ -92,7 +96,7 @@ export default async function Home() {
 
           <Separator />
 
-          <ReferencesScroll />
+          <ReferencesScroll references={references} />
 
           <Separator />
 

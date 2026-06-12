@@ -1,5 +1,7 @@
 import { Project } from "@/types/Project";
 import { Book } from "@/types/Book";
+import { Experience } from "@/types/Experience";
+import { Reference } from "@/types/Reference";
 import { groq } from "next-sanity";
 import { client } from "@/sanity/client";
 
@@ -70,11 +72,51 @@ export async function getBooks(): Promise<Book[]> {
             content[]{
                 ...,
                 _type == "image" => {
-                  ...,  
+                  ...,
                   asset->
                 }
               }
         }`
     )
-    
+
+}
+
+export async function getExperiences(): Promise<Experience[]> {
+    return client.fetch(
+        groq`*[_type == "experience"] | order(order asc) {
+            _id,
+            order,
+            logo,
+            company,
+            companyUrl,
+            position,
+            location,
+            duration,
+            displayName,
+            altCompany,
+            altCompanyUrl,
+            team,
+            contract,
+            project,
+            projectUrl,
+            projectCompany,
+            projectCompanyUrl,
+            roundLogo
+        }`
+    )
+}
+
+export async function getReferences(): Promise<Reference[]> {
+    return client.fetch(
+        groq`*[_type == "reference"] | order(order asc) {
+            _id,
+            order,
+            name,
+            title,
+            company,
+            linkedinUrl,
+            initials,
+            quote
+        }`
+    )
 }

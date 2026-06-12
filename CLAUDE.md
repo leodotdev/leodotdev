@@ -40,6 +40,10 @@ This site deploys to **Cloudflare Pages** as a static build (`@cloudflare/next-o
 - Icons from `react-icons/tb` (Tabler icon set)
 - Styling via Tailwind classes; utility helper `cn()` from `lib/utils.ts`
 
+## Content: experience and references
+
+Experience and reference entries live in Sanity (types `experience` and `reference`, ordered by `order asc`). Edit them at sanity.io/manage; changes appear on the site after the next rebuild (a redeploy is required because the site is statically generated).
+
 ## Inline description editing
 
 Project descriptions on the `/projects` list are editable in-place by Sanity project members. The mechanism uses cookie-credentialed Sanity mutations via `sanity/write-client.ts` (no token in the bundle). The `hooks/useSanityAdmin.ts` hook detects admin status by calling `/users/me` with credentials; non-members get a read-only view. Double-clicking a description (or its "Description coming soon." placeholder) opens an inline textarea; `Cmd/Ctrl+Enter` or blur saves, `Escape` cancels.

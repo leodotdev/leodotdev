@@ -4,154 +4,18 @@ import React, { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { Experience } from "@/types/Experience";
 
-interface ExperienceItem {
-  logo: string;
-  company: string;
-  companyUrl?: string;
-  position: string;
-  location: string;
-  duration: string;
-  displayName?: string;
-  altCompany?: string;
-  altCompanyUrl?: string;
-  team?: string;
-  contract?: boolean;
-  project?: string;
-  projectUrl?: string;
-  projectCompany?: string;
-  projectCompanyUrl?: string;
-  roundLogo?: boolean;
-}
-
-const experiences: ExperienceItem[] = [
-  {
-    logo: "/logo-dbco.jpg",
-    company: "Design Business Company",
-    companyUrl: "https://dbco.online/",
-    position: "Web Designer",
-    location: "Remote",
-    duration: "2005–Present",
-    contract: true,
-    project: "Claude.ai",
-    projectUrl: "https://claude.ai",
-    projectCompany: "Anthropic",
-    projectCompanyUrl: "https://www.anthropic.com/",
-    roundLogo: true,
-  },
-  {
-    logo: "/logo-sania.jpg",
-    company: "Sania Saleh Studio",
-    companyUrl: "http://sania.io/",
-    position: "Web and Product Designer",
-    location: "Remote",
-    duration: "2025",
-    contract: true,
-    project: "Earn.sapien.io",
-    projectUrl: "https://earn.sapien.io/",
-    projectCompany: "Sapien",
-    projectCompanyUrl: "https://sapien.io",
-    roundLogo: true,
-  },
-  {
-    logo: "/logo-me.svg",
-    company: "Meta",
-    companyUrl: "https://www.meta.com",
-    position: "Product Designer",
-    location: "Remote",
-    duration: "2024–'25",
-    contract: true,
-    team: "Team: Identity & Multi-profile Experience",
-  },
-  {
-    logo: "/logo-bg.svg",
-    company: "BitGo",
-    companyUrl: "https://www.bitgo.com/",
-    position: "Senior Product & Design Systems Designer",
-    location: "Remote",
-    duration: "2023–'24",
-    contract: true,
-  },
-  {
-    logo: "/logo-pl.svg",
-    company: "Plasmic",
-    companyUrl: "https://plasmic.app",
-    position: "Founding Designer",
-    location: "Remote",
-    duration: "2020–'25",
-  },
-  {
-    logo: "/logo-fb.svg",
-    displayName: "Facebook",
-    company: "Meta",
-    companyUrl: "https://www.meta.com",
-    position: "Product & Design Systems Designer",
-    location: "Menlo Park, CA",
-    duration: "2018–'20",
-    team: "Teams: Core Systems UI, xDesign",
-  },
-  {
-    logo: "/logo-sg.svg",
-    company: "Sourcegraph",
-    companyUrl: "https://sourcegraph.com",
-    position: "Lead Product Designer",
-    location: "San Francisco, CA",
-    duration: "2017–'18",
-  },
-];
-
-const additionalExperiences: ExperienceItem[] = [
-  {
-    logo: "/logo-ze.svg",
-    displayName: "Zenefits",
-    company: "TriNet",
-    companyUrl: "https://zenefits.com",
-    position: "Senior Product Designer",
-    location: "San Francisco, CA",
-    duration: "2016",
-  },
-  {
-    logo: "/logo-sd.svg",
-    displayName: "SeamlessDocs",
-    company: "GovOS",
-    companyUrl: "https://govos.com",
-    position: "Product Designer",
-    location: "Miami, FL",
-    duration: "2014–'15",
-  },
-  {
-    logo: "/horse.svg",
-    company: "Freelance",
-    position: "Web, App, Visual Designer",
-    location: "Miami, FL",
-    duration: "2010–'14",
-  },
-  {
-    logo: "/logo-sa.svg",
-    displayName: "Sapient",
-    company: "Publicis Sapient",
-    companyUrl: "https://www.meta.com",
-    position: "Flash Designer",
-    location: "Miami, FL",
-    duration: "2007–'09",
-  },
-  {
-    logo: "/logo-em.svg",
-    company: "Emerson College",
-    companyUrl: "https://emerson.edu",
-    position: "Education, BA: New Media",
-    location: "Boston, MA",
-    duration: "",
-  },
-];
-
-const allExperiences = [...experiences, ...additionalExperiences];
 const EXPERIENCE_PAGE_SIZE = 4;
 
-export function ExperienceClient() {
+interface ExperienceClientProps {
+  experiences: Experience[];
+}
+
+export function ExperienceClient({ experiences }: ExperienceClientProps) {
   const [visibleCount, setVisibleCount] = useState(EXPERIENCE_PAGE_SIZE);
-  const displayedExperiences = allExperiences.slice(0, visibleCount);
-  const hasMore = visibleCount < allExperiences.length;
+  const displayedExperiences = experiences.slice(0, visibleCount);
+  const hasMore = visibleCount < experiences.length;
 
   return (
     <div id="experience">
@@ -164,7 +28,7 @@ export function ExperienceClient() {
 
       <div className="flex flex-col [&:hover>*]:opacity-50">
         {displayedExperiences.map((exp, index) => (
-          <React.Fragment key={index}>
+          <React.Fragment key={exp._id}>
           <div
             className="group/item cursor-pointer transition-opacity hover:!opacity-100"
             onClick={() => {
