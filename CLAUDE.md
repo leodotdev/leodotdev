@@ -39,3 +39,11 @@ This site deploys to **Cloudflare Pages** as a static build (`@cloudflare/next-o
 - Client components must be marked with `"use client"` at the top of the file
 - Icons from `react-icons/tb` (Tabler icon set)
 - Styling via Tailwind classes; utility helper `cn()` from `lib/utils.ts`
+
+## Inline description editing
+
+Project descriptions on the `/projects` list are editable in-place by Sanity project members. The mechanism uses cookie-credentialed Sanity mutations via `sanity/write-client.ts` (no token in the bundle). The `hooks/useSanityAdmin.ts` hook detects admin status by calling `/users/me` with credentials; non-members get a read-only view. Double-clicking a description (or its "Description coming soon." placeholder) opens an inline textarea; `Cmd/Ctrl+Enter` or blur saves, `Escape` cancels.
+
+**Prerequisites (operator's responsibility):**
+- Sanity CORS origins must have credentials enabled: add `http://localhost:3001` and `https://leo.dev` at sanity.io/manage → API → CORS origins → "Allow credentials".
+- Edits publish immediately (no draft workflow) and appear to visitors after the next rebuild.

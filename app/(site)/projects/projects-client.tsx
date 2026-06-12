@@ -11,6 +11,8 @@ import urlBuilder from "@sanity/image-url";
 import { motion, AnimatePresence } from "framer-motion";
 import { TbX, TbChevronLeft, TbChevronRight } from "react-icons/tb";
 import { Button } from "@/components/ui/button";
+import { EditableDescription } from "@/components/EditableDescription";
+import { useSanityAdmin } from "@/hooks/useSanityAdmin";
 
 const clientLogos: Record<string, string> = {
   "Anthropic": "/logo-dbco.jpg",
@@ -62,6 +64,7 @@ function getFullResImages(project: Project): string[] {
 const PROJECTS_PAGE_SIZE = 8;
 
 export function ProjectsClient({ projects }: { projects: Project[] }) {
+  const isAdmin = useSanityAdmin();
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [visibleCount, setVisibleCount] = useState(PROJECTS_PAGE_SIZE);
   const [lightboxImages, setLightboxImages] = useState<string[]>([]);
@@ -205,11 +208,12 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                   </div>
                 </div>
 
-                {project.description && (
-                  <div className="mt-2 pl-11 text-sm text-muted-foreground">
-                    {project.description}
-                  </div>
-                )}
+                <EditableDescription
+                  projectId={project._id}
+                  description={project.description}
+                  isAdmin={isAdmin}
+                  className="mt-2 pl-11 text-sm text-muted-foreground"
+                />
 
                 {allThumbs.length > 0 && (
                   <div className="mt-3 flex flex-wrap gap-2 [&:hover>*]:opacity-50">
