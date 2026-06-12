@@ -14,7 +14,7 @@ Repo verification gate (created by plan 001): `npm run verify`
 | 001  | Verification baseline + accurate README/CLAUDE.md/.env.example | P1 | S | — | DONE (576e9b8 on advisor/improvements) |
 | 002  | 404 instead of crash on unknown project slugs | P1 | S | 001 (soft) | DONE (3c373dd) |
 | 003  | Lightbox unmount leaks (scroll-lock, timers, lint warning) | P2 | S | 001 | DONE (2d1239d; interactive scroll check deferred to operator) |
-| 004  | Remove dead photos pipeline, unused components, unreachable home page | P2 | M | 001 | DONE (42d3e16; operator opted to delete public/photos too — 0377020) |
+| 004  | Remove dead photos pipeline, unused components, unreachable home page | P2 | M | 001 | DONE (42d3e16; public/photos deleted then restored per operator — b25c4ca/aa8dcf2; media kept) |
 | 005  | Repo hygiene: committed `dist/`, untracked `old/`, `app/studio/` re-add | P2 | S | 001 | DONE (0d52d28, effbd01; operator deletes untracked app/studio + old/) |
 | 006  | Single Sanity client + env config + embed URL allowlist | P2 | S–M | 004 (soft) | DONE (e14b83d, f74476c) |
 | 007  | Dependency hygiene: unused packages, non-breaking audit fixes | P3 | S | 001; after 004/006 preferred | DONE (bc68c2e, 2732890, b3c2c83; vulns 72→27, rest need Sanity major) |
