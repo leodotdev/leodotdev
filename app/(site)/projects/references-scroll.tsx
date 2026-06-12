@@ -118,7 +118,7 @@ export function ReferencesScroll() {
                   <p className="text-muted-foreground">{reference.company}</p>
                 </div>
               </div>
-              <p className="mt-2 pl-11 text-sm text-muted-foreground">
+              <p className="mt-2 pl-11 pr-11 text-sm text-muted-foreground">
                 &#34;{reference.quote}&#34;
               </p>
             </div>
