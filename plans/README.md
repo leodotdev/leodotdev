@@ -19,6 +19,8 @@ Repo verification gate (created by plan 001): `npm run verify`
 | 006  | Single Sanity client + env config + embed URL allowlist | P2 | S–M | 004 (soft) | DONE (e14b83d, f74476c) |
 | 007  | Dependency hygiene: unused packages, non-breaking audit fixes | P3 | S | 001; after 004/006 preferred | DONE (bc68c2e, 2732890, b3c2c83; vulns 72→27, rest need Sanity major) |
 | 008  | Sanity webhook → Cloudflare deploy hook (operator runbook) | P3 | S | 001 (docs only) | PARTIAL (docs done, eda81d4; dashboard steps pending operator — see plan file) |
+| 009  | Description placeholders + double-click inline editing (Sanity admin) | P2 | M | 008 pairs well; CORS dashboard step required | TODO |
+| 010  | Projects grid/list toggle, grid paginates at 2× | P3 | M | 009 first (same file) | TODO |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJECTED (with one-line rationale)
 
