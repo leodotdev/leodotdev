@@ -37,3 +37,9 @@ The studio config is in `sanity.cli.js`. Do **not** add a `/studio` route to the
 Deployed to Cloudflare Pages. The build is configured in the Cloudflare dashboard using the `@cloudflare/next-on-pages` adapter pattern; output goes to `.vercel/output/static` as set in `wrangler.toml`.
 
 The site is **static** — content edits in Sanity appear only after a redeploy.
+
+### Content publishing
+
+A Sanity webhook named `redeploy-leodotdev` (dataset `production`, filter `_type in ["project", "book"]`, triggers on create/update/delete) calls a Cloudflare Pages deploy hook so that publishing or updating content in Sanity automatically triggers a production rebuild — no manual redeploy needed. The deploy hook URL is a secret stored only in the Sanity dashboard; it must never be committed to the repo.
+
+To debug: sanity.io/manage → API → Webhooks → `redeploy-leodotdev` → attempts log. If a new document type needs to trigger rebuilds, extend the webhook filter to include it.
