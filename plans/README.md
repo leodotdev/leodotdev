@@ -19,8 +19,8 @@ Repo verification gate (created by plan 001): `npm run verify`
 | 006  | Single Sanity client + env config + embed URL allowlist | P2 | S–M | 004 (soft) | DONE (e14b83d, f74476c) |
 | 007  | Dependency hygiene: unused packages, non-breaking audit fixes | P3 | S | 001; after 004/006 preferred | DONE (bc68c2e, 2732890, b3c2c83; vulns 72→27, rest need Sanity major) |
 | 008  | Sanity webhook → Cloudflare deploy hook (operator runbook) | P3 | S | 001 (docs only) | PARTIAL (docs done, eda81d4; dashboard steps pending operator — see plan file) |
-| 009  | Description placeholders + double-click inline editing (Sanity admin) | P2 | M | 008 pairs well; CORS dashboard step required | TODO |
-| 010  | Projects grid/list toggle, grid paginates at 2× | P3 | M | 009 first (same file) | TODO |
+| 009  | Description placeholders + double-click inline editing (Sanity admin) | P2 | M | 008 pairs well; CORS dashboard step required | DONE (739067c, 93a6fe5; operator: add CORS origins w/ credentials, then test double-click edit) |
+| 010  | Projects grid/list toggle, grid paginates at 2× | P3 | M | 009 first (same file) | DONE (a2920ac; operator: click-through matrix) |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJECTED (with one-line rationale)
 
@@ -46,11 +46,12 @@ Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJE
 - **Next 15/React 19/Sanity major upgrades**: real cost, unclear benefit for a working static site; deliberate non-goal until something forces it.
 - **Hardcoded Sanity project ID as a "secret"**: Sanity project IDs are public by design; only the duplication mattered (plan 006).
 
-## Direction findings presented but not selected (2026-06-11)
+## Direction items — executed 2026-06-12 (batch 2, no formal plan files)
 
-Available if the operator changes their mind; each would start as a design/spike plan:
+- Book Shelf enabled with 59 books from Sanity; fixed `book.client` → `book.author`, added `url` to the Book type (a850e85).
+- `/soon` exposed in the navigation as "Services" (af992c4).
+- Experience (12 entries) and references (5 entries) migrated into Sanity as `experience`/`reference` document types ordered by `order asc`; docs `experience-01..12`, `reference-01..05`; hardcoded arrays deleted (e2e2c8e, 755928c).
 
-- Ship or drop the Book Shelf (schema/query/commented JSX already exist in `app/(site)/projects/page.tsx:103-133`).
-- Expose `/soon` (finished services page with pricing) in the navigation — one-line change once the operator decides it's launch-ready.
-- Migrate hardcoded experience (13 entries, `experience-client.tsx`) and references (6 entries, `references-scroll.tsx`) into Sanity.
-- Decide the photos feature's fate beyond deletion (a `/photos` page using the ~140MB media archive).
+Still on the shelf:
+- A `/photos` page using the ~140MB media archive (kept in repo, currently unreferenced).
+- Repo-history slimming (`git filter-repo` + force-push to drop the historical `dist/` 150MB and photos 139MB) — prepared on request only; needs explicit operator go-ahead.
