@@ -42,7 +42,7 @@ export function Navigation({ children }: NavigationProps) {
             className="text-md flex items-center px-2 transition-opacity hover:!opacity-100 hover:underline"
           >
             Download PDF
-            <TbDownload className="h-4 w-4 self-start text-muted-foreground" />
+            <TbDownload className="ml-0.5 h-4 w-4 self-center text-muted-foreground" />
           </a>
           <DropdownMenu>
             <DropdownMenuTrigger className="text-md flex items-center px-2 transition-opacity hover:!opacity-100 hover:underline data-[popup-open]:!opacity-100">

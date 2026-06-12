@@ -146,15 +146,15 @@ export default async function Home() {
                 target="_blank"
                 href="https://ui.shadcn.com/"
               >
-                ShadcnUI
+                Shadcn UI
               </a>{" "}
               +{" "}
               <a
                 className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
                 target="_blank"
-                href="https://www.radix-ui.com/"
+                href="https://base-ui.com/"
               >
-                RadixUI
+                Base UI
               </a>
               , and{" "}
               <a
