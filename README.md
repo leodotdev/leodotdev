@@ -1,34 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# leo.dev
 
-## Getting Started
+Personal portfolio of Leo Succar. Built with Next.js 14 (app router), Sanity CMS, and Tailwind CSS. Deployed on Cloudflare Pages.
 
-First, run the development server:
+## Local development
 
 ```bash
+npm install
+cp .env.example .env.local   # fill in values if needed (see .env.example)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The dev server runs at **http://localhost:3001** (note: not 3000). The root path `/` permanently redirects to `/projects`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Verification
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Before committing, run:
 
-## Learn More
+```bash
+npm run verify
+```
 
-To learn more about Next.js, take a look at the following resources:
+This runs typecheck + lint + production build in sequence. There are no automated tests; this script is the gate.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Content editing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Content lives in Sanity (project `jyqe7nab`, dataset `production`). Edit at [sanity.io/manage](https://www.sanity.io/manage), or run a local studio:
 
-## Deploy on Vercel
+```bash
+npx sanity dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The studio config is in `sanity.cli.js`. Do **not** add a `/studio` route to the Next.js app — it was removed in commit `93f6064` for Cloudflare Pages compatibility.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Deployment
+
+Deployed to Cloudflare Pages. The build is configured in the Cloudflare dashboard using the `@cloudflare/next-on-pages` adapter pattern; output goes to `.vercel/output/static` as set in `wrangler.toml`.
+
+The site is **static** — content edits in Sanity appear only after a redeploy.
