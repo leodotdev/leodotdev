@@ -8,5 +8,6 @@ export type Book = {
     year: string;
     slug: string;
     image: string;
+    url?: string;
     content: PortableTextBlock[];
 }

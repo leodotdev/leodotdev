@@ -94,37 +94,53 @@ export default async function Home() {
 
           <ReferencesScroll />
 
-          {/* <div className="px-6 font-semibold md:px-12">Book Shelf</div>
+          <Separator />
 
-      <ScrollArea className="w-full whitespace-nowrap">
-        <div className="flex overflow-x-auto">
-          {books.map((book) => (
-            // book card
-            <div key={book._id}>
-              <div className="group flex shrink-0">
-                {book.image && (
-                  <Image
-                    src={book.image}
-                    alt={book.name}
-                    width={100}
-                    height={200}
-                    loading="lazy"
-                    className="flex h-20 w-20 rounded-xl object-cover transition group-hover:scale-[1.5]"
-                  />
-                )}
-                <div className="flex items-end justify-between">
-                <div className="flex flex-col text-left font-medium text-zinc-950 dark:text-zinc-50">
-                  <div>{book.name}</div>
-                  <div className=" text-muted-foreground">{book.client}</div>
-                </div>
-                <div className=" text-muted-foreground">{book.year}</div>
-              </div>
+          <div id="books">
+            <div className="px-6 pb-12 md:px-12">
+              <div className="font-semibold">Book Shelf</div>
+              <div className="text-muted-foreground">
+                Books I keep coming back to.
               </div>
             </div>
-          ))}
-        </div>
-        <ScrollBar orientation="horizontal" />
-      </ScrollArea> */}
+            <ScrollArea className="w-full whitespace-nowrap">
+              <div className="flex gap-4 px-6 pb-4 md:px-12">
+                {books.map((book) => (
+                  <a
+                    key={book._id}
+                    href={book.url || undefined}
+                    target={book.url ? "_blank" : undefined}
+                    className="group flex w-24 shrink-0 flex-col gap-2"
+                    title={`${book.name}${book.author ? ` — ${book.author}` : ""}`}
+                  >
+                    {book.image ? (
+                      <div className="relative h-36 w-24 overflow-hidden rounded-md bg-secondary outline outline-1 -outline-offset-1 outline-border">
+                        <Image
+                          src={book.image}
+                          alt={book.name}
+                          fill
+                          sizes="96px"
+                          className="object-cover transition-transform group-hover:scale-105"
+                          loading="lazy"
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex h-36 w-24 items-center justify-center rounded-md bg-secondary text-muted-foreground outline outline-1 -outline-offset-1 outline-border">
+                        {book.name?.charAt(0) || "?"}
+                      </div>
+                    )}
+                    <div className="flex flex-col">
+                      <div className="truncate text-sm">{book.name}</div>
+                      <div className="truncate text-xs text-muted-foreground">
+                        {book.author}
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
+          </div>
 
           <Separator />
 
