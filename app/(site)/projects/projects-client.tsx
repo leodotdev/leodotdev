@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { client } from "@/sanity/client";
 import urlBuilder from "@sanity/image-url";
 import { motion, AnimatePresence } from "framer-motion";
-import { TbX, TbChevronLeft, TbChevronRight } from "react-icons/tb";
+import { TbX, TbChevronLeft, TbChevronRight, TbList, TbLayoutGrid } from "react-icons/tb";
 import { Button } from "@/components/ui/button";
 import { EditableDescription } from "@/components/EditableDescription";
 import { useSanityAdmin } from "@/hooks/useSanityAdmin";
@@ -62,14 +62,34 @@ function getFullResImages(project: Project): string[] {
 }
 
 const PROJECTS_PAGE_SIZE = 8;
+const GRID_PAGE_SIZE = PROJECTS_PAGE_SIZE * 2;
 
 export function ProjectsClient({ projects }: { projects: Project[] }) {
   const isAdmin = useSanityAdmin();
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [visibleCount, setVisibleCount] = useState(PROJECTS_PAGE_SIZE);
+  const [viewMode, setViewMode] = useState<"list" | "grid">("list");
   const [lightboxImages, setLightboxImages] = useState<string[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
+
+  const pageSize = viewMode === "grid" ? GRID_PAGE_SIZE : PROJECTS_PAGE_SIZE;
+
+  const handleViewModeChange = useCallback((mode: "list" | "grid") => {
+    setViewMode(mode);
+    setVisibleCount(mode === "grid" ? GRID_PAGE_SIZE : PROJECTS_PAGE_SIZE);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("projects-view-mode", mode);
+    }
+  }, []);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("projects-view-mode");
+    if (saved === "grid") {
+      setViewMode("grid");
+      setVisibleCount(GRID_PAGE_SIZE);
+    }
+  }, []);
 
   const openLightbox = (images: string[], index: number) => {
     setLightboxImages(images);
@@ -124,7 +144,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
 
   const handleCategoryClick = (categoryValue: string) => {
     setSelectedCategory(categoryValue);
-    setVisibleCount(PROJECTS_PAGE_SIZE);
+    setVisibleCount(pageSize);
   };
 
   const filteredProjects =
@@ -140,9 +160,35 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
   return (
     <div id="projects">
       <div className="px-6 pb-12 md:px-12">
-        <div className="font-semibold">Projects</div>
-        <div className="text-muted-foreground">
-          Shots and embeds of my past work.
+        <div className="flex items-start justify-between">
+          <div>
+            <div className="font-semibold">Projects</div>
+            <div className="text-muted-foreground">
+              Shots and embeds of my past work.
+            </div>
+          </div>
+          <div className="flex gap-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="List view"
+              aria-pressed={viewMode === "list"}
+              onClick={() => handleViewModeChange("list")}
+              className={viewMode === "list" ? "bg-muted hover:bg-muted" : ""}
+            >
+              <TbList className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Grid view"
+              aria-pressed={viewMode === "grid"}
+              onClick={() => handleViewModeChange("grid")}
+              className={viewMode === "grid" ? "bg-muted hover:bg-muted" : ""}
+            >
+              <TbLayoutGrid className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
 
         <div className="mt-6 flex flex-wrap gap-1">
@@ -169,92 +215,130 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
         </div>
       </div>
 
-      <div className="flex flex-col [&:hover>*]:opacity-50">
-        {visibleProjects.map((project, index) => {
-          const contentThumbs = getContentImageThumbs(project);
-          const allThumbs = [
-            ...(project.image ? [project.image] : []),
-            ...contentThumbs,
-          ].slice(0, 6);
-          const fullResImages = getFullResImages(project);
+      {viewMode === "list" ? (
+        <div className="flex flex-col [&:hover>*]:opacity-50">
+          {visibleProjects.map((project, index) => {
+            const contentThumbs = getContentImageThumbs(project);
+            const allThumbs = [
+              ...(project.image ? [project.image] : []),
+              ...contentThumbs,
+            ].slice(0, 6);
+            const fullResImages = getFullResImages(project);
 
-          return (
-            <React.Fragment key={project._id}>
-            <div className="transition-opacity hover:!opacity-100">
-              <Link
-                href={`/projects/${project.slug}`}
-                className="block px-6 py-4 md:px-12"
-              >
-                <div className="flex w-full items-center justify-between gap-6">
-                  <div className="flex flex-row items-center gap-3">
-                    <Avatar className="rounded-md">
-                      <AvatarImage src={clientLogos[project.client]} />
-                      <AvatarFallback className="rounded-md text-muted-foreground">
-                        {project.client?.charAt(0) || "?"}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col md:flex-row md:gap-2">
-                      <div>{project.name}</div>
-                      <span className="hidden text-muted-foreground md:inline">
-                        ·
-                      </span>
-                      <div className="italic text-muted-foreground">
-                        {project.client}
+            return (
+              <React.Fragment key={project._id}>
+              <div className="transition-opacity hover:!opacity-100">
+                <Link
+                  href={`/projects/${project.slug}`}
+                  className="block px-6 py-4 md:px-12"
+                >
+                  <div className="flex w-full items-center justify-between gap-6">
+                    <div className="flex flex-row items-center gap-3">
+                      <Avatar className="rounded-md">
+                        <AvatarImage src={clientLogos[project.client]} />
+                        <AvatarFallback className="rounded-md text-muted-foreground">
+                          {project.client?.charAt(0) || "?"}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col md:flex-row md:gap-2">
+                        <div>{project.name}</div>
+                        <span className="hidden text-muted-foreground md:inline">
+                          ·
+                        </span>
+                        <div className="italic text-muted-foreground">
+                          {project.client}
+                        </div>
                       </div>
                     </div>
+                    <div className="flex w-[132px] shrink-0 flex-col items-end text-end">
+                      <p className="text-muted-foreground">{project.year}</p>
+                    </div>
                   </div>
-                  <div className="flex w-[132px] shrink-0 flex-col items-end text-end">
-                    <p className="text-muted-foreground">{project.year}</p>
-                  </div>
-                </div>
 
-                <EditableDescription
-                  projectId={project._id}
-                  description={project.description}
-                  isAdmin={isAdmin}
-                  className="mt-2 pl-11 text-sm text-muted-foreground"
-                />
+                  <EditableDescription
+                    projectId={project._id}
+                    description={project.description}
+                    isAdmin={isAdmin}
+                    className="mt-2 pl-11 text-sm text-muted-foreground"
+                  />
 
-                {allThumbs.length > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-2 [&:hover>*]:opacity-50">
-                    {allThumbs.map((img, imgIndex) => (
-                      <div
-                        key={imgIndex}
-                        className="relative h-32 w-32 cursor-pointer overflow-hidden rounded-lg bg-secondary outline outline-1 -outline-offset-1 outline-border transition-opacity hover:!opacity-100"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          openLightbox(fullResImages, imgIndex);
-                        }}
-                      >
-                        <Image
-                          src={img}
-                          alt={`${project.name} thumbnail ${imgIndex + 1}`}
-                          fill
-                          sizes="(max-width: 768px) 15vw, 128px"
-                          className="object-cover"
-                          loading="lazy"
-                        />
-                      </div>
-                    ))}
-                  </div>
+                  {allThumbs.length > 0 && (
+                    <div className="mt-3 flex flex-wrap gap-2 [&:hover>*]:opacity-50">
+                      {allThumbs.map((img, imgIndex) => (
+                        <div
+                          key={imgIndex}
+                          className="relative h-32 w-32 cursor-pointer overflow-hidden rounded-lg bg-secondary outline outline-1 -outline-offset-1 outline-border transition-opacity hover:!opacity-100"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            openLightbox(fullResImages, imgIndex);
+                          }}
+                        >
+                          <Image
+                            src={img}
+                            alt={`${project.name} thumbnail ${imgIndex + 1}`}
+                            fill
+                            sizes="(max-width: 768px) 15vw, 128px"
+                            className="object-cover"
+                            loading="lazy"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </Link>
+
+              </div>
+                {index < visibleProjects.length - 1 && (
+                  <Separator className="transition-opacity" />
                 )}
-              </Link>
+              </React.Fragment>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 gap-4 px-6 md:grid-cols-3 md:px-12 lg:grid-cols-4 [&:hover>*]:opacity-50">
+          {visibleProjects.map((project) => {
+            const contentThumbs = getContentImageThumbs(project);
+            const coverImage = project.image || contentThumbs[0] || null;
 
-            </div>
-              {index < visibleProjects.length - 1 && (
-                <Separator className="transition-opacity" />
-              )}
-            </React.Fragment>
-          );
-        })}
-      </div>
+            return (
+              <Link
+                key={project._id}
+                href={`/projects/${project.slug}`}
+                className="group transition-opacity hover:!opacity-100"
+              >
+                <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-secondary outline outline-1 -outline-offset-1 outline-border">
+                  {coverImage ? (
+                    <Image
+                      src={coverImage}
+                      alt={project.name}
+                      fill
+                      sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      className="object-cover"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="flex h-full items-center justify-center text-2xl text-muted-foreground">
+                      {project.client?.charAt(0) || "?"}
+                    </div>
+                  )}
+                </div>
+                <div className="mt-2 truncate">{project.name}</div>
+                <div className="truncate text-sm text-muted-foreground">
+                  {project.client} · {project.year}
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      )}
 
       <div className="px-6 md:px-12">
         {hasMore ? (
           <Button
             variant="ghost"
-            onClick={() => setVisibleCount((prev) => prev + PROJECTS_PAGE_SIZE)}
+            onClick={() => setVisibleCount((prev) => prev + pageSize)}
             className="group mt-4 h-auto w-full py-2 text-muted-foreground hover:bg-transparent hover:text-foreground"
           >
             <span className="opacity-50 transition-opacity group-hover:opacity-100">
@@ -264,7 +348,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
         ) : visibleCount > PROJECTS_PAGE_SIZE ? (
           <Button
             variant="ghost"
-            onClick={() => setVisibleCount(PROJECTS_PAGE_SIZE)}
+            onClick={() => setVisibleCount(pageSize)}
             className="group mt-4 h-auto w-full py-2 text-muted-foreground hover:bg-transparent hover:text-foreground"
           >
             <span className="opacity-50 transition-opacity group-hover:opacity-100">
