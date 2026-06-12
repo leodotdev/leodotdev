@@ -89,15 +89,15 @@ export function ReferencesScroll() {
             className="group/item cursor-pointer transition-opacity hover:!opacity-100"
             onClick={() => window.open(reference.linkedinUrl, "_blank")}
           >
-            <div className="flex w-full items-start gap-6 px-6 py-4 md:px-12">
-              <div className="flex min-w-0 flex-1 flex-row items-start gap-3">
-                <Avatar>
-                  <AvatarFallback className="text-muted-foreground">
-                    {reference.initials}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex min-w-0 flex-col">
-                  <div className="flex flex-col md:flex-row md:gap-2">
+            <div className="px-6 py-4 md:px-12">
+              <div className="flex w-full items-center justify-between gap-6">
+                <div className="flex min-w-0 flex-row items-center gap-3">
+                  <Avatar>
+                    <AvatarFallback className="text-muted-foreground">
+                      {reference.initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex min-w-0 flex-col md:flex-row md:gap-2">
                     <a
                       className="underline decoration-dotted group-hover/item:text-blue-500 group-hover/item:decoration-solid"
                       href={reference.linkedinUrl}
@@ -113,14 +113,14 @@ export function ReferencesScroll() {
                       {reference.title}
                     </div>
                   </div>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    &#34;{reference.quote}&#34;
-                  </p>
+                </div>
+                <div className="w-[132px] shrink-0 text-end">
+                  <p className="text-muted-foreground">{reference.company}</p>
                 </div>
               </div>
-              <div className="w-[132px] shrink-0 text-end">
-                <p className="text-muted-foreground">{reference.company}</p>
-              </div>
+              <p className="mt-2 pl-11 text-sm text-muted-foreground">
+                &#34;{reference.quote}&#34;
+              </p>
             </div>
           </div>
             {index < displayedReferences.length - 1 && (

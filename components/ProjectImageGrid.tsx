@@ -105,7 +105,7 @@ export function ProjectImageGrid({ images }: ProjectImageGridProps) {
         {images.map((image, index) => (
           <motion.div
             key={image._key}
-            className={`${masonryLayout(index)} cursor-pointer overflow-hidden rounded-lg bg-secondary/50`}
+            className={`${masonryLayout(index)} cursor-pointer overflow-hidden rounded-lg bg-secondary/50 outline outline-1 -outline-offset-1 outline-border`}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3, delay: index * 0.05 }}

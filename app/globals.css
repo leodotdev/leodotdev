@@ -19,82 +19,81 @@
 } */
  
 @layer base {
+  /* Zinc palette, tuned to match Tailwind v4's refined values (HSL for v3) */
   :root {
     --background: 0 0% 100%;
-    --foreground: 20 14.3% 4.1%;
- 
-    --muted: 60 4.8% 95.9%;
-    --muted-foreground: 25 5.3% 32%;
+    --foreground: 240 10% 4%;           /* zinc-950 */
+
+    --muted: 240 5% 96%;                /* zinc-100 */
+    --muted-foreground: 240 4% 34%;     /* ~zinc-600 for contrast */
 
     --popover: 0 0% 100%;
-    --popover-foreground: 20 14.3% 4.1%;
+    --popover-foreground: 240 10% 4%;
 
     --card: 0 0% 100%;
-    --card-foreground: 20 14.3% 4.1%;
+    --card-foreground: 240 10% 4%;
 
-    --border: 0 0% 0% / 0.18;
-    --input: 0 0% 0% / 0.18;
- 
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
- 
-    --secondary: 60 4.8% 95.9%;
-    --secondary-foreground: 24 9.8% 10%;
- 
-    --accent: 60 4.8% 95.9%;
-    --accent-foreground: 24 9.8% 10%;
- 
+    --border: 0 0% 0% / 0.08;
+    --input: 0 0% 0% / 0.08;
+
+    --primary: 240 10% 4%;              /* zinc-950 */
+    --primary-foreground: 0 0% 98%;     /* zinc-50 */
+
+    --secondary: 240 5% 96%;            /* zinc-100 */
+    --secondary-foreground: 240 6% 10%; /* zinc-900 */
+
+    --accent: 240 5% 96%;
+    --accent-foreground: 240 6% 10%;
+
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 60 9.1% 97.8%;
- 
-    --ring: 24 5.4% 63.9%;
- 
+    --destructive-foreground: 0 0% 98%;
+
+    --ring: 240 4% 64%;                 /* zinc-400 */
+
     --radius: 0.5rem;
 
-    /* Semantic color additions */
-    --subtle: 240 4.8% 95.9%;
-    --subtle-foreground: 240 5.9% 10%;
-    
-    --emphasis: 240 5.9% 10%;
+    --subtle: 240 5% 96%;
+    --subtle-foreground: 240 6% 10%;
+
+    --emphasis: 240 10% 4%;
     --emphasis-foreground: 0 0% 98%;
   }
- 
+
   .dark {
-    --background: 20 14.3% 4.1%;
-    --foreground: 60 9.1% 97.8%;
- 
-    --muted: 12 6.5% 15.1%;
-    --muted-foreground: 24 5.4% 75%;
+    --background: 240 10% 4%;           /* zinc-950 */
+    --foreground: 0 0% 98%;             /* zinc-50 */
 
-    --popover: 20 14.3% 4.1%;
-    --popover-foreground: 60 9.1% 97.8%;
+    --muted: 240 4% 16%;                /* zinc-800 */
+    --muted-foreground: 240 5% 75%;     /* ~zinc-300 for contrast */
 
-    --card: 20 14.3% 4.1%;
-    --card-foreground: 60 9.1% 97.8%;
+    --popover: 240 10% 4%;
+    --popover-foreground: 0 0% 98%;
 
-    --border: 0 0% 100% / 0.18;
-    --input: 0 0% 100% / 0.18;
- 
+    --card: 240 10% 4%;
+    --card-foreground: 0 0% 98%;
+
+    --border: 0 0% 100% / 0.08;
+    --input: 0 0% 100% / 0.08;
+
     --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
- 
-    --secondary: 12 6.5% 15.1%;
-    --secondary-foreground: 60 9.1% 97.8%;
- 
-    --accent: 12 6.5% 15.1%;
-    --accent-foreground: 60 9.1% 97.8%;
- 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 85.7% 97.3%;
- 
-    --ring: 12 6.5% 15.1%;
+    --primary-foreground: 240 6% 10%;
 
-    /* Semantic color additions */
-    --subtle: 240 10% 3.9%;
+    --secondary: 240 4% 16%;            /* zinc-800 */
+    --secondary-foreground: 0 0% 98%;
+
+    --accent: 240 4% 16%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --ring: 240 4% 16%;
+
+    --subtle: 240 10% 4%;
     --subtle-foreground: 0 0% 98%;
-    
+
     --emphasis: 0 0% 98%;
-    --emphasis-foreground: 240 5.9% 10%;
+    --emphasis-foreground: 240 6% 10%;
   }
 }
  

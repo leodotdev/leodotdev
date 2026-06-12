@@ -196,21 +196,14 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                         {project.client?.charAt(0) || "?"}
                       </AvatarFallback>
                     </Avatar>
-                    <div className="flex flex-col">
-                      <div className="flex flex-col md:flex-row md:gap-2">
-                        <div>{project.name}</div>
-                        <span className="hidden text-muted-foreground md:inline">
-                          ·
-                        </span>
-                        <div className="italic text-muted-foreground">
-                          {project.client}
-                        </div>
+                    <div className="flex flex-col md:flex-row md:gap-2">
+                      <div>{project.name}</div>
+                      <span className="hidden text-muted-foreground md:inline">
+                        ·
+                      </span>
+                      <div className="italic text-muted-foreground">
+                        {project.client}
                       </div>
-                      {project.description && (
-                        <div className="text-sm text-muted-foreground">
-                          {project.description}
-                        </div>
-                      )}
                     </div>
                   </div>
                   <div className="flex w-[132px] shrink-0 flex-col items-end text-end">
@@ -218,12 +211,18 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                   </div>
                 </div>
 
+                {project.description && (
+                  <div className="mt-2 pl-11 text-sm text-muted-foreground">
+                    {project.description}
+                  </div>
+                )}
+
                 {allThumbs.length > 0 && (
                   <div className="mt-3 flex flex-wrap gap-2 [&:hover>*]:opacity-50">
                     {allThumbs.map((img, imgIndex) => (
                       <div
                         key={imgIndex}
-                        className="relative h-32 w-32 cursor-pointer overflow-hidden rounded-lg bg-secondary transition-opacity hover:!opacity-100"
+                        className="relative h-32 w-32 cursor-pointer overflow-hidden rounded-lg bg-secondary outline outline-1 -outline-offset-1 outline-border transition-opacity hover:!opacity-100"
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
