@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ChevronUp, ChevronDown } from "lucide-react";
+import { LuChevronUp as ChevronUp, LuChevronDown as ChevronDown } from "react-icons/lu";
 
 interface CalendarDay {
   date: Date;

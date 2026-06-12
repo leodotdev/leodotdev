@@ -3,7 +3,7 @@
 import { LifeCalendar } from "./life-calendar-client";
 import { ThemeSwitcher } from "@/app/theme-switcher";
 import { Button } from "@/components/ui/button";
-import { CalendarDays } from "lucide-react";
+import { LuCalendarDays as CalendarDays } from "react-icons/lu";
 
 export default function LifeCalendarPage() {
   const scrollToToday = () => {
