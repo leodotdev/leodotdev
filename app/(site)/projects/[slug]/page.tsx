@@ -1,4 +1,5 @@
 import { getProject, getProjects } from "@/sanity/sanity-utils";
+import { notFound } from "next/navigation";
 import Image from "next/image";
 import { PortableText } from "@portabletext/react";
 import { createClient } from "next-sanity";
@@ -18,6 +19,9 @@ export default async function ProjectPage({
   params: { slug: string };
 }) {
   const project = await getProject(params.slug);
+  if (!project) {
+    notFound();
+  }
   const allProjects = await getProjects();
 
   // Find current project index
