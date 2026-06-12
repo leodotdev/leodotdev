@@ -44,6 +44,12 @@ export function Navigation({ children }: NavigationProps) {
             Download PDF
             <TbDownload className="ml-0.5 h-4 w-4 self-center text-muted-foreground" />
           </a>
+          <Link
+            href="/soon"
+            className="text-md flex items-center px-2 transition-opacity hover:!opacity-100 hover:underline"
+          >
+            Services
+          </Link>
           <DropdownMenu>
             <DropdownMenuTrigger className="text-md flex items-center px-2 transition-opacity hover:!opacity-100 hover:underline data-[popup-open]:!opacity-100">
               Contact
