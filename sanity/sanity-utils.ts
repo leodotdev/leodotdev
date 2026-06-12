@@ -1,14 +1,9 @@
 import { Project } from "@/types/Project";
 import { Book } from "@/types/Book";
-import { createClient, groq } from "next-sanity";
+import { groq } from "next-sanity";
+import { client } from "@/sanity/client";
 
 export async function getProjects(): Promise<Project[]> {
-    const client = createClient({
-        projectId: "jyqe7nab",
-        dataset: "production",
-        apiVersion: "2023-10-07",
-        useCdn: true,
-    });
     return client.fetch(
         groq`*[_type == "project"]| order(year desc) {
             _id,
@@ -35,12 +30,6 @@ export async function getProjects(): Promise<Project[]> {
 }
 
 export async function getProject(slug: string): Promise<Project | null> {
-    const client = createClient({
-        projectId: "jyqe7nab",
-        dataset: "production",
-        apiVersion: "2023-10-07",
-        useCdn: true,
-    });
     return client.fetch(
         groq`*[_type == "project" && slug.current == $slug][0]{
             _id,
@@ -67,12 +56,6 @@ export async function getProject(slug: string): Promise<Project | null> {
 }
 
 export async function getBooks(): Promise<Book[]> {
-    const client = createClient({
-        projectId: "jyqe7nab",
-        dataset: "production",
-        apiVersion: "2023-10-07",
-        useCdn: true,
-    });
     return client.fetch(
         groq`*[_type == "book"]| order(year desc) {
             _id,

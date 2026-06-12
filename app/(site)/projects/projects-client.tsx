@@ -6,7 +6,7 @@ import { Project } from "@/types/Project";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { createClient } from "next-sanity";
+import { client } from "@/sanity/client";
 import urlBuilder from "@sanity/image-url";
 import { motion, AnimatePresence } from "framer-motion";
 import { TbX, TbChevronLeft, TbChevronRight } from "react-icons/tb";
@@ -22,12 +22,6 @@ const clientLogos: Record<string, string> = {
   "Zenefits": "/logo-ze.svg",
   "Sapien": "/logo-sania.jpg",
 };
-
-const client = createClient({
-  projectId: "jyqe7nab",
-  dataset: "production",
-  apiVersion: "2023-10-07",
-});
 
 const categories = [
   { title: "All", value: "all" },

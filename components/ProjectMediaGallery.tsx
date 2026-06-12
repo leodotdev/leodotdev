@@ -10,18 +10,11 @@ import {
   TbEye,
   TbBrandFigma,
 } from "react-icons/tb";
-import { createClient } from "next-sanity";
+import { client } from "@/sanity/client";
 import urlBuilder from "@sanity/image-url";
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-
-const client = createClient({
-  projectId: "jyqe7nab",
-  dataset: "production",
-  apiVersion: "2023-10-07",
-  useCdn: true,
-});
 
 interface MediaItem {
   _key?: string;

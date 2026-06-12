@@ -2,7 +2,7 @@ import { getProjects } from "@/sanity/sanity-utils";
 import { getBooks } from "@/sanity/sanity-utils";
 import Image from "next/image";
 import { PortableText } from "@portabletext/react";
-import { createClient } from "next-sanity";
+import { client } from "@/sanity/client";
 import urlBuilder from "@sanity/image-url";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
@@ -26,12 +26,6 @@ import { ReferencesScroll } from "./references-scroll";
 export default async function Home() {
   const projects = await getProjects();
   const books = await getBooks();
-  const client = createClient({
-    projectId: "jyqe7nab",
-    dataset: "production",
-    apiVersion: "2023-10-07",
-  });
-
   const ContentImageComponent = ({ value }: { value: any }) => {
     return (
       <Image

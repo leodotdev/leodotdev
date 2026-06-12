@@ -2,7 +2,7 @@ import { getProject, getProjects } from "@/sanity/sanity-utils";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { PortableText } from "@portabletext/react";
-import { createClient } from "next-sanity";
+import { client } from "@/sanity/client";
 import urlBuilder from "@sanity/image-url";
 import Link from "next/link";
 import React from "react";
@@ -31,13 +31,6 @@ export default async function ProjectPage({
     currentIndex < allProjects.length - 1
       ? allProjects[currentIndex + 1]
       : null;
-
-  const client = createClient({
-    projectId: "jyqe7nab",
-    dataset: "production",
-    apiVersion: "2023-10-07",
-    useCdn: true,
-  });
 
   const contentImages = project.content
     ? project.content
@@ -138,12 +131,6 @@ export default async function ProjectPage({
 }
 
 export async function generateStaticParams() {
-  const client = createClient({
-    projectId: "jyqe7nab",
-    dataset: "production",
-    apiVersion: "2023-10-07",
-  });
-
   const projects = await client.fetch(
     `*[_type == "project"]{ "slug": slug.current }`,
   );
