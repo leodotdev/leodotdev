@@ -31,7 +31,7 @@ const experiences: ExperienceItem[] = [
     companyUrl: "https://dbco.online/",
     position: "Web Designer",
     location: "Remote",
-    duration: "2025",
+    duration: "2005–Present",
     contract: true,
     project: "Claude.ai",
     projectUrl: "https://claude.ai",
