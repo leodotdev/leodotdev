@@ -66,7 +66,7 @@ const additionalReferences: Reference[] = [
 ];
 
 const allReferences = [...references, ...additionalReferences];
-const REFERENCES_PAGE_SIZE = 4;
+const REFERENCES_PAGE_SIZE = 2;
 
 export function ReferencesScroll() {
   const [visibleCount, setVisibleCount] = useState(REFERENCES_PAGE_SIZE);
