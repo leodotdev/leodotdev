@@ -133,7 +133,7 @@ export function ReferencesScroll() {
       {hasMore ? (
         <Button
           variant="ghost"
-          onClick={() => setVisibleCount((prev) => prev + REFERENCES_PAGE_SIZE)}
+          onClick={() => setVisibleCount(allReferences.length)}
           className="group mt-4 h-auto w-full py-2 text-muted-foreground hover:bg-transparent hover:text-foreground"
         >
           <span className="opacity-50 transition-opacity group-hover:opacity-100">
