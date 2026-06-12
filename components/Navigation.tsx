@@ -28,28 +28,22 @@ export function Navigation({ children }: NavigationProps) {
         <div className="-mx-2 flex w-full flex-1 flex-wrap content-stretch items-stretch justify-stretch gap-2 [&:has([data-popup-open])>*]:opacity-50 [&:hover>*]:opacity-50">
           {children}
 
-          <DropdownMenu>
-            <DropdownMenuTrigger className="text-md flex items-center px-2 transition-opacity hover:!opacity-100 hover:underline data-[popup-open]:!opacity-100">
-              Resume
-              <TbChevronDown className="ml-0.5 h-4 w-4 self-center text-muted-foreground" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
-              <DropdownMenuLinkItem
-                render={<Link href="/resume" target="_blank" />}
-                className="flex cursor-pointer items-center"
-              >
-                View
-                <TbArrowUpRight className="ml-1 h-4 w-4 text-muted-foreground" />
-              </DropdownMenuLinkItem>
-              <DropdownMenuLinkItem
-                render={<a href="/Leo-SF-Resume-May-2025.pdf" download="Leo-Succar-Resume.pdf" />}
-                className="flex cursor-pointer items-center"
-              >
-                Download PDF
-                <TbDownload className="ml-1 h-4 w-4 text-muted-foreground" />
-              </DropdownMenuLinkItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Link
+            href="/resume"
+            target="_blank"
+            className="text-md flex items-center px-2 transition-opacity hover:!opacity-100 hover:underline"
+          >
+            View resume
+            <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
+          </Link>
+          <a
+            href="/Leo-SF-Resume-May-2025.pdf"
+            download="Leo-Succar-Resume.pdf"
+            className="text-md flex items-center px-2 transition-opacity hover:!opacity-100 hover:underline"
+          >
+            Download PDF
+            <TbDownload className="h-4 w-4 self-start text-muted-foreground" />
+          </a>
           <DropdownMenu>
             <DropdownMenuTrigger className="text-md flex items-center px-2 transition-opacity hover:!opacity-100 hover:underline data-[popup-open]:!opacity-100">
               Contact
