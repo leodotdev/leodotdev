@@ -67,7 +67,7 @@ export function EditableDescription({
 
   if (mode === "edit") {
     return (
-      <div className={className} onClick={(e) => e.stopPropagation()}>
+      <div className={className} onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}>
         <textarea
           ref={textareaRef}
           value={draft}
@@ -82,13 +82,14 @@ export function EditableDescription({
             }
           }}
           onBlur={() => {
+            if (saving) return;
             if (draft !== localValue) {
               void save();
             } else {
               cancelEdit();
             }
           }}
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
         />
       </div>
     );
