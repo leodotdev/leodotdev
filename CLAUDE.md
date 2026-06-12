@@ -24,7 +24,7 @@ Personal portfolio site for Leo Succar (leo.dev). Stack:
 This site deploys to **Cloudflare Pages** as a static build (`@cloudflare/next-on-pages` style). Constraints:
 
 - No Node.js runtime at request time — no `fs`, no server-side APIs unless edge-compatible.
-- Do **not** re-add a self-hosted Sanity Studio route under `app/` — it was removed in commit `93f6064` because it is incompatible with this deploy target. Use `npx sanity dev` locally instead.
+- Do **not** add a `/studio` route (`NextStudio`) to the Next app. It builds as a dynamic, server-rendered route (~1MB first-load JS) which the static Cloudflare Pages deploy cannot serve. This route was removed in commit `93f6064` and again in plan 005. Use `npx sanity dev` for a local studio instead.
 - Content updates require a redeploy (the site is fully static).
 
 ## Routing facts
