@@ -1,5 +1,4 @@
 import { getProjects } from "@/sanity/sanity-utils";
-import { getBooks } from "@/sanity/sanity-utils";
 import { getExperiences } from "@/sanity/sanity-utils";
 import { getReferences } from "@/sanity/sanity-utils";
 import Image from "next/image";
@@ -27,7 +26,6 @@ import { ReferencesScroll } from "./references-scroll";
 
 export default async function Home() {
   const projects = await getProjects();
-  const books = await getBooks();
   const experiences = await getExperiences();
   const references = await getReferences();
   const ContentImageComponent = ({ value }: { value: any }) => {
@@ -61,7 +59,11 @@ export default async function Home() {
         className="-mt-12 w-full mix-blend-exclusion dark:mix-blend-lighten"
       ></iframe> */}
 
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col">
+          {/* Framed top group: hero through references. The left/right page
+              frame now lives on each section so the projects section can drop
+              it (and go full-bleed) in grid mode. */}
+          <div className="flex flex-col gap-12 border-x pb-12">
           {/* Hero section with photos */}
           <HeroSection />
 
@@ -97,7 +99,9 @@ export default async function Home() {
           <Separator />
 
           <ReferencesScroll references={references} />
+          </div>
 
+          {/* Book Shelf section hidden for now
           <Separator />
 
           <div id="books">
@@ -145,11 +149,13 @@ export default async function Home() {
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
           </div>
-
-          <Separator />
+          */}
 
           <ProjectsClient projects={projects} />
 
+          {/* Framed footer (gains a top border in grid mode, where the
+              projects section above it is borderless/full-bleed) */}
+          <div className="border-x pt-12 [.projects-grid_&]:border-t">
           <div className="flex flex-col gap-4 p-6 md:p-12">
             <div className=" text-muted-foreground">
               Built using{" "}
@@ -186,6 +192,7 @@ export default async function Home() {
               </a>
               .
             </div>
+          </div>
           </div>
         </div>
       </ProjectsPageClient>

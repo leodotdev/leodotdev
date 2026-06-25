@@ -67,8 +67,8 @@ const GRID_PAGE_SIZE = PROJECTS_PAGE_SIZE * 2;
 export function ProjectsClient({ projects }: { projects: Project[] }) {
   const isAdmin = useSanityAdmin();
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [visibleCount, setVisibleCount] = useState(PROJECTS_PAGE_SIZE);
-  const [viewMode, setViewMode] = useState<"list" | "grid">("list");
+  const [visibleCount, setVisibleCount] = useState(GRID_PAGE_SIZE);
+  const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
   const [lightboxImages, setLightboxImages] = useState<string[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -85,11 +85,19 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
 
   useEffect(() => {
     const saved = localStorage.getItem("projects-view-mode");
-    if (saved === "grid") {
-      setViewMode("grid");
-      setVisibleCount(GRID_PAGE_SIZE);
+    if (saved === "list") {
+      setViewMode("list");
+      setVisibleCount(PROJECTS_PAGE_SIZE);
     }
   }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle(
+      "projects-grid",
+      viewMode === "grid",
+    );
+    return () => document.documentElement.classList.remove("projects-grid");
+  }, [viewMode]);
 
   const openLightbox = (images: string[], index: number) => {
     setLightboxImages(images);
@@ -158,7 +166,14 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
   const hasMore = visibleCount < filteredProjects.length;
 
   return (
-    <div id="projects">
+    <div
+      id="projects"
+      className={`border-t pt-12 ${
+        viewMode === "grid"
+          ? "mx-[calc(50%_-_50vw)] overflow-x-hidden"
+          : "border-x"
+      }`}
+    >
       <div className="px-6 pb-12 md:px-12">
         <div className="flex items-start justify-between">
           <div>
@@ -230,7 +245,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
               <div className="transition-opacity hover:!opacity-100">
                 <Link
                   href={`/projects/${project.slug}`}
-                  className="block px-6 py-4 md:px-12"
+                  className="group/item block px-6 py-4 md:px-12"
                 >
                   <div className="flex w-full items-center justify-between gap-6">
                     <div className="flex flex-row items-center gap-3">
@@ -241,7 +256,9 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex flex-col md:flex-row md:gap-2">
-                        <div>{project.name}</div>
+                        <div className="underline decoration-dotted group-hover/item:text-blue-500 group-hover/item:decoration-solid">
+                          {project.name}
+                        </div>
                         <span className="hidden text-muted-foreground md:inline">
                           ·
                         </span>
@@ -267,7 +284,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                       {allThumbs.map((img, imgIndex) => (
                         <div
                           key={imgIndex}
-                          className="relative h-32 w-32 cursor-pointer overflow-hidden rounded-lg bg-secondary outline outline-1 -outline-offset-1 outline-border transition-opacity hover:!opacity-100"
+                          className="group relative h-32 w-32 cursor-pointer overflow-hidden rounded-lg bg-secondary outline outline-1 -outline-offset-1 outline-border transition duration-300 hover:scale-[1.02] hover:!opacity-100"
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
@@ -279,7 +296,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                             alt={`${project.name} thumbnail ${imgIndex + 1}`}
                             fill
                             sizes="(max-width: 768px) 15vw, 128px"
-                            className="object-cover"
+                            className="object-cover transition-transform duration-300 group-hover:scale-105"
                             loading="lazy"
                           />
                         </div>
@@ -297,7 +314,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
           })}
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-4 px-6 md:grid-cols-3 md:px-12 lg:grid-cols-4 [&:hover>*]:opacity-50">
+        <div className="grid grid-cols-2 gap-4 px-6 md:grid-cols-3 md:px-12 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 [&:hover>*]:opacity-50">
           {visibleProjects.map((project) => {
             const contentThumbs = getContentImageThumbs(project);
             const coverImage = project.image || contentThumbs[0] || null;
@@ -306,16 +323,16 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
               <Link
                 key={project._id}
                 href={`/projects/${project.slug}`}
-                className="group transition-opacity hover:!opacity-100"
+                className="group min-w-0 transition-opacity hover:!opacity-100"
               >
-                <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-secondary outline outline-1 -outline-offset-1 outline-border">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-secondary outline outline-1 -outline-offset-1 outline-border transition-transform duration-300 group-hover:scale-[1.02]">
                   {coverImage ? (
                     <Image
                       src={coverImage}
                       alt={project.name}
                       fill
-                      sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                      className="object-cover"
+                      sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, (max-width: 1536px) 20vw, 16vw"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
                       loading="lazy"
                     />
                   ) : (
@@ -323,10 +340,22 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                       {project.client?.charAt(0) || "?"}
                     </div>
                   )}
+                  <div className="absolute inset-x-0 bottom-0 hidden bg-gradient-to-t from-black/95 via-black/70 to-transparent p-3 pt-8 opacity-0 transition-opacity group-hover:opacity-100 md:block">
+                    <div className="truncate text-white underline decoration-dotted group-hover:text-blue-400 group-hover:decoration-solid">
+                      {project.name}
+                    </div>
+                    <div className="truncate text-sm text-white/70">
+                      {project.client} · {project.year}
+                    </div>
+                  </div>
                 </div>
-                <div className="mt-2 truncate">{project.name}</div>
-                <div className="truncate text-sm text-muted-foreground">
-                  {project.client} · {project.year}
+                <div className="mt-2 md:hidden">
+                  <div className="truncate underline decoration-dotted group-hover:text-blue-500 group-hover:decoration-solid">
+                    {project.name}
+                  </div>
+                  <div className="truncate text-sm text-muted-foreground">
+                    {project.client} · {project.year}
+                  </div>
                 </div>
               </Link>
             );
@@ -334,26 +363,24 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
         </div>
       )}
 
-      <div className="px-6 md:px-12">
+      <div className="flex justify-center px-6 py-8 md:px-12">
         {hasMore ? (
           <Button
-            variant="ghost"
+            variant="secondary"
+            size="lg"
             onClick={() => setVisibleCount((prev) => prev + pageSize)}
-            className="group mt-4 h-auto w-full py-2 text-muted-foreground hover:bg-transparent hover:text-foreground"
+            className="rounded-full px-6 [corner-shape:round]"
           >
-            <span className="opacity-50 transition-opacity group-hover:opacity-100">
-              Show more
-            </span>
+            Show more
           </Button>
         ) : visibleCount > PROJECTS_PAGE_SIZE ? (
           <Button
-            variant="ghost"
+            variant="outline"
+            size="lg"
             onClick={() => setVisibleCount(pageSize)}
-            className="group mt-4 h-auto w-full py-2 text-muted-foreground hover:bg-transparent hover:text-foreground"
+            className="rounded-full px-6 [corner-shape:round]"
           >
-            <span className="opacity-50 transition-opacity group-hover:opacity-100">
-              Show less
-            </span>
+            Show less
           </Button>
         ) : null}
       </div>
@@ -462,7 +489,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                           setImageLoaded(false);
                           setLightboxIndex(i);
                         }}
-                        className={`relative h-24 overflow-hidden rounded-lg p-0 transition-all hover:bg-transparent ${
+                        className={`group relative h-24 overflow-hidden rounded-lg p-0 outline outline-1 -outline-offset-1 outline-border transition-all duration-300 hover:scale-[1.02] hover:bg-transparent ${
                           i === lightboxIndex
                             ? "opacity-100 ring-2 ring-white"
                             : "opacity-50 hover:opacity-75"
@@ -474,7 +501,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                           alt={`Thumbnail ${i + 1}`}
                           fill
                           sizes="120px"
-                          className="object-cover"
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                       </Button>
                     ))}

@@ -74,27 +74,27 @@ export function ReferencesScroll({ references: allReferences }: ReferencesScroll
         ))}
       </div>
 
-      {hasMore ? (
-        <Button
-          variant="ghost"
-          onClick={() => setVisibleCount(allReferences.length)}
-          className="group mt-4 h-auto w-full py-2 text-muted-foreground hover:bg-transparent hover:text-foreground"
-        >
-          <span className="opacity-50 transition-opacity group-hover:opacity-100">
+      <div className="flex justify-center px-6 py-8 md:px-12">
+        {hasMore ? (
+          <Button
+            variant="secondary"
+            size="lg"
+            onClick={() => setVisibleCount(allReferences.length)}
+            className="rounded-full px-6 [corner-shape:round]"
+          >
             Show more
-          </span>
-        </Button>
-      ) : visibleCount > REFERENCES_PAGE_SIZE ? (
-        <Button
-          variant="ghost"
-          onClick={() => setVisibleCount(REFERENCES_PAGE_SIZE)}
-          className="group mt-4 h-auto w-full py-2 text-muted-foreground hover:bg-transparent hover:text-foreground"
-        >
-          <span className="opacity-50 transition-opacity group-hover:opacity-100">
+          </Button>
+        ) : visibleCount > REFERENCES_PAGE_SIZE ? (
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => setVisibleCount(REFERENCES_PAGE_SIZE)}
+            className="rounded-full px-6 [corner-shape:round]"
+          >
             Show less
-          </span>
-        </Button>
-      ) : null}
+          </Button>
+        ) : null}
+      </div>
     </div>
   );
 }

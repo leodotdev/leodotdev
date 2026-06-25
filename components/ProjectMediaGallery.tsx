@@ -253,7 +253,7 @@ export function ProjectMediaGallery({
             return (
               <motion.div
                 key={image._key}
-                className="aspect-[4/3] cursor-pointer overflow-hidden rounded-lg bg-secondary/50 outline outline-1 -outline-offset-1 outline-border"
+                className="group aspect-[4/3] cursor-pointer overflow-hidden rounded-lg bg-secondary/50 outline outline-1 -outline-offset-1 outline-border"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
@@ -266,7 +266,7 @@ export function ProjectMediaGallery({
                     alt={image.alt || "Project image"}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
-                    className="object-cover"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
               </motion.div>
@@ -409,7 +409,7 @@ export function ProjectMediaGallery({
                           setLoadingProgress({ ...loadingProgress, [index]: 0 });
                           simulateProgress(index);
                         }}
-                        className={`relative h-24 overflow-hidden rounded-lg p-0 transition-all hover:bg-transparent ${
+                        className={`group relative h-24 overflow-hidden rounded-lg p-0 outline outline-1 -outline-offset-1 outline-border transition-all duration-300 hover:scale-[1.02] hover:bg-transparent ${
                           index === selectedIndex
                             ? "opacity-100 ring-2 ring-white"
                             : "opacity-50 hover:opacity-75"
@@ -422,7 +422,7 @@ export function ProjectMediaGallery({
                             alt={item.alt || `Thumbnail ${index + 1}`}
                             fill
                             sizes="120px"
-                            className="object-cover"
+                            className="object-cover transition-transform duration-300 group-hover:scale-105"
                           />
                         ) : (
                           <div className="flex h-full w-full items-center justify-center bg-secondary">

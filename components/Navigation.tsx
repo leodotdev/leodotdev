@@ -23,7 +23,7 @@ export function Navigation({ children }: NavigationProps) {
   };
 
   return (
-    <div className="border-b bg-background">
+    <div className="border-x border-b bg-background">
       <div className="mx-auto flex max-w-[960px] justify-between px-6 py-4 md:px-12">
         <div className="-mx-2 flex w-full flex-1 flex-wrap content-stretch items-stretch justify-stretch gap-2 [&:has([data-popup-open])>*]:opacity-50 [&:hover>*]:opacity-50">
           {children}
@@ -31,25 +31,36 @@ export function Navigation({ children }: NavigationProps) {
           <Link
             href="/resume"
             target="_blank"
-            className="text-md flex items-center px-2 transition-opacity hover:!opacity-100 hover:underline"
+            className="text-md group flex items-center px-2 transition-opacity hover:!opacity-100 hover:text-blue-500 hover:underline"
           >
             View resume
-            <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground" />
+            <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground transition-colors group-hover:text-blue-500" />
           </Link>
           <a
             href="/Leo-SF-Resume-May-2025.pdf"
             download="Leo-Succar-Resume.pdf"
-            className="text-md flex items-center px-2 transition-opacity hover:!opacity-100 hover:underline"
+            className="text-md group flex items-center px-2 transition-opacity hover:!opacity-100 hover:text-blue-500 hover:underline"
           >
             Download PDF
-            <TbDownload className="ml-0.5 h-4 w-4 self-center text-muted-foreground" />
+            <TbDownload className="ml-0.5 h-4 w-4 self-center text-muted-foreground transition-colors group-hover:text-blue-500" />
           </a>
+          {/* Services link hidden for now
           <Link
             href="/soon"
-            className="text-md flex items-center px-2 transition-opacity hover:!opacity-100 hover:underline"
+            className="text-md flex items-center px-2 transition-opacity hover:!opacity-100 hover:text-blue-500 hover:underline"
           >
             Services
           </Link>
+          */}
+          <a
+            href="https://www.sanity.io/manage/project/jyqe7nab"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-md group flex items-center px-2 transition-opacity hover:!opacity-100 hover:text-blue-500 hover:underline"
+          >
+            Sanity
+            <TbArrowUpRight className="ml-0.5 h-4 w-4 self-start text-muted-foreground transition-colors group-hover:text-blue-500" />
+          </a>
           <DropdownMenu>
             <DropdownMenuTrigger className="text-md flex items-center px-2 transition-opacity hover:!opacity-100 hover:underline data-[popup-open]:!opacity-100">
               Contact
@@ -74,7 +85,7 @@ export function Navigation({ children }: NavigationProps) {
                 render={<Link href="https://cal.com/leo.dev/20min" target="_blank" />}
                 className="flex cursor-pointer items-center"
               >
-                Let&apos;s chat
+                Schedule a call
                 <TbArrowUpRight className="ml-1 h-4 w-4 text-muted-foreground" />
               </DropdownMenuLinkItem>
               <DropdownMenuLinkItem

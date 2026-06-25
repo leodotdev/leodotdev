@@ -161,3 +161,11 @@
   }
 }
 
+/* On the projects page the page frame is drawn per-section (so the projects
+   section can drop its borders and go full-bleed in grid mode). Hide the
+   global frame's side borders there; the nav and sections supply their own. */
+html.projects-frame .site-frame {
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+

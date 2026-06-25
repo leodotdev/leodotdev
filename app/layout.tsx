@@ -41,7 +41,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="mx-auto min-h-screen max-w-[960px] border-x bg-background">
+          <div className="site-frame mx-auto min-h-screen max-w-[960px] border-x bg-background">
             {children}
           </div>
         </ThemeProvider>
