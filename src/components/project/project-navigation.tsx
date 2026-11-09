@@ -28,9 +28,9 @@ export function ProjectNavigation({ prevProject, nextProject }: ProjectNavigatio
               <TbChevronLeft className="h-6 w-6 text-muted-foreground transition-colors group-hover:text-foreground" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="mb-1 text-sm text-muted-foreground">Previous</p>
+              <p className="mb-1 text-xs text-muted-foreground">Previous</p>
               <h3 className="truncate font-semibold">{prevProject.name}</h3>
-              <p className="truncate text-sm text-muted-foreground">
+              <p className="truncate text-muted-foreground">
                 {prevProject.client}
               </p>
             </div>
@@ -61,9 +61,9 @@ export function ProjectNavigation({ prevProject, nextProject }: ProjectNavigatio
               <TbChevronRight className="h-6 w-6 text-muted-foreground transition-colors group-hover:text-foreground" />
             </div>
             <div className="min-w-0 flex-1 gap-0 text-right">
-              <p className="text-sm text-muted-foreground">Next</p>
+              <p className="text-xs text-muted-foreground">Next</p>
               <h3 className="truncate font-semibold">{nextProject.name}</h3>
-              <p className="truncate text-sm text-muted-foreground">
+              <p className="truncate text-muted-foreground">
                 {nextProject.client}
               </p>
             </div>

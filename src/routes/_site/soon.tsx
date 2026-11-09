@@ -37,7 +37,7 @@ function Soon() {
       <section className="flex gap-4">
         <Card className="basis-1/3 border-none bg-pink-50 shadow-none dark:bg-pink-950">
           <CardHeader>
-            <CardTitle className="text-lg">Product Design</CardTitle>
+            <CardTitle>Product Design</CardTitle>
           </CardHeader>
           <CardContent>
             <p>
@@ -49,7 +49,7 @@ function Soon() {
         </Card>
         <Card className="basis-1/3 border-none bg-purple-50 shadow-none dark:bg-purple-950">
           <CardHeader>
-            <CardTitle className="text-lg">Design Systems</CardTitle>
+            <CardTitle>Design Systems</CardTitle>
           </CardHeader>
           <CardContent>
             <p>
@@ -61,7 +61,7 @@ function Soon() {
         </Card>
         <Card className="basis-1/3 border-none bg-indigo-50 shadow-none dark:bg-indigo-950">
           <CardHeader>
-            <CardTitle className="text-lg">Brand Design</CardTitle>
+            <CardTitle>Brand Design</CardTitle>
           </CardHeader>
           <CardContent>
             <p>
@@ -76,7 +76,7 @@ function Soon() {
         <Card className="basis-1/4 rounded-r-none">
           <CardHeader>
             <TbCalendarCheck className="h-6 w-6 stroke-[1.5px]" />
-            <CardTitle className="text-lg">Let&#39;s go!</CardTitle>
+            <CardTitle>Let&#39;s go!</CardTitle>
           </CardHeader>
           <CardContent>
             <p>
@@ -89,7 +89,7 @@ function Soon() {
         <Card className="basis-1/4 rounded-none border-l-0">
           <CardHeader>
             <TbMessageCheck className="h-6 w-6 stroke-[1.5px]" />
-            <CardTitle className="text-lg">Request</CardTitle>
+            <CardTitle>Request</CardTitle>
           </CardHeader>
           <CardContent>
             <p>
@@ -101,7 +101,7 @@ function Soon() {
         <Card className="basis-1/4 rounded-none border-l-0">
           <CardHeader>
             <TbWand className="h-6 w-6 stroke-[1.5px]" />
-            <CardTitle className="text-lg">Create</CardTitle>
+            <CardTitle>Create</CardTitle>
           </CardHeader>
           <CardContent>
             <p>
@@ -113,7 +113,7 @@ function Soon() {
         <Card className="basis-1/4 rounded-l-none border-l-0">
           <CardHeader>
             <TbEdit className="h-6 w-6 stroke-[1.5px]" />
-            <CardTitle className="text-lg">Edit</CardTitle>
+            <CardTitle>Edit</CardTitle>
           </CardHeader>
           <CardContent>
             <p>
@@ -127,7 +127,7 @@ function Soon() {
       <section className="flex flex-col items-center gap-6 rounded-[60px] bg-muted p-12  dark:bg-background">
         <div className="flex flex-col items-center gap-6">
           <Badge>Plans</Badge>
-          <h2 className="text-4xl font-semibold">
+          <h2 className="font-semibold">
             Unlock Unlimited Creativity
           </h2>
           <h3 className="">
@@ -139,15 +139,15 @@ function Soon() {
           <Card className="flex basis-1/2 flex-col ">
             <CardHeader className="">
               <div className="flex justify-between">
-                <CardTitle className="text-lg">Standard</CardTitle>
+                <CardTitle>Standard</CardTitle>
                 <Badge variant="secondary" className="gap-1 rounded-full ">
                   <TbClockFilled />
                   Limited Availibility
                 </Badge>
               </div>
-              <div className="flex items-baseline gap-1 text-3xl font-semibold">
+              <div className="flex items-baseline gap-1 font-semibold">
                 $4,900.00{" "}
-                <span className="text-sm font-normal text-muted-foreground">
+                <span className="text-xs font-normal text-muted-foreground">
                   /month
                 </span>
               </div>
@@ -214,15 +214,15 @@ function Soon() {
           <Card className="basis-1/2 ">
             <CardHeader className="">
               <div className="flex justify-between">
-                <CardTitle className="text-lg">Pro</CardTitle>
+                <CardTitle>Pro</CardTitle>
                 <Badge variant="secondary" className="gap-1 rounded-full ">
                   <TbPlayerTrackNextFilled />
                   2x Requests
                 </Badge>
               </div>
-              <div className="flex items-baseline gap-1 text-3xl font-semibold">
+              <div className="flex items-baseline gap-1 font-semibold">
                 $6,900.00{" "}
-                <span className="text-sm font-normal text-muted-foreground">
+                <span className="text-xs font-normal text-muted-foreground">
                   /month
                 </span>
               </div>
@@ -314,10 +314,10 @@ function Soon() {
       <section>
         <Accordion type="multiple">
           <AccordionItem value="item-1">
-            <AccordionTrigger className="text-left text-xl">
+            <AccordionTrigger className="text-left">
               What is leo.dev?
             </AccordionTrigger>
-            <AccordionContent className="text-lg">
+            <AccordionContent>
               <span className="font-semibold">
                 leo<span className="text-orange-500">.</span>dev
               </span>{" "}
@@ -329,10 +329,10 @@ function Soon() {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-2">
-            <AccordionTrigger className="text-left text-xl">
+            <AccordionTrigger className="text-left">
               <span>How does it work?</span>
             </AccordionTrigger>
-            <AccordionContent className="text-lg">
+            <AccordionContent>
               It&#39;s simple! Once you subscribe, you&#39;ll get direct access
               to the platform. Submit your design requests, and I&#39;ll begin
               crafting your initial draft. My goal is to deliver first drafts
@@ -341,10 +341,10 @@ function Soon() {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-3">
-            <AccordionTrigger className="text-left text-xl">
+            <AccordionTrigger className="text-left">
               <span>How is this different from other design services?</span>
             </AccordionTrigger>
-            <AccordionContent className="text-lg">
+            <AccordionContent>
               Unlike larger agencies or freelance marketplaces, I offer a
               personal touch with the benefit of unlimited requests and
               revisions at a flat monthly rate. This means you get consistent,
@@ -353,10 +353,10 @@ function Soon() {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-4">
-            <AccordionTrigger className="text-left text-xl">
+            <AccordionTrigger className="text-left">
               <span>Who can benefit from using this?</span>
             </AccordionTrigger>
-            <AccordionContent className="text-lg">
+            <AccordionContent>
               My service is ideal for startups, small businesses, entrepreneurs,
               and marketers looking for bespoke design solutions without the
               overhead of a full-time designer. Whether you need branding,
@@ -365,10 +365,10 @@ function Soon() {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-5">
-            <AccordionTrigger className="text-left text-xl">
+            <AccordionTrigger className="text-left">
               <span>How quickly will I receive my designs?</span>
             </AccordionTrigger>
-            <AccordionContent className="text-lg">
+            <AccordionContent>
               I understand the importance of deadlines and strive to deliver
               initial drafts within 1-2 business days for most projects. The
               complexity of your request may influence timing, but I&#39;m
@@ -377,10 +377,10 @@ function Soon() {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-6">
-            <AccordionTrigger className="text-left text-xl">
+            <AccordionTrigger className="text-left">
               <span>What if I&#39;m not happy with a design?</span>
             </AccordionTrigger>
-            <AccordionContent className="text-lg">
+            <AccordionContent>
               Your complete satisfaction is my priority. If a design isn&#39;t
               quite right, let me know, and I&#39;ll make the necessary
               revisions. My unlimited revision policy ensures we refine it until
@@ -389,10 +389,10 @@ function Soon() {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-7">
-            <AccordionTrigger className="text-left text-xl">
+            <AccordionTrigger className="text-left">
               <span>Is there a limit to how many requests I can make?</span>
             </AccordionTrigger>
-            <AccordionContent className="text-lg">
+            <AccordionContent>
               Not at all! My subscription model is designed to accommodate
               unlimited design requests. No matter how big or small your needs,
               I&#39;m here to provide the continuous support your project
@@ -400,10 +400,10 @@ function Soon() {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-8">
-            <AccordionTrigger className="text-left text-xl">
+            <AccordionTrigger className="text-left">
               <span>How do I get started?</span>
             </AccordionTrigger>
-            <AccordionContent className="text-lg">
+            <AccordionContent>
               Beginning is easy. Choose the plan that fits your needs and sign
               up. You can start submitting design requests right away through
               the easy-to-use platform, and I&#39;ll be here to bring your ideas

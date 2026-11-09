@@ -54,7 +54,7 @@ function ProjectPage() {
         <div className="mb-8">
           <div className="flex items-start justify-between gap-12">
             <div>
-              <h1 className="mb-2 text-6xl font-bold">{project.name}</h1>
+              <h1 className="mb-2 font-semibold">{project.name}</h1>
               <div className="flex flex-wrap items-center gap-2 text-muted-foreground">
                 <span>{project.client}</span>
                 <span>·</span>
@@ -85,7 +85,7 @@ function ProjectPage() {
 
         {/* Description */}
         {project.description && (
-          <p className="mb-8 max-w-3xl text-base">{project.description}</p>
+          <p className="mb-8 max-w-3xl">{project.description}</p>
         )}
 
         {/* Media Gallery - Hero Image, Embed, and Content Images */}

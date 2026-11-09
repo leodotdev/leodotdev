@@ -245,7 +245,7 @@ export function LifeCalendar() {
               )}
               
               {/* Year header - smaller, plainer, left-aligned */}
-              <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-xs px-4 py-2 text-sm text-muted-foreground border-b">
+              <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-xs px-4 py-2 text-xs text-muted-foreground border-b">
                 {year}
               </div>
               
@@ -262,7 +262,7 @@ export function LifeCalendar() {
                     {/* Month name */}
                     <div className={cn(
                       monthColors[month.month],
-                      "py-3 px-2 font-semibold text-right border-r text-sm"
+                      "py-3 px-2 font-semibold text-right border-r text-xs"
                     )}>
                       {month.monthName}
                     </div>

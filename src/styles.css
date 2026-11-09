@@ -5,6 +5,17 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* The site uses exactly two sizes: 16px for content and controls, 12px for
+   metadata (dates, labels, badges, tooltips). Resetting the scale makes any
+   other `text-<size>` class a no-op. */
+@theme {
+  --text-*: initial;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.4;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5;
+}
+
 /* Colors are HSL triplets (carried over from the Tailwind 3 setup) wrapped
    in hsl() here, so opacity modifiers like bg-secondary/50 keep working. */
 @theme inline {

@@ -20,7 +20,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
   <Menu.SubmenuTrigger
     ref={ref}
     className={cn(
-      "flex cursor-default select-none items-center rounded-2xl px-2 py-1.5 text-sm outline-hidden data-[highlighted]:bg-accent data-[popup-open]:bg-accent",
+      "flex cursor-default select-none items-center rounded-2xl px-2 py-1.5 outline-hidden data-[highlighted]:bg-accent data-[popup-open]:bg-accent",
       className,
     )}
     {...props}
@@ -69,7 +69,7 @@ const DropdownMenuItem = React.forwardRef<
   <Menu.Item
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-2xl px-2 py-1.5 text-sm outline-hidden transition hover:!opacity-100 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex cursor-default select-none items-center rounded-2xl px-2 py-1.5 outline-hidden transition hover:!opacity-100 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className,
     )}
     {...props}
@@ -84,7 +84,7 @@ const DropdownMenuLinkItem = React.forwardRef<
   <Menu.LinkItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-2xl px-2 py-1.5 text-sm outline-hidden transition hover:!opacity-100 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex cursor-default select-none items-center rounded-2xl px-2 py-1.5 outline-hidden transition hover:!opacity-100 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className,
     )}
     {...props}
@@ -99,7 +99,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   <Menu.CheckboxItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-2xl py-1.5 pl-8 pr-2 text-sm outline-hidden transition hover:!opacity-100 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex cursor-default select-none items-center rounded-2xl py-1.5 pl-8 pr-2 outline-hidden transition hover:!opacity-100 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className,
     )}
     {...props}
@@ -116,7 +116,7 @@ const DropdownMenuRadioItem = React.forwardRef<
   <Menu.RadioItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-2xl py-1.5 pl-8 pr-2 text-sm outline-hidden transition hover:!opacity-100 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex cursor-default select-none items-center rounded-2xl py-1.5 pl-8 pr-2 outline-hidden transition hover:!opacity-100 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className,
     )}
     {...props}
@@ -132,7 +132,7 @@ const DropdownMenuLabel = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <Menu.GroupLabel
     ref={ref}
-    className={cn("px-2 py-1.5 text-sm font-semibold", className)}
+    className={cn("px-2 py-1.5 font-semibold", className)}
     {...props}
   />
 ));

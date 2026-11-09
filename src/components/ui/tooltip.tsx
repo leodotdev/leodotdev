@@ -31,7 +31,7 @@ const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentProps>(
         <TooltipPrimitive.Popup
           ref={ref}
           className={cn(
-            "z-50 overflow-hidden rounded-lg border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md outline-hidden data-[starting-style]:animate-in data-[ending-style]:animate-out data-[ending-style]:fade-out-0 data-[starting-style]:fade-in-0",
+            "z-50 overflow-hidden rounded-lg border bg-popover px-3 py-1.5 text-xs text-popover-foreground shadow-md outline-hidden data-[starting-style]:animate-in data-[ending-style]:animate-out data-[ending-style]:fade-out-0 data-[starting-style]:fade-in-0",
             className,
           )}
           {...props}

@@ -109,7 +109,7 @@ function ProjectsPage() {
                       </div>
                     )}
                     <div className="flex flex-col">
-                      <div className="truncate text-sm">{book.name}</div>
+                      <div className="truncate">{book.name}</div>
                       <div className="truncate text-xs text-muted-foreground">
                         {book.author}
                       </div>
@@ -127,8 +127,9 @@ function ProjectsPage() {
           <ProjectsClient projects={projects} />
           */}
 
-          {/* Framed footer (gains a top border in grid mode, where the
-              projects section above it is borderless/full-bleed) */}
+          {/* "Built using" footer hidden for now. (Framed footer; gains a
+              top border in grid mode, where the projects section above it is
+              borderless/full-bleed.)
           <div className="border-x pt-12 [.projects-grid_&]:border-t">
           <div className="flex flex-col gap-4 p-6 md:p-12">
             <div className=" text-muted-foreground">
@@ -168,6 +169,7 @@ function ProjectsPage() {
             </div>
           </div>
           </div>
+          */}
         </div>
       </ProjectsPageClient>
     </ProjectsWrapper>

@@ -60,7 +60,7 @@ export function ReferencesScroll({ references: allReferences }: ReferencesScroll
                   <p className="text-muted-foreground">{reference.company}</p>
                 </div>
               </div>
-              <p className="mt-2 pl-11 pr-11 text-sm text-muted-foreground">
+              <p className="mt-2 pl-11 pr-11 text-muted-foreground">
                 &#34;{reference.quote}&#34;
               </p>
             </div>
@@ -72,7 +72,7 @@ export function ReferencesScroll({ references: allReferences }: ReferencesScroll
         ))}
       </div>
 
-      <div className="flex justify-center px-6 py-8 md:px-12">
+      <div className="flex justify-center px-6 pt-8 md:px-12">
         {hasMore ? (
           <Button
             variant="secondary"

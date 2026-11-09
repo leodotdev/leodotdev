@@ -71,7 +71,7 @@ export function EditableDescription({
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           disabled={saving}
-          className={`w-full rounded-md border border-border bg-transparent p-2 text-sm text-muted-foreground outline-hidden${saving ? " opacity-50" : ""}`}
+          className={`w-full rounded-md border border-border bg-transparent p-2 text-muted-foreground outline-hidden${saving ? " opacity-50" : ""}`}
           onKeyDown={(e) => {
             if (e.key === "Escape") {
               cancelEdit();
