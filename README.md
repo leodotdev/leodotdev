@@ -48,12 +48,9 @@ pnpm run deploy
 
 This builds, checks the output for stray secrets (`scripts/check-dist.ts`), and runs `wrangler deploy` (config in `wrangler.jsonc`). Log in first with `pnpm exec wrangler login`.
 
-The Worker is named `leodotdev` and is currently reachable only at its `workers.dev` preview URL; leo.dev itself is still served by the old Cloudflare Pages project `leodotdev` until the cutover below.
+The Worker is named `leodotdev` and serves `leo.dev/*` through a zone route (`wrangler.jsonc`).
 
-### Cutover from Cloudflare Pages (one time)
+### Leftovers from the Cloudflare Pages era
 
-1. Compare the `workers.dev` preview with https://leo.dev.
-2. In `wrangler.jsonc`, add `"routes": [{ "pattern": "leo.dev", "custom_domain": true }]` and set `"workers_dev": false` and `"preview_urls": false`, then `pnpm run deploy`. If Cloudflare reports the hostname is in use, first remove the `leo.dev` custom domain from the Pages project (Workers & Pages → `leodotdev` (Pages) → Custom domains), then deploy again.
-3. In Sanity (sanity.io/manage → project → API → CORS origins), make sure `https://leo.dev` is listed with **Allow credentials** (inline editing).
-4. Delete the Sanity webhook `redeploy-leodotdev` (sanity.io/manage → API → Webhooks). Content no longer needs a rebuild, so the webhook and the Pages deploy hook it calls are unused.
-5. Once the Worker has served leo.dev for a while, disconnect Git from the Pages project (or delete it) so pushes stop building the old Next.js app.
+- The Pages project `leodotdev` no longer serves leo.dev. Disconnect its Git integration (or delete the project) so pushes stop starting builds of the old Next.js app, which now fail.
+- The Sanity webhook `redeploy-leodotdev` (sanity.io/manage → API → Webhooks) is no longer needed: content is read per request, so it can be deleted.

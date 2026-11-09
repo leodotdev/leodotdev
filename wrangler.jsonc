@@ -1,7 +1,5 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  // A Worker, separate from the `leodotdev` Pages project of the same name. leo.dev
-  // still points at Pages until the cutover in README → Deployment.
   "name": "leodotdev",
   "main": "src/server.ts",
   "compatibility_date": "2026-10-01",
@@ -12,9 +10,9 @@
   // exact names (no .html stripping, so /resume.html answers 200 as it did on
   // Pages). The binding lets the Worker also serve /resume (src/server.ts).
   "assets": { "binding": "ASSETS", "html_handling": "none" },
-  // Preview on workers.dev until cutover. At cutover, add:
-  //   "routes": [{ "pattern": "leo.dev", "custom_domain": true }]
-  // and set workers_dev / preview_urls to false.
-  "workers_dev": true,
-  "preview_urls": true,
+  // Production: the apex. www.leo.dev is served elsewhere (it redirects to
+  // the apex). The old Cloudflare Pages project `leodotdev` is no longer used.
+  "routes": [{ "pattern": "leo.dev/*", "zone_name": "leo.dev" }],
+  "workers_dev": false,
+  "preview_urls": false,
 }

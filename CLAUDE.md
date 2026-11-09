@@ -39,7 +39,7 @@ Personal portfolio site for Leo Succar (leo.dev). Stack:
 
 ## Deployment and content freshness
 
-- The site deploys as a Cloudflare Worker named `leodotdev` (`wrangler.jsonc`). Static files in `public/` are served before the Worker runs (`html_handling: "none"`, so `/resume.html` stays reachable as is).
+- The site deploys as a Cloudflare Worker named `leodotdev` on the route `leo.dev/*` (`wrangler.jsonc`); ship with `pnpm run deploy`. Static files in `public/` are served before the Worker runs (`html_handling: "none"`, so `/resume.html` stays reachable as is).
 - Pages render per request. Sanity reads go through `src/server/content.ts` and are cached at the edge for 60 s fresh plus a day stale-while-revalidate, so **content edits appear within about a minute with no rebuild**. No deploy hook or webhook is needed.
 - Do **not** add a `/studio` route; run the Studio locally (`pnpm studio`) or use sanity.io/manage.
 - Workers runtime only: no Node `fs`; `nodejs_compat` is on. Use `cloudflare:workers` for `env`/`waitUntil`.
