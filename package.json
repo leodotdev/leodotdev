@@ -42,7 +42,10 @@
     "typescript": "5.4.2"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "1.13.15",
     "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.5.12"
+    "prettier-plugin-tailwindcss": "^0.5.12",
+    "vercel": "47.0.4",
+    "wrangler": "3.114.17"
   }
 }
