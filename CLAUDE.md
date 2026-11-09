@@ -30,7 +30,7 @@ Personal portfolio site for Leo Succar (leo.dev). Stack:
 - `src/server.ts` — Worker entry: the `/resume` → `/resume.html` rewrite, then TanStack Start's handler
 - `src/router.tsx`, `src/client.tsx` — router and hydration entry
 - `src/routes/__root.tsx` — HTML shell, meta tags, theme script, 404 page
-- `src/routes/index.tsx` — `/` redirects (308) to `/projects`
+- `src/routes/_site/index.tsx` — the home page at `/`. `/projects` (`projects.index.tsx`) renders the same page with a canonical link to `/`, and deliberately does not redirect: the old site sent `/` to `/projects` with a cached 308, so a redirect back would loop
 - `src/routes/_site/` — the site's pages under a pathless `_site` layout: `projects.index.tsx`, `projects.$slug.tsx` (404 for unknown slugs), `life-calendar.tsx`, `soon.tsx`
 - `src/server/content.ts` — server functions that read Sanity; `src/server/cache.ts` — stale-while-revalidate on the Workers Cache API
 - `src/sanity/` — project config, GROQ (`queries.ts`), image URLs (`image.ts`), browser write client

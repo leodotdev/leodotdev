@@ -74,10 +74,10 @@ function NotFound() {
       <h1 className="font-semibold">404</h1>
       <p className="text-muted-foreground">This page could not be found.</p>
       <Link
-        to="/projects"
+        to="/"
         className="mt-4 underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
       >
-        Back to projects
+        Back to home
       </Link>
     </main>
   )

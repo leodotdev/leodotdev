@@ -4,15 +4,15 @@ import { useLocation } from "@tanstack/react-router"
 const SCROLL_POSITION_KEY = "projects-scroll-position"
 
 /**
- * Remembers how far down /projects the visitor scrolled (localStorage) and
+ * Remembers how far down the home page the visitor scrolled (localStorage) and
  * puts them back there on their next visit, including after a full reload.
  */
 export function ProjectsWrapper({ children }: { children: React.ReactNode }) {
   const pathname = useLocation({ select: (l) => l.pathname })
 
   useEffect(() => {
-    // Only save scroll position on the projects page
-    if (pathname !== "/projects") return
+    // Only save scroll position on the home page (/ or /projects)
+    if (pathname !== "/" && pathname !== "/projects") return
 
     const handleScroll = () => {
       try {
@@ -39,7 +39,7 @@ export function ProjectsWrapper({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Only restore on the projects page
-    if (pathname !== "/projects") return
+    if (pathname !== "/" && pathname !== "/projects") return
 
     const restoreScroll = () => {
       try {

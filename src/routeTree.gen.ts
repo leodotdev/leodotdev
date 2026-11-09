@@ -9,21 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as SiteRouteImport } from './routes/_site'
+import { Route as SiteIndexRouteImport } from './routes/_site/index'
 import { Route as SiteLifeCalendarRouteImport } from './routes/_site/life-calendar'
 import { Route as SiteSoonRouteImport } from './routes/_site/soon'
 import { Route as SiteProjectsIndexRouteImport } from './routes/_site/projects.index'
 import { Route as SiteProjectsSlugRouteImport } from './routes/_site/projects.$slug'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SiteRoute = SiteRouteImport.update({
   id: '/_site',
   getParentRoute: () => rootRouteImport,
+} as any)
+const SiteIndexRoute = SiteIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SiteRoute,
 } as any)
 const SiteLifeCalendarRoute = SiteLifeCalendarRouteImport.update({
   id: '/life-calendar',
@@ -47,25 +47,25 @@ const SiteProjectsSlugRoute = SiteProjectsSlugRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof SiteIndexRoute
   '/life-calendar': typeof SiteLifeCalendarRoute
   '/soon': typeof SiteSoonRoute
   '/projects/$slug': typeof SiteProjectsSlugRoute
   '/projects/': typeof SiteProjectsIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/life-calendar': typeof SiteLifeCalendarRoute
   '/soon': typeof SiteSoonRoute
+  '/': typeof SiteIndexRoute
   '/projects/$slug': typeof SiteProjectsSlugRoute
   '/projects': typeof SiteProjectsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/_site': typeof SiteRouteWithChildren
   '/_site/life-calendar': typeof SiteLifeCalendarRoute
   '/_site/soon': typeof SiteSoonRoute
+  '/_site/': typeof SiteIndexRoute
   '/_site/projects/$slug': typeof SiteProjectsSlugRoute
   '/_site/projects/': typeof SiteProjectsIndexRoute
 }
@@ -73,37 +73,36 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths: '/' | '/life-calendar' | '/soon' | '/projects/$slug' | '/projects/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/life-calendar' | '/soon' | '/projects/$slug' | '/projects'
+  to: '/life-calendar' | '/soon' | '/' | '/projects/$slug' | '/projects'
   id:
     | '__root__'
-    | '/'
     | '/_site'
     | '/_site/life-calendar'
     | '/_site/soon'
+    | '/_site/'
     | '/_site/projects/$slug'
     | '/_site/projects/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   SiteRoute: typeof SiteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_site': {
       id: '/_site'
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof SiteRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_site/': {
+      id: '/_site/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof SiteIndexRouteImport
+      parentRoute: typeof SiteRoute
     }
     '/_site/life-calendar': {
       id: '/_site/life-calendar'
@@ -139,6 +138,7 @@ declare module '@tanstack/react-router' {
 interface SiteRouteChildren {
   SiteLifeCalendarRoute: typeof SiteLifeCalendarRoute
   SiteSoonRoute: typeof SiteSoonRoute
+  SiteIndexRoute: typeof SiteIndexRoute
   SiteProjectsSlugRoute: typeof SiteProjectsSlugRoute
   SiteProjectsIndexRoute: typeof SiteProjectsIndexRoute
 }
@@ -146,6 +146,7 @@ interface SiteRouteChildren {
 const SiteRouteChildren: SiteRouteChildren = {
   SiteLifeCalendarRoute: SiteLifeCalendarRoute,
   SiteSoonRoute: SiteSoonRoute,
+  SiteIndexRoute: SiteIndexRoute,
   SiteProjectsSlugRoute: SiteProjectsSlugRoute,
   SiteProjectsIndexRoute: SiteProjectsIndexRoute,
 }
@@ -153,7 +154,6 @@ const SiteRouteChildren: SiteRouteChildren = {
 const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   SiteRoute: SiteRouteWithChildren,
 }
 export const routeTree = rootRouteImport

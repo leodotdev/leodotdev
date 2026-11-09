@@ -33,7 +33,7 @@ export function BackButton() {
       }`}
     >
       <Link
-        to="/projects"
+        to="/"
         onClick={() => {
           // Set flag when navigating back to projects
           sessionStorage.setItem('navigation-source', 'back-button');
@@ -41,7 +41,7 @@ export function BackButton() {
         className="text-md hover:bg-secondary/90 flex items-center whitespace-nowrap rounded-full bg-secondary px-4 py-2 pr-5 font-medium text-primary"
       >
         <TbArrowLeft className="mr-1 h-4 w-4 text-muted-foreground" />
-        Back to Projects
+        Back to home
       </Link>
     </div>
   );

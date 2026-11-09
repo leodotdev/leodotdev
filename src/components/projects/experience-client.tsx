@@ -130,7 +130,7 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
                   )}
                 </div>
               </div>
-              <div className="flex shrink-0 flex-col items-end text-end md:flex-row md:gap-2">
+              <div className="flex shrink-0 flex-col items-end text-end text-xs md:flex-row md:gap-2">
                 <p className="text-muted-foreground">{exp.location}</p>
                 {exp.duration && (
                   <>

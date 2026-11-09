@@ -9,7 +9,7 @@ pnpm install
 pnpm dev
 ```
 
-The dev server runs at **http://localhost:3000** (Vite with the Cloudflare plugin, so server code runs in workerd as in production). The root path `/` permanently redirects to `/projects`.
+The dev server runs at **http://localhost:3000** (Vite with the Cloudflare plugin, so server code runs in workerd as in production). The home page is `/`; `/projects` renders the same page for old links.
 
 ## Verification
 
@@ -23,7 +23,7 @@ This runs typecheck + lint + production build in sequence. There are no automate
 
 ## How content gets to the page
 
-Pages render on the Worker for every request. Route loaders (`src/routes/_site/projects.*.tsx`) call server functions in `src/server/content.ts`, which query Sanity's API CDN and keep the result in the Workers Cache API with stale-while-revalidate (fresh for 60 s, then served stale for up to a day while a background refresh runs; see `src/server/cache.ts`). Client-side navigations call the same server functions over `/_serverfn`, so the browser never queries Sanity directly for reads.
+Pages render on the Worker for every request. Route loaders (`src/routes/_site/*.tsx`) call server functions in `src/server/content.ts`, which query Sanity's API CDN and keep the result in the Workers Cache API with stale-while-revalidate (fresh for 60 s, then served stale for up to a day while a background refresh runs; see `src/server/cache.ts`). Client-side navigations call the same server functions over `/_serverfn`, so the browser never queries Sanity directly for reads.
 
 So **Sanity edits show up on the site within about a minute, without a rebuild or redeploy.** (On `*.workers.dev` the Cache API does not persist entries, so there every request reads Sanity's CDN directly; caching takes effect on the leo.dev custom domain.)
 
