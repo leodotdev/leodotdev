@@ -15,4 +15,26 @@
   "routes": [{ "pattern": "leo.dev/*", "zone_name": "leo.dev" }],
   "workers_dev": false,
   "preview_urls": false,
+  "vars": {
+    // Cloudflare Access (admin): the Zero Trust team domain and the
+    // "leo.dev admin" application's audience tag. Neither is secret.
+    // Until ACCESS_AUD is set, /admin refuses every request in production.
+    "ACCESS_TEAM_DOMAIN": "https://leodotdev.cloudflareaccess.com",
+    "ACCESS_AUD": "",
+  },
+  // Site content (projects, experiences, references, books), edited at /admin.
+  // `remote: true`: `pnpm dev` reads and writes production too.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "leodotdev",
+      "database_id": "9ea1fb7e-3653-4157-9026-4da9c95ac70b",
+      "migrations_dir": "drizzle/migrations",
+      "remote": true,
+    },
+  ],
+  // Images, served at /images/* by src/server.ts.
+  "r2_buckets": [
+    { "binding": "MEDIA", "bucket_name": "leodotdev-media", "remote": true },
+  ],
 }

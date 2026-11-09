@@ -1,38 +1,29 @@
-// Server functions for Sanity content. They always run on the Worker (route
-// loaders call them during SSR, and over /_serverfn on client navigation),
-// so the browser never needs Sanity CORS for reads.
+// Server functions for the public pages. They always run on the Worker
+// (route loaders call them during SSR, and over /_serverfn on client
+// navigation) and read D1, so edits made at /admin show up on the next request.
 import { createServerFn } from "@tanstack/react-start"
-import { apiVersion, dataset, projectId } from "@/sanity/config"
-import { EXPERIENCES, PROJECTS, REFERENCES } from "@/sanity/queries"
-import { swr } from "./cache"
-import type { Experience } from "@/types/Experience"
-import type { Project } from "@/types/Project"
-import type { Reference } from "@/types/Reference"
+import { asc, desc } from "drizzle-orm"
+import type { Project } from "./db/schema"
 
-/** Serve cached content for a minute, then refresh in the background for up to a day. */
-const TTL = { fresh: 60, stale: 60 * 60 * 24 }
-
-async function query<T>(groq: string): Promise<T> {
-  return swr(`groq:${groq}`, TTL, async () => {
-    const url = new URL(
-      `https://${projectId}.apicdn.sanity.io/v${apiVersion}/data/query/${dataset}`
-    )
-    url.searchParams.set("query", groq)
-    const res = await fetch(url)
-    if (!res.ok) throw new Error(`Sanity query failed: ${res.status}`)
-    const body: { result: T } = await res.json()
-    return body.result
-  })
+const projectOrder = async () => {
+  const { db } = await import("./db")
+  const { projects } = await import("./db/schema")
+  return db()
+    .select()
+    .from(projects)
+    .orderBy(desc(projects.year), asc(projects.sort))
 }
 
 export const getProjectsPage = createServerFn({ method: "GET" }).handler(
   async () => {
-    const [projects, experiences, references] = await Promise.all([
-      query<Array<Project>>(PROJECTS),
-      query<Array<Experience>>(EXPERIENCES),
-      query<Array<Reference>>(REFERENCES),
+    const { db } = await import("./db")
+    const { experiences, references } = await import("./db/schema")
+    const [projects, exp, refs] = await Promise.all([
+      projectOrder(),
+      db().select().from(experiences).orderBy(asc(experiences.sort)),
+      db().select().from(references).orderBy(asc(references.sort)),
     ])
-    return { projects, experiences, references }
+    return { projects, experiences: exp, references: refs }
   }
 )
 
@@ -45,7 +36,7 @@ const link = (p: Project | undefined): ProjectLink | null =>
 export const getProjectPage = createServerFn({ method: "GET" })
   .validator((slug: string) => slug)
   .handler(async ({ data: slug }) => {
-    const all = await query<Array<Project>>(PROJECTS)
+    const all = await projectOrder()
     const index = all.findIndex((p) => p.slug === slug)
     if (index < 0) return null
     return {

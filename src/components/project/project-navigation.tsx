@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { TbChevronLeft, TbChevronRight } from "react-icons/tb";
-import { sanityImageProps } from "@/sanity/image";
+import { imageProps } from "@/lib/image";
 import type { ProjectLink } from "@/server/content";
 
 interface ProjectNavigationProps {
@@ -37,7 +37,7 @@ export function ProjectNavigation({ prevProject, nextProject }: ProjectNavigatio
             {prevProject.image && (
               <div className="relative aspect-[4/3] shrink-0 overflow-hidden rounded-sm">
                 <img
-                  {...sanityImageProps(prevProject.image, { maxWidth: 256 })}
+                  {...imageProps(prevProject.image, { maxWidth: 256 })}
                   sizes="80px"
                   alt={prevProject.name}
                   className="absolute inset-0 h-full w-full object-cover"
@@ -70,7 +70,7 @@ export function ProjectNavigation({ prevProject, nextProject }: ProjectNavigatio
             {nextProject.image && (
               <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-sm">
                 <img
-                  {...sanityImageProps(nextProject.image, { maxWidth: 256 })}
+                  {...imageProps(nextProject.image, { maxWidth: 256 })}
                   sizes="80px"
                   alt={nextProject.name}
                   className="absolute inset-0 h-full w-full object-cover"

@@ -44,7 +44,6 @@ export default [
       "src/routeTree.gen.ts",
       "src/components/ui/**",
       "worker-configuration.d.ts",
-      "studio/**",
       "dist/**",
       "public/**",
     ],

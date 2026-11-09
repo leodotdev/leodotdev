@@ -1,6 +1,6 @@
 # leo.dev
 
-Personal portfolio of Leo Succar. Built with [TanStack Start](https://tanstack.com/start) (React 19, server-rendered), Sanity CMS, Tailwind CSS 4 and Base UI, running as a Cloudflare Worker.
+Personal portfolio of Leo Succar. Built with [TanStack Start](https://tanstack.com/start) (React 19, server-rendered), Tailwind CSS 4 and Base UI, running as a Cloudflare Worker, with content in D1, images in R2, and a small admin at `/admin`.
 
 ## Local development
 
@@ -23,22 +23,17 @@ This runs typecheck + lint + production build in sequence. There are no automate
 
 ## How content gets to the page
 
-Pages render on the Worker for every request. Route loaders (`src/routes/_site/*.tsx`) call server functions in `src/server/content.ts`, which query Sanity's API CDN and keep the result in the Workers Cache API with stale-while-revalidate (fresh for 60 s, then served stale for up to a day while a background refresh runs; see `src/server/cache.ts`). Client-side navigations call the same server functions over `/_serverfn`, so the browser never queries Sanity directly for reads.
+Pages render on the Worker for every request. Route loaders (`src/routes/_site/*.tsx`) call server functions in `src/server/content.ts`, which read the `leodotdev` D1 database. Images are served from the `leodotdev-media` R2 bucket at `/images/*` (see `src/server.ts`). Edits made at `/admin` appear on the next page load; nothing needs rebuilding.
 
-So **Sanity edits show up on the site within about a minute, without a rebuild or redeploy.** (On `*.workers.dev` the Cache API does not persist entries, so there every request reads Sanity's CDN directly; caching takes effect on the leo.dev custom domain.)
+`pnpm dev` reads and writes the production database and bucket (`remote: true` in `wrangler.jsonc`).
 
 ## Content editing
 
-Content lives in Sanity (project `jyqe7nab`, dataset `production`). Edit at [sanity.io/manage](https://www.sanity.io/manage), or run the local studio, which lives in `studio/` with its own dependencies (kept out of the site's install):
+Go to **[leo.dev/admin](https://leo.dev/admin)** (behind Cloudflare Access) to edit projects (fields, cover, gallery images, text), experience and references. Uploaded images are resized to WebP in the browser before they're stored.
 
-```bash
-pnpm --dir studio install   # once
-pnpm studio
-```
+Schema changes: edit `src/server/db/schema.ts`, then `pnpm db:generate` and `pnpm db:migrate`.
 
-Do **not** add a `/studio` route to the site. The schemas are in `studio/schemas/`.
-
-Project descriptions on `/projects` can also be edited in place by Sanity project members (see `CLAUDE.md`, "Inline description editing").
+The content was imported from Sanity on 2026-11-09 (`drizzle/seed/sanity-export.sql`). A full local backup of the Sanity dataset, every original image, and the generated WebP files is in `old/sanity-export/` and `old/images-webp/` (git-ignored, on Leo's machine only).
 
 ## Deployment
 
@@ -50,7 +45,14 @@ This builds, checks the output for stray secrets (`scripts/check-dist.ts`), and 
 
 The Worker is named `leodotdev` and serves `leo.dev/*` through a zone route (`wrangler.jsonc`).
 
-### Leftovers from the Cloudflare Pages era
+### Admin access setup (once)
+
+1. In Cloudflare Zero Trust → Access → Applications, add a self-hosted application for `leo.dev/admin` (path `admin*`), with a policy that allows only your email.
+2. Copy its **Application Audience (AUD) tag** into `ACCESS_AUD` in `wrangler.jsonc`, then `pnpm run deploy`.
+
+Until then, `leo.dev/admin` answers 403.
+
+### Leftovers
 
 - The Pages project `leodotdev` no longer serves leo.dev. Disconnect its Git integration (or delete the project) so pushes stop starting builds of the old Next.js app, which now fail.
-- The Sanity webhook `redeploy-leodotdev` (sanity.io/manage → API → Webhooks) is no longer needed: content is read per request, so it can be deleted.
+- Sanity is no longer used. The webhook `redeploy-leodotdev` can be deleted, and so can the Sanity project `jyqe7nab` itself once you're happy with the backup in `old/sanity-export/`.

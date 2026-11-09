@@ -7,8 +7,9 @@ import {
   TbEye,
   TbBrandFigma,
 } from "react-icons/tb";
-import { sanityImageProps } from "@/sanity/image";
-import type { SanityImageSource } from "@sanity/image-url";
+import { imageProps } from "@/lib/image";
+import type { Img } from "@/lib/image";
+import type { ProjectImage } from "@/server/db/schema";
 import { cn } from "@/lib/utils";
 import { safeEmbedUrl } from "@/lib/embed";
 import { Button } from "@/components/ui/button";
@@ -16,20 +17,16 @@ import { Button } from "@/components/ui/button";
 interface MediaItem {
   _key?: string;
   type: "image" | "embed";
-  url?: string; // For hero image or embed URL
-  asset?: {
-    _ref: string;
-    _type: string;
-  };
+  image?: Img;
   alt?: string;
   embedUrl?: string;
 }
 
 interface ProjectMediaGalleryProps {
-  heroImage?: string;
+  heroImage?: Img | null;
   heroImageAlt?: string;
-  embedUrl?: string;
-  contentImages: any[];
+  embedUrl?: string | null;
+  contentImages: Array<ProjectImage>;
   projectName: string;
 }
 
@@ -40,7 +37,7 @@ export function ProjectMediaGallery({
   contentImages,
   projectName,
 }: ProjectMediaGalleryProps) {
-  const sanitizedEmbedUrl = safeEmbedUrl(embedUrl);
+  const sanitizedEmbedUrl = safeEmbedUrl(embedUrl ?? undefined);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [loadingStates, setLoadingStates] = useState<Record<number, boolean>>(
     {},
@@ -58,7 +55,7 @@ export function ProjectMediaGallery({
   if (heroImage) {
     allMedia.push({
       type: "image",
-      url: heroImage,
+      image: heroImage,
       alt: heroImageAlt || projectName,
       _key: "hero",
     });
@@ -74,10 +71,12 @@ export function ProjectMediaGallery({
   }
 
   // Add content images
-  contentImages.forEach((image) => {
+  contentImages.forEach((item) => {
     allMedia.push({
-      ...image,
+      _key: item.key,
       type: "image",
+      image: item.image,
+      alt: item.alt,
     });
   });
 
@@ -176,11 +175,8 @@ export function ProjectMediaGallery({
     };
   }, []);
 
-  // Hero images arrive as a cdn.sanity.io URL, content images as blocks.
-  const getImageProps = (item: MediaItem, maxWidth?: number) => {
-    const source = item.url ?? (item.asset ? (item as SanityImageSource) : "");
-    return sanityImageProps(source, { maxWidth });
-  };
+  const getImageProps = (item: MediaItem, maxWidth?: number) =>
+    imageProps(item.image, { maxWidth });
 
   const handleImageLoad = (index: number) => {
     // Clear the progress interval
@@ -204,7 +200,7 @@ export function ProjectMediaGallery({
       {heroImage && (
         <div className="mb-8 cursor-pointer" onClick={() => openLightbox(0)}>
           <img
-            {...sanityImageProps(heroImage, { maxWidth: 2048 })}
+            {...imageProps(heroImage, { maxWidth: 2048 })}
             sizes="(max-width: 960px) 100vw, 864px"
             alt={heroImageAlt || projectName}
             width={1200}
@@ -243,7 +239,7 @@ export function ProjectMediaGallery({
             const gridIndex = (heroImage ? 1 : 0) + (sanitizedEmbedUrl ? 1 : 0) + index;
             return (
               <motion.div
-                key={image._key}
+                key={image.key}
                 className="group aspect-[4/3] cursor-pointer overflow-hidden rounded-lg bg-secondary/50 outline outline-1 -outline-offset-1 outline-border"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -253,7 +249,7 @@ export function ProjectMediaGallery({
               >
                 <div className="relative h-full w-full">
                   <img
-                    {...getImageProps(image, 1200)}
+                    {...imageProps(image.image, { maxWidth: 1200 })}
                     sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
                     alt={image.alt || "Project image"}
                     loading="lazy"

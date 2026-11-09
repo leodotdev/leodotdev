@@ -26,7 +26,7 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
 
       <div className="flex flex-col [&:hover>*]:opacity-50">
         {displayedExperiences.map((exp, index) => (
-          <React.Fragment key={exp._id}>
+          <React.Fragment key={exp.id}>
           <div
             className="group/item cursor-pointer transition-opacity hover:!opacity-100"
             onClick={() => {

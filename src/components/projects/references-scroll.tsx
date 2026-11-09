@@ -26,7 +26,7 @@ export function ReferencesScroll({ references: allReferences }: ReferencesScroll
 
       <div className="flex flex-col [&:hover>*]:opacity-50">
         {displayedReferences.map((reference, index) => (
-          <React.Fragment key={reference._id}>
+          <React.Fragment key={reference.id}>
           <div
             className="group/item cursor-pointer transition-opacity hover:!opacity-100"
             onClick={() => window.open(reference.linkedinUrl, "_blank")}

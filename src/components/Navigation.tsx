@@ -49,15 +49,6 @@ export function Navigation({ children }: NavigationProps) {
             Services
           </Link>
           */}
-          <a
-            href="https://www.sanity.io/manage/project/jyqe7nab"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-md group flex items-center px-2 transition-opacity hover:!opacity-100 hover:text-blue-500 hover:underline"
-          >
-            Sanity
-            <TbArrowUpRight className="ml-0.5 h-4 w-4 self-start text-muted-foreground transition-colors group-hover:text-blue-500" />
-          </a>
           <DropdownMenu>
             <DropdownMenuTrigger className="text-md flex items-center px-2 transition-opacity hover:!opacity-100 hover:underline data-[popup-open]:!opacity-100">
               Contact

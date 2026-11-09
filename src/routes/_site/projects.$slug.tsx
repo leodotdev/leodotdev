@@ -1,7 +1,5 @@
 import React from "react"
 import { createFileRoute, notFound } from "@tanstack/react-router"
-import { PortableText } from "@portabletext/react"
-import type { PortableTextComponents } from "@portabletext/react"
 import { BackButton } from "@/components/BackButton"
 import { Navigation } from "@/components/Navigation"
 import { ProjectMediaGallery } from "@/components/ProjectMediaGallery"
@@ -20,26 +18,9 @@ export const Route = createFileRoute("/_site/projects/$slug")({
   component: ProjectPage,
 })
 
-// Images are shown by the media gallery, so the text body skips them.
-const components: PortableTextComponents = {
-  types: {
-    image: () => null,
-  },
-}
-
 function ProjectPage() {
   const { project, prevProject, nextProject } = Route.useLoaderData()
 
-  const contentImages = project.content
-    ? project.content
-        .filter((block: any) => block._type === "image")
-        .map((image: any) => ({
-          _key: image._key,
-          _type: image._type,
-          asset: image.asset,
-          alt: image.alt,
-        }))
-    : []
 
   return (
     <div>
@@ -59,7 +40,7 @@ function ProjectPage() {
                 <span>{project.client}</span>
                 <span>·</span>
                 <span>{project.year}</span>
-                {project.categories && project.categories.length > 0 && (
+                {project.categories.length > 0 && (
                   <>
                     {project.categories.map((category: string) => (
                       <React.Fragment key={category}>
@@ -91,23 +72,20 @@ function ProjectPage() {
         {/* Media Gallery - Hero Image, Embed, and Content Images */}
         <ProjectMediaGallery
           // Fresh gallery state (open lightbox, loading flags) per project.
-          key={project._id}
+          key={project.id}
           heroImage={project.image}
           heroImageAlt={project.name}
           embedUrl={project.embed}
-          contentImages={contentImages}
+          contentImages={project.images}
           projectName={project.name}
         />
 
         {/* Content Text */}
-        {project.content && (
-          <div className="mb-12 flex max-w-none flex-col gap-8">
-            <PortableText
-              value={project.content.filter(
-                (block: any) => block._type !== "image"
-              )}
-              components={components}
-            />
+        {project.paragraphs.length > 0 && (
+          <div className="mb-12 flex max-w-3xl flex-col gap-8">
+            {project.paragraphs.map((text, i) => (
+              <p key={i}>{text}</p>
+            ))}
           </div>
         )}
 

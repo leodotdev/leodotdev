@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { TbChevronRight } from "react-icons/tb";
-import { sanityImageProps } from "@/sanity/image";
+import { imageProps } from "@/lib/image";
 import type { ProjectLink } from "@/server/content";
 
 interface NextProjectLinkProps {
@@ -31,7 +31,7 @@ export function NextProjectLink({ nextProject }: NextProjectLinkProps) {
       {nextProject.image && (
         <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-sm">
           <img
-            {...sanityImageProps(nextProject.image, { maxWidth: 256 })}
+            {...imageProps(nextProject.image, { maxWidth: 256 })}
             sizes="40px"
             alt={nextProject.name}
             className="absolute inset-0 h-full w-full object-cover"

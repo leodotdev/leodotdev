@@ -82,7 +82,7 @@ export function HomePage({
               <div className="flex gap-4 px-6 pb-4 md:px-12">
                 {books.map((book) => (
                   <a
-                    key={book._id}
+                    key={book.id}
                     href={book.url || undefined}
                     target={book.url ? "_blank" : undefined}
                     className="group flex w-24 shrink-0 flex-col gap-2"
@@ -91,7 +91,7 @@ export function HomePage({
                     {book.image ? (
                       <div className="relative h-36 w-24 overflow-hidden rounded-md bg-secondary outline outline-1 -outline-offset-1 outline-border">
                         <img
-                          {...sanityImageProps(book.image, { maxWidth: 384 })}
+                          {...imageProps(book.image, { maxWidth: 384 })}
                           sizes="96px"
                           alt={book.name}
                           className="absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105"
@@ -157,9 +157,9 @@ export function HomePage({
               <a
                 className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
                 target="_blank"
-                href="https://www.sanity.io/"
+                href="https://workers.cloudflare.com/"
               >
-                SanityCMS
+                Cloudflare
               </a>
               .
             </div>

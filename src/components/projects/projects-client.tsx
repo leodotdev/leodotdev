@@ -3,12 +3,12 @@ import { Link } from "@tanstack/react-router";
 import type { Project } from "@/types/Project";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { sanityImageProps, urlFor } from "@/sanity/image";
+import { imageProps } from "@/lib/image";
+import { categories } from "@/lib/categories";
+import type { Img } from "@/lib/image";
 import { motion, AnimatePresence } from "motion/react";
 import { TbX, TbChevronLeft, TbChevronRight, TbList, TbLayoutGrid } from "react-icons/tb";
 import { Button } from "@/components/ui/button";
-import { EditableDescription } from "@/components/EditableDescription";
-import { useSanityAdmin } from "@/hooks/useSanityAdmin";
 
 const clientLogos: Record<string, string> = {
   "Anthropic": "/logo-dbco.jpg",
@@ -21,51 +21,23 @@ const clientLogos: Record<string, string> = {
   "Sapien": "/logo-sania.jpg",
 };
 
-const categories = [
-  { title: "All", value: "all" },
-  { title: "Product Design", value: "product-design" },
-  { title: "Visual Design", value: "visual-design" },
-  { title: "Prototyping", value: "prototyping" },
-  { title: "Ideating & Wireframing", value: "ideating-wireframing" },
-  { title: "Web Design", value: "web-design" },
-  { title: "No-code Web Development", value: "web-development" },
-  { title: "Graphic Design", value: "graphic-design" },
-  { title: "Design System", value: "design-system" },
-];
 
-function getContentImageThumbs(project: Project): string[] {
-  if (!project.content) return [];
-  return project.content
-    .filter((block: any) => block._type === "image" && block.asset)
-    .map((block: any) =>
-      urlFor(block).width(256).height(256).fit("crop").auto("format").url(),
-    );
+function getContentImageThumbs(project: Project): Img[] {
+  return project.images.map((i) => i.image);
 }
 
-function getFullResImages(project: Project): string[] {
-  const images: string[] = [];
-  if (project.image) images.push(project.image);
-  if (project.content) {
-    project.content
-      .filter((block: any) => block._type === "image" && block.asset)
-      .forEach((block: any) => {
-        images.push(
-          urlFor(block).fit("max").auto("format").url()
-        );
-      });
-  }
-  return images;
+function getFullResImages(project: Project): Img[] {
+  return [...(project.image ? [project.image] : []), ...getContentImageThumbs(project)];
 }
 
 const PROJECTS_PAGE_SIZE = 8;
 const GRID_PAGE_SIZE = PROJECTS_PAGE_SIZE * 2;
 
 export function ProjectsClient({ projects }: { projects: Project[] }) {
-  const isAdmin = useSanityAdmin();
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [visibleCount, setVisibleCount] = useState(GRID_PAGE_SIZE);
   const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
-  const [lightboxImages, setLightboxImages] = useState<string[]>([]);
+  const [lightboxImages, setLightboxImages] = useState<Img[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -95,7 +67,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
     return () => document.documentElement.classList.remove("projects-grid");
   }, [viewMode]);
 
-  const openLightbox = (images: string[], index: number) => {
+  const openLightbox = (images: Img[], index: number) => {
     setLightboxImages(images);
     setLightboxIndex(index);
     setImageLoaded(false);
@@ -237,7 +209,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
             const fullResImages = getFullResImages(project);
 
             return (
-              <React.Fragment key={project._id}>
+              <React.Fragment key={project.id}>
               <div className="transition-opacity hover:!opacity-100">
                 <Link
                   to="/projects/$slug"
@@ -269,12 +241,15 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                     </div>
                   </div>
 
-                  <EditableDescription
-                    projectId={project._id}
-                    description={project.description}
-                    isAdmin={isAdmin}
-                    className="mt-2 pl-11 text-muted-foreground"
-                  />
+                  {project.description && (
+
+                    <p className="mt-2 pl-11 text-muted-foreground">
+
+                      {project.description}
+
+                    </p>
+
+                  )}
 
                   {allThumbs.length > 0 && (
                     <div className="mt-3 flex flex-wrap gap-2 [&:hover>*]:opacity-50">
@@ -289,7 +264,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                           }}
                         >
                           <img
-                            {...sanityImageProps(img, { maxWidth: 384 })}
+                            {...imageProps(img, { maxWidth: 384 })}
                             sizes="(max-width: 768px) 15vw, 128px"
                             alt={`${project.name} thumbnail ${imgIndex + 1}`}
                             className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
@@ -317,7 +292,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
 
             return (
               <Link
-                key={project._id}
+                key={project.id}
                 to="/projects/$slug"
                 params={{ slug: project.slug }}
                 className="group min-w-0 transition-opacity hover:!opacity-100"
@@ -325,7 +300,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                 <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-secondary outline outline-1 -outline-offset-1 outline-border transition-transform duration-300 group-hover:scale-[1.02]">
                   {coverImage ? (
                     <img
-                      {...sanityImageProps(coverImage, { maxWidth: 1200 })}
+                      {...imageProps(coverImage, { maxWidth: 1200 })}
                       sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, (max-width: 1536px) 20vw, 16vw"
                       alt={project.name}
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
@@ -443,7 +418,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                   className="relative max-h-[80vh] max-w-[90vw]"
                 >
                   <img
-                    {...sanityImageProps(lightboxImages[lightboxIndex])}
+                    {...imageProps(lightboxImages[lightboxIndex])}
                     sizes="90vw"
                     alt={`Image ${lightboxIndex + 1}`}
                     width={1920}
@@ -494,7 +469,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                         aria-label={`View image ${i + 1}`}
                       >
                         <img
-                          {...sanityImageProps(img, { maxWidth: 384 })}
+                          {...imageProps(img, { maxWidth: 384 })}
                           sizes="120px"
                           alt={`Thumbnail ${i + 1}`}
                           className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"

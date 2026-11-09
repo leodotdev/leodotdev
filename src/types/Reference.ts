@@ -1,10 +1,1 @@
-export type Reference = {
-    _id: string;
-    order: number;
-    name: string;
-    title: string;
-    company: string;
-    linkedinUrl: string;
-    initials: string;
-    quote: string;
-}
+export type { Reference } from "@/server/db/schema"
