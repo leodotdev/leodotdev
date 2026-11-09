@@ -8,9 +8,10 @@
   "compatibility_flags": ["nodejs_compat"],
   "observability": { "enabled": true },
   "upload_source_maps": true,
-  // Static files from public/ are served before the Worker runs. The binding
-  // lets the Worker serve /resume from /resume.html (src/server.ts).
-  "assets": { "binding": "ASSETS" },
+  // Static files from public/ are served before the Worker runs, by their
+  // exact names (no .html stripping, so /resume.html answers 200 as it did on
+  // Pages). The binding lets the Worker also serve /resume (src/server.ts).
+  "assets": { "binding": "ASSETS", "html_handling": "none" },
   // Preview on workers.dev until cutover. At cutover, add:
   //   "routes": [{ "pattern": "leo.dev", "custom_domain": true }]
   // and set workers_dev / preview_urls to false.

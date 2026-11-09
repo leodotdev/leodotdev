@@ -1,0 +1,22 @@
+{
+  "name": "leodotdev-studio",
+  "private": true,
+  "type": "module",
+  "description": "Local Sanity Studio for leo.dev content. Kept out of the site's own dependencies (the Sanity CLI pulls in packages the site doesn't want).",
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy"
+  },
+  "dependencies": {
+    "@sanity/vision": "6.22.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "sanity": "6.22.0",
+    "styled-components": "6.6.0"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3"
+  },
+  "packageManager": "pnpm@10.33.2"
+}

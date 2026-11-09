@@ -1,45 +1,59 @@
 # leo.dev
 
-Personal portfolio of Leo Succar. Built with Next.js 14 (app router), Sanity CMS, and Tailwind CSS. Deployed on Cloudflare Pages.
+Personal portfolio of Leo Succar. Built with [TanStack Start](https://tanstack.com/start) (React 19, server-rendered), Sanity CMS, Tailwind CSS 4 and Base UI, running as a Cloudflare Worker.
 
 ## Local development
 
 ```bash
-npm install
-cp .env.example .env.local   # fill in values if needed (see .env.example)
-npm run dev
+pnpm install
+pnpm dev
 ```
 
-The dev server runs at **http://localhost:3001** (note: not 3000). The root path `/` permanently redirects to `/projects`.
+The dev server runs at **http://localhost:3000** (Vite with the Cloudflare plugin, so server code runs in workerd as in production). The root path `/` permanently redirects to `/projects`.
 
 ## Verification
 
 Before committing, run:
 
 ```bash
-npm run verify
+pnpm verify
 ```
 
 This runs typecheck + lint + production build in sequence. There are no automated tests; this script is the gate.
 
+## How content gets to the page
+
+Pages render on the Worker for every request. Route loaders (`src/routes/_site/projects.*.tsx`) call server functions in `src/server/content.ts`, which query Sanity's API CDN and keep the result in the Workers Cache API with stale-while-revalidate (fresh for 60 s, then served stale for up to a day while a background refresh runs; see `src/server/cache.ts`). Client-side navigations call the same server functions over `/_serverfn`, so the browser never queries Sanity directly for reads.
+
+So **Sanity edits show up on the site within about a minute, without a rebuild or redeploy.** (On `*.workers.dev` the Cache API does not persist entries, so there every request reads Sanity's CDN directly; caching takes effect on the leo.dev custom domain.)
+
 ## Content editing
 
-Content lives in Sanity (project `jyqe7nab`, dataset `production`). Edit at [sanity.io/manage](https://www.sanity.io/manage), or run a local studio:
+Content lives in Sanity (project `jyqe7nab`, dataset `production`). Edit at [sanity.io/manage](https://www.sanity.io/manage), or run the local studio, which lives in `studio/` with its own dependencies (kept out of the site's install):
 
 ```bash
-npx sanity dev
+pnpm --dir studio install   # once
+pnpm studio
 ```
 
-The studio config is in `sanity.cli.js`. Do **not** add a `/studio` route to the Next.js app — it was removed in commit `93f6064` for Cloudflare Pages compatibility.
+Do **not** add a `/studio` route to the site. The schemas are in `studio/schemas/`.
+
+Project descriptions on `/projects` can also be edited in place by Sanity project members (see `CLAUDE.md`, "Inline description editing").
 
 ## Deployment
 
-Deployed to Cloudflare Pages. The build is configured in the Cloudflare dashboard using the `@cloudflare/next-on-pages` adapter pattern; output goes to `.vercel/output/static` as set in `wrangler.toml`.
+```bash
+pnpm run deploy
+```
 
-The site is **static** — content edits in Sanity appear only after a redeploy.
+This builds, checks the output for stray secrets (`scripts/check-dist.ts`), and runs `wrangler deploy` (config in `wrangler.jsonc`). Log in first with `pnpm exec wrangler login`.
 
-### Content publishing
+The Worker is named `leodotdev` and is currently reachable only at its `workers.dev` preview URL; leo.dev itself is still served by the old Cloudflare Pages project `leodotdev` until the cutover below.
 
-A Sanity webhook named `redeploy-leodotdev` (dataset `production`, filter `_type in ["project", "book"]`, triggers on create/update/delete) calls a Cloudflare Pages deploy hook so that publishing or updating content in Sanity automatically triggers a production rebuild — no manual redeploy needed. The deploy hook URL is a secret stored only in the Sanity dashboard; it must never be committed to the repo.
+### Cutover from Cloudflare Pages (one time)
 
-To debug: sanity.io/manage → API → Webhooks → `redeploy-leodotdev` → attempts log. If a new document type needs to trigger rebuilds, extend the webhook filter to include it.
+1. Compare the `workers.dev` preview with https://leo.dev.
+2. In `wrangler.jsonc`, add `"routes": [{ "pattern": "leo.dev", "custom_domain": true }]` and set `"workers_dev": false` and `"preview_urls": false`, then `pnpm run deploy`. If Cloudflare reports the hostname is in use, first remove the `leo.dev` custom domain from the Pages project (Workers & Pages → `leodotdev` (Pages) → Custom domains), then deploy again.
+3. In Sanity (sanity.io/manage → project → API → CORS origins), make sure `https://leo.dev` is listed with **Allow credentials** (inline editing).
+4. Delete the Sanity webhook `redeploy-leodotdev` (sanity.io/manage → API → Webhooks). Content no longer needs a rebuild, so the webhook and the Pages deploy hook it calls are unused.
+5. Once the Worker has served leo.dev for a while, disconnect Git from the Pages project (or delete it) so pushes stop building the old Next.js app.

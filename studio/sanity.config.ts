@@ -1,10 +1,10 @@
 import {defineConfig} from 'sanity';
 import {structureTool} from 'sanity/structure';
 import {visionTool} from '@sanity/vision';
-import project from './src/sanity/schemas/project-schema';
-import book from './src/sanity/schemas/book-schema';
-import experience from './src/sanity/schemas/experience-schema';
-import reference from './src/sanity/schemas/reference-schema';
+import project from './schemas/project-schema';
+import book from './schemas/book-schema';
+import experience from './schemas/experience-schema';
+import reference from './schemas/reference-schema';
 
 const config = defineConfig({
     projectId: "jyqe7nab",
