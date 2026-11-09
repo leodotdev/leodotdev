@@ -90,7 +90,7 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
                     </div>
                   </div>
                   {(exp.contract || exp.team || exp.project) && (
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-xs text-muted-foreground">
                       {exp.contract && "Contract"}
                       {exp.contract && (exp.projectCompany || exp.project || exp.team) && ", "}
                       {exp.team && exp.team}

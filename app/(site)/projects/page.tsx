@@ -138,7 +138,7 @@ export default async function Home() {
                       </div>
                     )}
                     <div className="flex flex-col">
-                      <div className="truncate text-sm">{book.name}</div>
+                      <div className="truncate">{book.name}</div>
                       <div className="truncate text-xs text-muted-foreground">
                         {book.author}
                       </div>

@@ -8,6 +8,13 @@ module.exports = {
     './src/**/*.{ts,tsx}',
 	],
   theme: {
+    // The site uses exactly two sizes: 16px for content and controls, 12px
+    // for metadata (dates, labels, badges, tooltips). Replacing (not
+    // extending) the scale makes any other `text-<size>` class a no-op.
+    fontSize: {
+      xs: ["0.75rem", { lineHeight: "1.4" }],
+      base: ["1rem", { lineHeight: "1.5" }],
+    },
     container: {
       center: true,
       padding: "2rem",

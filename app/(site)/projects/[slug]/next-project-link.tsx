@@ -24,8 +24,8 @@ export function NextProjectLink({ nextProject }: NextProjectLinkProps) {
         <TbChevronRight className="h-6 w-6 text-muted-foreground transition-colors group-hover:text-foreground" />
       </div>
       <div className="min-w-0 flex-1 text-right">
-        <p className="text-sm text-muted-foreground">Next</p>
-        <h3 className="truncate text-sm font-semibold">
+        <p className="text-xs text-muted-foreground">Next</p>
+        <h3 className="truncate font-semibold">
           {nextProject.name}
         </h3>
       </div>

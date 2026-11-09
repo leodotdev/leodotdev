@@ -276,7 +276,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                     projectId={project._id}
                     description={project.description}
                     isAdmin={isAdmin}
-                    className="mt-2 pl-11 text-sm text-muted-foreground"
+                    className="mt-2 pl-11 text-muted-foreground"
                   />
 
                   {allThumbs.length > 0 && (
@@ -336,7 +336,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                       loading="lazy"
                     />
                   ) : (
-                    <div className="flex h-full items-center justify-center text-2xl text-muted-foreground">
+                    <div className="flex h-full items-center justify-center text-muted-foreground">
                       {project.client?.charAt(0) || "?"}
                     </div>
                   )}
@@ -344,7 +344,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                     <div className="truncate text-white underline decoration-dotted group-hover:text-blue-400 group-hover:decoration-solid">
                       {project.name}
                     </div>
-                    <div className="truncate text-sm text-white/70">
+                    <div className="truncate text-xs text-white/70">
                       {project.client} · {project.year}
                     </div>
                   </div>
@@ -353,7 +353,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                   <div className="truncate underline decoration-dotted group-hover:text-blue-500 group-hover:decoration-solid">
                     {project.name}
                   </div>
-                  <div className="truncate text-sm text-muted-foreground">
+                  <div className="truncate text-xs text-muted-foreground">
                     {project.client} · {project.year}
                   </div>
                 </div>
