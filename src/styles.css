@@ -1,0 +1,179 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/playfair-display";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Colors are HSL triplets (carried over from the Tailwind 3 setup) wrapped
+   in hsl() here, so opacity modifiers like bg-secondary/50 keep working. */
+@theme inline {
+  --font-sans:
+    "Inter Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-playfair: "Playfair Display Variable", "Playfair Display", serif;
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-subtle: hsl(var(--subtle));
+  --color-subtle-foreground: hsl(var(--subtle-foreground));
+  --color-emphasis: hsl(var(--emphasis));
+  --color-emphasis-foreground: hsl(var(--emphasis-foreground));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--accordion-panel-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--accordion-panel-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+
+/* Zinc palette, tuned to match Tailwind v4's refined values */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 240 10% 4%; /* zinc-950 */
+
+  --muted: 240 5% 96%; /* zinc-100 */
+  --muted-foreground: 240 4% 34%; /* ~zinc-600 for contrast */
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 4%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 4%;
+
+  --border: 0 0% 0% / 0.08;
+  --input: 0 0% 0% / 0.08;
+
+  --primary: 240 10% 4%; /* zinc-950 */
+  --primary-foreground: 0 0% 98%; /* zinc-50 */
+
+  --secondary: 240 5% 96%; /* zinc-100 */
+  --secondary-foreground: 240 6% 10%; /* zinc-900 */
+
+  --accent: 240 5% 96%;
+  --accent-foreground: 240 6% 10%;
+
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+
+  --ring: 240 4% 64%; /* zinc-400 */
+
+  --radius: 0.5rem;
+
+  --subtle: 240 5% 96%;
+  --subtle-foreground: 240 6% 10%;
+
+  --emphasis: 240 10% 4%;
+  --emphasis-foreground: 0 0% 98%;
+}
+
+.dark {
+  --background: 240 10% 4%; /* zinc-950 */
+  --foreground: 0 0% 98%; /* zinc-50 */
+
+  --muted: 240 4% 16%; /* zinc-800 */
+  --muted-foreground: 240 5% 75%; /* ~zinc-300 for contrast */
+
+  --popover: 240 10% 4%;
+  --popover-foreground: 0 0% 98%;
+
+  --card: 240 10% 4%;
+  --card-foreground: 0 0% 98%;
+
+  --border: 0 0% 100% / 0.08;
+  --input: 0 0% 100% / 0.08;
+
+  --primary: 0 0% 98%;
+  --primary-foreground: 240 6% 10%;
+
+  --secondary: 240 4% 16%; /* zinc-800 */
+  --secondary-foreground: 0 0% 98%;
+
+  --accent: 240 4% 16%;
+  --accent-foreground: 0 0% 98%;
+
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+
+  --ring: 240 4% 16%;
+
+  --subtle: 240 10% 4%;
+  --subtle-foreground: 0 0% 98%;
+
+  --emphasis: 0 0% 98%;
+  --emphasis-foreground: 240 6% 10%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    corner-shape: squircle;
+  }
+  [class*="rounded-full"] {
+    corner-shape: round;
+  }
+  body {
+    @apply bg-background font-sans text-foreground;
+  }
+  /* Tailwind 3's preflight gave buttons a pointer cursor; v4 doesn't. */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@utility font-playfair {
+  font-family: var(--font-playfair);
+}
+
+/* Hide scrollbar (Chrome, Safari, Opera; IE, Edge, Firefox) */
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* On the projects page the page frame is drawn per-section (so the projects
+   section can drop its borders and go full-bleed in grid mode). Hide the
+   global frame's side borders there; the nav and sections supply their own. */
+html.projects-frame .site-frame {
+  border-left-color: transparent;
+  border-right-color: transparent;
+}

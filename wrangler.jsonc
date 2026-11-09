@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // A Worker, separate from the `leodotdev` Pages project of the same name. leo.dev
+  // still points at Pages until the cutover in README → Deployment.
+  "name": "leodotdev",
+  "main": "src/server.ts",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+  "upload_source_maps": true,
+  // Static files from public/ are served before the Worker runs. The binding
+  // lets the Worker serve /resume from /resume.html (src/server.ts).
+  "assets": { "binding": "ASSETS" },
+  // Preview on workers.dev until cutover. At cutover, add:
+  //   "routes": [{ "pattern": "leo.dev", "custom_domain": true }]
+  // and set workers_dev / preview_urls to false.
+  "workers_dev": true,
+  "preview_urls": true,
+}
