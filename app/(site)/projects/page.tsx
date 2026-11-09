@@ -151,7 +151,9 @@ export default async function Home() {
           </div>
           */}
 
+          {/* Projects section hidden for now
           <ProjectsClient projects={projects} />
+          */}
 
           {/* Framed footer (gains a top border in grid mode, where the
               projects section above it is borderless/full-bleed) */}
