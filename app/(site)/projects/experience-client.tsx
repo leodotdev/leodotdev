@@ -152,7 +152,7 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
         ))}
       </div>
 
-      <div className="flex justify-center px-6 py-8 md:px-12">
+      <div className="flex justify-center px-6 pt-8 md:px-12">
         {hasMore ? (
           <Button
             variant="secondary"
