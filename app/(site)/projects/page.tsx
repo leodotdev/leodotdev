@@ -155,8 +155,9 @@ export default async function Home() {
           <ProjectsClient projects={projects} />
           */}
 
-          {/* Framed footer (gains a top border in grid mode, where the
-              projects section above it is borderless/full-bleed) */}
+          {/* "Built using" footer hidden for now. (Framed footer; gains a
+              top border in grid mode, where the projects section above it is
+              borderless/full-bleed.)
           <div className="border-x pt-12 [.projects-grid_&]:border-t">
           <div className="flex flex-col gap-4 p-6 md:p-12">
             <div className=" text-muted-foreground">
@@ -196,6 +197,7 @@ export default async function Home() {
             </div>
           </div>
           </div>
+          */}
         </div>
       </ProjectsPageClient>
     </ProjectsWrapper>
