@@ -39,7 +39,7 @@ export function Navigation({ children }: NavigationProps) {
             className="text-md group flex items-center px-2 transition-opacity hover:!opacity-100 hover:text-blue-500 hover:underline"
           >
             Download PDF
-            <TbDownload className="ml-1 h-4 w-4 self-center text-muted-foreground transition-colors group-hover:text-blue-500" />
+            <TbDownload className="ml-1.5 h-4 w-4 self-center text-muted-foreground transition-colors group-hover:text-blue-500" />
           </a>
           {/* Services link hidden for now
           <Link
@@ -52,7 +52,7 @@ export function Navigation({ children }: NavigationProps) {
           <DropdownMenu>
             <DropdownMenuTrigger className="text-md flex items-center px-2 transition-opacity hover:!opacity-100 hover:underline data-[popup-open]:!opacity-100">
               Contact
-              <TbChevronDown className="ml-1 h-4 w-4 self-center text-muted-foreground" />
+              <TbChevronDown className="ml-1.5 h-4 w-4 self-center text-muted-foreground" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
               <DropdownMenuLinkItem
