@@ -1,4 +1,6 @@
 import { TbArrowUpRight, TbCopy, TbChevronDown, TbDownload } from "react-icons/tb";
+import type { IconType } from "react-icons";
+import { cn } from "@/lib/utils";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import {
   DropdownMenu,
@@ -7,6 +9,43 @@ import {
   DropdownMenuLinkItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+type NavItemProps = {
+  icon?: IconType;
+  children?: React.ReactNode;
+} & (
+  | ({ href: string } & React.ComponentProps<"a">)
+  | ({ href?: undefined } & React.ComponentProps<"button">)
+);
+
+/**
+ * One item in the top bar: a label with an optional trailing icon. Renders a
+ * link when given `href`, otherwise a button (the Contact menu trigger), so
+ * every item shares the same spacing, icon alignment and hover treatment.
+ */
+function NavItem({ icon: Icon, children, className, ...props }: NavItemProps) {
+  const classes = cn(
+    "group flex items-center px-2 transition-opacity hover:!opacity-100 hover:text-blue-500 hover:underline data-[popup-open]:!opacity-100",
+    className,
+  );
+  const content = (
+    <>
+      {children}
+      {Icon && (
+        <Icon className="ml-1.5 h-4 w-4 text-muted-foreground transition-colors group-hover:text-blue-500" />
+      )}
+    </>
+  );
+  return props.href !== undefined ? (
+    <a className={classes} {...props}>
+      {content}
+    </a>
+  ) : (
+    <button type="button" className={classes} {...props}>
+      {content}
+    </button>
+  );
+}
 
 interface NavigationProps {
   children?: React.ReactNode; // For custom first item like BackButton
@@ -25,34 +64,22 @@ export function Navigation({ children }: NavigationProps) {
         <div className="-mx-2 flex w-full flex-1 flex-wrap content-stretch items-stretch justify-stretch gap-2 [&:has([data-popup-open])>*]:opacity-50 [&:hover>*]:opacity-50">
           {children}
 
-          <a
-            href="/resume"
-            target="_blank"
-            className="text-md group flex items-center px-2 transition-opacity hover:!opacity-100 hover:text-blue-500 hover:underline"
-          >
+          <NavItem href="/resume" target="_blank" icon={TbArrowUpRight}>
             View resume
-            <TbArrowUpRight className="h-4 w-4 self-start text-muted-foreground transition-colors group-hover:text-blue-500" />
-          </a>
-          <a
+          </NavItem>
+          <NavItem
             href="/Leo-SF-Resume-May-2025.pdf"
             download="Leo-Succar-Resume.pdf"
-            className="text-md group flex items-center px-2 transition-opacity hover:!opacity-100 hover:text-blue-500 hover:underline"
+            icon={TbDownload}
           >
             Download PDF
-            <TbDownload className="ml-1.5 h-4 w-4 self-center text-muted-foreground transition-colors group-hover:text-blue-500" />
-          </a>
+          </NavItem>
           {/* Services link hidden for now
-          <Link
-            to="/soon"
-            className="text-md flex items-center px-2 transition-opacity hover:!opacity-100 hover:text-blue-500 hover:underline"
-          >
-            Services
-          </Link>
+          <NavItem href="/soon">Services</NavItem>
           */}
           <DropdownMenu>
-            <DropdownMenuTrigger className="text-md flex items-center px-2 transition-opacity hover:!opacity-100 hover:underline data-[popup-open]:!opacity-100">
+            <DropdownMenuTrigger render={<NavItem icon={TbChevronDown} />}>
               Contact
-              <TbChevronDown className="ml-1.5 h-4 w-4 self-center text-muted-foreground" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
               <DropdownMenuLinkItem
