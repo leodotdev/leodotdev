@@ -151,7 +151,10 @@
 }
 
 @layer base {
-  * {
+  /* Squircle corners wherever a radius is set (no-op where unsupported). */
+  *,
+  ::before,
+  ::after {
     @apply border-border;
     corner-shape: squircle;
   }
