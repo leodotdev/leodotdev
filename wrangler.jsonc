@@ -10,9 +10,10 @@
   // exact names (no .html stripping, so /resume.html answers 200 as it did on
   // Pages). The binding lets the Worker also serve /resume (src/server.ts).
   "assets": { "binding": "ASSETS", "html_handling": "none" },
-  // Production: the apex. www.leo.dev is served elsewhere (it redirects to
-  // the apex). The old Cloudflare Pages project `leodotdev` is no longer used.
-  "routes": [{ "pattern": "leo.dev/*", "zone_name": "leo.dev" }],
+  // Production: the apex, as a Worker custom domain (Cloudflare manages its
+  // DNS record and certificate). www.leo.dev is served elsewhere (it
+  // redirects to the apex).
+  "routes": [{ "pattern": "leo.dev", "custom_domain": true }],
   "workers_dev": false,
   "preview_urls": false,
   "vars": {

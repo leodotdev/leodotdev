@@ -43,7 +43,7 @@ pnpm run deploy
 
 This builds, checks the output for stray secrets (`scripts/check-dist.ts`), and runs `wrangler deploy` (config in `wrangler.jsonc`). Log in first with `pnpm exec wrangler login`.
 
-The Worker is named `leodotdev` and serves `leo.dev/*` through a zone route (`wrangler.jsonc`).
+The Worker is named `leodotdev` and serves `leo.dev` as a Worker custom domain (`wrangler.jsonc`): Cloudflare manages the DNS record and certificate, so nothing else needs to exist for leo.dev to resolve.
 
 ### Admin access setup (once)
 
@@ -54,5 +54,5 @@ Until then, `leo.dev/admin` answers 403.
 
 ### Leftovers
 
-- The Pages project `leodotdev` no longer serves leo.dev. Disconnect its Git integration (or delete the project) so pushes stop starting builds of the old Next.js app, which now fail.
+- The Pages project `leodotdev` no longer serves leo.dev and its Git integration is disconnected. It can be deleted.
 - Sanity is no longer used. The webhook `redeploy-leodotdev` can be deleted, and so can the Sanity project `jyqe7nab` itself once you're happy with the backup in `old/sanity-export/`.

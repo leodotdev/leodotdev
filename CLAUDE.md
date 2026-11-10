@@ -41,7 +41,7 @@ Personal portfolio site for Leo Succar (leo.dev). Stack:
 
 ## Deployment and content freshness
 
-- The site deploys as a Cloudflare Worker named `leodotdev` on the route `leo.dev/*` (`wrangler.jsonc`); ship with `pnpm run deploy`. Static files in `public/` are served before the Worker runs (`html_handling: "none"`, so `/resume.html` stays reachable as is).
+- The site deploys as a Cloudflare Worker named `leodotdev` on the custom domain `leo.dev` (`wrangler.jsonc`; Cloudflare manages its DNS record); ship with `pnpm run deploy`. Static files in `public/` are served before the Worker runs (`html_handling: "none"`, so `/resume.html` stays reachable as is).
 - Pages render per request and read D1 directly, so **edits made at `/admin` show up on the next page load**, with no rebuild or deploy.
 - `pnpm dev` uses the **production** D1 database and R2 bucket (`remote: true` in `wrangler.jsonc`), like mdc: local admin edits are live.
 - Workers runtime only: no Node `fs`; `nodejs_compat` is on. Use `cloudflare:workers` for `env`/`waitUntil`.
