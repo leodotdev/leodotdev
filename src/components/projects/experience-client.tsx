@@ -19,9 +19,6 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
     <div id="experience">
       <div className="px-6 pb-12 md:px-12">
         <div className="font-semibold">Experience</div>
-        <div className="text-muted-foreground">
-          My work and employment history.
-        </div>
       </div>
 
       <div className="flex flex-col [&:hover>*]:opacity-50">

@@ -19,9 +19,6 @@ export function ReferencesScroll({ references: allReferences }: ReferencesScroll
     <div id="references">
       <div className="px-6 pb-12 md:px-12">
         <div className="font-semibold">References</div>
-        <div className="text-muted-foreground">
-          Folks I&#39;ve had the pleasure of working with.
-        </div>
       </div>
 
       <div className="flex flex-col [&:hover>*]:opacity-50">

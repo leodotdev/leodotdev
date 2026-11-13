@@ -171,6 +171,23 @@
   }
 }
 
+/*
+ * Fallback for browsers without corner-shape (Safari, Firefox as of 2026):
+ * they draw plain round corners, which read rounder than a squircle at the
+ * same radius, so every radius step is tightened to about 80% to match.
+ * Pills and dots (rounded-full) are unaffected.
+ */
+@supports not (corner-shape: squircle) {
+  :root {
+    --radius: 0.4rem;
+    --radius-xs: 0.1rem;
+    --radius-xl: 0.6rem;
+    --radius-2xl: 0.8rem;
+    --radius-3xl: 1.2rem;
+    --radius-4xl: 1.6rem;
+  }
+}
+
 @utility font-playfair {
   font-family: var(--font-playfair);
 }
