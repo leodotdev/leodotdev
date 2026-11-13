@@ -79,8 +79,8 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
               if (url) window.open(url, "_blank");
             }}
           >
-            <div className="flex w-full items-center justify-between px-6 py-4 md:px-12">
-              <div className="flex flex-row items-center gap-3">
+            <div className="flex w-full items-center justify-between gap-4 px-6 py-4 md:px-12">
+              <div className="flex min-w-0 flex-row items-center gap-3">
                 <Avatar className={exp.roundLogo ? "" : "rounded-md"}>
                   <AvatarImage src={exp.logo} />
                   <AvatarFallback className="text-muted-foreground">
@@ -89,15 +89,6 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
                 </Avatar>
                 <div className="flex flex-col">
                   {exp.position && <div>{exp.position}</div>}
-                  <div>
-                    {exp.displayName ? (
-                      <>
-                        {exp.displayName} (now <CompanyLink exp={exp} />)
-                      </>
-                    ) : (
-                      <CompanyLink exp={exp} />
-                    )}
-                  </div>
                   {(exp.contract || exp.team || exp.project) && (
                     <div className="text-xs text-muted-foreground">
                       {exp.contract && "Contract"}
@@ -125,16 +116,27 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
                   )}
                 </div>
               </div>
-              <div className="flex shrink-0 flex-col items-end text-end text-xs md:flex-row md:gap-2">
-                <p className="text-muted-foreground">{exp.location}</p>
-                {exp.duration && (
-                  <>
-                    <span className="hidden text-muted-foreground md:inline">
-                      ·
-                    </span>
-                    <p>{exp.duration}</p>
-                  </>
-                )}
+              <div className="flex max-w-[45%] flex-col items-end text-end md:max-w-none md:shrink-0">
+                <div>
+                  {exp.displayName ? (
+                    <>
+                      {exp.displayName} (now <CompanyLink exp={exp} />)
+                    </>
+                  ) : (
+                    <CompanyLink exp={exp} />
+                  )}
+                </div>
+                <div className="flex flex-col items-end text-xs md:flex-row md:gap-2">
+                  <p className="text-muted-foreground">{exp.location}</p>
+                  {exp.duration && (
+                    <>
+                      <span className="hidden text-muted-foreground md:inline">
+                        ·
+                      </span>
+                      <p>{exp.duration}</p>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </div>
