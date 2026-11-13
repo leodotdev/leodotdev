@@ -10,6 +10,54 @@ interface ExperienceClientProps {
   experiences: Experience[];
 }
 
+function CompanyLink({ exp }: { exp: Experience }) {
+  if (!exp.companyUrl) return <span>{exp.company}</span>;
+  return (
+    <a
+      className="group-hover/item:text-blue-500 group-hover/item:underline"
+      href={exp.companyUrl}
+      target="_blank"
+      onClick={(e) => e.stopPropagation()}
+    >
+      {exp.company}
+    </a>
+  );
+}
+
+const splitList = (s: string | null) =>
+  (s ?? "").split(",").map((x) => x.trim());
+
+/**
+ * "Project: A" or "Projects: A & B". `project` and `projectUrl` hold
+ * comma-separated lists, matched by position.
+ */
+function ProjectLinks({ exp }: { exp: Experience }) {
+  const names = splitList(exp.project).filter(Boolean);
+  const urls = splitList(exp.projectUrl);
+  return (
+    <>
+      {names.length > 1 ? "Projects: " : "Project: "}
+      {names.map((name, i) => (
+        <React.Fragment key={name}>
+          {i > 0 && (i === names.length - 1 ? " & " : ", ")}
+          {urls[i] ? (
+            <a
+              className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+              href={urls[i]}
+              target="_blank"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {name}
+            </a>
+          ) : (
+            <span>{name}</span>
+          )}
+        </React.Fragment>
+      ))}
+    </>
+  );
+}
+
 export function ExperienceClient({ experiences }: ExperienceClientProps) {
   const [visibleCount, setVisibleCount] = useState(EXPERIENCE_PAGE_SIZE);
   const displayedExperiences = experiences.slice(0, visibleCount);
@@ -40,49 +88,15 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
-                  <div className="flex flex-col md:flex-row md:gap-2">
+                  {exp.position && <div>{exp.position}</div>}
+                  <div>
                     {exp.displayName ? (
-                      <div>
-                        {exp.displayName}{" "}
-                        (now{" "}
-                        {exp.companyUrl ? (
-                          <a
-                            className="underline decoration-dotted group-hover/item:text-blue-500 group-hover/item:decoration-solid"
-                            href={exp.companyUrl}
-                            target="_blank"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            {exp.company}
-                          </a>
-                        ) : (
-                          <span>{exp.company}</span>
-                        )}
-                        )
-                      </div>
-                    ) : (
                       <>
-                        {exp.companyUrl ? (
-                          <a
-                            className="underline decoration-dotted group-hover/item:text-blue-500 group-hover/item:decoration-solid"
-                            href={exp.companyUrl}
-                            target="_blank"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            {exp.company}
-                          </a>
-                        ) : (
-                          <span>{exp.company}</span>
-                        )}
+                        {exp.displayName} (now <CompanyLink exp={exp} />)
                       </>
+                    ) : (
+                      <CompanyLink exp={exp} />
                     )}
-                    <span className="hidden text-muted-foreground md:inline">
-                      ·
-                    </span>
-                    <div className="flex flex-col">
-                      <div className="italic text-muted-foreground">
-                        {exp.position}
-                      </div>
-                    </div>
                   </div>
                   {(exp.contract || exp.team || exp.project) && (
                     <div className="text-xs text-muted-foreground">
@@ -106,23 +120,7 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
                           {exp.project && ", "}
                         </>
                       )}
-                      {exp.project && (
-                        <>
-                          {!exp.projectCompany && "Project: "}
-                          {exp.projectCompany && "Project: "}
-                          {exp.projectUrl ? (
-                            <a
-                              className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
-                              href={exp.projectUrl}
-                              target="_blank"
-                            >
-                              {exp.project}
-                            </a>
-                          ) : (
-                            <span>{exp.project}</span>
-                          )}
-                        </>
-                      )}
+                      {exp.project && <ProjectLinks exp={exp} />}
                     </div>
                   )}
                 </div>
