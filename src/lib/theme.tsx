@@ -18,7 +18,7 @@ const DARK = "(prefers-color-scheme: dark)"
  * --background. Both media-scoped metas get the chosen theme's color, so a
  * user's pick wins over the system setting.
  */
-export const THEME_COLOR = { light: "#ffffff", dark: "#09090b" } as const
+export const THEME_COLOR = { light: "#f4f3f0", dark: "#09090b" } as const
 
 /** Inline in <head> before CSS so the first paint has the right theme. */
 export const THEME_SCRIPT = `(function(){try{var p=localStorage.getItem("${KEY}");var d=p==="dark"||((!p||p==="system")&&matchMedia("${DARK}").matches);var e=document.documentElement;e.classList.toggle("dark",d);e.style.colorScheme=d?"dark":"light";document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute("content",d?"${THEME_COLOR.dark}":"${THEME_COLOR.light}")})}catch(_){}})()`

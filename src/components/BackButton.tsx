@@ -1,6 +1,7 @@
 import { TbArrowLeft } from "react-icons/tb";
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export function BackButton() {
   const [isVisible, setIsVisible] = useState(false);
@@ -32,17 +33,21 @@ export function BackButton() {
         isVisible ? "max-w-xs opacity-100" : "max-w-0 opacity-0"
       }`}
     >
-      <Link
-        to="/"
-        onClick={() => {
-          // Set flag when navigating back to projects
-          sessionStorage.setItem('navigation-source', 'back-button');
-        }}
-        className="text-md hover:bg-secondary/90 flex items-center whitespace-nowrap rounded-full bg-secondary px-4 py-2 pr-5 font-medium text-primary"
+      <Button
+        variant="pill"
+        render={
+          <Link
+            to="/"
+            onClick={() => {
+              // Set flag when navigating back to projects
+              sessionStorage.setItem('navigation-source', 'back-button');
+            }}
+          />
+        }
       >
-        <TbArrowLeft className="mr-1 h-4 w-4 text-muted-foreground" />
+        <TbArrowLeft className="-ml-1 mr-1 h-4 w-4 text-muted-foreground" />
         Back to home
-      </Link>
+      </Button>
     </div>
   );
 }

@@ -1,7 +1,8 @@
-import { TbArrowUpRight, TbCopy, TbChevronDown, TbDownload } from "react-icons/tb";
-import type { IconType } from "react-icons";
-import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { TbArrowUpRight, TbCopy, TbChevronDown } from "react-icons/tb";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { Button } from "@/components/ui/button";
+import { wave } from "@/lib/wave";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,124 +11,84 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-type NavItemProps = {
-  icon?: IconType;
-  children?: React.ReactNode;
-} & (
-  | ({ href: string } & React.ComponentProps<"a">)
-  | ({ href?: undefined } & React.ComponentProps<"button">)
-);
-
-/**
- * One item in the top bar: a label with an optional trailing icon. Renders a
- * link when given `href`, otherwise a button (the Contact menu trigger), so
- * every item shares the same spacing, icon alignment and hover treatment.
- */
-function NavItem({ icon: Icon, children, className, ...props }: NavItemProps) {
-  const classes = cn(
-    "group flex items-center px-2 transition-opacity hover:!opacity-100 hover:text-blue-500 hover:underline data-[popup-open]:!opacity-100",
-    className,
-  );
-  const content = (
-    <>
-      {children}
-      {Icon && (
-        <Icon className="ml-1.5 h-4 w-4 text-muted-foreground transition-colors group-hover:text-blue-500" />
-      )}
-    </>
-  );
-  return props.href !== undefined ? (
-    <a className={classes} {...props}>
-      {content}
-    </a>
-  ) : (
-    <button type="button" className={classes} {...props}>
-      {content}
-    </button>
-  );
-}
-
 interface NavigationProps {
   children?: React.ReactNode; // For custom first item like BackButton
 }
 
-export function Navigation({ children }: NavigationProps) {
-  const copyEmail = () => {
-    navigator.clipboard.writeText("leo@leo.dev").then(() => {
+/** The Contact dropdown: Twitter, copy email, LinkedIn and GitHub. */
+export function ContactMenu() {
+  const [open, setOpen] = useState(false);
+
+  // Items wave on click only. The menu stays open while the wave plays on
+  // the chosen item, then closes; closing at once would take the item away.
+  const waveThenClose = (e: React.MouseEvent<HTMLElement>) =>
+    wave(e.currentTarget, undefined, { focus: e.nativeEvent, speed: 2 }).then(
+      () => setOpen(false),
+    );
+
+  const copyEmail = (e: React.MouseEvent<HTMLElement>) => {
+    void navigator.clipboard.writeText("leo@leo.dev");
+    void waveThenClose(e).then(() => {
       alert("My email address—leo@leo.dev—has been copied to your clipboard.");
     });
   };
 
+  const links = [
+    { label: "Twitter", href: "https://twitter.com/leosuccarferre" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/leosuccarferre/" },
+    { label: "GitHub", href: "https://github.com/leodotdev" },
+  ];
+  const link = ({ label, href }: (typeof links)[number]) => (
+    <DropdownMenuLinkItem
+      key={label}
+      render={<a href={href} target="_blank" />}
+      closeOnClick={false}
+      onClick={(e) => void waveThenClose(e)}
+      className="flex cursor-pointer items-center"
+    >
+      {label}
+      <TbArrowUpRight className="ml-1 h-4 w-4 text-muted-foreground" />
+    </DropdownMenuLinkItem>
+  );
+
+  return (
+    <DropdownMenu open={open} onOpenChange={setOpen}>
+      <DropdownMenuTrigger render={<Button variant="pill" data-wave-click />}>
+        Contact
+        <TbChevronDown className="-mr-1 ml-1 h-4 w-4 text-muted-foreground" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        {link(links[0])}
+        <DropdownMenuItem
+          closeOnClick={false}
+          onClick={copyEmail}
+          className="flex cursor-pointer items-center"
+        >
+          Copy my email
+          <TbCopy className="ml-1 h-4 w-4 text-muted-foreground" />
+        </DropdownMenuItem>
+        {links.slice(1).map(link)}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+export function Navigation({ children }: NavigationProps) {
   return (
     <div className="border-x border-b bg-background">
-      <div className="mx-auto flex max-w-[960px] justify-between px-6 py-4 md:px-12">
-        <div className="-mx-2 flex w-full flex-1 flex-wrap content-stretch items-stretch justify-stretch gap-2 [&:has([data-popup-open])>*]:opacity-50 [&:hover>*]:opacity-50">
+      <div className="mx-auto flex max-w-[960px] items-center justify-between px-6 py-4 md:px-12">
+        <div className="-mx-2 flex flex-1 flex-wrap items-center gap-2">
           {children}
-
-          <NavItem href="/resume" target="_blank" icon={TbArrowUpRight}>
-            View resume
-          </NavItem>
-          <NavItem
-            href="/Leo-SF-Resume-May-2025.pdf"
-            download="Leo-Succar-Resume.pdf"
-            icon={TbDownload}
-          >
-            Download PDF
-          </NavItem>
-          {/* Services link hidden for now
-          <NavItem href="/soon">Services</NavItem>
-          */}
-          <DropdownMenu>
-            <DropdownMenuTrigger render={<NavItem icon={TbChevronDown} />}>
-              Contact
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
-              <DropdownMenuLinkItem
-                render={<a href="https://twitter.com/leosuccarferre" target="_blank" />}
-                className="flex cursor-pointer items-center"
-              >
-                Twitter
-                <TbArrowUpRight className="ml-1 h-4 w-4 text-muted-foreground" />
-              </DropdownMenuLinkItem>
-              <DropdownMenuItem
-                onClick={copyEmail}
-                className="flex cursor-pointer items-center"
-              >
-                Copy my email
-                <TbCopy className="ml-1 h-4 w-4 text-muted-foreground" />
-              </DropdownMenuItem>
-              <DropdownMenuLinkItem
-                render={<a href="https://cal.com/leo.dev/20min" target="_blank" />}
-                className="flex cursor-pointer items-center"
-              >
-                Schedule a call
-                <TbArrowUpRight className="ml-1 h-4 w-4 text-muted-foreground" />
-              </DropdownMenuLinkItem>
-              <DropdownMenuLinkItem
-                render={
-                  <a
-                    href="https://www.linkedin.com/in/leosuccarferre/"
-                    target="_blank"
-                  />
-                }
-                className="flex cursor-pointer items-center"
-              >
-                LinkedIn
-                <TbArrowUpRight className="ml-1 h-4 w-4 text-muted-foreground" />
-              </DropdownMenuLinkItem>
-              <DropdownMenuLinkItem
-                render={
-                  <a href="https://github.com/leodotdev" target="_blank" />
-                }
-                className="flex cursor-pointer items-center"
-              >
-                GitHub
-                <TbArrowUpRight className="ml-1 h-4 w-4 text-muted-foreground" />
-              </DropdownMenuLinkItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div className="flex h-10 items-center px-2">
+            <ThemeSwitcher />
+          </div>
         </div>
-        <ThemeSwitcher />
+        <div className="flex">
+          {/* Services link hidden for now
+          <Button variant="pill" render={<a href="/soon" />}>Services</Button>
+          */}
+          <ContactMenu />
+        </div>
       </div>
     </div>
   );

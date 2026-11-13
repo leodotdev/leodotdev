@@ -6,6 +6,8 @@ import {
   createRootRoute,
 } from "@tanstack/react-router"
 import { THEME_COLOR, THEME_SCRIPT, ThemeProvider } from "@/lib/theme"
+import { WaveEffects } from "@/components/WaveEffects"
+import { Button } from "@/components/ui/button"
 
 import appCss from "../styles.css?url"
 
@@ -58,9 +60,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <ThemeProvider>
-          <div className="site-frame mx-auto min-h-screen max-w-[960px] border-x bg-background">
-            {children}
+          {/* #app is what the theme switch's wave covers: body can't be a target */}
+          <div id="app" className="bg-background">
+            <div className="site-frame mx-auto min-h-screen max-w-[960px] border-x bg-background">
+              {children}
+            </div>
           </div>
+          <WaveEffects />
         </ThemeProvider>
         <Scripts />
       </body>
@@ -73,12 +79,9 @@ function NotFound() {
     <main className="flex min-h-screen flex-col items-center justify-center gap-2 px-6 text-center">
       <h1 className="font-semibold">404</h1>
       <p className="text-muted-foreground">This page could not be found.</p>
-      <Link
-        to="/"
-        className="mt-4 underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
-      >
+      <Button variant="pill" className="mt-4" render={<Link to="/" />}>
         Back to home
-      </Link>
+      </Button>
     </main>
   )
 }

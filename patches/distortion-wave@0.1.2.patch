@@ -1,0 +1,189 @@
+diff --git a/dist/distortion-wave.js b/dist/distortion-wave.js
+index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..bba540a58e1752fcf51635eb6b41c1833eb5c639 100644
+--- a/dist/distortion-wave.js
++++ b/dist/distortion-wave.js
+@@ -50,7 +50,9 @@ function styleText(cs, def, parentCS, isRoot, onUrl) {
+     if (skipProp(p)) continue;
+     const v = cs.getPropertyValue(p);
+     if (!v) continue;
+-    if (v === def.get(p) && (isRoot || !parentCS || parentCS.getPropertyValue(p) === v)) continue;
++    // Widths are always written out: a `0px` width equals the tag default, but dropping it next to
++    // `border-style: solid` (Tailwind's reset) would give the clone a 3px `medium` border.
++    if (!/^(border|outline|column-rule).*-width$/.test(p) && v === def.get(p) && (isRoot || !parentCS || parentCS.getPropertyValue(p) === v)) continue;
+     if (onUrl && URL_PROPS.has(p) && v.includes("url(")) onUrl(p, v);
+     out += `${p}:${v};`;
+   }
+@@ -390,6 +392,7 @@ var BASE = {
+   hairWidth: 1.5,
+   lean: 0.9,
+   margin: 60,
++  holdScale: 1,
+   seam: 48,
+   particles: 64,
+   particleSize: 1.8,
+@@ -527,7 +530,9 @@ function frameState(t, c, g) {
+     clear: lerp(r0 - c.rimSoftness, reach + c.rimSoftness, easeClear((fly - c.linger) / c.rimFade)),
+     hairClear: lerp(r0 - c.rimSoftness, reach + c.rimSoftness, easeClear((fly - c.linger - c.hairDelay) / c.hairFade)),
+     rim: c.rimStrength * smooth(0, 0.1, prog) * (1 - smooth(0.9, 1, time / T)),
+-    hold: ring && g.hold ? r0 : 0,
++    // holdScale widens the calm zone kept around a source inside the target: with a small source
++    // the trailing glow otherwise pools right around it as a bright halo
++    hold: ring && g.hold ? r0 * (c.holdScale ?? 1) : 0,
+     launched: fly > 0,
+     covered,
+     settled: covered && prog >= 0.55
+@@ -610,6 +615,7 @@ uniform vec2 uOrigin;
+ uniform float uTilt, uSpine, uRadius, uSquash, uTime, uSwell, uEnergy, uPull, uGlow, uRim, uClear, uHairClear, uHold, uK, uSeam;
+ uniform float uAmp, uLensW, uAberr, uBlurMax, uBlurNear, uBlurAhead, uBlurBehind;
+ uniform float uLead, uTail, uBand, uRimW, uRimSoft, uUneven, uHairW;
++uniform float uCornerN;                             // corner exponent: 2 = circular, 4 = CSS squircle
+ uniform vec3 uPal[8]; uniform int uPalN;
+ out vec4 outColor;
+ const float TAU = 6.28318530718;
+@@ -620,7 +626,10 @@ float h11(float x) { return fract(sin(x * 127.1) * 43758.5453); }
+ float vnoise(float x) { float i = floor(x), f = fract(x); return mix(h11(i), h11(i + 1.0), f * f * (3.0 - 2.0 * f)) * 2.0 - 1.0; }
+ float sdRoundBox(vec2 p, vec2 b, vec4 r) {         // y-down space: r = (bottom-right, top-right, bottom-left, top-left)
+   r.xy = (p.x > 0.0) ? r.xy : r.zw; r.x = (p.y > 0.0) ? r.x : r.y;
+-  vec2 q = abs(p) - b + r.x; return min(max(q.x, q.y), 0.0) + length(max(q, 0.0)) - r.x;
++  vec2 q = abs(p) - b + r.x; vec2 m = max(q, 0.0);
++  // superellipse corners (corner-shape: squircle) use an L^n norm in place of the circle's L^2
++  float l = uCornerN > 2.01 ? pow(pow(m.x, uCornerN) + pow(m.y, uCornerN), 1.0 / uCornerN) : length(m);
++  return min(max(q.x, q.y), 0.0) + l - r.x;
+ }
+ struct Front { float d; vec2 n; vec2 q; float g; };
+ Front front(vec2 p) {
+@@ -637,6 +646,12 @@ Front front(vec2 p) {
+ vec4 tap(sampler2D s, vec4 rect, vec2 p, vec2 sp) {
+   vec2 q = (p - rect.xy) / rect.zw;
+   if (q.x < 0.0 || q.y < 0.0 || q.x > 1.0 || q.y > 1.0) return vec4(0.0);
++  // Pin the edges: the displacement fades to nothing over the outer few px, so a border or a
++  // rounded corner stays where it is. Without this, a sample pushed past the edge is clamped to
++  // the outermost pixel and the border smears inward as a band (it looks clipped).
++  vec2 e = min(p - rect.xy, rect.xy + rect.zw - p);
++  float pin = smoothstep(0.0, min(14.0, 0.25 * min(rect.z, rect.w)), min(e.x, e.y));
++  sp = mix(p, sp, pin);
+   return textureLod(s, clamp((sp - rect.xy) / rect.zw, 0.0, 1.0), 0.0);
+ }
+ vec4 fetch3(sampler2D s0, sampler2D s1, sampler2D s2, vec4 rect, vec2 p, vec2 sp, float tn, float tf) {
+@@ -895,6 +910,7 @@ var Renderer = class {
+     v4("uNewRect", R.new || R.old);
+     v4("uShape", R.shape);
+     gl.uniform4f(u("uRadii"), R.radii.br, R.radii.tr, R.radii.bl, R.radii.tl);
++    gl.uniform1f(u("uCornerN"), R.cornerN || 2);
+     gl.uniform1i(u("uMode"), f.mode);
+     gl.uniform1f(u("uFade"), f.fade || 0);
+     gl.uniform1f(u("uBoxless"), R.boxless ? 1 : 0);
+@@ -1095,6 +1111,14 @@ function clippedShape(el, rect, radii) {
+   const f = Math.min(1, fit(w, r.tl, r.tr), fit(w, r.bl, r.br), fit(h, r.tl, r.bl), fit(h, r.tr, r.br));
+   return { x: x0, y: y0, w, h, radii: { tl: r.tl * f, tr: r.tr * f, br: r.br * f, bl: r.bl * f }, clipped: changed };
+ }
++// CSS corner-shape of the target: superellipse(k) draws |x|^(2^k) + |y|^(2^k) = 1, so `squircle`
++// (k = 2) is exponent 4 and `round` is 2. Browsers without corner-shape report nothing: circular.
++function cornerExponent(cs) {
++  const v = String(cs.cornerTopLeftShape || cs.getPropertyValue("corner-top-left-shape") || "").trim();
++  if (v === "squircle") return 4;
++  const m = v.match(/^superellipse\(\s*([\d.]+)\s*\)$/);
++  return m ? Math.min(Math.max(2 ** parseFloat(m[1]), 2), 16) : 2;
++}
+ function isFixed(el) {
+   for (let n = el; n && n !== document.documentElement; n = n.parentElement) if (getComputedStyle(n).position === "fixed") return true;
+   return false;
+@@ -1112,6 +1136,7 @@ function measure(el) {
+     opacity: cs.opacity,
+     radii,
+     boxless: !hasVisibleBox(cs),
++    cornerN: cornerExponent(cs),
+     visible: x1 > x0 && y1 > y0,
+     shape: { x: sh.x + sx, y: sh.y + sy, w: sh.w, h: sh.h },
+     shapeRadii: sh.radii,
+@@ -1172,6 +1197,8 @@ var DEFAULTS = { variant: "auto", palette: "aurora", speed: 1, particles: true,
+ var WaveTransition = class {
+   constructor(target, update, opts) {
+     this.target = target;
++    // no update: nothing changes, so the "after" state is the "before" one
++    this._still = !update;
+     this.update = update || (() => {
+     });
+     this.o = { ...DEFAULTS, ...opts };
+@@ -1231,7 +1258,7 @@ var WaveTransition = class {
+     this.dots = new Float32Array(Math.max(this.particles.length, 1) * 4);
+     this.origin = this._originPage(before);
+     this.canvasPage = before.page;
+-    this.rects = { old: rel(before.page, before.page), new: null, shape: rel(before.shape, before.page), radii: before.shapeRadii, boxless: before.boxless, clipped: before.clipped };
++    this.rects = { old: rel(before.page, before.page), new: null, shape: rel(before.shape, before.page), radii: before.shapeRadii, cornerN: before.cornerN, boxless: before.boxless, clipped: before.clipped };
+     t0 = performance.now();
+     r.setLayer("old", oldShot.canvas, cfg.blurNear * this.dpr, cfg.blur * this.dpr);
+     this.metrics.upload = Math.round(performance.now() - t0);
+@@ -1242,13 +1269,16 @@ var WaveTransition = class {
+     this._d.ready.res();
+     this._startLoop();
+     await this._runUpdate();
+-    await nextFrame();
+-    await Promise.all([...target.querySelectorAll("img")].map((i) => i.decode?.().catch(() => {
+-    })));
++    if (!this._still) {
++      await nextFrame();
++      await Promise.all([...target.querySelectorAll("img")].map((i) => i.decode?.().catch(() => {
++      })));
++    }
+     if (this._done) return;
+     const after = measure(target);
+     t0 = performance.now();
+-    const newShot = after.visible ? await snapshotElement(target, { dpr: this.dpr, clip: after.clip, rootOpacity: before.opacity }) : null;
++    // a wave with no update (a hover) reuses its first snapshot instead of capturing the same thing twice
++    const newShot = this._still ? oldShot : after.visible ? await snapshotElement(target, { dpr: this.dpr, clip: after.clip, rootOpacity: before.opacity }) : null;
+     this.metrics.captureAfter = Math.round(performance.now() - t0);
+     if (this._done) return;
+     if (!newShot) {
+@@ -1258,7 +1288,7 @@ var WaveTransition = class {
+     r.setLayer("new", newShot.canvas, cfg.blurNear * this.dpr, cfg.blur * this.dpr);
+     this.after = after;
+     this.canvasPage = union(before.page, after.page);
+-    this.rects = { old: rel(before.page, this.canvasPage), new: rel(after.page, this.canvasPage), shape: rel(before.shape, this.canvasPage), radii: before.shapeRadii, boxless: before.boxless && after.boxless, clipped: before.clipped || after.clipped };
++    this.rects = { old: rel(before.page, this.canvasPage), new: rel(after.page, this.canvasPage), shape: rel(before.shape, this.canvasPage), radii: before.shapeRadii, cornerN: before.cornerN, boxless: before.boxless && after.boxless, clipped: before.clipped || after.clipped };
+     this.shapes = { from: rel(before.shape, this.canvasPage), to: rel(after.shape, this.canvasPage), r0: before.shapeRadii, r1: after.shapeRadii };
+     this._resizeCanvas();
+     this.gateOpen = true;
+@@ -1323,6 +1353,9 @@ var WaveTransition = class {
+     for (const [k, v, pr] of this._saved) {
+       if (v) this.target.style.setProperty(k, v, pr);
+       else this.target.style.removeProperty(k);
++      // Opacity comes back first and is committed before the element's own transition is restored;
++      // otherwise a `transition: opacity` on the target fades it in from 0 and the end of the wave flashes.
++      if (k === "opacity") void this.target.offsetWidth;
+     }
+     this._saved = null;
+   }
+diff --git a/src/capture.js b/src/capture.js
+index 499226d28b9eb84c8d9bebc39119159be7c7e65e..43a4620d0276cb129e1b3319e8a44959c40006bc 100644
+--- a/src/capture.js
++++ b/src/capture.js
+@@ -61,7 +61,9 @@ function styleText(cs, def, parentCS, isRoot, onUrl) {
+     if (skipProp(p)) continue;
+     const v = cs.getPropertyValue(p);
+     if (!v) continue;
+-    if (v === def.get(p) && (isRoot || !parentCS || parentCS.getPropertyValue(p) === v)) continue;
++    // Widths are always written out: a `0px` width equals the tag default, but dropping it next to
++    // `border-style: solid` (Tailwind's reset) would give the clone a 3px `medium` border.
++    if (!/^(border|outline|column-rule).*-width$/.test(p) && v === def.get(p) && (isRoot || !parentCS || parentCS.getPropertyValue(p) === v)) continue;
+     if (onUrl && URL_PROPS.has(p) && v.includes('url(')) onUrl(p, v);
+     out += `${p}:${v};`;
+   }
+diff --git a/src/index.js b/src/index.js
+index 4409416b4aafdbf659f2b3eeb576a07cecc1b57e..da2e6941f41fa1826637fa2dc65edb15de26c49c 100644
+--- a/src/index.js
++++ b/src/index.js
+@@ -224,7 +224,12 @@ class WaveTransition {
+   }
+   _show() {
+     if (!this._saved) return;
+-    for (const [k, v, pr] of this._saved) { if (v) this.target.style.setProperty(k, v, pr); else this.target.style.removeProperty(k); }
++    for (const [k, v, pr] of this._saved) {
++      if (v) this.target.style.setProperty(k, v, pr); else this.target.style.removeProperty(k);
++      // Opacity comes back first and is committed before the element's own transition is restored;
++      // otherwise a `transition: opacity` on the target fades it in from 0 and the end of the wave flashes.
++      if (k === 'opacity') void this.target.offsetWidth;
++    }
+     this._saved = null;
+   }
+   _startLoop() {

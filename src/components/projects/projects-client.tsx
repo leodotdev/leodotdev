@@ -199,7 +199,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
       </div>
 
       {viewMode === "list" ? (
-        <div className="flex flex-col [&:hover>*]:opacity-50">
+        <div className="flex flex-col">
           {visibleProjects.map((project, index) => {
             const contentThumbs = getContentImageThumbs(project);
             const allThumbs = [
@@ -210,11 +210,11 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
 
             return (
               <React.Fragment key={project.id}>
-              <div className="transition-opacity hover:!opacity-100">
+              <div>
                 <Link
                   to="/projects/$slug"
                   params={{ slug: project.slug }}
-                  className="group/item block px-6 py-4 md:px-12"
+                  className="group/item block px-6 py-6 md:px-12"
                 >
                   <div className="flex w-full items-center justify-between gap-6">
                     <div className="flex flex-row items-center gap-3">
@@ -278,7 +278,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
 
               </div>
                 {index < visibleProjects.length - 1 && (
-                  <Separator className="transition-opacity" />
+                  <Separator className="mx-6 w-auto md:mx-12" />
                 )}
               </React.Fragment>
             );
@@ -337,19 +337,15 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
       <div className="flex justify-center px-6 py-8 md:px-12">
         {hasMore ? (
           <Button
-            variant="secondary"
-            size="lg"
+            variant="pill"
             onClick={() => setVisibleCount((prev) => prev + pageSize)}
-            className="rounded-full px-6 [corner-shape:round]"
           >
             Show more
           </Button>
         ) : visibleCount > PROJECTS_PAGE_SIZE ? (
           <Button
-            variant="outline"
-            size="lg"
+            variant="pill"
             onClick={() => setVisibleCount(pageSize)}
-            className="rounded-full px-6 [corner-shape:round]"
           >
             Show less
           </Button>

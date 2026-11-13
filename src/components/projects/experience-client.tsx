@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import { flushSync } from "react-dom";
+import { isTap, stopWaves, wave } from "@/lib/wave";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { TbArrowUpRight, TbDownload } from "react-icons/tb";
 import type { Experience } from "@/types/Experience";
 
-const EXPERIENCE_PAGE_SIZE = 4;
+const EXPERIENCE_PAGE_SIZE = 3;
 
 interface ExperienceClientProps {
   experiences: Experience[];
@@ -60,26 +62,66 @@ function ProjectLinks({ exp }: { exp: Experience }) {
 
 export function ExperienceClient({ experiences }: ExperienceClientProps) {
   const [visibleCount, setVisibleCount] = useState(EXPERIENCE_PAGE_SIZE);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const showCount = (count: number, e: React.MouseEvent<HTMLElement>) => {
+    const update = () => flushSync(() => setVisibleCount(count));
+    // On touch the tap plays the wave: it leaves the button and carries the
+    // list to its new length. With a mouse the wave is hover-only, so the
+    // list just changes (after ending the button's own hover wave, whose
+    // snapshot would otherwise sit where the button used to be).
+    if (isTap(e)) {
+      wave(sectionRef.current, update, {
+        source: e.currentTarget,
+        focus: e.nativeEvent,
+      });
+    } else {
+      stopWaves(e.currentTarget);
+      update();
+    }
+  };
   const displayedExperiences = experiences.slice(0, visibleCount);
   const hasMore = visibleCount < experiences.length;
 
   return (
-    <div id="experience">
-      <div className="px-6 pb-12 md:px-12">
+    <div id="experience" ref={sectionRef}>
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-6 pb-12 md:px-12">
         <div className="font-semibold">Experience</div>
+        <div className="flex flex-wrap gap-2">
+          <Button
+            variant="pill"
+            render={<a href="/resume" target="_blank" />}
+          >
+            View résumé
+            <TbArrowUpRight className="-mr-1 ml-1 h-4 w-4 text-muted-foreground" />
+          </Button>
+          <Button
+            variant="pill"
+            data-wave-click
+            render={
+              <a
+                href="/Leo-SF-Resume-May-2025.pdf"
+                download="Leo-Succar-Resume.pdf"
+              />
+            }
+          >
+            Download PDF
+            <TbDownload className="-mr-1 ml-1 h-4 w-4 text-muted-foreground" />
+          </Button>
+        </div>
       </div>
 
-      <div className="flex flex-col [&:hover>*]:opacity-50">
-        {displayedExperiences.map((exp, index) => (
-          <React.Fragment key={exp.id}>
+      <div className="flex flex-col [&>*+*]:-mt-[0.5px]">
+        {displayedExperiences.map((exp) => (
           <div
-            className="group/item cursor-pointer transition-opacity hover:!opacity-100"
+            key={exp.id}
+            data-wave
+            className="group/item mx-3 cursor-pointer rounded-[20px] border border-transparent bg-background hover:bg-card md:mx-6"
             onClick={() => {
               const url = exp.companyUrl;
               if (url) window.open(url, "_blank");
             }}
           >
-            <div className="flex w-full items-center justify-between gap-4 px-6 py-4 md:px-12">
+            <div className="flex w-full items-center justify-between gap-4 px-3 py-6 md:px-6">
               <div className="flex min-w-0 flex-row items-center gap-3">
                 <Avatar className={exp.roundLogo ? "" : "rounded-md"}>
                   <AvatarImage src={exp.logo} />
@@ -102,6 +144,7 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
                               className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
                               href={exp.projectCompanyUrl}
                               target="_blank"
+                              onClick={(e) => e.stopPropagation()}
                             >
                               {exp.projectCompany}
                             </a>
@@ -140,29 +183,23 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
               </div>
             </div>
           </div>
-            {index < displayedExperiences.length - 1 && (
-              <Separator className="transition-opacity" />
-            )}
-          </React.Fragment>
         ))}
       </div>
 
       <div className="flex justify-center px-6 pt-8 md:px-12">
         {hasMore ? (
           <Button
-            variant="secondary"
-            size="lg"
-            onClick={() => setVisibleCount(experiences.length)}
-            className="rounded-full px-6 [corner-shape:round]"
+            variant="pill"
+            data-wave-manual
+            onClick={(e) => showCount(experiences.length, e)}
           >
             Show more
           </Button>
         ) : visibleCount > EXPERIENCE_PAGE_SIZE ? (
           <Button
-            variant="outline"
-            size="lg"
-            onClick={() => setVisibleCount(EXPERIENCE_PAGE_SIZE)}
-            className="rounded-full px-6 [corner-shape:round]"
+            variant="pill"
+            data-wave-manual
+            onClick={(e) => showCount(EXPERIENCE_PAGE_SIZE, e)}
           >
             Show less
           </Button>

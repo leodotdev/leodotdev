@@ -73,9 +73,13 @@
   }
 }
 
-/* Zinc palette, tuned to match Tailwind v4's refined values */
+/*
+ * Zinc palette, with the surfaces taken from the distortion-wave UI kit the
+ * hover effect comes from: page, panel (--card), raised control (--secondary)
+ * and hairline (--border).
+ */
 :root {
-  --background: 0 0% 100%;
+  --background: 45 15% 95%; /* #f4f3f0 */
   --foreground: 240 10% 4%; /* zinc-950 */
 
   --muted: 240 5% 96%; /* zinc-100 */
@@ -87,13 +91,13 @@
   --card: 0 0% 100%;
   --card-foreground: 240 10% 4%;
 
-  --border: 0 0% 0% / 0.08;
+  --border: 43 11% 88%; /* #e3e1dc */
   --input: 0 0% 0% / 0.08;
 
   --primary: 240 10% 4%; /* zinc-950 */
   --primary-foreground: 0 0% 98%; /* zinc-50 */
 
-  --secondary: 240 5% 96%; /* zinc-100 */
+  --secondary: 48 15% 93%; /* #f1f0ec */
   --secondary-foreground: 240 6% 10%; /* zinc-900 */
 
   --accent: 240 5% 96%;
@@ -123,16 +127,16 @@
   --popover: 240 10% 4%;
   --popover-foreground: 0 0% 98%;
 
-  --card: 240 10% 4%;
+  --card: 240 7% 8%; /* #131316 */
   --card-foreground: 0 0% 98%;
 
-  --border: 0 0% 100% / 0.08;
+  --border: 240 8% 16%; /* #26262d */
   --input: 0 0% 100% / 0.08;
 
   --primary: 0 0% 98%;
   --primary-foreground: 240 6% 10%;
 
-  --secondary: 240 4% 16%; /* zinc-800 */
+  --secondary: 240 8% 12%; /* #1b1b20 */
   --secondary-foreground: 0 0% 98%;
 
   --accent: 240 4% 16%;
@@ -177,6 +181,18 @@
  * same radius, so every radius step is tightened to about 80% to match.
  * Pills and dots (rounded-full) are unaffected.
  */
+/*
+ * While a distortion wave plays on an element (src/lib/wave.ts), nothing in it
+ * transitions: the wave captures the element right after it changes, and a
+ * colour still easing to its new value would be captured mid-way.
+ */
+[data-waving],
+[data-waving] *,
+[data-waving] *::before,
+[data-waving] *::after {
+  transition: none !important;
+}
+
 @supports not (corner-shape: squircle) {
   :root {
     --radius: 0.4rem;

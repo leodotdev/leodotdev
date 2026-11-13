@@ -3,6 +3,8 @@ packages: []
 allowBuilds:
   esbuild: true
   lightningcss: true
+  sharp: true
   unrs-resolver: true
   workerd: true
-  sharp: true
+patchedDependencies:
+  distortion-wave@0.1.2: patches/distortion-wave@0.1.2.patch

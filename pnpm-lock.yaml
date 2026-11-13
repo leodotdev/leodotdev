@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  distortion-wave@0.1.2:
+    hash: ef092d6c4a968a804e739c9e96bce81fe281f869683abdacec47e771569d8e3d
+    path: patches/distortion-wave@0.1.2.patch
+
 importers:
 
   .:
@@ -32,6 +37,9 @@ importers:
       clsx:
         specifier: 2.1.1
         version: 2.1.1
+      distortion-wave:
+        specifier: 0.1.2
+        version: 0.1.2(patch_hash=ef092d6c4a968a804e739c9e96bce81fe281f869683abdacec47e771569d8e3d)
       drizzle-orm:
         specifier: 0.45.4
         version: 0.45.4
@@ -1721,6 +1729,10 @@ packages:
   diff@9.0.0:
     resolution: {integrity: sha512-svtcdpS8CgJyqAjEQIXdb3OjhFVVYjzGAPO8WGCmRbrml64SPw/jJD4GoE98aR7r25A0XcgrK3F02yw9R/vhQw==}
     engines: {node: '>=0.3.1'}
+
+  distortion-wave@0.1.2:
+    resolution: {integrity: sha512-p3VaXjou4zNHQnPz0s+WZNDvP5LaZvg4BCo4PlZfawElZFArZX8WvVzNxPELUHSvn6jbqKKcgwCa5in0+vRVTQ==}
+    engines: {node: '>=18'}
 
   drizzle-kit@0.31.11:
     resolution: {integrity: sha512-YCYqxTLIB2OCqf6w9/Vef13baBVbwQIPcbT4Y56AfO6B9ajZhDhD8Jkveg/hJvT/iuMloKD/IYYkyMMNhr7Kqg==}
@@ -4097,6 +4109,8 @@ snapshots:
   detect-libc@2.1.2: {}
 
   diff@9.0.0: {}
+
+  distortion-wave@0.1.2(patch_hash=ef092d6c4a968a804e739c9e96bce81fe281f869683abdacec47e771569d8e3d): {}
 
   drizzle-kit@0.31.11:
     dependencies:

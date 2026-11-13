@@ -233,8 +233,7 @@ export function LifeCalendar() {
               {year === currentYear && yearIndex > 0 && (
                 <div className="flex justify-center py-4 bg-background border-b">
                   <Button
-                    variant="outline"
-                    size="sm"
+                    variant="pill"
                     onClick={() => loadPreviousYear(year)}
                     className="flex items-center gap-2"
                   >
@@ -291,8 +290,7 @@ export function LifeCalendar() {
               {year === currentYear && yearIndex < sortedYears.length - 1 && (
                 <div className="flex justify-center py-4 bg-background border-b">
                   <Button
-                    variant="outline"
-                    size="sm"
+                    variant="pill"
                     onClick={() => loadNextYear(year)}
                     className="flex items-center gap-2"
                   >

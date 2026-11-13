@@ -19,12 +19,17 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        // The site's one button and link style: a pill on the raised surface.
+        // Pass `render` to draw it as a link. The border is kept but
+        // invisible, so the box (and the wave drawn on it) is unchanged.
+        pill: "rounded-full border border-transparent bg-secondary font-semibold text-secondary-foreground [corner-shape:round] hover:bg-secondary/80",
       },
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
+        pill: "h-[38px] px-4",
       },
     },
     defaultVariants: {
@@ -45,7 +50,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       defaultTagName: "button",
       render,
       props: mergeProps<"button">(
-        { className: cn(buttonVariants({ variant, size, className })) },
+        {
+          className: cn(
+            buttonVariants({
+              variant,
+              // a pill has one size unless told otherwise
+              size: size ?? (variant === "pill" ? "pill" : undefined),
+              className,
+            }),
+          ),
+        },
         props,
       ),
     });

@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Accordion,
   AccordionContent,
@@ -190,25 +191,25 @@ function Soon() {
               </ul>
             </CardContent>
             <CardFooter className="flex flex-col gap-4">
-              <a
-                href="https://cal.com/leo.dev/20min"
-                target="_blank"
-                className="w-full cursor-pointer rounded-full bg-muted p-3 px-5 text-center text-foreground hover:bg-accent hover:underline dark:bg-muted dark:text-foreground dark:hover:bg-accent"
+              <Button
+                variant="pill"
+                className="w-full"
+                render={<a href="https://cal.com/leo.dev/20min" target="_blank" />}
               >
                 Book a Call
-              </a>
+              </Button>
               <div className="flex items-center justify-center">
                 <Separator className="" />
                 <span className="mx-4">or</span>
                 <Separator className="" />
               </div>
-              <a
-                href="https://cal.com/leo.dev/20min"
-                target="_blank"
-                className="w-full cursor-pointer rounded-full bg-muted p-3 px-5 text-center text-foreground hover:bg-accent hover:underline dark:bg-muted dark:text-foreground dark:hover:bg-accent"
+              <Button
+                variant="pill"
+                className="w-full"
+                render={<a href="https://cal.com/leo.dev/20min" target="_blank" />}
               >
                 Subscribe Now
-              </a>
+              </Button>
             </CardFooter>
           </Card>
           <Card className="basis-1/2 ">
@@ -287,25 +288,25 @@ function Soon() {
               </ul>
             </CardContent>
             <CardFooter className="flex flex-col gap-4">
-              <a
-                href="https://cal.com/leo.dev/20min"
-                target="_blank"
-                className="w-full cursor-pointer rounded-full bg-muted p-3 px-5 text-center text-foreground hover:bg-accent hover:underline dark:bg-muted dark:text-foreground dark:hover:bg-accent"
+              <Button
+                variant="pill"
+                className="w-full"
+                render={<a href="https://cal.com/leo.dev/20min" target="_blank" />}
               >
                 Book a Call
-              </a>
+              </Button>
               <div className="flex items-center justify-center">
                 <Separator className="" />
                 <span className="mx-4">or</span>
                 <Separator className="" />
               </div>
-              <a
-                href="https://cal.com/leo.dev/20min"
-                target="_blank"
-                className="w-full cursor-pointer rounded-full bg-muted p-3 px-5 text-center text-foreground hover:bg-accent hover:underline dark:bg-muted dark:text-foreground dark:hover:bg-accent"
+              <Button
+                variant="pill"
+                className="w-full"
+                render={<a href="https://cal.com/leo.dev/20min" target="_blank" />}
               >
                 Subscribe Now
-              </a>
+              </Button>
             </CardFooter>
           </Card>
         </div>
