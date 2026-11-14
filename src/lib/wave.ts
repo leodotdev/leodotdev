@@ -9,7 +9,7 @@ const changing = new Set<Element>();
 
 const DEFAULTS: DistortionWaveOptions = {
   /** Time multiplier: above 1 is faster than the library's default. */
-  speed: 1.35,
+  speed: 1.6,
 };
 
 /** Loads the WebGL wave in the browser and compiles its shaders ahead of the first use. */
