@@ -1,5 +1,5 @@
 diff --git a/dist/distortion-wave.js b/dist/distortion-wave.js
-index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..a097827d0a6e7e7538efd22ef0a0e1d4c46c658a 100644
+index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..048c0f5e877350bc8a4f01e66884064c70d11c5a 100644
 --- a/dist/distortion-wave.js
 +++ b/dist/distortion-wave.js
 @@ -50,7 +50,9 @@ function styleText(cs, def, parentCS, isRoot, onUrl) {
@@ -88,7 +88,15 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..a097827d0a6e7e7538efd22ef0a0e1d4
    seam: 48,
    particles: 64,
    particleSize: 1.8,
-@@ -527,7 +556,9 @@ function frameState(t, c, g) {
+@@ -522,12 +551,16 @@ function frameState(t, c, g) {
+     radius,
+     swell: c.swell * smooth(0, 0.3, e),
+     energy,
+-    pull: c.pull * pre * (1 - smooth(0, 0.22, fly)),
++    // the release of the pull follows `speed` like every other duration: left at a fixed 0.22 s,
++    // a sped-up front has already gone when the content springs back, which reads as a second ripple
++    pull: c.pull * pre * (1 - smooth(0, 0.22 / (c.speed || 1), fly)),
+     glow: fly < 0 ? lift * pre : lerp(lift, 1, smooth(0, 0.07, prog)) * fade,
      clear: lerp(r0 - c.rimSoftness, reach + c.rimSoftness, easeClear((fly - c.linger) / c.rimFade)),
      hairClear: lerp(r0 - c.rimSoftness, reach + c.rimSoftness, easeClear((fly - c.linger - c.hairDelay) / c.hairFade)),
      rim: c.rimStrength * smooth(0, 0.1, prog) * (1 - smooth(0.9, 1, time / T)),
@@ -99,7 +107,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..a097827d0a6e7e7538efd22ef0a0e1d4
      launched: fly > 0,
      covered,
      settled: covered && prog >= 0.55
-@@ -610,6 +641,7 @@ uniform vec2 uOrigin;
+@@ -610,6 +643,7 @@ uniform vec2 uOrigin;
  uniform float uTilt, uSpine, uRadius, uSquash, uTime, uSwell, uEnergy, uPull, uGlow, uRim, uClear, uHairClear, uHold, uK, uSeam;
  uniform float uAmp, uLensW, uAberr, uBlurMax, uBlurNear, uBlurAhead, uBlurBehind;
  uniform float uLead, uTail, uBand, uRimW, uRimSoft, uUneven, uHairW;
@@ -107,7 +115,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..a097827d0a6e7e7538efd22ef0a0e1d4
  uniform vec3 uPal[8]; uniform int uPalN;
  out vec4 outColor;
  const float TAU = 6.28318530718;
-@@ -620,7 +652,10 @@ float h11(float x) { return fract(sin(x * 127.1) * 43758.5453); }
+@@ -620,7 +654,10 @@ float h11(float x) { return fract(sin(x * 127.1) * 43758.5453); }
  float vnoise(float x) { float i = floor(x), f = fract(x); return mix(h11(i), h11(i + 1.0), f * f * (3.0 - 2.0 * f)) * 2.0 - 1.0; }
  float sdRoundBox(vec2 p, vec2 b, vec4 r) {         // y-down space: r = (bottom-right, top-right, bottom-left, top-left)
    r.xy = (p.x > 0.0) ? r.xy : r.zw; r.x = (p.y > 0.0) ? r.x : r.y;
@@ -119,7 +127,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..a097827d0a6e7e7538efd22ef0a0e1d4
  }
  struct Front { float d; vec2 n; vec2 q; float g; };
  Front front(vec2 p) {
-@@ -637,6 +672,12 @@ Front front(vec2 p) {
+@@ -637,6 +674,12 @@ Front front(vec2 p) {
  vec4 tap(sampler2D s, vec4 rect, vec2 p, vec2 sp) {
    vec2 q = (p - rect.xy) / rect.zw;
    if (q.x < 0.0 || q.y < 0.0 || q.x > 1.0 || q.y > 1.0) return vec4(0.0);
@@ -132,7 +140,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..a097827d0a6e7e7538efd22ef0a0e1d4
    return textureLod(s, clamp((sp - rect.xy) / rect.zw, 0.0, 1.0), 0.0);
  }
  vec4 fetch3(sampler2D s0, sampler2D s1, sampler2D s2, vec4 rect, vec2 p, vec2 sp, float tn, float tf) {
-@@ -895,6 +936,7 @@ var Renderer = class {
+@@ -895,6 +938,7 @@ var Renderer = class {
      v4("uNewRect", R.new || R.old);
      v4("uShape", R.shape);
      gl.uniform4f(u("uRadii"), R.radii.br, R.radii.tr, R.radii.bl, R.radii.tl);
@@ -140,7 +148,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..a097827d0a6e7e7538efd22ef0a0e1d4
      gl.uniform1i(u("uMode"), f.mode);
      gl.uniform1f(u("uFade"), f.fade || 0);
      gl.uniform1f(u("uBoxless"), R.boxless ? 1 : 0);
-@@ -1095,6 +1137,14 @@ function clippedShape(el, rect, radii) {
+@@ -1095,6 +1139,14 @@ function clippedShape(el, rect, radii) {
    const f = Math.min(1, fit(w, r.tl, r.tr), fit(w, r.bl, r.br), fit(h, r.tl, r.bl), fit(h, r.tr, r.br));
    return { x: x0, y: y0, w, h, radii: { tl: r.tl * f, tr: r.tr * f, br: r.br * f, bl: r.bl * f }, clipped: changed };
  }
@@ -155,7 +163,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..a097827d0a6e7e7538efd22ef0a0e1d4
  function isFixed(el) {
    for (let n = el; n && n !== document.documentElement; n = n.parentElement) if (getComputedStyle(n).position === "fixed") return true;
    return false;
-@@ -1112,6 +1162,7 @@ function measure(el) {
+@@ -1112,6 +1164,7 @@ function measure(el) {
      opacity: cs.opacity,
      radii,
      boxless: !hasVisibleBox(cs),
@@ -163,7 +171,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..a097827d0a6e7e7538efd22ef0a0e1d4
      visible: x1 > x0 && y1 > y0,
      shape: { x: sh.x + sx, y: sh.y + sy, w: sh.w, h: sh.h },
      shapeRadii: sh.radii,
-@@ -1141,8 +1192,15 @@ function deferred() {
+@@ -1141,8 +1194,15 @@ function deferred() {
    return { p, res, rej };
  }
  function pickDpr(m, maxTex) {
@@ -181,7 +189,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..a097827d0a6e7e7538efd22ef0a0e1d4
  }
  var prepared = /* @__PURE__ */ new WeakMap();
  function prepareWave(target) {
-@@ -1172,6 +1230,8 @@ var DEFAULTS = { variant: "auto", palette: "aurora", speed: 1, particles: true,
+@@ -1172,6 +1232,8 @@ var DEFAULTS = { variant: "auto", palette: "aurora", speed: 1, particles: true,
  var WaveTransition = class {
    constructor(target, update, opts) {
      this.target = target;
@@ -190,7 +198,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..a097827d0a6e7e7538efd22ef0a0e1d4
      this.update = update || (() => {
      });
      this.o = { ...DEFAULTS, ...opts };
-@@ -1216,7 +1276,7 @@ var WaveTransition = class {
+@@ -1216,7 +1278,7 @@ var WaveTransition = class {
      if (!r || this._skipped) return this._plain();
      const dpr = pickDpr(before, r.maxTex);
      let t0 = performance.now();
@@ -199,7 +207,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..a097827d0a6e7e7538efd22ef0a0e1d4
      this.metrics.captureBefore = Math.round(performance.now() - t0);
      if (this._skipped) return this._plain();
      const base = { ...PRESETS[this._variant(before)] || BASE };
-@@ -1231,7 +1291,7 @@ var WaveTransition = class {
+@@ -1231,7 +1293,7 @@ var WaveTransition = class {
      this.dots = new Float32Array(Math.max(this.particles.length, 1) * 4);
      this.origin = this._originPage(before);
      this.canvasPage = before.page;
@@ -208,7 +216,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..a097827d0a6e7e7538efd22ef0a0e1d4
      t0 = performance.now();
      r.setLayer("old", oldShot.canvas, cfg.blurNear * this.dpr, cfg.blur * this.dpr);
      this.metrics.upload = Math.round(performance.now() - t0);
-@@ -1242,13 +1302,16 @@ var WaveTransition = class {
+@@ -1242,13 +1304,16 @@ var WaveTransition = class {
      this._d.ready.res();
      this._startLoop();
      await this._runUpdate();
@@ -229,7 +237,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..a097827d0a6e7e7538efd22ef0a0e1d4
      this.metrics.captureAfter = Math.round(performance.now() - t0);
      if (this._done) return;
      if (!newShot) {
-@@ -1258,7 +1321,7 @@ var WaveTransition = class {
+@@ -1258,7 +1323,7 @@ var WaveTransition = class {
      r.setLayer("new", newShot.canvas, cfg.blurNear * this.dpr, cfg.blur * this.dpr);
      this.after = after;
      this.canvasPage = union(before.page, after.page);
@@ -238,7 +246,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..a097827d0a6e7e7538efd22ef0a0e1d4
      this.shapes = { from: rel(before.shape, this.canvasPage), to: rel(after.shape, this.canvasPage), r0: before.shapeRadii, r1: after.shapeRadii };
      this._resizeCanvas();
      this.gateOpen = true;
-@@ -1323,6 +1386,9 @@ var WaveTransition = class {
+@@ -1323,6 +1388,9 @@ var WaveTransition = class {
      for (const [k, v, pr] of this._saved) {
        if (v) this.target.style.setProperty(k, v, pr);
        else this.target.style.removeProperty(k);
