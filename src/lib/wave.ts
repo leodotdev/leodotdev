@@ -4,6 +4,8 @@ import type { DistortionWaveOptions, WaveTransition } from "distortion-wave";
 let lib: typeof WaveLib | null = null;
 let loading: Promise<void> | null = null;
 const active = new Map<Element, WaveTransition>();
+/** Targets whose wave is carrying a DOM change (the theme switch's page wave). */
+const changing = new Set<Element>();
 
 const DEFAULTS: DistortionWaveOptions = {
   /** Time multiplier: above 1 is faster than the library's default. */
@@ -60,7 +62,8 @@ export const isWaving = (el: Element) => active.has(el);
  *
  * A wave hides its target while it plays, so a wave on an element inside or
  * around the new target is ended first; otherwise the new capture would show
- * a hole where that element is.
+ * a hole where that element is. The exception is a wave carrying a change,
+ * which is never ended by a hover inside it.
  */
 export function wave(
   target: Element | null,
@@ -81,12 +84,19 @@ export function wave(
     target.setAttribute("data-waving", "");
     const t = w.distortionWave(target, update, { ...DEFAULTS, ...options });
     active.set(target, t);
+    if (update) changing.add(target);
     return t.finished.finally(() => {
       if (active.get(target) !== t) return;
       active.delete(target);
+      changing.delete(target);
       target.removeAttribute("data-waving");
     });
   };
+  // A wave that is carrying a change plays to the end: a plain hover or tap
+  // wave on something inside it is dropped instead of cutting it short.
+  if (!update)
+    for (const el of changing)
+      if (el !== target && el.contains(target)) return Promise.resolve();
   const overlapping = [...active].filter(
     ([el]) => el !== target && (el.contains(target) || target.contains(el)),
   );

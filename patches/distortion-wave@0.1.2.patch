@@ -1,5 +1,5 @@
 diff --git a/dist/distortion-wave.js b/dist/distortion-wave.js
-index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..bba540a58e1752fcf51635eb6b41c1833eb5c639 100644
+index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..a097827d0a6e7e7538efd22ef0a0e1d4c46c658a 100644
 --- a/dist/distortion-wave.js
 +++ b/dist/distortion-wave.js
 @@ -50,7 +50,9 @@ function styleText(cs, def, parentCS, isRoot, onUrl) {
@@ -13,7 +13,74 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..bba540a58e1752fcf51635eb6b41c183
      if (onUrl && URL_PROPS.has(p) && v.includes("url(")) onUrl(p, v);
      out += `${p}:${v};`;
    }
-@@ -390,6 +392,7 @@ var BASE = {
+@@ -194,7 +196,7 @@ function cloneTree(src, parentCS, isRoot, ctx) {
+   if (IGNORE_TAGS.has(tag) || src.hasAttribute("data-dw-ignore")) return null;
+   const cs = getComputedStyle(src);
+   if (cs.display === "none") return null;
+-  let clone;
++  let clone, plainBox = false;
+   if (tag === "canvas" || tag === "video") {
+     clone = document.createElement("img");
+     try {
+@@ -204,6 +206,11 @@ function cloneTree(src, parentCS, isRoot, ctx) {
+     }
+   } else if (tag === "iframe" || tag === "embed" || tag === "object") {
+     clone = document.createElement("div");
++  } else if (tag === "button" && src.namespaceURI === HTML_NS) {
++    // A <button> is drawn as a plain box carrying the same computed style. Safari lays out real
++    // buttons inside an SVG image a few px lower than on the page, so they jump at hand-back.
++    clone = document.createElement("div");
++    plainBox = true;
+   } else {
+     clone = src.cloneNode(false);
+   }
+@@ -226,7 +233,19 @@ function cloneTree(src, parentCS, isRoot, ctx) {
+     }
+   }
+   const urlProps = [];
+-  let st = styleText(cs, defaultsFor(src), parentCS, isRoot, (p, v) => urlProps.push([p, v]));
++  let st = styleText(cs, defaultsFor(plainBox ? clone : src), parentCS, isRoot, (p, v) => urlProps.push([p, v]));
++  // Sizes that are `auto` on the page stay `auto` in the copy (Chromium only: computedStyleMap
++  // keeps the keyword, getComputedStyle resolves it to px). Pinning them to the rounded px value
++  // can leave a flex row a hair too narrow for its children once the copy is zoomed, and it wraps.
++  if (isChromium && !isRoot && src.namespaceURI === HTML_NS && clone.localName !== "img" && (clone.localName === tag || plainBox) && src.computedStyleMap) {
++    try {
++      const map = src.computedStyleMap();
++      for (const prop of ["width", "height", "inline-size", "block-size"]) {
++        if (String(map.get(prop)) === "auto") st = st.replace(new RegExp("(^|;)" + prop + ":[^;]*;"), "$1" + prop + ":auto;");
++      }
++    } catch {
++    }
++  }
+   if (isRoot) st += ctx.rootOverrides(cs);
+   st += "transition:none;animation:none;";
+   clone.setAttribute("style", st);
+@@ -285,7 +304,14 @@ async function snapshotElement(el, { dpr = 1, clip = null, rootOpacity = null }
+   const fonts = await embeddedFonts();
+   const xml = new XMLSerializer().serializeToString(clone);
+   const cw = Math.max(1, Math.round(c.w)), ch = Math.max(1, Math.round(c.h));
+-  const svg = `<svg xmlns="${SVG_NS}" width="${cw}" height="${ch}"><foreignObject x="0" y="0" width="${cw}" height="${ch}"><div xmlns="${HTML_NS}" style="position:relative;width:${cw}px;height:${ch}px;overflow:hidden;margin:0;padding:0"><style>${escapeXml(fonts + ctx.css)}</style><div style="position:absolute;left:${-c.x}px;top:${-c.y}px;width:${w}px;height:${h}px">${xml}</div></div></foreignObject></svg>`;
++  // Chromium lays the live page out in device pixels, so text is snapped to half a CSS px on a 2x
++  // screen. An SVG image is laid out at 1x and only scaled up when drawn, which snaps text to whole
++  // CSS px: every glyph lands a fraction off and the page twitches at hand-back. Zooming the
++  // snapshot's content by the pixel ratio makes it lay out at the screen's scale too. Other
++  // engines already match (Safari), so they are left alone.
++  const z = isChromium && dpr > 1 ? dpr : 1;
++  const sw = Math.max(1, Math.round(cw * z)), sh = Math.max(1, Math.round(ch * z));
++  const svg = `<svg xmlns="${SVG_NS}" width="${sw}" height="${sh}"><foreignObject x="0" y="0" width="${sw}" height="${sh}"><div xmlns="${HTML_NS}" style="zoom:${z};position:relative;width:${cw}px;height:${ch}px;overflow:hidden;margin:0;padding:0"><style>${escapeXml(fonts + ctx.css)}</style><div style="position:absolute;left:${-c.x}px;top:${-c.y}px;width:${w}px;height:${h}px">${xml}</div></div></foreignObject></svg>`;
+   const img = new Image();
+   img.decoding = "async";
+   img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+@@ -299,6 +325,8 @@ async function snapshotElement(el, { dpr = 1, clip = null, rootOpacity = null }
+   return { canvas, w: cw, h: ch, dpr, ms: performance.now() - t0, bytes: svg.length };
+ }
+ 
++var isChromium = typeof navigator !== "undefined" && !!navigator.userAgentData?.brands?.some((b) => b.brand === "Chromium");
++
+ // src/core.js
+ var TAU = Math.PI * 2;
+ var clamp = (x, a = 0, b = 1) => Math.min(Math.max(x, a), b);
+@@ -390,6 +418,7 @@ var BASE = {
    hairWidth: 1.5,
    lean: 0.9,
    margin: 60,
@@ -21,7 +88,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..bba540a58e1752fcf51635eb6b41c183
    seam: 48,
    particles: 64,
    particleSize: 1.8,
-@@ -527,7 +530,9 @@ function frameState(t, c, g) {
+@@ -527,7 +556,9 @@ function frameState(t, c, g) {
      clear: lerp(r0 - c.rimSoftness, reach + c.rimSoftness, easeClear((fly - c.linger) / c.rimFade)),
      hairClear: lerp(r0 - c.rimSoftness, reach + c.rimSoftness, easeClear((fly - c.linger - c.hairDelay) / c.hairFade)),
      rim: c.rimStrength * smooth(0, 0.1, prog) * (1 - smooth(0.9, 1, time / T)),
@@ -32,7 +99,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..bba540a58e1752fcf51635eb6b41c183
      launched: fly > 0,
      covered,
      settled: covered && prog >= 0.55
-@@ -610,6 +615,7 @@ uniform vec2 uOrigin;
+@@ -610,6 +641,7 @@ uniform vec2 uOrigin;
  uniform float uTilt, uSpine, uRadius, uSquash, uTime, uSwell, uEnergy, uPull, uGlow, uRim, uClear, uHairClear, uHold, uK, uSeam;
  uniform float uAmp, uLensW, uAberr, uBlurMax, uBlurNear, uBlurAhead, uBlurBehind;
  uniform float uLead, uTail, uBand, uRimW, uRimSoft, uUneven, uHairW;
@@ -40,7 +107,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..bba540a58e1752fcf51635eb6b41c183
  uniform vec3 uPal[8]; uniform int uPalN;
  out vec4 outColor;
  const float TAU = 6.28318530718;
-@@ -620,7 +626,10 @@ float h11(float x) { return fract(sin(x * 127.1) * 43758.5453); }
+@@ -620,7 +652,10 @@ float h11(float x) { return fract(sin(x * 127.1) * 43758.5453); }
  float vnoise(float x) { float i = floor(x), f = fract(x); return mix(h11(i), h11(i + 1.0), f * f * (3.0 - 2.0 * f)) * 2.0 - 1.0; }
  float sdRoundBox(vec2 p, vec2 b, vec4 r) {         // y-down space: r = (bottom-right, top-right, bottom-left, top-left)
    r.xy = (p.x > 0.0) ? r.xy : r.zw; r.x = (p.y > 0.0) ? r.x : r.y;
@@ -52,7 +119,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..bba540a58e1752fcf51635eb6b41c183
  }
  struct Front { float d; vec2 n; vec2 q; float g; };
  Front front(vec2 p) {
-@@ -637,6 +646,12 @@ Front front(vec2 p) {
+@@ -637,6 +672,12 @@ Front front(vec2 p) {
  vec4 tap(sampler2D s, vec4 rect, vec2 p, vec2 sp) {
    vec2 q = (p - rect.xy) / rect.zw;
    if (q.x < 0.0 || q.y < 0.0 || q.x > 1.0 || q.y > 1.0) return vec4(0.0);
@@ -65,7 +132,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..bba540a58e1752fcf51635eb6b41c183
    return textureLod(s, clamp((sp - rect.xy) / rect.zw, 0.0, 1.0), 0.0);
  }
  vec4 fetch3(sampler2D s0, sampler2D s1, sampler2D s2, vec4 rect, vec2 p, vec2 sp, float tn, float tf) {
-@@ -895,6 +910,7 @@ var Renderer = class {
+@@ -895,6 +936,7 @@ var Renderer = class {
      v4("uNewRect", R.new || R.old);
      v4("uShape", R.shape);
      gl.uniform4f(u("uRadii"), R.radii.br, R.radii.tr, R.radii.bl, R.radii.tl);
@@ -73,7 +140,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..bba540a58e1752fcf51635eb6b41c183
      gl.uniform1i(u("uMode"), f.mode);
      gl.uniform1f(u("uFade"), f.fade || 0);
      gl.uniform1f(u("uBoxless"), R.boxless ? 1 : 0);
-@@ -1095,6 +1111,14 @@ function clippedShape(el, rect, radii) {
+@@ -1095,6 +1137,14 @@ function clippedShape(el, rect, radii) {
    const f = Math.min(1, fit(w, r.tl, r.tr), fit(w, r.bl, r.br), fit(h, r.tl, r.bl), fit(h, r.tr, r.br));
    return { x: x0, y: y0, w, h, radii: { tl: r.tl * f, tr: r.tr * f, br: r.br * f, bl: r.bl * f }, clipped: changed };
  }
@@ -88,7 +155,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..bba540a58e1752fcf51635eb6b41c183
  function isFixed(el) {
    for (let n = el; n && n !== document.documentElement; n = n.parentElement) if (getComputedStyle(n).position === "fixed") return true;
    return false;
-@@ -1112,6 +1136,7 @@ function measure(el) {
+@@ -1112,6 +1162,7 @@ function measure(el) {
      opacity: cs.opacity,
      radii,
      boxless: !hasVisibleBox(cs),
@@ -96,7 +163,25 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..bba540a58e1752fcf51635eb6b41c183
      visible: x1 > x0 && y1 > y0,
      shape: { x: sh.x + sx, y: sh.y + sy, w: sh.w, h: sh.h },
      shapeRadii: sh.radii,
-@@ -1172,6 +1197,8 @@ var DEFAULTS = { variant: "auto", palette: "aurora", speed: 1, particles: true,
+@@ -1141,8 +1192,15 @@ function deferred() {
+   return { p, res, rej };
+ }
+ function pickDpr(m, maxTex) {
+-  const area = Math.max(m.clip.w * m.clip.h, 1);
+-  return Math.max(0.5, Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(42e5 / area), maxTex / Math.max(m.clip.w, m.clip.h, 1)));
++  const area = Math.max(m.clip.w * m.clip.h, 1), side = Math.max(m.clip.w, m.clip.h, 1);
++  // Snapshot at the screen's own pixel ratio whenever it fits (or half of it for a very large
++  // target). At an in-between ratio the snapshot is resampled onto the screen, so it sits a
++  // fraction of a pixel off the real page and everything nudges when the page takes over.
++  const dpr = window.devicePixelRatio || 1, native = dpr <= 2.5 ? dpr : 2;
++  const fits = (r) => r * r * area <= 16e6 && r * side <= maxTex;
++  if (fits(native)) return native;
++  if (fits(native / 2)) return native / 2;
++  return Math.max(0.5, Math.min(native, Math.sqrt(16e6 / area), maxTex / side));
+ }
+ var prepared = /* @__PURE__ */ new WeakMap();
+ function prepareWave(target) {
+@@ -1172,6 +1230,8 @@ var DEFAULTS = { variant: "auto", palette: "aurora", speed: 1, particles: true,
  var WaveTransition = class {
    constructor(target, update, opts) {
      this.target = target;
@@ -105,7 +190,16 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..bba540a58e1752fcf51635eb6b41c183
      this.update = update || (() => {
      });
      this.o = { ...DEFAULTS, ...opts };
-@@ -1231,7 +1258,7 @@ var WaveTransition = class {
+@@ -1216,7 +1276,7 @@ var WaveTransition = class {
+     if (!r || this._skipped) return this._plain();
+     const dpr = pickDpr(before, r.maxTex);
+     let t0 = performance.now();
+-    const oldShot = takePrepared(target, before) || await snapshotElement(target, { dpr: Math.min(dpr, 2), clip: before.clip });
++    const oldShot = takePrepared(target, before) || await snapshotElement(target, { dpr, clip: before.clip });
+     this.metrics.captureBefore = Math.round(performance.now() - t0);
+     if (this._skipped) return this._plain();
+     const base = { ...PRESETS[this._variant(before)] || BASE };
+@@ -1231,7 +1291,7 @@ var WaveTransition = class {
      this.dots = new Float32Array(Math.max(this.particles.length, 1) * 4);
      this.origin = this._originPage(before);
      this.canvasPage = before.page;
@@ -114,7 +208,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..bba540a58e1752fcf51635eb6b41c183
      t0 = performance.now();
      r.setLayer("old", oldShot.canvas, cfg.blurNear * this.dpr, cfg.blur * this.dpr);
      this.metrics.upload = Math.round(performance.now() - t0);
-@@ -1242,13 +1269,16 @@ var WaveTransition = class {
+@@ -1242,13 +1302,16 @@ var WaveTransition = class {
      this._d.ready.res();
      this._startLoop();
      await this._runUpdate();
@@ -135,7 +229,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..bba540a58e1752fcf51635eb6b41c183
      this.metrics.captureAfter = Math.round(performance.now() - t0);
      if (this._done) return;
      if (!newShot) {
-@@ -1258,7 +1288,7 @@ var WaveTransition = class {
+@@ -1258,7 +1321,7 @@ var WaveTransition = class {
      r.setLayer("new", newShot.canvas, cfg.blurNear * this.dpr, cfg.blur * this.dpr);
      this.after = after;
      this.canvasPage = union(before.page, after.page);
@@ -144,7 +238,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..bba540a58e1752fcf51635eb6b41c183
      this.shapes = { from: rel(before.shape, this.canvasPage), to: rel(after.shape, this.canvasPage), r0: before.shapeRadii, r1: after.shapeRadii };
      this._resizeCanvas();
      this.gateOpen = true;
-@@ -1323,6 +1353,9 @@ var WaveTransition = class {
+@@ -1323,6 +1386,9 @@ var WaveTransition = class {
      for (const [k, v, pr] of this._saved) {
        if (v) this.target.style.setProperty(k, v, pr);
        else this.target.style.removeProperty(k);
