@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { TbArrowUpRight, TbCopy, TbChevronDown } from "react-icons/tb";
+import { flushSync } from "react-dom";
+import { TbArrowUpRight, TbCheck, TbCopy, TbChevronDown } from "react-icons/tb";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { wave } from "@/lib/wave";
 import {
   DropdownMenu,
@@ -26,11 +28,15 @@ export function ContactMenu() {
       () => setOpen(false),
     );
 
+  // Copying says so in place: the wave carries the item's label to
+  // "Copied!", then the menu closes. The label resets when it next opens.
+  const [copied, setCopied] = useState(false);
   const copyEmail = (e: React.MouseEvent<HTMLElement>) => {
     void navigator.clipboard.writeText("leo@leo.dev");
-    void waveThenClose(e).then(() => {
-      alert("My email address—leo@leo.dev—has been copied to your clipboard.");
-    });
+    void wave(e.currentTarget, () => flushSync(() => setCopied(true)), {
+      focus: e.nativeEvent,
+      speed: 2,
+    }).then(() => setOpen(false));
   };
 
   const links = [
@@ -52,7 +58,13 @@ export function ContactMenu() {
   );
 
   return (
-    <DropdownMenu open={open} onOpenChange={setOpen}>
+    <DropdownMenu
+      open={open}
+      onOpenChange={(next) => {
+        if (next) setCopied(false);
+        setOpen(next);
+      }}
+    >
       <DropdownMenuTrigger render={<Button variant="pill" data-wave-click />}>
         Contact
         <TbChevronDown className="-mr-1 ml-1 h-4 w-4 text-muted-foreground" />
@@ -64,8 +76,23 @@ export function ContactMenu() {
           onClick={copyEmail}
           className="flex cursor-pointer items-center"
         >
-          Copy my email
-          <TbCopy className="ml-1 h-4 w-4 text-muted-foreground" />
+          {/* both labels share one cell, so the menu keeps its width */}
+          <span className="grid">
+            <span className={cn("col-start-1 row-start-1", copied && "invisible")}>
+              Copy my email
+            </span>
+            <span
+              aria-hidden={!copied}
+              className={cn("col-start-1 row-start-1", !copied && "invisible")}
+            >
+              Copied!
+            </span>
+          </span>
+          {copied ? (
+            <TbCheck className="ml-1 h-4 w-4 text-muted-foreground" />
+          ) : (
+            <TbCopy className="ml-1 h-4 w-4 text-muted-foreground" />
+          )}
         </DropdownMenuItem>
         {links.slice(1).map(link)}
       </DropdownMenuContent>

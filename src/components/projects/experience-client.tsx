@@ -84,7 +84,7 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
 
   return (
     <div id="experience" ref={sectionRef}>
-      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-6 pb-12 md:px-12">
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-6 pb-6 md:px-12">
         <div className="font-semibold">Experience</div>
         <div className="flex flex-wrap gap-2">
           <Button

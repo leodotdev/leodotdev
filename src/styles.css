@@ -109,6 +109,9 @@
   --ring: 240 4% 64%; /* zinc-400 */
 
   --radius: 0.5rem;
+  /* dropdown menu: the panel, and its items (panel minus the 4px padding) */
+  --radius-menu: 20px;
+  --radius-menu-item: 16px;
 
   --subtle: 240 5% 96%;
   --subtle-foreground: 240 6% 10%;
@@ -201,6 +204,9 @@
     --radius-2xl: 0.8rem;
     --radius-3xl: 1.2rem;
     --radius-4xl: 1.6rem;
+    /* a plain round corner looks much rounder than a squircle of the same radius */
+    --radius-menu: 12px;
+    --radius-menu-item: 8px;
   }
 }
 

@@ -35,7 +35,7 @@ export function ReferencesScroll({ references: allReferences }: ReferencesScroll
 
   return (
     <div id="references" ref={sectionRef}>
-      <div className="px-6 pb-12 md:px-12">
+      <div className="px-6 pb-6 md:px-12">
         <div className="font-semibold">References</div>
       </div>
 

@@ -1,6 +1,18 @@
 import { useEffect } from "react";
 import { endWave, isTap, isWaving, loadWave, pointer, wave } from "@/lib/wave";
 
+/**
+ * Hover and tap waves keep the library's full palette, warm colours included,
+ * but drop two things that turn stark on a light card: the crisp hairline the
+ * wave leaves on the element's outline (a hard orange arc at the corner), and
+ * part of the colour-channel split, which fringes dark text in orange.
+ * A negative width is what switches the hairline off completely.
+ */
+const QUIET = {
+  hairWidth: -2,
+  aberration: 0.2,
+};
+
 /** How long the pointer must rest on an element before its hover wave starts. */
 const HOVER_DWELL_MS = 70;
 
@@ -59,6 +71,7 @@ export function WaveEffects() {
         if (!el.isConnected || !el.matches(":hover") || isWaving(el)) return;
         handedBack.delete(el);
         void wave(el, undefined, {
+          ...QUIET,
           focus: e,
           onSettled: () => handedBack.add(el),
         });
@@ -79,7 +92,7 @@ export function WaveEffects() {
       // one only where asked for. Touch and pen: the tap is the trigger.
       if (!isTap(e) && !e.target.closest("[data-wave-click]")) return;
       if (!el) return;
-      wave(el, undefined, { focus: e });
+      void wave(el, undefined, { ...QUIET, focus: e });
     };
 
     document.addEventListener("pointerover", onOver);
