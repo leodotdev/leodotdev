@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { flushSync } from "react-dom";
 import { TbArrowUpRight, TbCheck, TbCopy, TbChevronDown } from "react-icons/tb";
+import { GridSwitcher } from "@/components/GridSwitcher";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -102,12 +103,13 @@ export function ContactMenu() {
 
 export function Navigation({ children }: NavigationProps) {
   return (
-    <div className="border-x border-b bg-background">
+    <div className="border-b bg-background">
       <div className="mx-auto flex max-w-[960px] items-center justify-between px-6 py-4 md:px-12">
         <div className="-mx-2 flex flex-1 flex-wrap items-center gap-2">
           {children}
-          <div className="flex h-10 items-center px-2">
+          <div className="flex h-10 items-center gap-4 px-2">
             <ThemeSwitcher />
+            <GridSwitcher />
           </div>
         </div>
         <div className="flex">

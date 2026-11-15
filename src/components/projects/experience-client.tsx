@@ -16,7 +16,7 @@ function CompanyLink({ exp }: { exp: Experience }) {
   if (!exp.companyUrl) return <span>{exp.company}</span>;
   return (
     <a
-      className="group-hover/item:text-blue-500 group-hover/item:underline"
+      className="group-hover/item:text-blue group-hover/item:underline"
       href={exp.companyUrl}
       target="_blank"
       onClick={(e) => e.stopPropagation()}
@@ -44,7 +44,7 @@ function ProjectLinks({ exp }: { exp: Experience }) {
           {i > 0 && (i === names.length - 1 ? " & " : ", ")}
           {urls[i] ? (
             <a
-              className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+              className="underline decoration-dotted hover:text-blue hover:decoration-solid"
               href={urls[i]}
               target="_blank"
               onClick={(e) => e.stopPropagation()}
@@ -115,13 +115,13 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
           <div
             key={exp.id}
             data-wave
-            className="group/item mx-3 cursor-pointer rounded-[20px] border border-transparent bg-background hover:bg-card md:mx-6"
+            className="group/item cursor-pointer rounded-[20px] border border-transparent bg-background hover:bg-card md:mx-6"
             onClick={() => {
               const url = exp.companyUrl;
               if (url) window.open(url, "_blank");
             }}
           >
-            <div className="flex w-full items-center justify-between gap-4 px-3 py-6 md:px-6">
+            <div className="flex w-full items-center justify-between gap-4 p-6">
               <div className="flex min-w-0 flex-row items-center gap-3">
                 <Avatar className={exp.roundLogo ? "" : "rounded-md"}>
                   <AvatarImage src={exp.logo} />
@@ -141,7 +141,7 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
                           Client:{" "}
                           {exp.projectCompanyUrl ? (
                             <a
-                              className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+                              className="underline decoration-dotted hover:text-blue hover:decoration-solid"
                               href={exp.projectCompanyUrl}
                               target="_blank"
                               onClick={(e) => e.stopPropagation()}

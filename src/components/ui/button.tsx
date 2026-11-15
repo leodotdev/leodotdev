@@ -24,7 +24,7 @@ const buttonVariants = cva(
         // invisible, so the box (and the wave drawn on it) is unchanged.
         // In the light theme the fill is the panel colour, the same white a
         // list row takes on hover; the dark theme keeps the raised surface.
-        pill: "rounded-full border border-transparent bg-card font-semibold text-secondary-foreground [corner-shape:round] hover:bg-card/80 dark:bg-secondary dark:hover:bg-secondary/80",
+        pill: "rounded-full border border-transparent bg-card font-semibold text-secondary-foreground [corner-shape:round] hover:bg-card/80",
       },
       size: {
         default: "h-10 px-4 py-2",

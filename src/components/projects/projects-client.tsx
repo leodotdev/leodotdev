@@ -139,7 +139,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
       className={`border-t pt-12 ${
         viewMode === "grid"
           ? "mx-[calc(50%_-_50vw)] overflow-x-hidden"
-          : "border-x"
+          : ""
       }`}
     >
       <div className="px-6 pb-12 md:px-12">
@@ -189,7 +189,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
             >
               <div className="flex items-baseline">
                 <span>{category.title}</span>
-                <sup className="ml-0.5 text-xs text-zinc-500">
+                <sup className="ml-0.5 text-xs text-muted-foreground">
                   {categoryCounts[category.value] || 0}
                 </sup>
               </div>
@@ -225,7 +225,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex flex-col md:flex-row md:gap-2">
-                        <div className="underline decoration-dotted group-hover/item:text-blue-500 group-hover/item:decoration-solid">
+                        <div className="underline decoration-dotted group-hover/item:text-blue group-hover/item:decoration-solid">
                           {project.name}
                         </div>
                         <span className="hidden text-muted-foreground md:inline">
@@ -312,7 +312,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                     </div>
                   )}
                   <div className="absolute inset-x-0 bottom-0 hidden bg-linear-to-t from-black/95 via-black/70 to-transparent p-3 pt-8 opacity-0 transition-opacity group-hover:opacity-100 md:block">
-                    <div className="truncate text-white underline decoration-dotted group-hover:text-blue-400 group-hover:decoration-solid">
+                    <div className="truncate text-white underline decoration-dotted group-hover:text-blue group-hover:decoration-solid">
                       {project.name}
                     </div>
                     <div className="truncate text-xs text-white/70">
@@ -321,7 +321,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                   </div>
                 </div>
                 <div className="mt-2 md:hidden">
-                  <div className="truncate underline decoration-dotted group-hover:text-blue-500 group-hover:decoration-solid">
+                  <div className="truncate underline decoration-dotted group-hover:text-blue group-hover:decoration-solid">
                     {project.name}
                   </div>
                   <div className="truncate text-xs text-muted-foreground">

@@ -25,20 +25,20 @@ const monthNames = [
 
 const dayHeaders = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
-// Colors for each month using Tailwind/shadcn palette
+// A tint of a system accent for each month
 const monthColors: { [key: number]: string } = {
-  0: "bg-yellow-200 dark:bg-yellow-900/30", // Jan
-  1: "bg-yellow-200 dark:bg-yellow-900/30", // Feb
-  2: "bg-orange-200 dark:bg-orange-900/30", // Mar
-  3: "bg-red-300 dark:bg-red-900/30", // Apr
-  4: "bg-pink-300 dark:bg-pink-900/30", // May
-  5: "bg-pink-400 dark:bg-pink-900/40", // Jun
-  6: "bg-purple-300 dark:bg-purple-900/30", // Jul
-  7: "bg-purple-400 dark:bg-purple-900/40", // Aug
-  8: "bg-blue-300 dark:bg-blue-900/30", // Sep
-  9: "bg-cyan-300 dark:bg-cyan-900/30", // Oct
-  10: "bg-green-300 dark:bg-green-900/30", // Nov
-  11: "bg-green-400 dark:bg-green-900/40", // Dec
+  0: "bg-yellow/30 dark:bg-yellow/20", // Jan
+  1: "bg-yellow/30 dark:bg-yellow/20", // Feb
+  2: "bg-orange/30 dark:bg-orange/20", // Mar
+  3: "bg-red/40 dark:bg-red/20", // Apr
+  4: "bg-pink/40 dark:bg-pink/20", // May
+  5: "bg-pink/55 dark:bg-pink/30", // Jun
+  6: "bg-purple/40 dark:bg-purple/20", // Jul
+  7: "bg-purple/55 dark:bg-purple/30", // Aug
+  8: "bg-blue/40 dark:bg-blue/20", // Sep
+  9: "bg-cyan/40 dark:bg-cyan/20", // Oct
+  10: "bg-green/40 dark:bg-green/20", // Nov
+  11: "bg-green/55 dark:bg-green/30", // Dec
 };
 
 function getDaysInMonth(year: number, month: number): CalendarDay[] {
@@ -210,7 +210,7 @@ export function LifeCalendar() {
                 key={`${weekIndex}-${dayIndex}`} 
                 className={cn(
                   "border-r py-2 text-center text-xs font-semibold",
-                  (dayIndex === 0 || dayIndex === 6) && "bg-orange-100 dark:bg-orange-900/20"
+                  (dayIndex === 0 || dayIndex === 6) && "bg-orange/15 dark:bg-orange/15"
                 )}
               >
                 {day}
@@ -275,7 +275,7 @@ export function LifeCalendar() {
                           "border-r py-2 text-center text-xs transition-all",
                           !day.isCurrentMonth || day.dayNumber === 0 && "bg-muted/50 text-muted-foreground",
                           day.isCurrentMonth && day.dayNumber > 0 && !day.isToday && "bg-background",
-                          day.isWeekend && day.isCurrentMonth && day.dayNumber > 0 && !day.isToday && "bg-orange-100 dark:bg-orange-900/20",
+                          day.isWeekend && day.isCurrentMonth && day.dayNumber > 0 && !day.isToday && "bg-orange/15 dark:bg-orange/15",
                           day.isToday && "bg-destructive text-destructive-foreground font-bold"
                         )}
                       >

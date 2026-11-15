@@ -62,7 +62,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <ThemeProvider>
           {/* #app is what the theme switch's wave covers: body can't be a target */}
           <div id="app" className="bg-background">
-            <div className="site-frame mx-auto min-h-screen max-w-[960px] border-x bg-background">
+            <div className="site-frame mx-auto min-h-screen max-w-[960px] bg-background min-[961px]:border-x">
               {children}
             </div>
           </div>

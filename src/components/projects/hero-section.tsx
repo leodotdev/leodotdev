@@ -1,4 +1,5 @@
 import { ContactMenu } from "@/components/Navigation";
+import { GridSwitcher } from "@/components/GridSwitcher";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 
 export function HeroSection() {
@@ -12,6 +13,7 @@ export function HeroSection() {
         <div className="flex items-center gap-4">
           <ContactMenu />
           <ThemeSwitcher />
+          <GridSwitcher />
         </div>
       </div>
     </div>

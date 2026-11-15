@@ -1,7 +1,6 @@
 import { Separator } from "@/components/ui/separator"
 import { ExperienceClient } from "@/components/projects/experience-client"
 import { HeroSection } from "@/components/projects/hero-section"
-import { ProjectsPageClient } from "@/components/projects/projects-page-client"
 import { ProjectsWrapper } from "@/components/projects/projects-wrapper"
 import { ReferencesScroll } from "@/components/projects/references-scroll"
 // import { ProjectsClient } from "@/components/projects/projects-client"
@@ -16,7 +15,7 @@ export function HomePage({
 }: Pick<PageData, "experiences" | "references">) {
   return (
     <ProjectsWrapper>
-      <ProjectsPageClient>
+      <>
         {/* unicorn
       <iframe
         src="https://unicorn.studio/embed/AyFghFWYp37UJfD7Sn7P?preview=true"
@@ -27,10 +26,11 @@ export function HomePage({
       ></iframe> */}
 
         <div className="flex flex-col">
-          {/* Framed top group: hero through references. The left/right page
-              frame now lives on each section so the projects section can drop
-              it (and go full-bleed) in grid mode. */}
-          <div className="flex flex-col gap-12 border-x pb-12">
+          {/* Top group: hero through references. The page frame in __root
+              draws the side borders. Only in the projects grid mode, where
+              the frame's borders are hidden so the projects section can go
+              full-bleed, does this group draw its own. */}
+          <div className="flex flex-col gap-12 pb-12 min-[961px]:[.projects-grid_&]:border-x">
           {/* Hero section with photos */}
           <HeroSection />
 
@@ -131,7 +131,7 @@ export function HomePage({
             <div className=" text-muted-foreground">
               Built using{" "}
               <a
-                className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+                className="underline decoration-dotted hover:text-blue hover:decoration-solid"
                 target="_blank"
                 href="https://tailwindcss.com/"
               >
@@ -139,7 +139,7 @@ export function HomePage({
               </a>
               ,{" "}
               <a
-                className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+                className="underline decoration-dotted hover:text-blue hover:decoration-solid"
                 target="_blank"
                 href="https://ui.shadcn.com/"
               >
@@ -147,7 +147,7 @@ export function HomePage({
               </a>{" "}
               +{" "}
               <a
-                className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+                className="underline decoration-dotted hover:text-blue hover:decoration-solid"
                 target="_blank"
                 href="https://base-ui.com/"
               >
@@ -155,7 +155,7 @@ export function HomePage({
               </a>
               , and{" "}
               <a
-                className="underline decoration-dotted hover:text-blue-500 hover:decoration-solid"
+                className="underline decoration-dotted hover:text-blue hover:decoration-solid"
                 target="_blank"
                 href="https://workers.cloudflare.com/"
               >
@@ -167,7 +167,7 @@ export function HomePage({
           </div>
           */}
         </div>
-      </ProjectsPageClient>
+      </>
     </ProjectsWrapper>
   );
 }

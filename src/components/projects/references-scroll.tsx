@@ -44,10 +44,10 @@ export function ReferencesScroll({ references: allReferences }: ReferencesScroll
           <div
             key={reference.id}
             data-wave
-            className="group/item mx-3 cursor-pointer rounded-[20px] border border-transparent bg-background hover:bg-card md:mx-6"
+            className="group/item cursor-pointer rounded-[20px] border border-transparent bg-background hover:bg-card md:mx-6"
             onClick={() => window.open(reference.linkedinUrl, "_blank")}
           >
-            <div className="px-3 py-6 md:px-6">
+            <div className="p-6">
               <div className="flex w-full items-center justify-between gap-6">
                 <div className="flex shrink-0 flex-row items-center gap-3">
                   <Avatar>
@@ -56,7 +56,7 @@ export function ReferencesScroll({ references: allReferences }: ReferencesScroll
                     </AvatarFallback>
                   </Avatar>
                   <a
-                    className="group-hover/item:text-blue-500 group-hover/item:underline"
+                    className="group-hover/item:text-blue group-hover/item:underline"
                     href={reference.linkedinUrl}
                     target="_blank"
                     onClick={(e) => e.stopPropagation()}

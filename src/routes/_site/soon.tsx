@@ -36,7 +36,7 @@ function Soon() {
   return (
     <main className="flex flex-col gap-6">
       <section className="flex gap-4">
-        <Card className="basis-1/3 border-none bg-pink-50 shadow-none dark:bg-pink-950">
+        <Card className="basis-1/3 border-none bg-pink/10 shadow-none dark:bg-pink/20">
           <CardHeader>
             <CardTitle>Product Design</CardTitle>
           </CardHeader>
@@ -48,7 +48,7 @@ function Soon() {
             </p>
           </CardContent>
         </Card>
-        <Card className="basis-1/3 border-none bg-purple-50 shadow-none dark:bg-purple-950">
+        <Card className="basis-1/3 border-none bg-purple/10 shadow-none dark:bg-purple/20">
           <CardHeader>
             <CardTitle>Design Systems</CardTitle>
           </CardHeader>
@@ -60,7 +60,7 @@ function Soon() {
             </p>
           </CardContent>
         </Card>
-        <Card className="basis-1/3 border-none bg-indigo-50 shadow-none dark:bg-indigo-950">
+        <Card className="basis-1/3 border-none bg-indigo/10 shadow-none dark:bg-indigo/20">
           <CardHeader>
             <CardTitle>Brand Design</CardTitle>
           </CardHeader>
@@ -156,21 +156,21 @@ function Soon() {
             <CardContent className="grow">
               <ul>
                 <li className="flex items-center gap-4">
-                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-green-500" />
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-green" />
                   Unlimited requests
                 </li>
                 <div className="my-4 pl-10">
                   <Separator />
                 </div>
                 <li className="flex items-center gap-4">
-                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-green-500" />
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-green" />
                   Unlimited revisions
                 </li>
                 <div className="my-4 pl-10">
                   <Separator />
                 </div>
                 <li className="flex items-center gap-4">
-                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-green-500" />
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-green" />
                   Implementation-ready product, software, web, or mobile app
                   designs
                 </li>
@@ -178,14 +178,14 @@ function Soon() {
                   <Separator />
                 </div>
                 <li className="flex items-center gap-4 ">
-                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-green-500" />
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-green" />
                   Fast, 1-2 day turnaround
                 </li>
                 <div className="my-4 pl-10">
                   <Separator />
                 </div>
                 <li className="flex items-center gap-4">
-                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-green-500" />
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-green" />
                   Private Signal channel for 1-on-1 asynchonous communication
                 </li>
               </ul>
@@ -231,21 +231,21 @@ function Soon() {
             <CardContent>
               <ul>
                 <li className="flex items-center gap-4">
-                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue-500" />
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue" />
                   Unlimited requests
                 </li>
                 <div className="my-4 pl-10">
                   <Separator />
                 </div>
                 <li className="flex items-center gap-4">
-                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue-500" />
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue" />
                   Unlimited revisions
                 </li>
                 <div className="my-4 pl-10">
                   <Separator />
                 </div>
                 <li className="flex items-center gap-4">
-                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue-500" />
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue" />
                   Implementation-ready product, software, web, or mobile app
                   designs
                 </li>
@@ -253,21 +253,21 @@ function Soon() {
                   <Separator />
                 </div>
                 <li className="flex items-center gap-4 ">
-                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue-500" />
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue" />
                   Fast, 1-2 day turnaround
                 </li>
                 <div className="my-4 pl-10">
                   <Separator />
                 </div>
                 <li className="flex items-center gap-4">
-                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue-500" />
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue" />
                   Private Signal channel for 1-on-1 asynchonous communication
                 </li>
                 <div className="my-4 pl-10">
                   <Separator />
                 </div>
                 <li className="flex items-center gap-4">
-                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue-500" />
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue" />
                   Implementation-ready product, software, web, or mobile app
                   designs
                 </li>
@@ -275,14 +275,14 @@ function Soon() {
                   <Separator />
                 </div>
                 <li className="flex items-center gap-4 ">
-                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue-500" />
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue" />
                   Fast, 1-2 day turnaround
                 </li>
                 <div className="my-4 pl-10">
                   <Separator />
                 </div>
                 <li className="flex items-center gap-4">
-                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue-500" />
+                  <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue" />
                   Private Signal channel for 1-on-1 asynchonous communication
                 </li>
               </ul>
@@ -320,7 +320,7 @@ function Soon() {
             </AccordionTrigger>
             <AccordionContent>
               <span className="font-semibold">
-                leo<span className="text-orange-500">.</span>dev
+                leo<span className="text-orange">.</span>dev
               </span>{" "}
               is a personalized design subscription service where I offer
               unlimited product, web, and software design tailored to your
