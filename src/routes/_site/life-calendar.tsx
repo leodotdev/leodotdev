@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router"
 import { LifeCalendar } from "@/components/life-calendar/life-calendar"
 import { ThemeSwitcher } from "@/components/ThemeSwitcher"
 import { Button } from "@/components/ui/button"
-import { LuCalendarDays as CalendarDays } from "react-icons/lu"
+import { TbCalendar } from "react-icons/tb"
 
 export const Route = createFileRoute("/_site/life-calendar")({
   component: LifeCalendarPage,
@@ -36,7 +36,7 @@ function LifeCalendarPage() {
           className="h-14 w-14 rounded-full shadow-lg transition-shadow hover:shadow-xl"
           title="Go to Today"
         >
-          <CalendarDays className="h-6 w-6" />
+          <TbCalendar className="h-6 w-6" />
         </Button>
         <ThemeSwitcher className="h-14 w-14 shadow-lg transition-shadow hover:shadow-xl" />
       </div>

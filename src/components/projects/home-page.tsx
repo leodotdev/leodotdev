@@ -4,71 +4,32 @@ import { HeroSection } from "@/components/projects/hero-section"
 import { ProjectsWrapper } from "@/components/projects/projects-wrapper"
 import { ReferencesScroll } from "@/components/projects/references-scroll"
 // import { ProjectsClient } from "@/components/projects/projects-client"
-import type { getProjectsPage } from "@/server/content"
+import type { getHomePage } from "@/server/content"
 
-type PageData = Awaited<ReturnType<typeof getProjectsPage>>
+type PageData = Awaited<ReturnType<typeof getHomePage>>
 
 /** The home page, rendered at `/` and (for old links) at `/projects`. */
-export function HomePage({
-  experiences,
-  references,
-}: Pick<PageData, "experiences" | "references">) {
+export function HomePage({ experiences, references }: PageData) {
   return (
     <ProjectsWrapper>
-      <>
-        {/* unicorn
-      <iframe
-        src="https://unicorn.studio/embed/AyFghFWYp37UJfD7Sn7P?preview=true"
-        // width="1022px"
-        height="300px"
-        loading="lazy"
-        className="-mt-12 w-full mix-blend-exclusion dark:mix-blend-lighten"
-      ></iframe> */}
-
-        <div className="flex flex-col">
-          {/* Top group: hero through references. The page frame in __root
+      <div className="flex flex-col">
+        {/* Top group: hero through references. The page frame in __root
               draws the side borders. Only in the projects grid mode, where
               the frame's borders are hidden so the projects section can go
               full-bleed, does this group draw its own. */}
-          <div className="flex flex-col gap-12 pb-12 min-[961px]:[.projects-grid_&]:border-x">
-            {/* Hero section with photos */}
-            <HeroSection />
+        <div className="flex flex-col gap-12 pb-12 min-[961px]:[.projects-grid_&]:border-x">
+          <HeroSection />
 
-            <Separator />
+          <Separator />
 
-            {/* experience */}
-            <ExperienceClient experiences={experiences} />
+          <ExperienceClient experiences={experiences} />
 
-            {/* <Card className="rounded-3xl bg-white dark:bg-black/50 shadow-none dark:bg-black/50">
-          <CardHeader>
-            <CardTitle className=">Favorite Tools</CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1">
-              <h4 className=" text-muted-foreground">Design</h4>
-              <p>
-                Figma, Photoshop, Illustrator, Play, Procreate, FigJam, tldraw
-              </p>
-            </div>
-            <Separator />
-            <div className="flex flex-col gap-1">
-              <h4 className=" text-muted-foreground">Low-code</h4>
-              <p>Framer, Webflow, Toddle, Plasmic</p>
-            </div>
-            <Separator />
-            <div className="flex flex-col gap-1">
-              <h4 className=" text-muted-foreground">Development</h4>
-              <p>HTML, CSS, Tailwind CSS, shadcn/ui, Radix, Cody, Copilot</p>
-            </div>
-          </CardContent>
-        </Card> */}
+          <Separator />
 
-            <Separator />
+          <ReferencesScroll references={references} />
+        </div>
 
-            <ReferencesScroll references={references} />
-          </div>
-
-          {/* Book Shelf section hidden for now
+        {/* Book Shelf section hidden for now
           <Separator />
 
           <div id="books">
@@ -117,13 +78,13 @@ export function HomePage({
           </div>
           */}
 
-          {/* Projects section hidden for now (also restore the import above,
-              add a `projects` prop, and pass the loader's `projects` from both
-              routes)
+        {/* Projects section hidden for now (also restore the import above,
+              add `projects` to getHomePage in src/server/content.ts, and pass
+              it through both routes as a `projects` prop)
           <ProjectsClient projects={projects} />
           */}
 
-          {/* "Built using" footer hidden for now. (Framed footer; gains a
+        {/* "Built using" footer hidden for now. (Framed footer; gains a
               top border in grid mode, where the projects section above it is
               borderless/full-bleed.)
           <div className="border-x pt-12 [.projects-grid_&]:border-t">
@@ -166,8 +127,7 @@ export function HomePage({
           </div>
           </div>
           */}
-        </div>
-      </>
+      </div>
     </ProjectsWrapper>
   )
 }

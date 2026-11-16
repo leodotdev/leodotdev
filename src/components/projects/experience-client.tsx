@@ -1,10 +1,9 @@
-import React, { useRef, useState } from "react"
-import { flushSync } from "react-dom"
-import { isTap, stopWaves, wave } from "@/lib/wave"
+import React from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import { ShowMoreButton, useShowMore } from "@/components/projects/show-more"
 import { TbArrowUpRight, TbDownload } from "react-icons/tb"
-import type { Experience } from "@/types/Experience"
+import type { Experience } from "@/server/db/schema"
 
 const EXPERIENCE_PAGE_SIZE = 3
 
@@ -61,26 +60,10 @@ function ProjectLinks({ exp }: { exp: Experience }) {
 }
 
 export function ExperienceClient({ experiences }: ExperienceClientProps) {
-  const [visibleCount, setVisibleCount] = useState(EXPERIENCE_PAGE_SIZE)
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const showCount = (count: number, e: React.MouseEvent<HTMLElement>) => {
-    const update = () => flushSync(() => setVisibleCount(count))
-    // On touch the tap plays the wave: it leaves the button and carries the
-    // list to its new length. With a mouse the wave is hover-only, so the
-    // list just changes (after ending the button's own hover wave, whose
-    // snapshot would otherwise sit where the button used to be).
-    if (isTap(e)) {
-      wave(sectionRef.current, update, {
-        source: e.currentTarget,
-        focus: e.nativeEvent,
-      })
-    } else {
-      stopWaves(e.currentTarget)
-      update()
-    }
-  }
-  const displayedExperiences = experiences.slice(0, visibleCount)
-  const hasMore = visibleCount < experiences.length
+  const { sectionRef, visible, toggle } = useShowMore(
+    experiences,
+    EXPERIENCE_PAGE_SIZE
+  )
 
   return (
     <div id="experience" ref={sectionRef}>
@@ -108,7 +91,7 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
       </div>
 
       <div className="flex flex-col [&>*+*]:-mt-[0.5px]">
-        {displayedExperiences.map((exp) => (
+        {visible.map((exp) => (
           <div
             key={exp.id}
             data-wave
@@ -134,7 +117,7 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
                       {exp.contract &&
                         (exp.projectCompany || exp.project || exp.team) &&
                         ", "}
-                      {exp.team && exp.team}
+                      {exp.team}
                       {exp.projectCompany && (
                         <>
                           Client:{" "}
@@ -185,25 +168,7 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
         ))}
       </div>
 
-      <div className="flex justify-center px-6 pt-8 md:px-12">
-        {hasMore ? (
-          <Button
-            variant="pill"
-            data-wave-manual
-            onClick={(e) => showCount(experiences.length, e)}
-          >
-            Show more
-          </Button>
-        ) : visibleCount > EXPERIENCE_PAGE_SIZE ? (
-          <Button
-            variant="pill"
-            data-wave-manual
-            onClick={(e) => showCount(EXPERIENCE_PAGE_SIZE, e)}
-          >
-            Show less
-          </Button>
-        ) : null}
-      </div>
+      <ShowMoreButton toggle={toggle} />
     </div>
   )
 }

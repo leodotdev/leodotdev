@@ -33,11 +33,13 @@ Personal portfolio site for Leo Succar (leo.dev). Stack:
 - `src/routes/__root.tsx` — HTML shell, meta tags, theme script, 404 page
 - `src/routes/_site/index.tsx` — the home page at `/`. `/projects` (`projects.index.tsx`) renders the same page with a canonical link to `/`, and deliberately does not redirect: the old site sent `/` to `/projects` with a cached 308, so a redirect back would loop
 - `src/routes/_site/` — the site's pages under a pathless `_site` layout: `projects.index.tsx`, `projects.$slug.tsx` (404 for unknown slugs), `life-calendar.tsx`, `soon.tsx`
-- `src/server/content.ts` — server functions the public pages read D1 through
+- `src/server/content.ts` — server functions the public pages read D1 through. The home page's projects section is hidden for now (commented out in `src/components/projects/home-page.tsx`), so `getHomePage` does not read the project list; project pages at `/projects/$slug` are still live
 - `src/server/db/` — Drizzle schema (`schema.ts`) and the D1 handle; migrations in `drizzle/migrations/`, the one-off Sanity import in `drizzle/seed/`
 - `src/server/admin.ts` — admin server functions (CRUD, reorder, image upload), each behind `requireAdmin` (`src/server/auth/`)
 - `src/routes/admin*` — the admin UI; shared editors in `src/components/admin/`
-- `src/components/`, `src/hooks/`, `src/lib/` (`theme.tsx` is the light/dark theme provider)
+- `src/components/`, `src/lib/` (`theme.tsx` is the light/dark theme provider, `wave.ts` the distortion wave)
+- `src/components/GridSwitcher.tsx` — the dot next to the theme switcher; toggles `html.show-grid`, the layout overlay (element outlines and the page's columns) defined at the end of `src/styles.css`
+- `old/` (git-ignored) — the pre-migration Next.js/Sanity app and content backup; not part of the site
 
 ## Deployment and content freshness
 
@@ -53,6 +55,8 @@ Personal portfolio site for Leo Succar (leo.dev). Stack:
 - Images: stored as `Img` records (`src/lib/image.ts`): WebP at 320/960/1920px in R2, named `<base>-<width>.webp`. Render with plain `<img {...imageProps(img, { maxWidth })}>` and pass `sizes`. Plain strings (files in `public/`, like the experience logos) pass through. Admin uploads are resized in the browser (`src/lib/resize.ts`); SVG uploads are refused (same-origin script risk)
 - Fonts: `@fontsource-variable/inter` (body) and `@fontsource-variable/playfair-display` (`font-playfair`), imported in `src/styles.css`
 - Type scale: only `text-xs` (12px) and `text-base` (16px) exist; other `text-<size>` classes are no-ops
+- Colours: only Apple's system palette exists (`src/styles.css`); Tailwind's own palette is switched off, so `blue-500`, `zinc-200` and the like are no-ops. Use the accents (`text-blue`, `bg-pink/10`), the greys (`gray`, `gray-2` … `gray-6`) and the roles built on them (`bg-background`, `bg-card`, `text-muted-foreground`, `border-border`). Every token has a light and a dark value, so `dark:` variants are rarely needed
+- Formatting: Prettier, no semicolons (`pnpm format`; `pnpm check` to verify)
 - Icons from `react-icons/tb` (Tabler icon set)
 - Styling via Tailwind classes; utility helper `cn()` from `src/lib/utils.ts`
 

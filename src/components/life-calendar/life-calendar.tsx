@@ -1,10 +1,7 @@
 import { useEffect, useState, useRef } from "react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import {
-  LuChevronUp as ChevronUp,
-  LuChevronDown as ChevronDown,
-} from "react-icons/lu"
+import { TbChevronDown, TbChevronUp } from "react-icons/tb"
 
 interface CalendarDay {
   date: Date
@@ -251,7 +248,7 @@ export function LifeCalendar() {
                     onClick={() => loadPreviousYear(year)}
                     className="flex items-center gap-2"
                   >
-                    <ChevronUp className="h-4 w-4" />
+                    <TbChevronUp className="h-4 w-4" />
                     Load {year - 1}
                   </Button>
                 </div>
@@ -320,7 +317,7 @@ export function LifeCalendar() {
                     onClick={() => loadNextYear(year)}
                     className="flex items-center gap-2"
                   >
-                    <ChevronDown className="h-4 w-4" />
+                    <TbChevronDown className="h-4 w-4" />
                     Load {year + 1}
                   </Button>
                 </div>

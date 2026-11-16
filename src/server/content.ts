@@ -14,16 +14,20 @@ const projectOrder = async () => {
     .orderBy(desc(projects.year), asc(projects.sort))
 }
 
-export const getProjectsPage = createServerFn({ method: "GET" }).handler(
+/**
+ * The home page's content. The projects section is hidden for now, so the
+ * project list is not read or sent; add `projects: projectOrder()` back here
+ * when it returns.
+ */
+export const getHomePage = createServerFn({ method: "GET" }).handler(
   async () => {
     const { db } = await import("./db")
     const { experiences, references } = await import("./db/schema")
-    const [projects, exp, refs] = await Promise.all([
-      projectOrder(),
+    const [exp, refs] = await Promise.all([
       db().select().from(experiences).orderBy(asc(experiences.sort)),
       db().select().from(references).orderBy(asc(references.sort)),
     ])
-    return { projects, experiences: exp, references: refs }
+    return { experiences: exp, references: refs }
   }
 )
 

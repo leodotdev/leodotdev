@@ -1,4 +1,4 @@
-function ListRowSkeleton({ withThumbs = false }: { withThumbs?: boolean }) {
+function ListRowSkeleton() {
   return (
     <div className="px-6 py-4 md:px-12">
       <div className="flex w-full items-center justify-between gap-6">
@@ -11,16 +11,6 @@ function ListRowSkeleton({ withThumbs = false }: { withThumbs?: boolean }) {
         </div>
         <div className="h-4 w-16 animate-pulse rounded bg-muted" />
       </div>
-      {withThumbs && (
-        <div className="mt-3 flex flex-wrap gap-2">
-          {[...Array(4)].map((_, i) => (
-            <div
-              key={i}
-              className="h-32 w-32 animate-pulse rounded-lg bg-muted"
-            />
-          ))}
-        </div>
-      )}
     </div>
   )
 }
@@ -82,35 +72,6 @@ export function ProjectsSkeleton() {
             </div>
           ))}
         </div>
-      </div>
-
-      <div className="h-px bg-border" />
-
-      <div>
-        <div className="px-6 pb-6 md:px-12">
-          <div className="mb-2 h-5 w-24 animate-pulse rounded bg-muted" />
-          <div className="h-4 w-48 animate-pulse rounded bg-muted/60" />
-          <div className="mt-6 flex flex-wrap gap-1">
-            {[...Array(9)].map((_, i) => (
-              <div
-                key={i}
-                className="h-9 w-24 animate-pulse rounded-full bg-muted"
-              />
-            ))}
-          </div>
-        </div>
-        <div className="flex flex-col">
-          {[...Array(4)].map((_, i) => (
-            <div key={i}>
-              <ListRowSkeleton withThumbs />
-              {i < 3 && <div className="h-px bg-border" />}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-4 p-6 md:p-12">
-        <div className="h-4 w-full max-w-lg animate-pulse rounded bg-muted/40" />
       </div>
     </div>
   )

@@ -131,16 +131,12 @@ export const adminCreateProject = createServerFn({ method: "POST" })
     const { projects } = await tables()
     const id = crypto.randomUUID()
     try {
-      await (
-        await db()
-      )
-        .insert(projects)
-        .values({
-          id,
-          name: data.name,
-          slug: data.slug,
-          year: String(new Date().getFullYear()),
-        })
+      await (await db()).insert(projects).values({
+        id,
+        name: data.name,
+        slug: data.slug,
+        year: String(new Date().getFullYear()),
+      })
     } catch {
       throw new Error(`A project with the slug "${data.slug}" already exists`)
     }

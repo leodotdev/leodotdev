@@ -1,9 +1,6 @@
-import { useRef, useState } from "react"
-import { flushSync } from "react-dom"
-import { isTap, stopWaves, wave } from "@/lib/wave"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import type { Reference } from "@/types/Reference"
+import { ShowMoreButton, useShowMore } from "@/components/projects/show-more"
+import type { Reference } from "@/server/db/schema"
 
 const REFERENCES_PAGE_SIZE = 2
 
@@ -11,29 +8,11 @@ interface ReferencesScrollProps {
   references: Reference[]
 }
 
-export function ReferencesScroll({
-  references: allReferences,
-}: ReferencesScrollProps) {
-  const [visibleCount, setVisibleCount] = useState(REFERENCES_PAGE_SIZE)
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const showCount = (count: number, e: React.MouseEvent<HTMLElement>) => {
-    const update = () => flushSync(() => setVisibleCount(count))
-    // On touch the tap plays the wave: it leaves the button and carries the
-    // list to its new length. With a mouse the wave is hover-only, so the
-    // list just changes (after ending the button's own hover wave, whose
-    // snapshot would otherwise sit where the button used to be).
-    if (isTap(e)) {
-      wave(sectionRef.current, update, {
-        source: e.currentTarget,
-        focus: e.nativeEvent,
-      })
-    } else {
-      stopWaves(e.currentTarget)
-      update()
-    }
-  }
-  const displayedReferences = allReferences.slice(0, visibleCount)
-  const hasMore = visibleCount < allReferences.length
+export function ReferencesScroll({ references }: ReferencesScrollProps) {
+  const { sectionRef, visible, toggle } = useShowMore(
+    references,
+    REFERENCES_PAGE_SIZE
+  )
 
   return (
     <div id="references" ref={sectionRef}>
@@ -42,7 +21,7 @@ export function ReferencesScroll({
       </div>
 
       <div className="flex flex-col [&>*+*]:-mt-[0.5px]">
-        {displayedReferences.map((reference) => (
+        {visible.map((reference) => (
           <div
             key={reference.id}
             data-wave
@@ -80,25 +59,7 @@ export function ReferencesScroll({
         ))}
       </div>
 
-      <div className="flex justify-center px-6 pt-8 md:px-12">
-        {hasMore ? (
-          <Button
-            variant="pill"
-            data-wave-manual
-            onClick={(e) => showCount(allReferences.length, e)}
-          >
-            Show more
-          </Button>
-        ) : visibleCount > REFERENCES_PAGE_SIZE ? (
-          <Button
-            variant="pill"
-            data-wave-manual
-            onClick={(e) => showCount(REFERENCES_PAGE_SIZE, e)}
-          >
-            Show less
-          </Button>
-        ) : null}
-      </div>
+      <ShowMoreButton toggle={toggle} />
     </div>
   )
 }

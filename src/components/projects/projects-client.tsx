@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react"
 import { Link } from "@tanstack/react-router"
-import type { Project } from "@/types/Project"
+import type { Project } from "@/server/db/schema"
 import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { imageProps } from "@/lib/image"

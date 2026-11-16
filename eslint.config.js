@@ -37,7 +37,9 @@ export default [
     },
   },
   {
-    // Generated or vendored: the Base UI primitives are kept as shipped.
+    // Generated or vendored (the Base UI primitives are kept as shipped), and
+    // folders that are not part of the site: the pre-migration backup in old/
+    // and Claude Code's worktrees.
     ignores: [
       "eslint.config.js",
       ".prettierrc",
@@ -46,6 +48,8 @@ export default [
       "worker-configuration.d.ts",
       "dist/**",
       "public/**",
+      "old/**",
+      ".claude/**",
     ],
   },
 ]

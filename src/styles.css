@@ -82,14 +82,9 @@
   --color-muted-foreground: var(--label-secondary);
   --color-accent: var(--gray-5);
   --color-accent-foreground: var(--label);
-  --color-subtle: var(--gray-6);
-  --color-subtle-foreground: var(--label);
-  --color-emphasis: var(--label);
-  --color-emphasis-foreground: var(--bg);
   --color-destructive: var(--red);
   --color-destructive-foreground: #ffffff;
   --color-border: var(--separator-opaque);
-  --color-input: var(--fill-tertiary);
   --color-ring: var(--blue);
   --color-grid: var(--blue);
 
@@ -233,12 +228,6 @@
 }
 
 /*
- * Fallback for browsers without corner-shape (Safari, Firefox as of 2026):
- * they draw plain round corners, which read rounder than a squircle at the
- * same radius, so every radius step is tightened to about 80% to match.
- * Pills and dots (rounded-full) are unaffected.
- */
-/*
  * While a distortion wave plays on an element (src/lib/wave.ts), nothing in it
  * transitions: the wave captures the element right after it changes, and a
  * colour still easing to its new value would be captured mid-way.
@@ -250,6 +239,12 @@
   transition: none !important;
 }
 
+/*
+ * Fallback for browsers without corner-shape (Safari, Firefox as of 2026):
+ * they draw plain round corners, which read rounder than a squircle at the
+ * same radius, so every radius step is tightened to about 80% to match.
+ * Pills and dots (rounded-full) are unaffected.
+ */
 @supports not (corner-shape: squircle) {
   :root {
     --radius: 0.4rem;
