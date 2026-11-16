@@ -47,7 +47,8 @@ const entry = createServerEntry({
     // here too, so a missing or misconfigured Access app can't expose them.
     // (Admin server functions check it themselves: src/server/auth.)
     if (url.pathname === "/admin" || url.pathname.startsWith("/admin/")) {
-      const { accessToken, verifyAccessJwt } = await import("./server/auth/access")
+      const { accessToken, verifyAccessJwt } =
+        await import("./server/auth/access")
       const who = await verifyAccessJwt(
         accessToken({
           jwt: request.headers.get("cf-access-jwt-assertion"),

@@ -1,33 +1,33 @@
-import { useState, useRef, useCallback, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useState, useRef, useCallback, useEffect } from "react"
+import { motion, AnimatePresence } from "motion/react"
 import {
   TbX,
   TbChevronLeft,
   TbChevronRight,
   TbEye,
   TbBrandFigma,
-} from "react-icons/tb";
-import { imageProps } from "@/lib/image";
-import type { Img } from "@/lib/image";
-import type { ProjectImage } from "@/server/db/schema";
-import { cn } from "@/lib/utils";
-import { safeEmbedUrl } from "@/lib/embed";
-import { Button } from "@/components/ui/button";
+} from "react-icons/tb"
+import { imageProps } from "@/lib/image"
+import type { Img } from "@/lib/image"
+import type { ProjectImage } from "@/server/db/schema"
+import { cn } from "@/lib/utils"
+import { safeEmbedUrl } from "@/lib/embed"
+import { Button } from "@/components/ui/button"
 
 interface MediaItem {
-  _key?: string;
-  type: "image" | "embed";
-  image?: Img;
-  alt?: string;
-  embedUrl?: string;
+  _key?: string
+  type: "image" | "embed"
+  image?: Img
+  alt?: string
+  embedUrl?: string
 }
 
 interface ProjectMediaGalleryProps {
-  heroImage?: Img | null;
-  heroImageAlt?: string;
-  embedUrl?: string | null;
-  contentImages: Array<ProjectImage>;
-  projectName: string;
+  heroImage?: Img | null
+  heroImageAlt?: string
+  embedUrl?: string | null
+  contentImages: Array<ProjectImage>
+  projectName: string
 }
 
 export function ProjectMediaGallery({
@@ -37,19 +37,21 @@ export function ProjectMediaGallery({
   contentImages,
   projectName,
 }: ProjectMediaGalleryProps) {
-  const sanitizedEmbedUrl = safeEmbedUrl(embedUrl ?? undefined);
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const sanitizedEmbedUrl = safeEmbedUrl(embedUrl ?? undefined)
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
   const [loadingStates, setLoadingStates] = useState<Record<number, boolean>>(
-    {},
-  );
+    {}
+  )
   const [loadingProgress, setLoadingProgress] = useState<
     Record<number, number>
-  >({});
-  const [originalBodyOverflow, setOriginalBodyOverflow] = useState<string>("");
-  const progressIntervals = useRef<Record<number, ReturnType<typeof setInterval>>>({});
+  >({})
+  const [originalBodyOverflow, setOriginalBodyOverflow] = useState<string>("")
+  const progressIntervals = useRef<
+    Record<number, ReturnType<typeof setInterval>>
+  >({})
 
   // Combine all media into a single array
-  const allMedia: MediaItem[] = [];
+  const allMedia: MediaItem[] = []
 
   // Add hero image if exists
   if (heroImage) {
@@ -58,7 +60,7 @@ export function ProjectMediaGallery({
       image: heroImage,
       alt: heroImageAlt || projectName,
       _key: "hero",
-    });
+    })
   }
 
   // Add embed if exists (only if it passes the allowlist)
@@ -67,7 +69,7 @@ export function ProjectMediaGallery({
       type: "embed",
       embedUrl: sanitizedEmbedUrl,
       _key: "embed",
-    });
+    })
   }
 
   // Add content images
@@ -77,122 +79,121 @@ export function ProjectMediaGallery({
       type: "image",
       image: item.image,
       alt: item.alt,
-    });
-  });
+    })
+  })
 
   const openLightbox = (index: number) => {
-    setSelectedIndex(index);
+    setSelectedIndex(index)
     // Save the original overflow value
-    setOriginalBodyOverflow(document.body.style.overflow || "");
-    document.body.style.overflow = "hidden";
-    setLoadingStates({ [index]: true });
-    setLoadingProgress({ [index]: 0 });
-    simulateProgress(index);
-  };
+    setOriginalBodyOverflow(document.body.style.overflow || "")
+    document.body.style.overflow = "hidden"
+    setLoadingStates({ [index]: true })
+    setLoadingProgress({ [index]: 0 })
+    simulateProgress(index)
+  }
 
   const closeLightbox = useCallback(() => {
     // Clear any running progress intervals
     Object.keys(progressIntervals.current).forEach((key) => {
-      clearInterval(progressIntervals.current[Number(key)]);
-      delete progressIntervals.current[Number(key)];
-    });
+      clearInterval(progressIntervals.current[Number(key)])
+      delete progressIntervals.current[Number(key)]
+    })
 
-    setSelectedIndex(null);
+    setSelectedIndex(null)
     // Restore the original overflow value
-    document.body.style.overflow = originalBodyOverflow;
-  }, [originalBodyOverflow]);
+    document.body.style.overflow = originalBodyOverflow
+  }, [originalBodyOverflow])
 
   const goToPrevious = useCallback(() => {
-    if (selectedIndex === null) return;
+    if (selectedIndex === null) return
     const newIndex =
-      selectedIndex === 0 ? allMedia.length - 1 : selectedIndex - 1;
-    setSelectedIndex(newIndex);
-    setLoadingStates((prev) => ({ ...prev, [newIndex]: true }));
-    setLoadingProgress((prev) => ({ ...prev, [newIndex]: 0 }));
-    simulateProgress(newIndex);
-  }, [selectedIndex, allMedia.length]);
+      selectedIndex === 0 ? allMedia.length - 1 : selectedIndex - 1
+    setSelectedIndex(newIndex)
+    setLoadingStates((prev) => ({ ...prev, [newIndex]: true }))
+    setLoadingProgress((prev) => ({ ...prev, [newIndex]: 0 }))
+    simulateProgress(newIndex)
+  }, [selectedIndex, allMedia.length])
 
   const goToNext = useCallback(() => {
-    if (selectedIndex === null) return;
+    if (selectedIndex === null) return
     const newIndex =
-      selectedIndex === allMedia.length - 1 ? 0 : selectedIndex + 1;
-    setSelectedIndex(newIndex);
-    setLoadingStates((prev) => ({ ...prev, [newIndex]: true }));
-    setLoadingProgress((prev) => ({ ...prev, [newIndex]: 0 }));
-    simulateProgress(newIndex);
-  }, [selectedIndex, allMedia.length]);
+      selectedIndex === allMedia.length - 1 ? 0 : selectedIndex + 1
+    setSelectedIndex(newIndex)
+    setLoadingStates((prev) => ({ ...prev, [newIndex]: true }))
+    setLoadingProgress((prev) => ({ ...prev, [newIndex]: 0 }))
+    simulateProgress(newIndex)
+  }, [selectedIndex, allMedia.length])
 
   // Simulate loading progress
   const simulateProgress = (index: number) => {
     // Clear any existing interval for this index before starting a new one
     if (progressIntervals.current[index]) {
-      clearInterval(progressIntervals.current[index]);
+      clearInterval(progressIntervals.current[index])
     }
-    let progress = 0;
+    let progress = 0
     const interval = setInterval(() => {
-      progress += Math.random() * 30;
+      progress += Math.random() * 30
       if (progress > 90) {
-        progress = 90; // Hold at 90% until actual load
+        progress = 90 // Hold at 90% until actual load
       }
       setLoadingProgress((prev) => ({
         ...prev,
         [index]: Math.min(progress, 90),
-      }));
-    }, 200);
+      }))
+    }, 200)
 
     // Store interval ID for cleanup
-    progressIntervals.current[index] = interval;
-  };
+    progressIntervals.current[index] = interval
+  }
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (selectedIndex === null) return;
+      if (selectedIndex === null) return
 
       switch (e.key) {
         case "Escape":
-          closeLightbox();
-          break;
+          closeLightbox()
+          break
         case "ArrowLeft":
-          goToPrevious();
-          break;
+          goToPrevious()
+          break
         case "ArrowRight":
-          goToNext();
-          break;
+          goToNext()
+          break
       }
-    };
+    }
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedIndex, closeLightbox, goToPrevious, goToNext]);
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [selectedIndex, closeLightbox, goToPrevious, goToNext])
 
   // Unmount cleanup: clear any leftover intervals and restore scroll
   useEffect(() => {
-    const intervals = progressIntervals.current;
+    const intervals = progressIntervals.current
     return () => {
-      Object.values(intervals).forEach(clearInterval);
-      progressIntervals.current = {};
-      document.body.style.overflow = "";
-    };
-  }, []);
+      Object.values(intervals).forEach(clearInterval)
+      progressIntervals.current = {}
+      document.body.style.overflow = ""
+    }
+  }, [])
 
   const getImageProps = (item: MediaItem, maxWidth?: number) =>
-    imageProps(item.image, { maxWidth });
+    imageProps(item.image, { maxWidth })
 
   const handleImageLoad = (index: number) => {
     // Clear the progress interval
-    const intervalId = progressIntervals.current[index];
+    const intervalId = progressIntervals.current[index]
     if (intervalId) {
-      clearInterval(intervalId);
-      delete progressIntervals.current[index];
+      clearInterval(intervalId)
+      delete progressIntervals.current[index]
     }
 
     // Set progress to 100% and hide loading
-    setLoadingProgress((prev) => ({ ...prev, [index]: 100 }));
+    setLoadingProgress((prev) => ({ ...prev, [index]: 100 }))
     setTimeout(() => {
-      setLoadingStates((prev) => ({ ...prev, [index]: false }));
-    }, 200);
-  };
-
+      setLoadingStates((prev) => ({ ...prev, [index]: false }))
+    }, 200)
+  }
 
   return (
     <>
@@ -224,7 +225,7 @@ export function ProjectMediaGallery({
               allowFullScreen
             />
             <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/0 transition-colors group-hover:bg-black/10">
-              <div className="rounded-full [corner-shape:round] bg-white/90 p-3 opacity-0 transition-opacity group-hover:opacity-100">
+              <div className="rounded-full bg-white/90 p-3 opacity-0 transition-opacity [corner-shape:round] group-hover:opacity-100">
                 <TbEye className="h-6 w-6" />
               </div>
             </div>
@@ -236,7 +237,8 @@ export function ProjectMediaGallery({
       {contentImages.length > 0 && (
         <div className="mb-12 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           {contentImages.map((image, index) => {
-            const gridIndex = (heroImage ? 1 : 0) + (sanitizedEmbedUrl ? 1 : 0) + index;
+            const gridIndex =
+              (heroImage ? 1 : 0) + (sanitizedEmbedUrl ? 1 : 0) + index
             return (
               <motion.div
                 key={image.key}
@@ -257,7 +259,7 @@ export function ProjectMediaGallery({
                   />
                 </div>
               </motion.div>
-            );
+            )
           })}
         </div>
       )}
@@ -285,10 +287,10 @@ export function ProjectMediaGallery({
                 variant="ghost"
                 size="icon"
                 onClick={(e) => {
-                  e.stopPropagation();
-                  closeLightbox();
+                  e.stopPropagation()
+                  closeLightbox()
                 }}
-                className="absolute right-4 top-4 z-50 rounded-full [corner-shape:round] bg-white/10 text-white hover:bg-white/20 hover:text-white"
+                className="absolute top-4 right-4 z-50 rounded-full bg-white/10 text-white [corner-shape:round] hover:bg-white/20 hover:text-white"
                 aria-label="Close"
               >
                 <TbX className="h-6 w-6" />
@@ -297,7 +299,7 @@ export function ProjectMediaGallery({
               <div className="relative flex flex-1 items-center justify-center p-4">
                 {loadingStates[selectedIndex] && (
                   <div className="absolute inset-0 z-10 flex items-center justify-center">
-                    <div className="h-8 w-8 animate-spin rounded-full [corner-shape:round] border-2 border-white/20 border-t-white" />
+                    <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-white [corner-shape:round]" />
                   </div>
                 )}
                 {allMedia.length > 1 && (
@@ -305,10 +307,10 @@ export function ProjectMediaGallery({
                     variant="ghost"
                     size="icon"
                     onClick={(e) => {
-                      e.stopPropagation();
-                      goToPrevious();
+                      e.stopPropagation()
+                      goToPrevious()
                     }}
-                    className="absolute left-4 z-20 rounded-full [corner-shape:round] bg-white/10 text-white hover:bg-white/20 hover:text-white"
+                    className="absolute left-4 z-20 rounded-full bg-white/10 text-white [corner-shape:round] hover:bg-white/20 hover:text-white"
                     aria-label="Previous"
                   >
                     <TbChevronLeft className="h-6 w-6" />
@@ -325,16 +327,17 @@ export function ProjectMediaGallery({
                     "relative flex items-center justify-center",
                     allMedia[selectedIndex].type === "image"
                       ? "max-h-[80vh] max-w-[90vw]"
-                      : "max-h-[85vh] max-w-[90vw]",
+                      : "max-h-[85vh] max-w-[90vw]"
                   )}
                   onClick={(e) => {
-                    if (allMedia[selectedIndex].type !== "image") e.stopPropagation();
+                    if (allMedia[selectedIndex].type !== "image")
+                      e.stopPropagation()
                   }}
                 >
                   <div
                     className={cn(
                       "transition-opacity duration-300",
-                      loadingStates[selectedIndex] ? "opacity-0" : "opacity-100",
+                      loadingStates[selectedIndex] ? "opacity-0" : "opacity-100"
                     )}
                   >
                     {allMedia[selectedIndex].type === "image" ? (
@@ -368,10 +371,10 @@ export function ProjectMediaGallery({
                     variant="ghost"
                     size="icon"
                     onClick={(e) => {
-                      e.stopPropagation();
-                      goToNext();
+                      e.stopPropagation()
+                      goToNext()
                     }}
-                    className="absolute right-4 z-20 rounded-full [corner-shape:round] bg-white/10 text-white hover:bg-white/20 hover:text-white"
+                    className="absolute right-4 z-20 rounded-full bg-white/10 text-white [corner-shape:round] hover:bg-white/20 hover:text-white"
                     aria-label="Next"
                   >
                     <TbChevronRight className="h-6 w-6" />
@@ -392,10 +395,10 @@ export function ProjectMediaGallery({
                         key={item._key || index}
                         variant="ghost"
                         onClick={() => {
-                          setSelectedIndex(index);
-                          setLoadingStates({ ...loadingStates, [index]: true });
-                          setLoadingProgress({ ...loadingProgress, [index]: 0 });
-                          simulateProgress(index);
+                          setSelectedIndex(index)
+                          setLoadingStates({ ...loadingStates, [index]: true })
+                          setLoadingProgress({ ...loadingProgress, [index]: 0 })
+                          simulateProgress(index)
                         }}
                         className={`group relative h-24 overflow-hidden rounded-lg p-0 outline outline-1 -outline-offset-1 outline-border transition-all duration-300 hover:scale-[1.02] hover:bg-transparent ${
                           index === selectedIndex
@@ -426,5 +429,5 @@ export function ProjectMediaGallery({
         )}
       </AnimatePresence>
     </>
-  );
+  )
 }

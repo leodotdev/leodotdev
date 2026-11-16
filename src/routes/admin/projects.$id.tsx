@@ -1,5 +1,11 @@
 import { useState } from "react"
-import { Link, createFileRoute, notFound, useNavigate, useRouter } from "@tanstack/react-router"
+import {
+  Link,
+  createFileRoute,
+  notFound,
+  useNavigate,
+  useRouter,
+} from "@tanstack/react-router"
 import { TbArrowLeft, TbArrowRight, TbTrash } from "react-icons/tb"
 import {
   Checkbox,
@@ -12,7 +18,11 @@ import {
 } from "@/components/admin/fields"
 import { Button } from "@/components/ui/button"
 import { categories } from "@/lib/categories"
-import { adminDeleteProject, adminGetProject, adminSaveProject } from "@/server/admin"
+import {
+  adminDeleteProject,
+  adminGetProject,
+  adminSaveProject,
+} from "@/server/admin"
 import type { Project } from "@/server/db/schema"
 
 export const Route = createFileRoute("/admin/projects/$id")({
@@ -47,7 +57,8 @@ function Editor({ initial }: { initial: Project }) {
   const [draft, setDraft] = useState<Draft>(start)
   const [saved, setSaved] = useState<Draft>(start)
   const dirty = JSON.stringify(draft) !== JSON.stringify(saved)
-  const set = <TKey extends keyof Draft>(k: TKey, v: Draft[TKey]) => setDraft((d) => ({ ...d, [k]: v }))
+  const set = <TKey extends keyof Draft>(k: TKey, v: Draft[TKey]) =>
+    setDraft((d) => ({ ...d, [k]: v }))
   const saver = useSaver(async (d: Draft) => {
     await adminSaveProject({ data: d })
     setSaved(d)
@@ -60,7 +71,10 @@ function Editor({ initial }: { initial: Project }) {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-wrap items-center gap-4">
-        <Link to="/admin/projects" className="text-muted-foreground hover:text-foreground">
+        <Link
+          to="/admin/projects"
+          className="text-muted-foreground hover:text-foreground"
+        >
           ← Projects
         </Link>
         <h1 className="font-semibold">{saved.name}</h1>
@@ -82,16 +96,32 @@ function Editor({ initial }: { initial: Project }) {
       />
 
       <section className="grid gap-4 md:grid-cols-2">
-        <TextField label="Name" value={draft.name} onChange={(v) => set("name", v)} />
+        <TextField
+          label="Name"
+          value={draft.name}
+          onChange={(v) => set("name", v)}
+        />
         <TextField
           label="Slug"
           hint="The URL: leo.dev/projects/<slug>"
           value={draft.slug}
           onChange={(v) => set("slug", v)}
         />
-        <TextField label="Client" value={draft.client} onChange={(v) => set("client", v)} />
-        <TextField label="Year" value={draft.year} onChange={(v) => set("year", v)} />
-        <TextField label="Link" value={draft.url} onChange={(v) => set("url", v)} />
+        <TextField
+          label="Client"
+          value={draft.client}
+          onChange={(v) => set("client", v)}
+        />
+        <TextField
+          label="Year"
+          value={draft.year}
+          onChange={(v) => set("year", v)}
+        />
+        <TextField
+          label="Link"
+          value={draft.url}
+          onChange={(v) => set("url", v)}
+        />
         <TextField
           label="Embed URL"
           hint="Figma, YouTube, Vimeo, Loom or CodePen; shown after the cover"
@@ -137,7 +167,12 @@ function Editor({ initial }: { initial: Project }) {
               key={c}
               label={c}
               checked
-              onChange={() => set("categories", draft.categories.filter((x) => x !== c))}
+              onChange={() =>
+                set(
+                  "categories",
+                  draft.categories.filter((x) => x !== c)
+                )
+              }
             />
           ))}
         </div>
@@ -157,7 +192,11 @@ function Editor({ initial }: { initial: Project }) {
             onUploaded={([img]) => set("image", img)}
           />
           {draft.image && (
-            <Button type="button" variant="ghost" onClick={() => set("image", null)}>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => set("image", null)}
+            >
               Remove cover
             </Button>
           )}
@@ -176,7 +215,10 @@ function Editor({ initial }: { initial: Project }) {
             onUploaded={(imgs) =>
               set("images", [
                 ...draft.images,
-                ...imgs.map((image) => ({ key: crypto.randomUUID().slice(0, 12), image })),
+                ...imgs.map((image) => ({
+                  key: crypto.randomUUID().slice(0, 12),
+                  image,
+                })),
               ])
             }
           />
@@ -194,7 +236,9 @@ function Editor({ initial }: { initial: Project }) {
                 onChange={(e) =>
                   set(
                     "images",
-                    draft.images.map((x, j) => (j === i ? { ...x, alt: e.target.value } : x))
+                    draft.images.map((x, j) =>
+                      j === i ? { ...x, alt: e.target.value } : x
+                    )
                   )
                 }
               />
@@ -225,7 +269,12 @@ function Editor({ initial }: { initial: Project }) {
                   variant="ghost"
                   aria-label="Remove image"
                   className="ml-auto"
-                  onClick={() => set("images", draft.images.filter((_, j) => j !== i))}
+                  onClick={() =>
+                    set(
+                      "images",
+                      draft.images.filter((_, j) => j !== i)
+                    )
+                  }
                 >
                   <TbTrash className="h-4 w-4" />
                 </Button>
@@ -236,7 +285,9 @@ function Editor({ initial }: { initial: Project }) {
       </section>
 
       <section className="flex flex-col gap-3">
-        <span className="text-xs text-muted-foreground">Text, shown under the gallery</span>
+        <span className="text-xs text-muted-foreground">
+          Text, shown under the gallery
+        </span>
         {draft.paragraphs.map((p, i) => (
           <div key={i} className="flex items-start gap-2">
             <textarea
@@ -255,7 +306,12 @@ function Editor({ initial }: { initial: Project }) {
               size="icon"
               variant="ghost"
               aria-label="Remove paragraph"
-              onClick={() => set("paragraphs", draft.paragraphs.filter((_, j) => j !== i))}
+              onClick={() =>
+                set(
+                  "paragraphs",
+                  draft.paragraphs.filter((_, j) => j !== i)
+                )
+              }
             >
               <TbTrash className="h-4 w-4" />
             </Button>
@@ -283,7 +339,10 @@ function Editor({ initial }: { initial: Project }) {
           variant="ghost"
           className="ml-auto text-red hover:text-red"
           onClick={async () => {
-            if (!window.confirm(`Delete "${saved.name}"? This can't be undone.`)) return
+            if (
+              !window.confirm(`Delete "${saved.name}"? This can't be undone.`)
+            )
+              return
             await adminDeleteProject({ data: saved.id })
             await navigate({ to: "/admin/projects" })
           }}

@@ -26,7 +26,10 @@ const img = z.object({
 const slug = z
   .string()
   .trim()
-  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use lowercase letters, numbers and dashes")
+  .regex(
+    /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+    "Use lowercase letters, numbers and dashes"
+  )
 
 const projectInput = z.object({
   id: z.string(),
@@ -110,7 +113,12 @@ export const adminGetProject = createServerFn({ method: "GET" })
   .validator((id: string) => z.string().parse(id))
   .handler(async ({ data: id }) => {
     const { projects } = await tables()
-    const rows = await (await db()).select().from(projects).where(eq(projects.id, id))
+    const rows = await (
+      await db()
+    )
+      .select()
+      .from(projects)
+      .where(eq(projects.id, id))
     return rows.length ? rows[0] : null
   })
 
@@ -123,9 +131,16 @@ export const adminCreateProject = createServerFn({ method: "POST" })
     const { projects } = await tables()
     const id = crypto.randomUUID()
     try {
-      await (await db())
+      await (
+        await db()
+      )
         .insert(projects)
-        .values({ id, name: data.name, slug: data.slug, year: String(new Date().getFullYear()) })
+        .values({
+          id,
+          name: data.name,
+          slug: data.slug,
+          year: String(new Date().getFullYear()),
+        })
     } catch {
       throw new Error(`A project with the slug "${data.slug}" already exists`)
     }
@@ -139,7 +154,9 @@ export const adminSaveProject = createServerFn({ method: "POST" })
     const { projects } = await tables()
     const { id, ...fields } = data
     try {
-      await (await db())
+      await (
+        await db()
+      )
         .update(projects)
         .set({ ...fields, updatedAt: new Date() })
         .where(eq(projects.id, id))
@@ -172,8 +189,20 @@ export const adminListRows = createServerFn({ method: "GET" })
     const t = await tables()
     const d = await db()
     return k === "experiences"
-      ? { kind: k, rows: await d.select().from(t.experiences).orderBy(asc(t.experiences.sort)) }
-      : { kind: k, rows: await d.select().from(t.references).orderBy(asc(t.references.sort)) }
+      ? {
+          kind: k,
+          rows: await d
+            .select()
+            .from(t.experiences)
+            .orderBy(asc(t.experiences.sort)),
+        }
+      : {
+          kind: k,
+          rows: await d
+            .select()
+            .from(t.references)
+            .orderBy(asc(t.references.sort)),
+        }
   })
 
 export const adminSaveRow = createServerFn({ method: "POST" })
@@ -191,12 +220,18 @@ export const adminSaveRow = createServerFn({ method: "POST" })
     if (data.kind === "experiences")
       await d
         .update(t.experiences)
-        .set({ ...(fields as z.infer<typeof experienceInput>), updatedAt: new Date() })
+        .set({
+          ...(fields as z.infer<typeof experienceInput>),
+          updatedAt: new Date(),
+        })
         .where(eq(t.experiences.id, id))
     else
       await d
         .update(t.references)
-        .set({ ...(fields as z.infer<typeof referenceInput>), updatedAt: new Date() })
+        .set({
+          ...(fields as z.infer<typeof referenceInput>),
+          updatedAt: new Date(),
+        })
         .where(eq(t.references.id, id))
     return { ok: true }
   })
@@ -211,8 +246,11 @@ export const adminCreateRow = createServerFn({ method: "POST" })
     const [{ last }] = await d.select({ last: max(table.sort) }).from(table)
     const values = { id: crypto.randomUUID(), sort: (last ?? -1) + 1 }
     if (k === "experiences")
-      await d.insert(t.experiences).values({ ...values, company: "New company" })
-    else await d.insert(t.references).values({ ...values, name: "New reference" })
+      await d
+        .insert(t.experiences)
+        .values({ ...values, company: "New company" })
+    else
+      await d.insert(t.references).values({ ...values, name: "New reference" })
     return { id: values.id }
   })
 
@@ -274,7 +312,8 @@ export const adminUploadImage = createServerFn({ method: "POST" })
       const m = /^w(\d+)$/.exec(name)
       if (!m) continue
       if (!(value instanceof File)) throw new Error("Bad upload")
-      if (!UPLOAD_TYPES[value.type]) throw new Error(`Unsupported image type: ${value.type || "unknown"}`)
+      if (!UPLOAD_TYPES[value.type])
+        throw new Error(`Unsupported image type: ${value.type || "unknown"}`)
       if (value.size > MAX_BYTES) throw new Error("Image is larger than 15 MB")
       files.push({ w: Number(m[1]), file: value })
     }

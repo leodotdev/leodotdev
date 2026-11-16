@@ -40,7 +40,10 @@ export async function verifyAccessJwt(
     jwksDomain = team
   }
   try {
-    const { payload } = await jwtVerify(token, jwks, { issuer: team, audience: aud })
+    const { payload } = await jwtVerify(token, jwks, {
+      issuer: team,
+      audience: aud,
+    })
     return typeof payload.email === "string" ? { email: payload.email } : null
   } catch {
     return null

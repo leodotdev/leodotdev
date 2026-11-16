@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
+} from "@/components/ui/accordion"
 
 import {
   Card,
@@ -12,8 +12,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+} from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 
 import {
   TbCalendarCheck,
@@ -23,14 +23,14 @@ import {
   TbPlayerTrackNextFilled,
   TbClockFilled,
   TbCircleCheckFilled,
-} from "react-icons/tb";
-import { Separator } from "@/components/ui/separator";
+} from "react-icons/tb"
+import { Separator } from "@/components/ui/separator"
 
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/_site/soon")({
   component: Soon,
-});
+})
 
 function Soon() {
   return (
@@ -73,7 +73,7 @@ function Soon() {
           </CardContent>
         </Card>
       </section>
-      <section className="flex ">
+      <section className="flex">
         <Card className="basis-1/4 rounded-r-none">
           <CardHeader>
             <TbCalendarCheck className="h-6 w-6 stroke-[1.5px]" />
@@ -125,23 +125,21 @@ function Soon() {
         </Card>
       </section>
 
-      <section className="flex flex-col items-center gap-6 rounded-[60px] bg-muted p-12  dark:bg-background">
+      <section className="flex flex-col items-center gap-6 rounded-[60px] bg-muted p-12 dark:bg-background">
         <div className="flex flex-col items-center gap-6">
           <Badge>Plans</Badge>
-          <h2 className="font-semibold">
-            Unlock Unlimited Creativity
-          </h2>
+          <h2 className="font-semibold">Unlock Unlimited Creativity</h2>
           <h3 className="">
             Straightforward pricing plans designed to bring your vision to life.
           </h3>
           <p></p>
         </div>
         <div className="flex gap-6">
-          <Card className="flex basis-1/2 flex-col ">
+          <Card className="flex basis-1/2 flex-col">
             <CardHeader className="">
               <div className="flex justify-between">
                 <CardTitle>Standard</CardTitle>
-                <Badge variant="secondary" className="gap-1 rounded-full ">
+                <Badge variant="secondary" className="gap-1 rounded-full">
                   <TbClockFilled />
                   Limited Availibility
                 </Badge>
@@ -177,7 +175,7 @@ function Soon() {
                 <div className="my-4 pl-10">
                   <Separator />
                 </div>
-                <li className="flex items-center gap-4 ">
+                <li className="flex items-center gap-4">
                   <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-green" />
                   Fast, 1-2 day turnaround
                 </li>
@@ -194,7 +192,9 @@ function Soon() {
               <Button
                 variant="pill"
                 className="w-full"
-                render={<a href="https://cal.com/leo.dev/20min" target="_blank" />}
+                render={
+                  <a href="https://cal.com/leo.dev/20min" target="_blank" />
+                }
               >
                 Book a Call
               </Button>
@@ -206,17 +206,19 @@ function Soon() {
               <Button
                 variant="pill"
                 className="w-full"
-                render={<a href="https://cal.com/leo.dev/20min" target="_blank" />}
+                render={
+                  <a href="https://cal.com/leo.dev/20min" target="_blank" />
+                }
               >
                 Subscribe Now
               </Button>
             </CardFooter>
           </Card>
-          <Card className="basis-1/2 ">
+          <Card className="basis-1/2">
             <CardHeader className="">
               <div className="flex justify-between">
                 <CardTitle>Pro</CardTitle>
-                <Badge variant="secondary" className="gap-1 rounded-full ">
+                <Badge variant="secondary" className="gap-1 rounded-full">
                   <TbPlayerTrackNextFilled />
                   2x Requests
                 </Badge>
@@ -252,7 +254,7 @@ function Soon() {
                 <div className="my-4 pl-10">
                   <Separator />
                 </div>
-                <li className="flex items-center gap-4 ">
+                <li className="flex items-center gap-4">
                   <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue" />
                   Fast, 1-2 day turnaround
                 </li>
@@ -274,7 +276,7 @@ function Soon() {
                 <div className="my-4 pl-10">
                   <Separator />
                 </div>
-                <li className="flex items-center gap-4 ">
+                <li className="flex items-center gap-4">
                   <TbCircleCheckFilled className="h-6 w-6 flex-none stroke-[1.5px] text-blue" />
                   Fast, 1-2 day turnaround
                 </li>
@@ -291,7 +293,9 @@ function Soon() {
               <Button
                 variant="pill"
                 className="w-full"
-                render={<a href="https://cal.com/leo.dev/20min" target="_blank" />}
+                render={
+                  <a href="https://cal.com/leo.dev/20min" target="_blank" />
+                }
               >
                 Book a Call
               </Button>
@@ -303,14 +307,16 @@ function Soon() {
               <Button
                 variant="pill"
                 className="w-full"
-                render={<a href="https://cal.com/leo.dev/20min" target="_blank" />}
+                render={
+                  <a href="https://cal.com/leo.dev/20min" target="_blank" />
+                }
               >
                 Subscribe Now
               </Button>
             </CardFooter>
           </Card>
         </div>
-        <span className=" text-muted-foreground">Pause or cancel anytime</span>
+        <span className="text-muted-foreground">Pause or cancel anytime</span>
       </section>
       <section>
         <Accordion type="multiple">
@@ -414,5 +420,5 @@ function Soon() {
         </Accordion>
       </section>
     </main>
-  );
+  )
 }

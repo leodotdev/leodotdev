@@ -7,7 +7,10 @@ import { adminWhoami } from "@/server/admin"
 export const Route = createFileRoute("/admin")({
   beforeLoad: async () => ({ admin: await adminWhoami() }),
   head: () => ({
-    meta: [{ title: "Admin · leo.dev" }, { name: "robots", content: "noindex" }],
+    meta: [
+      { title: "Admin · leo.dev" },
+      { name: "robots", content: "noindex" },
+    ],
   }),
   errorComponent: ({ error }) => (
     <main className="flex min-h-screen flex-col items-center justify-center gap-2 px-6 text-center">

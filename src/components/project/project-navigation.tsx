@@ -1,17 +1,20 @@
-import { Link } from "@tanstack/react-router";
-import { TbChevronLeft, TbChevronRight } from "react-icons/tb";
-import { imageProps } from "@/lib/image";
-import type { ProjectLink } from "@/server/content";
+import { Link } from "@tanstack/react-router"
+import { TbChevronLeft, TbChevronRight } from "react-icons/tb"
+import { imageProps } from "@/lib/image"
+import type { ProjectLink } from "@/server/content"
 
 interface ProjectNavigationProps {
-  prevProject: ProjectLink | null;
-  nextProject: ProjectLink | null;
+  prevProject: ProjectLink | null
+  nextProject: ProjectLink | null
 }
 
-export function ProjectNavigation({ prevProject, nextProject }: ProjectNavigationProps) {
+export function ProjectNavigation({
+  prevProject,
+  nextProject,
+}: ProjectNavigationProps) {
   const handleProjectNavigation = () => {
-    sessionStorage.setItem('navigation-source', 'project-page');
-  };
+    sessionStorage.setItem("navigation-source", "project-page")
+  }
 
   return (
     <div className="mt-16">
@@ -83,5 +86,5 @@ export function ProjectNavigation({ prevProject, nextProject }: ProjectNavigatio
         )}
       </div>
     </div>
-  );
+  )
 }

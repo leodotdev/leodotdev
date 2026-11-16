@@ -38,7 +38,10 @@ export function imageProps(
   const fits = source.widths.filter((w) => w <= max)
   // Always keep at least the smallest variant.
   const widths = fits.length ? fits : [source.widths[0]]
-  const src = variant(source, widths.find((w) => w >= 960) ?? widths[widths.length - 1])
+  const src = variant(
+    source,
+    widths.find((w) => w >= 960) ?? widths[widths.length - 1]
+  )
   return {
     src,
     srcSet: widths.map((w) => `${variant(source, w)} ${w}w`).join(", "),

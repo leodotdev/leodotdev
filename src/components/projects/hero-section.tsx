@@ -1,6 +1,6 @@
-import { ContactMenu } from "@/components/Navigation";
-import { GridSwitcher } from "@/components/GridSwitcher";
-import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { ContactMenu } from "@/components/Navigation"
+import { GridSwitcher } from "@/components/GridSwitcher"
+import { ThemeSwitcher } from "@/components/ThemeSwitcher"
 
 export function HeroSection() {
   return (
@@ -17,5 +17,5 @@ export function HeroSection() {
         </div>
       </div>
     </div>
-  );
+  )
 }

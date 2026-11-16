@@ -1,145 +1,155 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Link } from "@tanstack/react-router";
-import type { Project } from "@/types/Project";
-import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { imageProps } from "@/lib/image";
-import { categories } from "@/lib/categories";
-import type { Img } from "@/lib/image";
-import { motion, AnimatePresence } from "motion/react";
-import { TbX, TbChevronLeft, TbChevronRight, TbList, TbLayoutGrid } from "react-icons/tb";
-import { Button } from "@/components/ui/button";
+import React, { useState, useEffect, useCallback } from "react"
+import { Link } from "@tanstack/react-router"
+import type { Project } from "@/types/Project"
+import { Separator } from "@/components/ui/separator"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { imageProps } from "@/lib/image"
+import { categories } from "@/lib/categories"
+import type { Img } from "@/lib/image"
+import { motion, AnimatePresence } from "motion/react"
+import {
+  TbX,
+  TbChevronLeft,
+  TbChevronRight,
+  TbList,
+  TbLayoutGrid,
+} from "react-icons/tb"
+import { Button } from "@/components/ui/button"
 
 const clientLogos: Record<string, string> = {
-  "Anthropic": "/logo-dbco.jpg",
-  "Meta": "/logo-me.svg",
-  "Facebook": "/logo-fb.svg",
-  "BitGo": "/logo-bg.svg",
-  "Plasmic": "/logo-pl.svg",
-  "Sourcegraph": "/logo-sg.svg",
-  "Zenefits": "/logo-ze.svg",
-  "Sapien": "/logo-sania.jpg",
-};
-
+  Anthropic: "/logo-dbco.jpg",
+  Meta: "/logo-me.svg",
+  Facebook: "/logo-fb.svg",
+  BitGo: "/logo-bg.svg",
+  Plasmic: "/logo-pl.svg",
+  Sourcegraph: "/logo-sg.svg",
+  Zenefits: "/logo-ze.svg",
+  Sapien: "/logo-sania.jpg",
+}
 
 function getContentImageThumbs(project: Project): Img[] {
-  return project.images.map((i) => i.image);
+  return project.images.map((i) => i.image)
 }
 
 function getFullResImages(project: Project): Img[] {
-  return [...(project.image ? [project.image] : []), ...getContentImageThumbs(project)];
+  return [
+    ...(project.image ? [project.image] : []),
+    ...getContentImageThumbs(project),
+  ]
 }
 
-const PROJECTS_PAGE_SIZE = 8;
-const GRID_PAGE_SIZE = PROJECTS_PAGE_SIZE * 2;
+const PROJECTS_PAGE_SIZE = 8
+const GRID_PAGE_SIZE = PROJECTS_PAGE_SIZE * 2
 
 export function ProjectsClient({ projects }: { projects: Project[] }) {
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [visibleCount, setVisibleCount] = useState(GRID_PAGE_SIZE);
-  const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
-  const [lightboxImages, setLightboxImages] = useState<Img[]>([]);
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all")
+  const [visibleCount, setVisibleCount] = useState(GRID_PAGE_SIZE)
+  const [viewMode, setViewMode] = useState<"list" | "grid">("grid")
+  const [lightboxImages, setLightboxImages] = useState<Img[]>([])
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  const [imageLoaded, setImageLoaded] = useState(false)
 
-  const pageSize = viewMode === "grid" ? GRID_PAGE_SIZE : PROJECTS_PAGE_SIZE;
+  const pageSize = viewMode === "grid" ? GRID_PAGE_SIZE : PROJECTS_PAGE_SIZE
 
   const handleViewModeChange = useCallback((mode: "list" | "grid") => {
-    setViewMode(mode);
-    setVisibleCount(mode === "grid" ? GRID_PAGE_SIZE : PROJECTS_PAGE_SIZE);
+    setViewMode(mode)
+    setVisibleCount(mode === "grid" ? GRID_PAGE_SIZE : PROJECTS_PAGE_SIZE)
     if (typeof window !== "undefined") {
-      localStorage.setItem("projects-view-mode", mode);
+      localStorage.setItem("projects-view-mode", mode)
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
-    const saved = localStorage.getItem("projects-view-mode");
+    const saved = localStorage.getItem("projects-view-mode")
     if (saved === "list") {
-      setViewMode("list");
-      setVisibleCount(PROJECTS_PAGE_SIZE);
+      setViewMode("list")
+      setVisibleCount(PROJECTS_PAGE_SIZE)
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     document.documentElement.classList.toggle(
       "projects-grid",
-      viewMode === "grid",
-    );
-    return () => document.documentElement.classList.remove("projects-grid");
-  }, [viewMode]);
+      viewMode === "grid"
+    )
+    return () => document.documentElement.classList.remove("projects-grid")
+  }, [viewMode])
 
   const openLightbox = (images: Img[], index: number) => {
-    setLightboxImages(images);
-    setLightboxIndex(index);
-    setImageLoaded(false);
-    document.body.style.overflow = "hidden";
-  };
+    setLightboxImages(images)
+    setLightboxIndex(index)
+    setImageLoaded(false)
+    document.body.style.overflow = "hidden"
+  }
 
   const closeLightbox = useCallback(() => {
-    setLightboxIndex(null);
-    setLightboxImages([]);
-    setImageLoaded(false);
-    document.body.style.overflow = "";
-  }, []);
+    setLightboxIndex(null)
+    setLightboxImages([])
+    setImageLoaded(false)
+    document.body.style.overflow = ""
+  }, [])
 
   const goToPrevious = useCallback(() => {
-    if (lightboxIndex === null) return;
-    setImageLoaded(false);
-    setLightboxIndex(lightboxIndex === 0 ? lightboxImages.length - 1 : lightboxIndex - 1);
-  }, [lightboxIndex, lightboxImages.length]);
+    if (lightboxIndex === null) return
+    setImageLoaded(false)
+    setLightboxIndex(
+      lightboxIndex === 0 ? lightboxImages.length - 1 : lightboxIndex - 1
+    )
+  }, [lightboxIndex, lightboxImages.length])
 
   const goToNext = useCallback(() => {
-    if (lightboxIndex === null) return;
-    setImageLoaded(false);
-    setLightboxIndex(lightboxIndex === lightboxImages.length - 1 ? 0 : lightboxIndex + 1);
-  }, [lightboxIndex, lightboxImages.length]);
+    if (lightboxIndex === null) return
+    setImageLoaded(false)
+    setLightboxIndex(
+      lightboxIndex === lightboxImages.length - 1 ? 0 : lightboxIndex + 1
+    )
+  }, [lightboxIndex, lightboxImages.length])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (lightboxIndex === null) return;
-      if (e.key === "Escape") closeLightbox();
-      if (e.key === "ArrowLeft") goToPrevious();
-      if (e.key === "ArrowRight") goToNext();
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [lightboxIndex, closeLightbox, goToPrevious, goToNext]);
+      if (lightboxIndex === null) return
+      if (e.key === "Escape") closeLightbox()
+      if (e.key === "ArrowLeft") goToPrevious()
+      if (e.key === "ArrowRight") goToNext()
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [lightboxIndex, closeLightbox, goToPrevious, goToNext])
 
   const categoryCounts = categories.reduce(
     (acc, category) => {
       if (category.value === "all") {
-        acc[category.value] = projects.length;
+        acc[category.value] = projects.length
       } else {
         acc[category.value] = projects.filter((project) =>
-          project.categories?.includes(category.value),
-        ).length;
+          project.categories?.includes(category.value)
+        ).length
       }
-      return acc;
+      return acc
     },
-    {} as Record<string, number>,
-  );
+    {} as Record<string, number>
+  )
 
   const handleCategoryClick = (categoryValue: string) => {
-    setSelectedCategory(categoryValue);
-    setVisibleCount(pageSize);
-  };
+    setSelectedCategory(categoryValue)
+    setVisibleCount(pageSize)
+  }
 
   const filteredProjects =
     selectedCategory === "all"
       ? projects
       : projects.filter((project) =>
-          project.categories?.includes(selectedCategory),
-        );
+          project.categories?.includes(selectedCategory)
+        )
 
-  const visibleProjects = filteredProjects.slice(0, visibleCount);
-  const hasMore = visibleCount < filteredProjects.length;
+  const visibleProjects = filteredProjects.slice(0, visibleCount)
+  const hasMore = visibleCount < filteredProjects.length
 
   return (
     <div
       id="projects"
       className={`border-t pt-12 ${
-        viewMode === "grid"
-          ? "mx-[calc(50%_-_50vw)] overflow-x-hidden"
-          : ""
+        viewMode === "grid" ? "mx-[calc(50%_-_50vw)] overflow-x-hidden" : ""
       }`}
     >
       <div className="px-6 pb-12 md:px-12">
@@ -181,7 +191,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
               variant="ghost"
               size="sm"
               onClick={() => handleCategoryClick(category.value)}
-              className={`h-auto rounded-full [corner-shape:round] px-4 py-2 ${
+              className={`h-auto rounded-full px-4 py-2 [corner-shape:round] ${
                 selectedCategory === category.value
                   ? "bg-muted hover:bg-muted"
                   : ""
@@ -201,94 +211,89 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
       {viewMode === "list" ? (
         <div className="flex flex-col">
           {visibleProjects.map((project, index) => {
-            const contentThumbs = getContentImageThumbs(project);
+            const contentThumbs = getContentImageThumbs(project)
             const allThumbs = [
               ...(project.image ? [project.image] : []),
               ...contentThumbs,
-            ].slice(0, 6);
-            const fullResImages = getFullResImages(project);
+            ].slice(0, 6)
+            const fullResImages = getFullResImages(project)
 
             return (
               <React.Fragment key={project.id}>
-              <div>
-                <Link
-                  to="/projects/$slug"
-                  params={{ slug: project.slug }}
-                  className="group/item block px-6 py-6 md:px-12"
-                >
-                  <div className="flex w-full items-center justify-between gap-6">
-                    <div className="flex flex-row items-center gap-3">
-                      <Avatar className="rounded-md">
-                        <AvatarImage src={clientLogos[project.client]} />
-                        <AvatarFallback className="rounded-md text-muted-foreground">
-                          {project.client?.charAt(0) || "?"}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex flex-col md:flex-row md:gap-2">
-                        <div className="underline decoration-dotted group-hover/item:text-blue group-hover/item:decoration-solid">
-                          {project.name}
-                        </div>
-                        <span className="hidden text-muted-foreground md:inline">
-                          ·
-                        </span>
-                        <div className="italic text-muted-foreground">
-                          {project.client}
+                <div>
+                  <Link
+                    to="/projects/$slug"
+                    params={{ slug: project.slug }}
+                    className="group/item block px-6 py-6 md:px-12"
+                  >
+                    <div className="flex w-full items-center justify-between gap-6">
+                      <div className="flex flex-row items-center gap-3">
+                        <Avatar className="rounded-md">
+                          <AvatarImage src={clientLogos[project.client]} />
+                          <AvatarFallback className="rounded-md text-muted-foreground">
+                            {project.client?.charAt(0) || "?"}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex flex-col md:flex-row md:gap-2">
+                          <div className="underline decoration-dotted group-hover/item:text-blue group-hover/item:decoration-solid">
+                            {project.name}
+                          </div>
+                          <span className="hidden text-muted-foreground md:inline">
+                            ·
+                          </span>
+                          <div className="text-muted-foreground italic">
+                            {project.client}
+                          </div>
                         </div>
                       </div>
+                      <div className="flex w-[132px] shrink-0 flex-col items-end text-end">
+                        <p className="text-muted-foreground">{project.year}</p>
+                      </div>
                     </div>
-                    <div className="flex w-[132px] shrink-0 flex-col items-end text-end">
-                      <p className="text-muted-foreground">{project.year}</p>
-                    </div>
-                  </div>
 
-                  {project.description && (
+                    {project.description && (
+                      <p className="mt-2 pl-11 text-muted-foreground">
+                        {project.description}
+                      </p>
+                    )}
 
-                    <p className="mt-2 pl-11 text-muted-foreground">
-
-                      {project.description}
-
-                    </p>
-
-                  )}
-
-                  {allThumbs.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-2 [&:hover>*]:opacity-50">
-                      {allThumbs.map((img, imgIndex) => (
-                        <div
-                          key={imgIndex}
-                          className="group relative h-32 w-32 cursor-pointer overflow-hidden rounded-lg bg-secondary outline outline-1 -outline-offset-1 outline-border transition duration-300 hover:scale-[1.02] hover:!opacity-100"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            openLightbox(fullResImages, imgIndex);
-                          }}
-                        >
-                          <img
-                            {...imageProps(img, { maxWidth: 384 })}
-                            sizes="(max-width: 768px) 15vw, 128px"
-                            alt={`${project.name} thumbnail ${imgIndex + 1}`}
-                            className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            loading="lazy"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </Link>
-
-              </div>
+                    {allThumbs.length > 0 && (
+                      <div className="mt-3 flex flex-wrap gap-2 [&:hover>*]:opacity-50">
+                        {allThumbs.map((img, imgIndex) => (
+                          <div
+                            key={imgIndex}
+                            className="group relative h-32 w-32 cursor-pointer overflow-hidden rounded-lg bg-secondary outline outline-1 -outline-offset-1 outline-border transition duration-300 hover:scale-[1.02] hover:!opacity-100"
+                            onClick={(e) => {
+                              e.preventDefault()
+                              e.stopPropagation()
+                              openLightbox(fullResImages, imgIndex)
+                            }}
+                          >
+                            <img
+                              {...imageProps(img, { maxWidth: 384 })}
+                              sizes="(max-width: 768px) 15vw, 128px"
+                              alt={`${project.name} thumbnail ${imgIndex + 1}`}
+                              className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                              loading="lazy"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </Link>
+                </div>
                 {index < visibleProjects.length - 1 && (
                   <Separator className="mx-6 w-auto md:mx-12" />
                 )}
               </React.Fragment>
-            );
+            )
           })}
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-4 px-6 md:grid-cols-3 md:px-12 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 [&:hover>*]:opacity-50">
           {visibleProjects.map((project) => {
-            const contentThumbs = getContentImageThumbs(project);
-            const coverImage = project.image || contentThumbs[0] || null;
+            const contentThumbs = getContentImageThumbs(project)
+            const coverImage = project.image || contentThumbs[0] || null
 
             return (
               <Link
@@ -329,7 +334,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                   </div>
                 </div>
               </Link>
-            );
+            )
           })}
         </div>
       )}
@@ -343,10 +348,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
             Show more
           </Button>
         ) : visibleCount > PROJECTS_PAGE_SIZE ? (
-          <Button
-            variant="pill"
-            onClick={() => setVisibleCount(pageSize)}
-          >
+          <Button variant="pill" onClick={() => setVisibleCount(pageSize)}>
             Show less
           </Button>
         ) : null}
@@ -375,10 +377,10 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                 variant="ghost"
                 size="icon"
                 onClick={(e) => {
-                  e.stopPropagation();
-                  closeLightbox();
+                  e.stopPropagation()
+                  closeLightbox()
                 }}
-                className="absolute right-4 top-4 z-50 rounded-full [corner-shape:round] bg-white/10 text-white hover:bg-white/20 hover:text-white"
+                className="absolute top-4 right-4 z-50 rounded-full bg-white/10 text-white [corner-shape:round] hover:bg-white/20 hover:text-white"
                 aria-label="Close"
               >
                 <TbX className="h-6 w-6" />
@@ -387,7 +389,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
               <div className="relative flex flex-1 items-center justify-center p-4">
                 {!imageLoaded && (
                   <div className="absolute inset-0 z-10 flex items-center justify-center">
-                    <div className="h-8 w-8 animate-spin rounded-full [corner-shape:round] border-2 border-white/20 border-t-white" />
+                    <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-white [corner-shape:round]" />
                   </div>
                 )}
 
@@ -396,10 +398,10 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                     variant="ghost"
                     size="icon"
                     onClick={(e) => {
-                      e.stopPropagation();
-                      goToPrevious();
+                      e.stopPropagation()
+                      goToPrevious()
                     }}
-                    className="absolute left-4 z-20 rounded-full [corner-shape:round] bg-white/10 text-white hover:bg-white/20 hover:text-white"
+                    className="absolute left-4 z-20 rounded-full bg-white/10 text-white [corner-shape:round] hover:bg-white/20 hover:text-white"
                     aria-label="Previous"
                   >
                     <TbChevronLeft className="h-6 w-6" />
@@ -430,10 +432,10 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                     variant="ghost"
                     size="icon"
                     onClick={(e) => {
-                      e.stopPropagation();
-                      goToNext();
+                      e.stopPropagation()
+                      goToNext()
                     }}
-                    className="absolute right-4 z-20 rounded-full [corner-shape:round] bg-white/10 text-white hover:bg-white/20 hover:text-white"
+                    className="absolute right-4 z-20 rounded-full bg-white/10 text-white [corner-shape:round] hover:bg-white/20 hover:text-white"
                     aria-label="Next"
                   >
                     <TbChevronRight className="h-6 w-6" />
@@ -454,8 +456,8 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
                         key={i}
                         variant="ghost"
                         onClick={() => {
-                          setImageLoaded(false);
-                          setLightboxIndex(i);
+                          setImageLoaded(false)
+                          setLightboxIndex(i)
                         }}
                         className={`group relative h-24 overflow-hidden rounded-lg p-0 outline outline-1 -outline-offset-1 outline-border transition-all duration-300 hover:scale-[1.02] hover:bg-transparent ${
                           i === lightboxIndex
@@ -480,5 +482,5 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
         )}
       </AnimatePresence>
     </div>
-  );
+  )
 }

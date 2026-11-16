@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { endWave, isTap, isWaving, loadWave, pointer, wave } from "@/lib/wave";
+import { useEffect } from "react"
+import { endWave, isTap, isWaving, loadWave, pointer, wave } from "@/lib/wave"
 
 /**
  * Hover and tap waves keep the library's full palette, warm colours included,
@@ -11,12 +11,12 @@ import { endWave, isTap, isWaving, loadWave, pointer, wave } from "@/lib/wave";
 const QUIET = {
   hairWidth: -2,
   aberration: 0.2,
-};
+}
 
 /** How long the pointer must rest on an element before its hover wave starts. */
-const HOVER_DWELL_MS = 70;
+const HOVER_DWELL_MS = 70
 
-const INTERACTIVE = "a[href], button";
+const INTERACTIVE = "a[href], button"
 
 /**
  * Plays the distortion wave site-wide through document listeners. With a mouse
@@ -34,79 +34,80 @@ const INTERACTIVE = "a[href], button";
  */
 export function WaveEffects() {
   useEffect(() => {
-    void loadWave();
-    const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-    const off = () =>
-      reduced.matches || location.pathname.startsWith("/admin");
+    void loadWave()
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)")
+    const off = () => reduced.matches || location.pathname.startsWith("/admin")
     // Menu items (the Contact menu) are left out: no wave on hover or tap.
     const find = (t: EventTarget | null) =>
       t instanceof Element && !t.closest("[role='menu'], [role='menuitem']")
         ? (t.closest("[data-wave]") ?? t.closest(INTERACTIVE))
-        : null;
+        : null
 
     // Until a wave hands back to the real element, the element is shown as a
     // snapshot taken on hover. If the pointer leaves before that, the wave is
     // ended, or the snapshot would keep showing the hover state (a row's
     // panel colour) for a second after the pointer has gone.
-    const handedBack = new WeakSet<Element>();
+    const handedBack = new WeakSet<Element>()
     const onOut = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse") return;
-      const el = find(e.target);
-      if (!el || !isWaving(el) || handedBack.has(el)) return;
-      if (e.relatedTarget instanceof Node && el.contains(e.relatedTarget)) return;
-      endWave(el);
-    };
+      if (e.pointerType !== "mouse") return
+      const el = find(e.target)
+      if (!el || !isWaving(el) || handedBack.has(el)) return
+      if (e.relatedTarget instanceof Node && el.contains(e.relatedTarget))
+        return
+      endWave(el)
+    }
 
-    let hoverTimer = 0;
+    let hoverTimer = 0
     const onOver = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse" || off()) return;
-      const el = find(e.target);
-      if (!el || isWaving(el) || el.matches("[data-wave-hover='off']")) return;
+      if (e.pointerType !== "mouse" || off()) return
+      const el = find(e.target)
+      if (!el || isWaving(el) || el.matches("[data-wave-hover='off']")) return
       // Only when the pointer comes in from outside, not on moves within.
-      if (e.relatedTarget instanceof Node && el.contains(e.relatedTarget)) return;
+      if (e.relatedTarget instanceof Node && el.contains(e.relatedTarget))
+        return
       // Wait a beat, and only wave if the pointer is still there: sweeping
       // across the list would otherwise snapshot and animate every row.
-      clearTimeout(hoverTimer);
+      clearTimeout(hoverTimer)
       hoverTimer = window.setTimeout(() => {
-        if (!el.isConnected || !el.matches(":hover") || isWaving(el)) return;
-        handedBack.delete(el);
+        if (!el.isConnected || !el.matches(":hover") || isWaving(el)) return
+        handedBack.delete(el)
         void wave(el, undefined, {
           ...QUIET,
           focus: e,
           onSettled: () => handedBack.add(el),
-        });
-      }, HOVER_DWELL_MS);
-    };
+        })
+      }, HOVER_DWELL_MS)
+    }
 
     // A click doesn't say what made it in every browser, so remember the
     // pointer that went down just before.
     const onDown = (e: PointerEvent) => {
-      pointer.type = e.pointerType;
-    };
+      pointer.type = e.pointerType
+    }
 
     const onClick = (e: MouseEvent) => {
-      if (off() || !(e.target instanceof Element)) return;
-      if (e.target.closest("[data-wave-manual]")) return;
-      const el = find(e.target);
+      if (off() || !(e.target instanceof Element)) return
+      if (e.target.closest("[data-wave-manual]")) return
+      const el = find(e.target)
       // Mouse and keyboard: hover already played the wave, so a click adds
       // one only where asked for. Touch and pen: the tap is the trigger.
-      if (!isTap(e) && !e.target.closest("[data-wave-click]")) return;
-      if (!el) return;
-      void wave(el, undefined, { ...QUIET, focus: e });
-    };
+      if (!isTap(e) && !e.target.closest("[data-wave-click]")) return
+      if (!el) return
+      void wave(el, undefined, { ...QUIET, focus: e })
+    }
 
-    document.addEventListener("pointerover", onOver);
-    document.addEventListener("pointerout", onOut);
-    document.addEventListener("pointerdown", onDown, true);
-    document.addEventListener("click", onClick);
+    document.addEventListener("pointerover", onOver)
+    document.addEventListener("pointerout", onOut)
+    document.addEventListener("pointerdown", onDown, true)
+    document.addEventListener("click", onClick)
     return () => {
-      clearTimeout(hoverTimer);
-      document.removeEventListener("pointerover", onOver);
-      document.removeEventListener("pointerout", onOut);
-      document.removeEventListener("pointerdown", onDown, true);
-      document.removeEventListener("click", onClick);
-    };
-  }, []);
+      clearTimeout(hoverTimer)
+      document.removeEventListener("pointerover", onOver)
+      document.removeEventListener("pointerout", onOut)
+      document.removeEventListener("pointerdown", onDown, true)
+      document.removeEventListener("click", onClick)
+    }
+  }, [])
 
-  return null;
+  return null
 }

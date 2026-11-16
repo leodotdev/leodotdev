@@ -9,4 +9,4 @@ export const categories = [
   { title: "No-code Web Development", value: "web-development" },
   { title: "Graphic Design", value: "graphic-design" },
   { title: "Design System", value: "design-system" },
-];
+]

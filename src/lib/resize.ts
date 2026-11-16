@@ -45,7 +45,10 @@ export async function uploadImage(file: File, prefix: string): Promise<Img> {
       ]),
     ]
     for (const w of widths)
-      form.set(`w${w}`, new File([await toWebp(bitmap, w)], `${w}.webp`, { type: "image/webp" }))
+      form.set(
+        `w${w}`,
+        new File([await toWebp(bitmap, w)], `${w}.webp`, { type: "image/webp" })
+      )
   }
   bitmap.close()
   return adminUploadImage({ data: form })

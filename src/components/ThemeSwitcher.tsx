@@ -1,14 +1,14 @@
-import { forwardRef } from "react";
-import { flushSync } from "react-dom";
-import { useHydrated } from "@tanstack/react-router";
-import { useTheme } from "@/lib/theme";
-import { cn } from "@/lib/utils";
-import { wave } from "@/lib/wave";
+import { forwardRef } from "react"
+import { flushSync } from "react-dom"
+import { useHydrated } from "@tanstack/react-router"
+import { useTheme } from "@/lib/theme"
+import { cn } from "@/lib/utils"
+import { wave } from "@/lib/wave"
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@/components/ui/tooltip"
 
 /**
  * The light/dark toggle: a 20px dot. The button is the dot's size, so it lines
@@ -19,17 +19,17 @@ export const ThemeSwitcher = forwardRef<
   HTMLButtonElement,
   React.ComponentPropsWithoutRef<"button">
 >(({ className, ...props }, ref) => {
-  const hydrated = useHydrated();
-  const { resolved: currentTheme, setPref: setTheme } = useTheme();
+  const hydrated = useHydrated()
+  const { resolved: currentTheme, setPref: setTheme } = useTheme()
   const classes = cn(
-    "relative grid h-5 w-5 shrink-0 place-items-center rounded-full bg-transparent [corner-shape:round] outline-none before:absolute before:-inset-2.5 before:content-[''] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-    className,
-  );
+    "relative grid h-5 w-5 shrink-0 place-items-center rounded-full bg-transparent outline-none [corner-shape:round] before:absolute before:-inset-2.5 before:content-[''] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    className
+  )
 
   // The theme is only known in the browser: hold the space until hydration
   // so the top bar doesn't shift when the dot appears.
   if (!hydrated) {
-    return <span aria-hidden className={classes} />;
+    return <span aria-hidden className={classes} />
   }
 
   return (
@@ -43,7 +43,7 @@ export const ThemeSwitcher = forwardRef<
             data-wave-manual
             data-wave-hover="off"
             onClick={(e) => {
-              const next = currentTheme === "dark" ? "light" : "dark";
+              const next = currentTheme === "dark" ? "light" : "dark"
               // The wave carries the whole page from one theme to the other.
               wave(
                 document.getElementById("app"),
@@ -58,8 +58,8 @@ export const ThemeSwitcher = forwardRef<
                   gatherGlow: 0,
                   gatherDots: 0,
                   holdScale: 5,
-                },
-              );
+                }
+              )
             }}
             className={classes}
             {...props}
@@ -67,7 +67,7 @@ export const ThemeSwitcher = forwardRef<
             <span
               className={cn(
                 "h-5 w-5 rounded-full [corner-shape:round]",
-                currentTheme === "dark" ? "bg-white" : "bg-black",
+                currentTheme === "dark" ? "bg-white" : "bg-black"
               )}
             />
           </button>
@@ -75,7 +75,7 @@ export const ThemeSwitcher = forwardRef<
       />
       <TooltipContent>Light switch</TooltipContent>
     </Tooltip>
-  );
-});
+  )
+})
 
-ThemeSwitcher.displayName = "ThemeSwitcher";
+ThemeSwitcher.displayName = "ThemeSwitcher"

@@ -1,16 +1,16 @@
-import { Link } from "@tanstack/react-router";
-import { TbChevronRight } from "react-icons/tb";
-import { imageProps } from "@/lib/image";
-import type { ProjectLink } from "@/server/content";
+import { Link } from "@tanstack/react-router"
+import { TbChevronRight } from "react-icons/tb"
+import { imageProps } from "@/lib/image"
+import type { ProjectLink } from "@/server/content"
 
 interface NextProjectLinkProps {
-  nextProject: ProjectLink;
+  nextProject: ProjectLink
 }
 
 export function NextProjectLink({ nextProject }: NextProjectLinkProps) {
   const handleProjectNavigation = () => {
-    sessionStorage.setItem('navigation-source', 'project-page');
-  };
+    sessionStorage.setItem("navigation-source", "project-page")
+  }
 
   return (
     <Link
@@ -24,9 +24,7 @@ export function NextProjectLink({ nextProject }: NextProjectLinkProps) {
       </div>
       <div className="min-w-0 flex-1 text-right">
         <p className="text-xs text-muted-foreground">Next</p>
-        <h3 className="truncate font-semibold">
-          {nextProject.name}
-        </h3>
+        <h3 className="truncate font-semibold">{nextProject.name}</h3>
       </div>
       {nextProject.image && (
         <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-sm">
@@ -39,5 +37,5 @@ export function NextProjectLink({ nextProject }: NextProjectLinkProps) {
         </div>
       )}
     </Link>
-  );
+  )
 }

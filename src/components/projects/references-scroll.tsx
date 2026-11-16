@@ -1,21 +1,23 @@
-import { useRef, useState } from "react";
-import { flushSync } from "react-dom";
-import { isTap, stopWaves, wave } from "@/lib/wave";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import type { Reference } from "@/types/Reference";
+import { useRef, useState } from "react"
+import { flushSync } from "react-dom"
+import { isTap, stopWaves, wave } from "@/lib/wave"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import type { Reference } from "@/types/Reference"
 
-const REFERENCES_PAGE_SIZE = 2;
+const REFERENCES_PAGE_SIZE = 2
 
 interface ReferencesScrollProps {
-  references: Reference[];
+  references: Reference[]
 }
 
-export function ReferencesScroll({ references: allReferences }: ReferencesScrollProps) {
-  const [visibleCount, setVisibleCount] = useState(REFERENCES_PAGE_SIZE);
-  const sectionRef = useRef<HTMLDivElement>(null);
+export function ReferencesScroll({
+  references: allReferences,
+}: ReferencesScrollProps) {
+  const [visibleCount, setVisibleCount] = useState(REFERENCES_PAGE_SIZE)
+  const sectionRef = useRef<HTMLDivElement>(null)
   const showCount = (count: number, e: React.MouseEvent<HTMLElement>) => {
-    const update = () => flushSync(() => setVisibleCount(count));
+    const update = () => flushSync(() => setVisibleCount(count))
     // On touch the tap plays the wave: it leaves the button and carries the
     // list to its new length. With a mouse the wave is hover-only, so the
     // list just changes (after ending the button's own hover wave, whose
@@ -24,14 +26,14 @@ export function ReferencesScroll({ references: allReferences }: ReferencesScroll
       wave(sectionRef.current, update, {
         source: e.currentTarget,
         focus: e.nativeEvent,
-      });
+      })
     } else {
-      stopWaves(e.currentTarget);
-      update();
+      stopWaves(e.currentTarget)
+      update()
     }
-  };
-  const displayedReferences = allReferences.slice(0, visibleCount);
-  const hasMore = visibleCount < allReferences.length;
+  }
+  const displayedReferences = allReferences.slice(0, visibleCount)
+  const hasMore = visibleCount < allReferences.length
 
   return (
     <div id="references" ref={sectionRef}>
@@ -65,10 +67,12 @@ export function ReferencesScroll({ references: allReferences }: ReferencesScroll
                   </a>
                 </div>
                 <p className="min-w-0 text-end text-muted-foreground">
-                  {[reference.title, reference.company].filter(Boolean).join(", ")}
+                  {[reference.title, reference.company]
+                    .filter(Boolean)
+                    .join(", ")}
                 </p>
               </div>
-              <p className="mt-2 pl-11 pr-11 text-muted-foreground">
+              <p className="mt-2 pr-11 pl-11 text-muted-foreground">
                 &#34;{reference.quote}&#34;
               </p>
             </div>
@@ -96,5 +100,5 @@ export function ReferencesScroll({ references: allReferences }: ReferencesScroll
         ) : null}
       </div>
     </div>
-  );
+  )
 }

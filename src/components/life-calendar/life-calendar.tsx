@@ -1,29 +1,42 @@
-import { useEffect, useState, useRef } from "react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { LuChevronUp as ChevronUp, LuChevronDown as ChevronDown } from "react-icons/lu";
+import { useEffect, useState, useRef } from "react"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import {
+  LuChevronUp as ChevronUp,
+  LuChevronDown as ChevronDown,
+} from "react-icons/lu"
 
 interface CalendarDay {
-  date: Date;
-  dayNumber: number;
-  isCurrentMonth: boolean;
-  isToday: boolean;
-  isWeekend: boolean;
+  date: Date
+  dayNumber: number
+  isCurrentMonth: boolean
+  isToday: boolean
+  isWeekend: boolean
 }
 
 interface CalendarMonth {
-  year: number;
-  month: number;
-  monthName: string;
-  days: CalendarDay[];
+  year: number
+  month: number
+  monthName: string
+  days: CalendarDay[]
 }
 
 const monthNames = [
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-];
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+]
 
-const dayHeaders = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+const dayHeaders = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
 
 // A tint of a system accent for each month
 const monthColors: { [key: number]: string } = {
@@ -39,15 +52,15 @@ const monthColors: { [key: number]: string } = {
   9: "bg-cyan/40 dark:bg-cyan/20", // Oct
   10: "bg-green/40 dark:bg-green/20", // Nov
   11: "bg-green/55 dark:bg-green/30", // Dec
-};
+}
 
 function getDaysInMonth(year: number, month: number): CalendarDay[] {
-  const today = new Date();
-  const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month + 1, 0);
-  const daysInMonth = lastDay.getDate();
+  const today = new Date()
+  const firstDay = new Date(year, month, 1)
+  const lastDay = new Date(year, month + 1, 0)
+  const daysInMonth = lastDay.getDate()
 
-  const days: CalendarDay[] = [];
+  const days: CalendarDay[] = []
 
   // Add empty cells for days before the first day of the month
   for (let i = 0; i < firstDay.getDay(); i++) {
@@ -57,14 +70,14 @@ function getDaysInMonth(year: number, month: number): CalendarDay[] {
       isCurrentMonth: false,
       isToday: false,
       isWeekend: false,
-    });
+    })
   }
 
   // Add all days of the month
   for (let day = 1; day <= daysInMonth; day++) {
-    const date = new Date(year, month, day);
-    const isToday = date.toDateString() === today.toDateString();
-    const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+    const date = new Date(year, month, day)
+    const isToday = date.toDateString() === today.toDateString()
+    const isWeekend = date.getDay() === 0 || date.getDay() === 6
 
     days.push({
       date,
@@ -72,11 +85,11 @@ function getDaysInMonth(year: number, month: number): CalendarDay[] {
       isCurrentMonth: true,
       isToday,
       isWeekend,
-    });
+    })
   }
 
   // Add empty cells to complete the last week
-  const remainingCells = 35 - days.length; // 5 weeks minimum
+  const remainingCells = 35 - days.length // 5 weeks minimum
   for (let i = 0; i < remainingCells; i++) {
     days.push({
       date: new Date(year, month + 1, i + 1),
@@ -84,133 +97,134 @@ function getDaysInMonth(year: number, month: number): CalendarDay[] {
       isCurrentMonth: false,
       isToday: false,
       isWeekend: false,
-    });
+    })
   }
 
-  return days;
+  return days
 }
 
 function generateCalendarYear(year: number): CalendarMonth[] {
-  const months: CalendarMonth[] = [];
+  const months: CalendarMonth[] = []
   for (let month = 0; month < 12; month++) {
     months.push({
       year,
       month,
       monthName: monthNames[month],
       days: getDaysInMonth(year, month),
-    });
+    })
   }
-  return months;
+  return months
 }
 
 export function LifeCalendar() {
-  const [years, setYears] = useState<{ [key: number]: CalendarMonth[] }>({});
-  const containerRef = useRef<HTMLDivElement>(null);
-  const scrollPositionRef = useRef(0);
-  const todayRef = useRef<HTMLDivElement>(null);
-  const currentYear = new Date().getFullYear();
+  const [years, setYears] = useState<{ [key: number]: CalendarMonth[] }>({})
+  const containerRef = useRef<HTMLDivElement>(null)
+  const scrollPositionRef = useRef(0)
+  const todayRef = useRef<HTMLDivElement>(null)
+  const currentYear = new Date().getFullYear()
 
   // Load initial years around current year
   useEffect(() => {
-    const initialYears: { [key: number]: CalendarMonth[] } = {};
+    const initialYears: { [key: number]: CalendarMonth[] } = {}
     for (let year = currentYear - 10; year <= currentYear + 10; year++) {
-      initialYears[year] = generateCalendarYear(year);
+      initialYears[year] = generateCalendarYear(year)
     }
-    setYears(initialYears);
-  }, [currentYear]);
+    setYears(initialYears)
+  }, [currentYear])
 
   // Scroll to today on initial load
   useEffect(() => {
     if (todayRef.current) {
       setTimeout(() => {
-        todayRef.current?.scrollIntoView({ 
-          behavior: "smooth", 
-          block: "center" 
-        });
-      }, 100);
+        todayRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        })
+      }, 100)
     }
-  }, [years]);
+  }, [years])
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const container = e.currentTarget;
-    const { scrollTop, scrollHeight, clientHeight } = container;
-    
+    const container = e.currentTarget
+    const { scrollTop, scrollHeight, clientHeight } = container
+
     // Store scroll position
-    scrollPositionRef.current = scrollTop;
-    
+    scrollPositionRef.current = scrollTop
+
     // Load more years when scrolling near top or bottom
     if (scrollTop < 2000) {
-      const earliestYear = Math.min(...Object.keys(years).map(Number));
-      const newYears = { ...years };
+      const earliestYear = Math.min(...Object.keys(years).map(Number))
+      const newYears = { ...years }
       for (let year = earliestYear - 5; year < earliestYear; year++) {
         if (!newYears[year]) {
-          newYears[year] = generateCalendarYear(year);
+          newYears[year] = generateCalendarYear(year)
         }
       }
-      setYears(newYears);
+      setYears(newYears)
     }
 
     if (scrollTop + clientHeight > scrollHeight - 2000) {
-      const latestYear = Math.max(...Object.keys(years).map(Number));
-      const newYears = { ...years };
+      const latestYear = Math.max(...Object.keys(years).map(Number))
+      const newYears = { ...years }
       for (let year = latestYear + 1; year <= latestYear + 5; year++) {
         if (!newYears[year]) {
-          newYears[year] = generateCalendarYear(year);
+          newYears[year] = generateCalendarYear(year)
         }
       }
-      setYears(newYears);
+      setYears(newYears)
     }
-  };
+  }
 
   const loadPreviousYear = (year: number) => {
-    const newYears = { ...years };
-    const targetYear = year - 1;
+    const newYears = { ...years }
+    const targetYear = year - 1
     if (!newYears[targetYear]) {
-      newYears[targetYear] = generateCalendarYear(targetYear);
-      setYears(newYears);
+      newYears[targetYear] = generateCalendarYear(targetYear)
+      setYears(newYears)
       // Scroll to the new year after it's rendered
       setTimeout(() => {
-        const yearElement = document.getElementById(`year-${targetYear}`);
+        const yearElement = document.getElementById(`year-${targetYear}`)
         if (yearElement) {
-          yearElement.scrollIntoView({ behavior: "smooth", block: "start" });
+          yearElement.scrollIntoView({ behavior: "smooth", block: "start" })
         }
-      }, 50);
+      }, 50)
     }
-  };
+  }
 
   const loadNextYear = (year: number) => {
-    const newYears = { ...years };
-    const targetYear = year + 1;
+    const newYears = { ...years }
+    const targetYear = year + 1
     if (!newYears[targetYear]) {
-      newYears[targetYear] = generateCalendarYear(targetYear);
-      setYears(newYears);
+      newYears[targetYear] = generateCalendarYear(targetYear)
+      setYears(newYears)
       // Scroll to the new year after it's rendered
       setTimeout(() => {
-        const yearElement = document.getElementById(`year-${targetYear}`);
+        const yearElement = document.getElementById(`year-${targetYear}`)
         if (yearElement) {
-          yearElement.scrollIntoView({ behavior: "smooth", block: "start" });
+          yearElement.scrollIntoView({ behavior: "smooth", block: "start" })
         }
-      }, 50);
+      }, 50)
     }
-  };
+  }
 
   const sortedYears = Object.keys(years)
     .map(Number)
-    .sort((a, b) => a - b);
+    .sort((a, b) => a - b)
 
   return (
     <div className="fixed inset-0 flex flex-col bg-background">
       {/* Fixed header with day labels */}
-      <div className="sticky top-0 z-20 bg-background border-b">
+      <div className="sticky top-0 z-20 border-b bg-background">
         <div className="grid grid-cols-[80px_repeat(35,_1fr)] gap-0">
-          <div className="p-2 font-semibold text-right border-r"></div>
-          {Array.from({ length: 5 }, (_, weekIndex) => 
+          <div className="border-r p-2 text-right font-semibold"></div>
+          {Array.from({ length: 5 }, (_, weekIndex) =>
             dayHeaders.map((day, dayIndex) => (
-              <div 
-                key={`${weekIndex}-${dayIndex}`} 
+              <div
+                key={`${weekIndex}-${dayIndex}`}
                 className={cn(
                   "border-r py-2 text-center text-xs font-semibold",
-                  (dayIndex === 0 || dayIndex === 6) && "bg-orange/15 dark:bg-orange/15"
+                  (dayIndex === 0 || dayIndex === 6) &&
+                    "bg-orange/15 dark:bg-orange/15"
                 )}
               >
                 {day}
@@ -221,9 +235,9 @@ export function LifeCalendar() {
       </div>
 
       {/* Scrollable calendar content */}
-      <div 
+      <div
         ref={containerRef}
-        className="flex-1 overflow-y-auto overflow-x-hidden"
+        className="flex-1 overflow-x-hidden overflow-y-auto"
         onScroll={handleScroll}
       >
         <div className="w-full">
@@ -231,7 +245,7 @@ export function LifeCalendar() {
             <div key={year} id={`year-${year}`}>
               {/* Load previous year button */}
               {year === currentYear && yearIndex > 0 && (
-                <div className="flex justify-center py-4 bg-background border-b">
+                <div className="flex justify-center border-b bg-background py-4">
                   <Button
                     variant="pill"
                     onClick={() => loadPreviousYear(year)}
@@ -242,30 +256,32 @@ export function LifeCalendar() {
                   </Button>
                 </div>
               )}
-              
+
               {/* Year header - smaller, plainer, left-aligned */}
-              <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-xs px-4 py-2 text-xs text-muted-foreground border-b">
+              <div className="sticky top-0 z-10 border-b bg-background/95 px-4 py-2 text-xs text-muted-foreground backdrop-blur-xs">
                 {year}
               </div>
-              
+
               {/* Months */}
               {years[year].map((month) => {
-                const hasToday = month.days.some(day => day.isToday);
-                
+                const hasToday = month.days.some((day) => day.isToday)
+
                 return (
-                  <div 
+                  <div
                     key={`${year}-${month.month}`}
                     ref={hasToday ? todayRef : undefined}
                     className="grid grid-cols-[80px_repeat(35,_1fr)] gap-0 border-b"
                   >
                     {/* Month name */}
-                    <div className={cn(
-                      monthColors[month.month],
-                      "py-3 px-2 font-semibold text-right border-r text-xs"
-                    )}>
+                    <div
+                      className={cn(
+                        monthColors[month.month],
+                        "border-r px-2 py-3 text-right text-xs font-semibold"
+                      )}
+                    >
                       {month.monthName}
                     </div>
-                    
+
                     {/* Days - taller cells */}
                     {month.days.map((day, index) => (
                       <div
@@ -273,22 +289,32 @@ export function LifeCalendar() {
                         data-today={day.isToday}
                         className={cn(
                           "border-r py-2 text-center text-xs transition-all",
-                          !day.isCurrentMonth || day.dayNumber === 0 && "bg-muted/50 text-muted-foreground",
-                          day.isCurrentMonth && day.dayNumber > 0 && !day.isToday && "bg-background",
-                          day.isWeekend && day.isCurrentMonth && day.dayNumber > 0 && !day.isToday && "bg-orange/15 dark:bg-orange/15",
-                          day.isToday && "bg-destructive text-destructive-foreground font-bold"
+                          !day.isCurrentMonth ||
+                            (day.dayNumber === 0 &&
+                              "bg-muted/50 text-muted-foreground"),
+                          day.isCurrentMonth &&
+                            day.dayNumber > 0 &&
+                            !day.isToday &&
+                            "bg-background",
+                          day.isWeekend &&
+                            day.isCurrentMonth &&
+                            day.dayNumber > 0 &&
+                            !day.isToday &&
+                            "bg-orange/15 dark:bg-orange/15",
+                          day.isToday &&
+                            "bg-destructive font-bold text-destructive-foreground"
                         )}
                       >
-                        {day.dayNumber > 0 ? day.dayNumber : ''}
+                        {day.dayNumber > 0 ? day.dayNumber : ""}
                       </div>
                     ))}
                   </div>
-                );
+                )
               })}
-              
+
               {/* Load next year button */}
               {year === currentYear && yearIndex < sortedYears.length - 1 && (
-                <div className="flex justify-center py-4 bg-background border-b">
+                <div className="flex justify-center border-b bg-background py-4">
                   <Button
                     variant="pill"
                     onClick={() => loadNextYear(year)}
@@ -304,5 +330,5 @@ export function LifeCalendar() {
         </div>
       </div>
     </div>
-  );
+  )
 }

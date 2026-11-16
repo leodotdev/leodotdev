@@ -57,7 +57,9 @@ export const experiences = sqliteTable("experiences", {
   projectUrl: text("project_url"),
   projectCompany: text("project_company"),
   projectCompanyUrl: text("project_company_url"),
-  roundLogo: integer("round_logo", { mode: "boolean" }).notNull().default(false),
+  roundLogo: integer("round_logo", { mode: "boolean" })
+    .notNull()
+    .default(false),
   updatedAt: updatedAt(),
 })
 

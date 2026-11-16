@@ -22,7 +22,7 @@ function ListRowSkeleton({ withThumbs = false }: { withThumbs?: boolean }) {
         </div>
       )}
     </div>
-  );
+  )
 }
 
 export function ProjectsSkeleton() {
@@ -113,5 +113,5 @@ export function ProjectsSkeleton() {
         <div className="h-4 w-full max-w-lg animate-pulse rounded bg-muted/40" />
       </div>
     </div>
-  );
+  )
 }

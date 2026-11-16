@@ -3,7 +3,15 @@
 import { useState } from "react"
 import { useRouter } from "@tanstack/react-router"
 import { TbArrowDown, TbArrowUp } from "react-icons/tb"
-import { Checkbox, SaveBar, TextArea, TextField, Thumb, UploadButton, useSaver } from "./fields"
+import {
+  Checkbox,
+  SaveBar,
+  TextArea,
+  TextField,
+  Thumb,
+  UploadButton,
+  useSaver,
+} from "./fields"
 import { Button } from "@/components/ui/button"
 import {
   adminCreateRow,
@@ -75,7 +83,9 @@ export function RowsEditor({
               >
                 <div className="truncate">{title(row)}</div>
                 {subtitle && (
-                  <div className="truncate text-xs text-muted-foreground">{subtitle(row)}</div>
+                  <div className="truncate text-xs text-muted-foreground">
+                    {subtitle(row)}
+                  </div>
                 )}
               </button>
               <Button
@@ -132,7 +142,13 @@ function RowForm({
 }) {
   const router = useRouter()
   const pick = (r: Row) =>
-    Object.fromEntries([["id", r.id], ...fields.map((f) => [f.key, r[f.key] ?? (f.type === "checkbox" ? false : "")])])
+    Object.fromEntries([
+      ["id", r.id],
+      ...fields.map((f) => [
+        f.key,
+        r[f.key] ?? (f.type === "checkbox" ? false : ""),
+      ]),
+    ])
   const [draft, setDraft] = useState<Record<string, unknown>>(pick(row))
   const [saved, setSaved] = useState(draft)
   const dirty = JSON.stringify(draft) !== JSON.stringify(saved)
@@ -150,7 +166,12 @@ function RowForm({
           const value = draft[f.key]
           if (f.type === "checkbox")
             return (
-              <Checkbox key={f.key} label={f.label} checked={Boolean(value)} onChange={(v) => set(f.key, v)} />
+              <Checkbox
+                key={f.key}
+                label={f.label}
+                checked={Boolean(value)}
+                onChange={(v) => set(f.key, v)}
+              />
             )
           if (f.type === "logo")
             return (
@@ -159,22 +180,37 @@ function RowForm({
                   <Thumb image={String(value || "") || null} alt="" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <TextField label={f.label} value={String(value ?? "")} onChange={(v) => set(f.key, v)} />
+                  <TextField
+                    label={f.label}
+                    value={String(value ?? "")}
+                    onChange={(v) => set(f.key, v)}
+                  />
                 </div>
                 <UploadButton
                   prefix="logos"
                   label="Upload"
                   onUploaded={([img]) =>
                     // Logos show at 40px: the smallest stored width is plenty.
-                    set(f.key, img.src.replace(/-\d+\.(\w+)$/, `-${img.widths[0]}.$1`))
+                    set(
+                      f.key,
+                      img.src.replace(/-\d+\.(\w+)$/, `-${img.widths[0]}.$1`)
+                    )
                   }
                 />
               </div>
             )
           const Input = f.type === "textarea" ? TextArea : TextField
           return (
-            <div key={f.key} className={f.type === "textarea" ? "md:col-span-2" : undefined}>
-              <Input label={f.label} hint={f.hint} value={String(value ?? "")} onChange={(v) => set(f.key, v)} />
+            <div
+              key={f.key}
+              className={f.type === "textarea" ? "md:col-span-2" : undefined}
+            >
+              <Input
+                label={f.label}
+                hint={f.hint}
+                value={String(value ?? "")}
+                onChange={(v) => set(f.key, v)}
+              />
             </div>
           )
         })}
@@ -191,7 +227,8 @@ function RowForm({
           variant="ghost"
           className="ml-auto text-red hover:text-red"
           onClick={async () => {
-            if (!window.confirm("Delete this entry? This can't be undone.")) return
+            if (!window.confirm("Delete this entry? This can't be undone."))
+              return
             await adminDeleteRow({ data: { kind, id: row.id } })
             await onDeleted()
           }}

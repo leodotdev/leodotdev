@@ -21,7 +21,6 @@ export const Route = createFileRoute("/_site/projects/$slug")({
 function ProjectPage() {
   const { project, prevProject, nextProject } = Route.useLoaderData()
 
-
   return (
     <div>
       {/* Navigation */}

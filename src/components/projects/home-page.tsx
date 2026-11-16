@@ -31,15 +31,15 @@ export function HomePage({
               the frame's borders are hidden so the projects section can go
               full-bleed, does this group draw its own. */}
           <div className="flex flex-col gap-12 pb-12 min-[961px]:[.projects-grid_&]:border-x">
-          {/* Hero section with photos */}
-          <HeroSection />
+            {/* Hero section with photos */}
+            <HeroSection />
 
-          <Separator />
+            <Separator />
 
-          {/* experience */}
-          <ExperienceClient experiences={experiences} />
+            {/* experience */}
+            <ExperienceClient experiences={experiences} />
 
-          {/* <Card className="rounded-3xl bg-white dark:bg-black/50 shadow-none dark:bg-black/50">
+            {/* <Card className="rounded-3xl bg-white dark:bg-black/50 shadow-none dark:bg-black/50">
           <CardHeader>
             <CardTitle className=">Favorite Tools</CardTitle>
           </CardHeader>
@@ -63,9 +63,9 @@ export function HomePage({
           </CardContent>
         </Card> */}
 
-          <Separator />
+            <Separator />
 
-          <ReferencesScroll references={references} />
+            <ReferencesScroll references={references} />
           </div>
 
           {/* Book Shelf section hidden for now
@@ -169,5 +169,5 @@ export function HomePage({
         </div>
       </>
     </ProjectsWrapper>
-  );
+  )
 }

@@ -30,10 +30,14 @@ function ProjectsAdmin() {
     setBusy(true)
     setError(null)
     try {
-      const { id } = await adminCreateProject({ data: { name: name.trim(), slug } })
+      const { id } = await adminCreateProject({
+        data: { name: name.trim(), slug },
+      })
       await navigate({ to: "/admin/projects/$id", params: { id } })
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not create the project")
+      setError(
+        err instanceof Error ? err.message : "Could not create the project"
+      )
       setBusy(false)
     }
   }
@@ -67,7 +71,9 @@ function ProjectsAdmin() {
               <div className="min-w-0 flex-1">
                 <div className="truncate">{p.name}</div>
                 <div className="truncate text-xs text-muted-foreground">
-                  {[p.client, p.year, `${p.images.length} images`].filter(Boolean).join(" · ")}
+                  {[p.client, p.year, `${p.images.length} images`]
+                    .filter(Boolean)
+                    .join(" · ")}
                 </div>
               </div>
             </Link>

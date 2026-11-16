@@ -1,19 +1,19 @@
-import React, { useRef, useState } from "react";
-import { flushSync } from "react-dom";
-import { isTap, stopWaves, wave } from "@/lib/wave";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { TbArrowUpRight, TbDownload } from "react-icons/tb";
-import type { Experience } from "@/types/Experience";
+import React, { useRef, useState } from "react"
+import { flushSync } from "react-dom"
+import { isTap, stopWaves, wave } from "@/lib/wave"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import { TbArrowUpRight, TbDownload } from "react-icons/tb"
+import type { Experience } from "@/types/Experience"
 
-const EXPERIENCE_PAGE_SIZE = 3;
+const EXPERIENCE_PAGE_SIZE = 3
 
 interface ExperienceClientProps {
-  experiences: Experience[];
+  experiences: Experience[]
 }
 
 function CompanyLink({ exp }: { exp: Experience }) {
-  if (!exp.companyUrl) return <span>{exp.company}</span>;
+  if (!exp.companyUrl) return <span>{exp.company}</span>
   return (
     <a
       className="group-hover/item:text-blue group-hover/item:underline"
@@ -23,19 +23,19 @@ function CompanyLink({ exp }: { exp: Experience }) {
     >
       {exp.company}
     </a>
-  );
+  )
 }
 
 const splitList = (s: string | null) =>
-  (s ?? "").split(",").map((x) => x.trim());
+  (s ?? "").split(",").map((x) => x.trim())
 
 /**
  * "Project: A" or "Projects: A & B". `project` and `projectUrl` hold
  * comma-separated lists, matched by position.
  */
 function ProjectLinks({ exp }: { exp: Experience }) {
-  const names = splitList(exp.project).filter(Boolean);
-  const urls = splitList(exp.projectUrl);
+  const names = splitList(exp.project).filter(Boolean)
+  const urls = splitList(exp.projectUrl)
   return (
     <>
       {names.length > 1 ? "Projects: " : "Project: "}
@@ -57,14 +57,14 @@ function ProjectLinks({ exp }: { exp: Experience }) {
         </React.Fragment>
       ))}
     </>
-  );
+  )
 }
 
 export function ExperienceClient({ experiences }: ExperienceClientProps) {
-  const [visibleCount, setVisibleCount] = useState(EXPERIENCE_PAGE_SIZE);
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const [visibleCount, setVisibleCount] = useState(EXPERIENCE_PAGE_SIZE)
+  const sectionRef = useRef<HTMLDivElement>(null)
   const showCount = (count: number, e: React.MouseEvent<HTMLElement>) => {
-    const update = () => flushSync(() => setVisibleCount(count));
+    const update = () => flushSync(() => setVisibleCount(count))
     // On touch the tap plays the wave: it leaves the button and carries the
     // list to its new length. With a mouse the wave is hover-only, so the
     // list just changes (after ending the button's own hover wave, whose
@@ -73,24 +73,21 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
       wave(sectionRef.current, update, {
         source: e.currentTarget,
         focus: e.nativeEvent,
-      });
+      })
     } else {
-      stopWaves(e.currentTarget);
-      update();
+      stopWaves(e.currentTarget)
+      update()
     }
-  };
-  const displayedExperiences = experiences.slice(0, visibleCount);
-  const hasMore = visibleCount < experiences.length;
+  }
+  const displayedExperiences = experiences.slice(0, visibleCount)
+  const hasMore = visibleCount < experiences.length
 
   return (
     <div id="experience" ref={sectionRef}>
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-6 pb-6 md:px-12">
         <div className="font-semibold">Experience</div>
         <div className="flex flex-wrap gap-2">
-          <Button
-            variant="pill"
-            render={<a href="/resume" target="_blank" />}
-          >
+          <Button variant="pill" render={<a href="/resume" target="_blank" />}>
             View résumé
             <TbArrowUpRight className="-mr-1 ml-1 h-4 w-4 text-muted-foreground" />
           </Button>
@@ -117,8 +114,8 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
             data-wave
             className="group/item cursor-pointer rounded-[20px] border border-transparent bg-background hover:bg-card md:mx-6"
             onClick={() => {
-              const url = exp.companyUrl;
-              if (url) window.open(url, "_blank");
+              const url = exp.companyUrl
+              if (url) window.open(url, "_blank")
             }}
           >
             <div className="flex w-full items-center justify-between gap-4 p-6">
@@ -134,7 +131,9 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
                   {(exp.contract || exp.team || exp.project) && (
                     <div className="text-xs text-muted-foreground">
                       {exp.contract && "Contract"}
-                      {exp.contract && (exp.projectCompany || exp.project || exp.team) && ", "}
+                      {exp.contract &&
+                        (exp.projectCompany || exp.project || exp.team) &&
+                        ", "}
                       {exp.team && exp.team}
                       {exp.projectCompany && (
                         <>
@@ -206,5 +205,5 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
         ) : null}
       </div>
     </div>
-  );
+  )
 }

@@ -165,7 +165,13 @@ export function UploadButton({
   )
 }
 
-export function Thumb({ image, alt }: { image: Img | string | null | undefined; alt: string }) {
+export function Thumb({
+  image,
+  alt,
+}: {
+  image: Img | string | null | undefined
+  alt: string
+}) {
   if (!image) return null
   return (
     <img
@@ -200,7 +206,9 @@ export function SaveBar({
         {saving ? "Saving…" : "Save"}
       </Button>
       {children}
-      <span className={cn("text-xs", error ? "text-red" : "text-muted-foreground")}>
+      <span
+        className={cn("text-xs", error ? "text-red" : "text-muted-foreground")}
+      >
         {error ??
           (dirty
             ? "Unsaved changes"

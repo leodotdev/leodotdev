@@ -10,7 +10,12 @@ export const Route = createFileRoute("/admin/references")({
 
 const FIELDS: Array<FieldDef> = [
   { key: "name", label: "Name", type: "text" },
-  { key: "initials", label: "Initials", type: "text", hint: "Shown when there's no photo" },
+  {
+    key: "initials",
+    label: "Initials",
+    type: "text",
+    hint: "Shown when there's no photo",
+  },
   { key: "title", label: "Title", type: "text" },
   { key: "company", label: "Company", type: "text" },
   { key: "linkedinUrl", label: "LinkedIn link", type: "text" },
