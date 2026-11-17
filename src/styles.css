@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import "@fontsource-variable/inter";
 @import "@fontsource-variable/playfair-display";
+@import "./claude-ds.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -220,11 +221,29 @@
   body {
     @apply bg-background font-sans text-foreground;
   }
+  /* A focused text link's outline (below) gets soft corners; a link with its
+     own radius class keeps that. */
+  a:focus-visible {
+    border-radius: 4px;
+  }
   /* Tailwind 3's preflight gave buttons a pointer cursor; v4 doesn't. */
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
+}
+
+/*
+ * Keyboard focus: one outline for the whole site, 2px in the accent colour, 2px
+ * off the element. It sits outside the layers so that no utility class changes
+ * it (some elements use an outline as a hairline border), and has no
+ * specificity, so a .cds specimen's own focus style still wins. Menus show the
+ * highlighted row instead, and a box that only takes focus from a script (a
+ * menu, a dialog) shows nothing.
+ */
+:where(:focus-visible:not([role^="menu"], [role="dialog"], [tabindex="-1"])) {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
 }
 
 /*
@@ -263,6 +282,16 @@
   font-family: var(--font-playfair);
 }
 
+/* A text block that ends on a column edge of the page grid (the one the grid
+   view draws: 24px gutters): 9 of 12 columns, which is also 6 of the 8 columns
+   between 768px and 960px. On a phone the block is the full 4 columns. Use it
+   on a child of a full-width box, so 100% is the grid's width. */
+@utility max-w-cols-9 {
+  @media (min-width: 768px) {
+    max-width: calc((100% + 24px) * 0.75 - 24px);
+  }
+}
+
 /* Hide scrollbar (Chrome, Safari, Opera; IE, Edge, Firefox) */
 @utility scrollbar-hide {
   -ms-overflow-style: none;
@@ -295,7 +324,10 @@ html.show-grid #app [data-wave] > :only-child {
   outline: none;
 }
 
+/* The columns sit inside the page's own side padding (px-6, md:px-12): a 24px
+   margin on a phone and 48px from 768px, with 24px gutters throughout. */
 html.show-grid body::after {
+  --margin: 24px;
   --gap: 24px;
   --cols: 4;
   content: "";
@@ -305,7 +337,7 @@ html.show-grid body::after {
   z-index: 40;
   box-sizing: border-box;
   width: min(100%, 960px);
-  padding-inline: var(--gap);
+  padding-inline: var(--margin);
   translate: -50% 0;
   pointer-events: none;
   /* One tile is a column plus its gutter; the last gutter falls outside the
@@ -315,11 +347,13 @@ html.show-grid body::after {
       color-mix(in srgb, var(--blue) 14%, transparent) calc(100% - var(--gap)),
       transparent 0
     )
-    0 0 / calc((100% + var(--gap)) / var(--cols)) 100% repeat-x content-box content-box;
+    0 0 / calc((100% + var(--gap)) / var(--cols)) 100% repeat-x content-box
+    content-box;
 }
 
 @media (min-width: 768px) {
   html.show-grid body::after {
+    --margin: 48px;
     --cols: 8;
   }
 }
@@ -328,6 +362,6 @@ html.show-grid body::after {
 @media (min-width: 961px) {
   html.show-grid body::after {
     --cols: 12;
-    padding-inline: calc(var(--gap) + 1px);
+    padding-inline: calc(var(--margin) + 1px);
   }
 }

@@ -3,7 +3,14 @@ import { Link } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 
-export function BackButton() {
+/** The pill at the start of a sub-page's navigation; goes home by default. */
+export function BackButton({
+  to = "/",
+  label = "Back to home",
+}: {
+  to?: "/" | "/work"
+  label?: string
+}) {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
@@ -28,8 +35,10 @@ export function BackButton() {
   }, [])
 
   return (
+    // The box clips the pill while it slides in, so it keeps 4px of padding
+    // (and the same negative margin) for the pill's focus outline.
     <div
-      className={`overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:!opacity-100 ${
+      className={`-m-1 overflow-hidden p-1 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:!opacity-100 ${
         isVisible ? "max-w-xs opacity-100" : "max-w-0 opacity-0"
       }`}
     >
@@ -37,7 +46,7 @@ export function BackButton() {
         variant="pill"
         render={
           <Link
-            to="/"
+            to={to}
             onClick={() => {
               // Set flag when navigating back to projects
               sessionStorage.setItem("navigation-source", "back-button")
@@ -46,7 +55,7 @@ export function BackButton() {
         }
       >
         <TbArrowLeft className="mr-1 -ml-1 h-4 w-4 text-muted-foreground" />
-        Back to home
+        {label}
       </Button>
     </div>
   )

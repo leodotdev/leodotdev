@@ -230,7 +230,7 @@ function Editor({ initial }: { initial: Project }) {
                 <Thumb image={item.image} alt={item.alt ?? ""} />
               </div>
               <input
-                className="rounded-md border bg-transparent px-2 py-1 outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="rounded-md border bg-transparent px-2 py-1"
                 placeholder="Alt text"
                 value={item.alt ?? ""}
                 onChange={(e) =>
@@ -292,7 +292,7 @@ function Editor({ initial }: { initial: Project }) {
           <div key={i} className="flex items-start gap-2">
             <textarea
               rows={3}
-              className="w-full resize-y rounded-md border bg-transparent px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="w-full resize-y rounded-md border bg-transparent px-3 py-2"
               value={p}
               onChange={(e) =>
                 set(

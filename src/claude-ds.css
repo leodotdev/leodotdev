@@ -1,0 +1,1642 @@
+/*
+ * The Claude.com design system, as documented at /work/claude. These are the
+ * system's own tokens (taken from its Figma file), so the docs can show real
+ * colours and type sizes. The site's own rules (two type sizes, Apple palette)
+ * do not apply inside a `.cds` box.
+ *
+ * A theme can be worn two ways: by a `.cds` box with `data-theme`, or by the
+ * whole page, when the page contains an element with `data-claude-page` (the
+ * /work/claude layout). A `.cds` box without `data-theme` takes the page's.
+ * `data-claude-page="auto"` is White, or Dark 3 when the site is in dark mode.
+ */
+
+/* Anthropic's three typefaces (files supplied by Leo, in public/fonts). All
+   are variable with a weight axis, 300-800; the serif and sans also have an
+   optical-size axis, 16-48. They only download on pages that use them. */
+@font-face {
+  font-family: "Anthropic Serif";
+  src: url("/fonts/anthropic-serif-variable.woff2") format("woff2");
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Anthropic Mono";
+  src: url("/fonts/anthropic-mono-variable.woff2") format("woff2");
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Anthropic Sans";
+  src: url("/fonts/anthropic-sans-variable.woff2") format("woff2");
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* The neutrals, Clay and the functional colours sit on the root, so a page can
+   wear a theme as well as a `.cds` box. */
+:root {
+  --cds-gray-000: #ffffff;
+  --cds-gray-050: #faf9f5;
+  --cds-gray-100: #f5f4ed;
+  --cds-gray-150: #f0eee6;
+  --cds-gray-200: #e8e6dc;
+  --cds-gray-250: #dedcd1;
+  --cds-gray-300: #d1cfc5;
+  --cds-gray-350: #c2c0b6;
+  --cds-gray-400: #b0aea5;
+  --cds-gray-450: #9c9a92;
+  --cds-gray-500: #87867f;
+  --cds-gray-550: #73726c;
+  --cds-gray-600: #5e5d59;
+  --cds-gray-650: #4d4c48;
+  --cds-gray-700: #3d3d3a;
+  --cds-gray-750: #30302e;
+  --cds-gray-800: #262624;
+  --cds-gray-850: #1f1e1d;
+  --cds-gray-900: #1a1918;
+  --cds-gray-950: #141413;
+  --cds-gray-1000: #000000;
+
+  --cds-clay: #d97757;
+  --cds-clay-interactive: #c6613f;
+  --cds-clay-dark: #c46849;
+  --cds-focus: var(--cds-clay-dark); /* every keyboard focus outline */
+  --cds-error: #bf4d43;
+  --cds-switch-blue: #2c84db;
+}
+
+.cds {
+  /* The fallbacks only show while the fonts above are loading. */
+  --cds-serif:
+    "Anthropic Serif", ui-serif, "New York", "Iowan Old Style", Georgia, serif;
+  --cds-sans:
+    "Anthropic Sans", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --cds-mono: "Anthropic Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --cds-radius-tinier: 4px;
+  --cds-radius-tiny: 8px;
+  --cds-radius-smallest: 12px;
+  --cds-radius-smaller: 16px;
+  --cds-radius-big: 32px;
+  --cds-shadow-sm: 0 2px 8px rgb(0 0 0 / 0.04);
+  --cds-shadow-md: 0 4px 20px rgb(0 0 0 / 0.04);
+  --cds-shadow-lg: 0 4px 16px rgb(0 0 0 / 0.1);
+
+  background: var(--cds-bg);
+  color: var(--cds-fg);
+  font-family: var(--cds-sans);
+  font-size: 17px;
+  line-height: 28px;
+  /* The optical size follows the font size, as on claude.com. */
+  font-optical-sizing: auto;
+  font-feature-settings: "pnum", "lnum", "liga";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/*
+ * Themes. claude.com has four (main, accent, neutral, dark) and gives each
+ * light one a dark counterpart, which makes five palettes: Ivory (main),
+ * White (accent), Neutral 1 (neutral), Dark 2 (accent in dark mode) and
+ * Dark 3 (dark, and main and neutral in dark mode).
+ */
+:root,
+:where(.cds[data-theme]) {
+  /* Ivory, the default theme */
+  --cds-bg: var(--cds-gray-050);
+  --cds-bg-2: var(--cds-gray-100);
+  --cds-bg-3: var(--cds-gray-150);
+  --cds-fg: var(--cds-gray-950);
+  --cds-fg-2: var(--cds-gray-750);
+  --cds-fg-3: var(--cds-gray-600);
+  --cds-border: var(--cds-gray-400);
+  --cds-border-2: var(--cds-gray-300);
+  --cds-border-3: var(--cds-gray-200);
+}
+
+.cds[data-theme="white"],
+html:has([data-claude-page="white"]),
+html:not(.dark):has([data-claude-page="auto"]) {
+  --cds-bg: var(--cds-gray-000);
+  --cds-bg-2: var(--cds-gray-050);
+  --cds-bg-3: var(--cds-gray-100);
+  --cds-border: var(--cds-gray-350);
+  --cds-border-2: var(--cds-gray-250);
+  --cds-border-3: var(--cds-gray-150);
+}
+.cds[data-theme="neutral-1"],
+html:has([data-claude-page="neutral-1"]) {
+  --cds-bg: var(--cds-gray-150);
+  --cds-bg-2: var(--cds-gray-200);
+  --cds-bg-3: var(--cds-gray-250);
+  --cds-fg-2: var(--cds-gray-700);
+  --cds-border: var(--cds-gray-450);
+  --cds-border-2: var(--cds-gray-350);
+  --cds-border-3: var(--cds-gray-300);
+}
+.cds[data-theme="dark-2"],
+html:has([data-claude-page="dark-2"]) {
+  --cds-bg: var(--cds-gray-850);
+  --cds-bg-2: var(--cds-gray-800);
+  --cds-bg-3: var(--cds-gray-750);
+  --cds-fg: var(--cds-gray-050);
+  --cds-fg-2: var(--cds-gray-350);
+  --cds-fg-3: var(--cds-gray-450);
+  --cds-border: var(--cds-gray-550);
+  --cds-border-2: var(--cds-gray-650);
+  --cds-border-3: var(--cds-gray-750);
+}
+.cds[data-theme="dark-3"],
+html:has([data-claude-page="dark-3"]),
+html.dark:has([data-claude-page="auto"]) {
+  --cds-bg: var(--cds-gray-950);
+  --cds-bg-2: var(--cds-gray-900);
+  --cds-bg-3: var(--cds-gray-800);
+  --cds-fg: var(--cds-gray-050);
+  --cds-fg-2: var(--cds-gray-400);
+  --cds-fg-3: var(--cds-gray-500);
+  --cds-border: var(--cds-gray-600);
+  --cds-border-2: var(--cds-gray-700);
+  --cds-border-3: var(--cds-gray-750);
+}
+
+/* The system's corners are plain arcs, not the site's squircles. */
+.cds,
+.cds *,
+.cds *::before,
+.cds *::after {
+  corner-shape: round;
+}
+
+/*
+ * Type styles, as claude.com sets them. The larger sizes grow with the
+ * viewport, from a 320px-wide screen to a 1440px one, and leading is a ratio
+ * of the size. Every style also has a sans cut on the site; these are the
+ * serif ones for display, headlines and large body.
+ */
+.cds-display-1 {
+  font: 500 clamp(2.625rem, 2.625rem + 30 * (100vw - 20rem) / 1120, 4.5rem) /
+    1.1 var(--cds-serif);
+}
+.cds-display-2 {
+  font: 500 clamp(2.25rem, 2.25rem + 28 * (100vw - 20rem) / 1120, 4rem) / 1.1
+    var(--cds-serif);
+}
+.cds-headline-1 {
+  font: 500 clamp(2.125rem, 2.125rem + 18 * (100vw - 20rem) / 1120, 3.25rem) /
+    1.2 var(--cds-serif);
+}
+.cds-headline-2 {
+  font: 500 clamp(1.875rem, 1.875rem + 14 * (100vw - 20rem) / 1120, 2.75rem) /
+    1.2 var(--cds-serif);
+}
+.cds-headline-3 {
+  font: 500 clamp(1.75rem, 1.75rem + 8 * (100vw - 20rem) / 1120, 2.25rem) / 1.3
+    var(--cds-serif);
+}
+.cds-headline-4 {
+  font: 500 clamp(1.4375rem, 1.4375rem + 9 * (100vw - 20rem) / 1120, 2rem) / 1.1
+    var(--cds-serif);
+}
+.cds-headline-5 {
+  font: 500 clamp(1.25rem, 1.25rem + 5 * (100vw - 20rem) / 1120, 1.5625rem) /
+    1.2 var(--cds-serif);
+}
+.cds-headline-6 {
+  font: 500 clamp(1rem, 1rem + 3 * (100vw - 20rem) / 1120, 1.1875rem) / 1.2
+    var(--cds-serif);
+}
+.cds-body-large-1 {
+  font: 400 clamp(1.375rem, 1.375rem + 2 * (100vw - 20rem) / 1120, 1.5rem) / 1.6
+    var(--cds-serif);
+}
+.cds-body-large-2 {
+  font: 400 clamp(1.25rem, 1.25rem + 3 * (100vw - 20rem) / 1120, 1.4375rem) /
+    1.5 var(--cds-serif);
+}
+.cds-body-1 {
+  font: 400 clamp(1.1875rem, 1.1875rem + 1 * (100vw - 20rem) / 1120, 1.25rem) /
+    1.6 var(--cds-sans);
+}
+.cds-body-2 {
+  font: 400 1.0625rem/1.6 var(--cds-sans);
+}
+.cds-body-3 {
+  font: 400 0.9375rem/1.6 var(--cds-sans);
+}
+.cds-caption {
+  font: 400 0.75rem/1.6 var(--cds-sans);
+  letter-spacing: 0.01em;
+}
+.cds-micro {
+  font: 400 0.625rem/1.6 var(--cds-sans);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Long words in a big specimen break rather than widen the page. */
+[class*="cds-display-"],
+[class*="cds-headline-"] {
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+/*
+ * Components. Sizes and colours are the ones claude.com's own stylesheet
+ * gives each control; each theme sets the handful of colours they share.
+ */
+:root,
+:where(.cds[data-theme]) {
+  --cds-control-bg: var(--cds-gray-200); /* secondary button */
+  --cds-control-fg: var(--cds-gray-650);
+  --cds-tertiary-fg: var(--cds-gray-600);
+  --cds-field-bg: #ffffff;
+  --cds-inverse-bg: var(--cds-gray-950); /* primary button */
+  --cds-inverse-fg: var(--cds-gray-050);
+  --cds-check-off: #ffffff;
+  --cds-check-bg: #000000;
+  --cds-check-fg: var(--cds-gray-050);
+  --cds-switch-bg: var(--cds-gray-150); /* switch and tab tracks */
+  --cds-switch-on: var(--cds-gray-950);
+  --cds-tab-track: var(--cds-switch-bg);
+  --cds-tab-selected-bg: #ffffff;
+  --cds-tab-selected-fg: var(--cds-gray-950);
+  /* Text is a touch lighter on dark fills (480) than on light ones (500). */
+  --cds-weight: 500;
+  --cds-inverse-weight: 480;
+}
+.cds[data-theme="white"],
+html:has([data-claude-page="white"]),
+html:not(.dark):has([data-claude-page="auto"]) {
+  --cds-control-bg: var(--cds-gray-150);
+  --cds-control-fg: var(--cds-gray-700);
+  --cds-tertiary-fg: var(--cds-gray-650);
+  --cds-switch-bg: var(--cds-gray-100);
+}
+.cds[data-theme="neutral-1"],
+html:has([data-claude-page="neutral-1"]) {
+  --cds-control-bg: var(--cds-gray-250);
+  --cds-control-fg: var(--cds-gray-750);
+  --cds-tertiary-fg: var(--cds-gray-700);
+  --cds-switch-bg: var(--cds-gray-250);
+}
+.cds[data-theme^="dark"],
+html:has([data-claude-page^="dark"]),
+html.dark:has([data-claude-page="auto"]) {
+  --cds-control-fg: var(--cds-gray-050);
+  --cds-tertiary-fg: var(--cds-gray-050);
+  --cds-inverse-bg: var(--cds-gray-050);
+  --cds-inverse-fg: var(--cds-gray-950);
+  --cds-check-off: #000000;
+  --cds-check-bg: #ffffff;
+  --cds-check-fg: var(--cds-gray-950);
+  --cds-tab-selected-bg: var(--cds-bg);
+  --cds-tab-selected-fg: var(--cds-fg);
+  --cds-weight: 480;
+  --cds-inverse-weight: 500;
+}
+.cds[data-theme="dark-2"],
+html:has([data-claude-page="dark-2"]) {
+  --cds-control-bg: var(--cds-gray-700);
+  --cds-field-bg: #000000;
+  --cds-switch-bg: var(--cds-gray-750);
+  --cds-switch-on: var(--cds-gray-600);
+}
+.cds[data-theme="dark-3"],
+html:has([data-claude-page="dark-3"]),
+html.dark:has([data-claude-page="auto"]) {
+  --cds-control-bg: var(--cds-gray-750);
+  --cds-field-bg: var(--cds-gray-800);
+  --cds-switch-bg: var(--cds-gray-800);
+  --cds-switch-on: var(--cds-gray-650);
+  --cds-tab-track: var(--cds-gray-850);
+}
+
+/* Button: three sizes, four variants, an icon before, after or alone.
+   `data-state` shows a state without the pointer, for the docs. */
+.cds-btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 44px;
+  height: 36px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 8px;
+  font: var(--cds-weight) 15px/1 var(--cds-sans);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    color 0.1s ease-in-out,
+    background-color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+}
+.cds-btn svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+.cds-btn[data-icon="trailing"] {
+  padding-right: 12px;
+}
+.cds-btn[data-icon="leading"] {
+  padding-left: 12px;
+}
+.cds-btn[data-size="small"] {
+  gap: 4px;
+  height: 28px;
+  padding: 0 12px;
+  font-size: 12px;
+}
+.cds-btn[data-size="small"] svg {
+  width: 16px;
+  height: 16px;
+}
+.cds-btn[data-size="large"] {
+  height: 40px;
+  padding: 0 24px;
+  font-size: 17px;
+}
+.cds-btn[data-size="large"] svg {
+  width: 20px;
+  height: 20px;
+}
+.cds-btn[data-size="large"][data-icon="trailing"] {
+  padding-right: 16px;
+}
+.cds-btn[data-size="large"][data-icon="leading"] {
+  padding-left: 16px;
+}
+/* An icon alone: a square, with a 14px icon whatever the size. */
+.cds-btn[data-icon="only"] {
+  min-width: 0;
+  aspect-ratio: 1;
+  padding: 0;
+}
+.cds-btn[data-icon="only"] svg {
+  width: 14px;
+  height: 14px;
+}
+
+.cds-btn[data-variant="primary"] {
+  --btn-ring: var(--cds-inverse-bg);
+  background: var(--cds-inverse-bg);
+  color: var(--cds-inverse-fg);
+  font-weight: var(--cds-inverse-weight);
+}
+.cds-btn[data-variant="clay"] {
+  --btn-ring: var(--cds-clay-interactive);
+  background: var(--cds-clay-interactive);
+  color: #ffffff;
+}
+.cds-btn[data-variant="secondary"] {
+  --btn-fill: var(--cds-control-bg);
+  background: var(--btn-fill);
+  color: var(--cds-control-fg);
+}
+.cds-btn[data-variant="tertiary"] {
+  --btn-fill: var(--cds-bg);
+  background: var(--btn-fill);
+  color: var(--cds-tertiary-fg);
+}
+/* Primary and Clay grow a 2px ring of their own colour on hover. */
+.cds-btn[data-variant="primary"],
+.cds-btn[data-variant="clay"] {
+  box-shadow: 0 0 0 0 var(--btn-ring);
+}
+.cds-btn[data-variant="primary"]:hover,
+.cds-btn[data-variant="primary"][data-state="hover"],
+.cds-btn[data-variant="clay"]:hover,
+.cds-btn[data-variant="clay"][data-state="hover"] {
+  box-shadow: 0 0 0 2px var(--btn-ring);
+}
+/* Secondary and Tertiary carry a 1px line outside their box; on hover the
+   fill grows 1px, the line moves out with it, and the label darkens. */
+.cds-btn[data-variant="secondary"],
+.cds-btn[data-variant="tertiary"] {
+  box-shadow:
+    0 0 0 0 var(--btn-fill),
+    0 0 0 1px var(--cds-border-2);
+}
+.cds-btn[data-variant="secondary"]:hover,
+.cds-btn[data-variant="secondary"][data-state="hover"],
+.cds-btn[data-variant="tertiary"]:hover,
+.cds-btn[data-variant="tertiary"][data-state="hover"] {
+  color: var(--cds-fg);
+  box-shadow:
+    0 0 0 1px var(--btn-fill),
+    0 0 0 2px var(--cds-border-2);
+}
+/* Focus: a 2px outline in the focus colour, 4px away from the control. */
+.cds-btn:focus-visible,
+.cds-btn[data-state="focus"] {
+  outline: 2px solid var(--cds-focus);
+  outline-offset: 4px;
+}
+
+/* Text input: a field with optional icons or a button inside it. */
+.cds-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 8px 0 12px;
+  border: 1px solid var(--cds-border-2);
+  border-radius: 12px;
+  background: var(--cds-field-bg);
+  color: var(--cds-fg);
+  font: 400 12px/18px var(--cds-sans);
+  transition: box-shadow 0.15s ease;
+}
+.cds-input[data-size="larger"] {
+  height: 50px;
+  padding: 0 16px 0 24px;
+  border-radius: 16px;
+  font-size: 15px;
+  line-height: 24px;
+}
+.cds-input[data-leading] {
+  padding-left: 12px;
+}
+.cds-input[data-size="larger"][data-leading] {
+  padding-left: 16px;
+}
+.cds-input[data-size="larger"][data-trailing] {
+  padding-right: 16px;
+}
+.cds-input[data-size="larger"][data-trailing="button"] {
+  padding-right: 8px;
+}
+.cds-input > svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  color: var(--cds-fg-3);
+}
+.cds-input input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-variation-settings: inherit;
+}
+.cds-input input::placeholder {
+  color: var(--cds-fg-3);
+  opacity: 1;
+}
+.cds-input:focus-within,
+.cds-input[data-state="focus"] {
+  box-shadow:
+    0 0 0 4px var(--cds-bg),
+    0 0 0 6px var(--cds-focus);
+}
+
+/* Checkbox and radio: a 20px control and a label. */
+.cds-check,
+.cds-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--cds-fg);
+  font: 400 15px/24px var(--cds-sans);
+  cursor: pointer;
+}
+.cds-check input {
+  display: grid;
+  flex: none;
+  place-content: center;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  border: 1px solid var(--cds-border-2);
+  border-radius: 4px;
+  background: var(--cds-check-off);
+  appearance: none;
+  cursor: pointer;
+  transition:
+    box-shadow 0.15s ease,
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+.cds-check input[type="radio"] {
+  border-radius: 50%;
+}
+.cds-check:hover input,
+.cds-check input[data-state="hover"] {
+  border-color: var(--cds-border);
+}
+.cds-check input:checked {
+  border-color: var(--cds-check-bg);
+  background: var(--cds-check-bg);
+}
+.cds-check input:checked::before {
+  width: 12px;
+  height: 12px;
+  background: var(--cds-check-fg);
+  clip-path: polygon(14% 46%, 3% 58%, 40% 92%, 98% 22%, 86% 11%, 39% 68%);
+  content: "";
+}
+.cds-check input[type="radio"]:checked::before {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  clip-path: none;
+}
+.cds-check input:focus-visible,
+.cds-check input[data-state="focus"] {
+  outline: none;
+  box-shadow:
+    0 0 0 4px var(--cds-bg),
+    0 0 0 6px var(--cds-focus);
+}
+
+/* Switch: a 36 by 22 track with a 16px white knob. On is the inverse colour
+   on light themes and a mid grey on dark ones, or blue. */
+.cds-switch input {
+  position: relative;
+  flex: none;
+  width: 36px;
+  height: 22px;
+  margin: 0;
+  border: 0;
+  border-radius: 9999px;
+  background: var(--cds-switch-bg);
+  appearance: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.cds-switch input::before {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  content: "";
+  transition: translate 0.2s;
+}
+.cds-switch input:checked {
+  background: var(--cds-switch-on);
+}
+.cds-switch input:checked::before {
+  translate: 14px 0;
+}
+.cds-switch input[data-tone="blue"]:checked {
+  background: var(--cds-switch-blue);
+}
+.cds-switch input:focus-visible,
+.cds-switch input[data-state="focus"] {
+  outline: 1px solid var(--cds-focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cds *,
+  .cds *::before {
+    transition: none !important;
+  }
+}
+
+/* Surfaces that sit on top of the page: cards, menus, tooltips. */
+:root,
+:where(.cds[data-theme]) {
+  --cds-card-bg: #ffffff;
+  --cds-card-border: var(--cds-gray-150);
+}
+.cds[data-theme^="dark"],
+html:has([data-claude-page^="dark"]),
+html.dark:has([data-claude-page="auto"]) {
+  --cds-card-bg: var(--cds-bg-2);
+  --cds-card-border: var(--cds-border-3);
+}
+
+/* Links: an underline that darkens with the text on hover. */
+.cds-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--cds-border-2);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition:
+    color 0.15s ease,
+    text-decoration-color 0.15s ease;
+}
+.cds-link:hover,
+.cds-link[data-state="hover"] {
+  color: var(--cds-fg);
+  text-decoration-color: var(--cds-fg);
+}
+.cds-meta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--cds-fg-3);
+  font: 400 12px/18px var(--cds-sans);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.cds-meta-link svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+}
+.cds-meta-link:hover,
+.cds-card-link:hover .cds-meta-link,
+[data-state="hover"] .cds-meta-link,
+.cds-meta-link[data-state="hover"] {
+  color: var(--cds-fg);
+}
+.cds-card-link {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  width: 300px;
+  max-width: 100%;
+  min-height: 200px;
+  padding: 32px 48px 24px 24px;
+  border: 1px solid var(--cds-card-border);
+  border-radius: 32px;
+  background: var(--cds-card-bg);
+  color: var(--cds-fg);
+  font: 400 17px/28px var(--cds-serif);
+  text-decoration: none;
+  transition: box-shadow 0.2s ease;
+}
+.cds-card-link:hover,
+.cds-card-link[data-state="hover"] {
+  box-shadow: var(--cds-shadow-md);
+}
+
+/* Menu: a panel of rows, grouped under small headers or split by rules. */
+.cds-menu {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  max-width: 100%;
+  padding: 8px;
+  border: 1px solid var(--cds-border-3);
+  border-radius: 12px;
+  background: var(--cds-bg);
+  box-shadow: var(--cds-shadow-md);
+}
+.cds-menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 30px;
+  padding: 0 12px;
+  color: var(--cds-fg-3);
+  font: 400 12px/18px var(--cds-sans);
+}
+.cds-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--cds-fg-2);
+  font: 400 15px/24px var(--cds-sans);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+.cds-menu-item svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--cds-fg-3);
+}
+.cds-menu-item > span {
+  flex: 1;
+}
+.cds-menu-item:hover,
+.cds-menu-item:focus-visible {
+  outline: none;
+  background: var(--cds-bg-3);
+  color: var(--cds-fg);
+}
+.cds-menu-rule {
+  height: 1px;
+  margin: 8px 12px;
+  background: var(--cds-border-3);
+}
+/* A list menu rules off each row instead of grouping them. */
+.cds-menu[data-type="list"] .cds-menu-item {
+  border-radius: 0;
+  box-shadow: 0 1px 0 var(--cds-border-3);
+}
+.cds-menu[data-type="list"] .cds-menu-item:last-child {
+  box-shadow: none;
+}
+
+/* Tooltip: a dotted word that opens a small card; the text around it dims. */
+.cds-tip-text {
+  position: relative;
+  max-width: 426px;
+  color: var(--cds-fg);
+  font: 400 17px/28px var(--cds-sans);
+  transition: color 0.2s ease;
+}
+.cds-tip-text[data-open] {
+  color: var(--cds-border);
+}
+.cds-tip {
+  padding: 0;
+  border: 0;
+  border-bottom: 1px dotted currentColor;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-variation-settings: inherit;
+  cursor: help;
+}
+.cds-tip-text[data-open] .cds-tip {
+  color: var(--cds-fg);
+}
+.cds-tip:focus-visible {
+  outline: 2px solid var(--cds-focus);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+.cds-tooltip {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: min(273px, 70vw);
+  margin-top: 8px;
+  padding: 24px;
+  border: 1px solid var(--cds-card-border);
+  border-radius: 16px;
+  background: var(--cds-card-bg);
+  box-shadow: var(--cds-shadow-md);
+  color: var(--cds-fg);
+  font: 400 12px/18px var(--cds-sans);
+}
+.cds-tooltip strong {
+  font: 400 15px/24px var(--cds-serif);
+}
+
+/* Tabs: a segmented control. The current tab sits on a white pill (the page
+   colour on dark themes); a hovered one only darkens its label. */
+.cds-tabs {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  max-width: 100%;
+  padding: 4px;
+  border-radius: 12px;
+  background: var(--cds-tab-track);
+}
+.cds-tab {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--cds-fg-3);
+  font: 500 15px/24px var(--cds-sans);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+.cds-tab svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+.cds-tab[data-icon] {
+  padding-left: 12px;
+}
+.cds-tabs[data-size="small"] {
+  padding: 2px;
+  border-radius: 8px;
+}
+.cds-tabs[data-size="small"] .cds-tab {
+  gap: 4px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 18px;
+}
+.cds-tabs[data-size="small"] .cds-tab svg {
+  width: 16px;
+  height: 16px;
+}
+.cds-tabs[data-size="small"] .cds-tab[data-icon] {
+  padding-left: 8px;
+}
+.cds-tabs[data-size="large"] .cds-tab {
+  height: 40px;
+}
+.cds-tab:hover {
+  color: var(--cds-fg);
+}
+.cds-tab[aria-selected="true"],
+.cds-tab[aria-expanded="true"] {
+  background: var(--cds-tab-selected-bg);
+  color: var(--cds-tab-selected-fg);
+}
+.cds-tab:focus-visible,
+.cds-select:focus-visible,
+.cds-accordion-head:focus-visible {
+  outline: 2px solid var(--cds-focus);
+  outline-offset: 2px;
+}
+.cds-tabs .cds-menu,
+.cds-select-wrap .cds-menu {
+  position: absolute;
+  z-index: 1;
+  top: calc(100% + 8px);
+  right: 0;
+  width: max-content;
+  min-width: 160px;
+}
+
+/* Select: a field that opens a list. */
+.cds-select-wrap {
+  position: relative;
+  width: 320px;
+  max-width: 100%;
+}
+.cds-select-wrap .cds-menu {
+  left: 0;
+  width: 100%;
+}
+.cds-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 36px;
+  padding: 0 12px 0 16px;
+  border: 1px solid var(--cds-card-border);
+  border-radius: 12px;
+  background: var(--cds-card-bg);
+  color: var(--cds-fg-3);
+  font: 400 12px/18px var(--cds-sans);
+  text-align: left;
+  cursor: pointer;
+}
+.cds-select svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+}
+.cds-select > span {
+  flex: 1;
+}
+
+/* Accordion: ruled rows with a serif question; the answer opens beneath. */
+.cds-accordion {
+  width: 100%;
+  max-width: 592px;
+}
+.cds-accordion-item {
+  border-top: 1px solid var(--cds-border-3);
+}
+.cds-accordion-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  width: 100%;
+  padding: 32px 0;
+  border: 0;
+  background: none;
+  color: var(--cds-fg);
+  font: 500 19px/24px var(--cds-serif);
+  text-align: left;
+  cursor: pointer;
+}
+.cds-accordion-head svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  color: var(--cds-fg-3);
+}
+.cds-accordion-body {
+  padding: 0 32px 32px 0;
+  color: var(--cds-fg-3);
+  font: 400 17px/28px var(--cds-sans);
+}
+
+/* Carousel controls: previous, a row of 5px bullets, next. */
+.cds-carousel-ui {
+  display: inline-flex;
+  align-items: center;
+  gap: 32px;
+}
+.cds-bullets {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.cds-bullets span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--cds-border-2);
+  transition: background-color 0.2s ease;
+}
+.cds-bullets span[data-current] {
+  background: var(--cds-fg);
+}
+
+/* A card's serif title, shared by the video card and others. */
+.cds-card-title {
+  font: 500 19px/24px var(--cds-serif);
+}
+
+/* Video card: media beside the text, stacked when there is no room. */
+.cds-card-video-wrap {
+  container-type: inline-size;
+  width: 100%;
+  max-width: 918px;
+}
+.cds-card-video {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  border: 1px solid var(--cds-card-border);
+  border-radius: 32px;
+  background: var(--cds-card-bg);
+}
+.cds-card-video-media {
+  display: grid;
+  place-items: center;
+  min-height: 210px;
+  background: var(--cds-gray-950);
+}
+.cds-play {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border: 1px solid var(--cds-gray-150);
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow:
+    0 1px 4px rgb(0 0 0 / 0.1),
+    0 7px 7px rgb(0 0 0 / 0.09),
+    0 16px 9px rgb(0 0 0 / 0.05);
+  color: var(--cds-gray-950);
+  cursor: pointer;
+}
+.cds-play svg {
+  width: 24px;
+  height: 24px;
+}
+.cds-card-video-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  padding: 32px 64px 32px 48px;
+}
+@container (max-width: 560px) {
+  .cds-card-video {
+    grid-template-columns: 1fr;
+    border-radius: 24px;
+  }
+  .cds-card-video-body {
+    padding: 32px 64px 32px 32px;
+  }
+  .cds-play {
+    width: 48px;
+    height: 48px;
+    border-radius: 9px;
+  }
+}
+
+/* Prompt box: an editable suggestion. Hovering one lifts it, darkens its text
+   and names its button; the others dim. */
+.cds-prompts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+}
+.cds-prompt {
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+  border: 1px solid var(--cds-card-border);
+  border-radius: 16px;
+  background: var(--cds-card-bg);
+  transition:
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+.cds-prompt textarea {
+  flex: 1;
+  padding: 24px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--cds-fg-3);
+  font: 400 17px/28px var(--cds-sans);
+  resize: none;
+  transition: color 0.2s ease;
+}
+.cds-prompt-controls {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px;
+}
+.cds-prompt .cds-btn span {
+  overflow: hidden;
+  max-width: 0;
+  opacity: 0;
+  transition:
+    max-width 0.2s ease,
+    opacity 0.2s ease;
+}
+.cds-prompt .cds-btn {
+  width: auto;
+  min-width: 36px;
+  aspect-ratio: auto;
+  padding: 0 8px;
+  gap: 0;
+}
+.cds-prompt:hover,
+.cds-prompt:focus-within {
+  box-shadow: 0 4px 20px rgb(0 0 0 / 0.04);
+}
+.cds-prompt:hover textarea,
+.cds-prompt:focus-within textarea {
+  color: var(--cds-fg);
+}
+.cds-prompt:hover .cds-btn,
+.cds-prompt:focus-within .cds-btn {
+  gap: 8px;
+  padding: 0 12px 0 16px;
+}
+.cds-prompt:hover .cds-btn span,
+.cds-prompt:focus-within .cds-btn span {
+  max-width: 100px;
+  opacity: 1;
+}
+.cds-prompts:has(.cds-prompt:hover) .cds-prompt:not(:hover) {
+  border-color: var(--cds-border-3);
+  background: var(--cds-bg);
+  box-shadow: 0 4px 20px rgb(0 0 0 / 0.04);
+}
+.cds-prompts:has(.cds-prompt:hover) .cds-prompt:not(:hover) textarea {
+  color: var(--cds-border);
+}
+.cds-prompts:has(.cds-prompt:hover) .cds-prompt:not(:hover) .cds-btn {
+  background: transparent;
+  box-shadow: 0 0 0 1px var(--cds-border-3);
+  color: var(--cds-border);
+}
+
+/* Clipboard copy: a command in mono with a copy button. */
+.cds-copy {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 472px;
+  max-width: 100%;
+  min-height: 52px;
+  padding: 12px 24px;
+  border: 1px solid var(--cds-card-border);
+  border-radius: 12px;
+  background: var(--cds-card-bg);
+  color: var(--cds-fg);
+  font: 400 12px/18px var(--cds-mono);
+}
+.cds-copy code {
+  flex: 1;
+  overflow: hidden;
+  font: inherit;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cds-copy button {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--cds-fg-3);
+  cursor: pointer;
+}
+.cds-copy button:hover {
+  color: var(--cds-fg);
+}
+.cds-copy button:focus-visible {
+  outline: 2px solid var(--cds-focus);
+  outline-offset: 2px;
+}
+.cds-copy svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Quotes. A pull quote is centred between rules; an inline quote hangs off a
+   rule on its left. */
+.cds-pullquote {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+  padding: 96px 0;
+  border-block: 1px solid var(--cds-border-3);
+  text-align: center;
+}
+.cds-pullquote blockquote {
+  margin: 0;
+  font: 500 44px/56px var(--cds-serif);
+  font-size: clamp(25px, 7cqw, 44px);
+  line-height: 1.27;
+  text-wrap: balance;
+}
+.cds-attribution {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font: 400 15px/24px var(--cds-sans);
+}
+.cds-attribution span {
+  color: var(--cds-fg-3);
+  font-size: 12px;
+  line-height: 18px;
+}
+.cds-quote-inline {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 704px;
+  margin: 0;
+  padding: 24px 0 24px 32px;
+  border-left: 1px solid var(--cds-border-2);
+}
+.cds-quote-inline p {
+  margin: 0;
+  font: 400 20px/32px var(--cds-serif);
+}
+.cds-quote-inline footer {
+  color: var(--cds-fg-3);
+  font: 400 15px/24px var(--cds-sans);
+}
+
+/* Proof: a quote or a statistic under the customer's logo, ruled on the left. */
+.cds-proofs,
+.cds-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 32px 0;
+}
+.cds-proof {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 32px 16px;
+  border-left: 1px solid var(--cds-border-2);
+}
+.cds-proof-logo {
+  display: flex;
+  align-items: center;
+  height: 64px;
+  font: 600 17px/28px var(--cds-sans);
+}
+.cds-proof-body {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 48px;
+  font: 400 15px/24px var(--cds-sans);
+}
+.cds-proof-body small,
+.cds-meta small {
+  color: var(--cds-fg-3);
+  font: 400 12px/18px var(--cds-sans);
+}
+.cds-proof-stat {
+  font: 300 72px/80px var(--cds-serif);
+}
+.cds-proof-body:has(.cds-proof-stat) {
+  gap: 12px;
+}
+
+/* Testimonial blurb: logo, quote and name between two rules. */
+.cds-testimonial {
+  container-type: inline-size;
+  padding: 32px 0;
+  border-block: 1px solid var(--cds-border-3);
+}
+.cds-testimonial > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.65fr);
+  gap: 32px;
+}
+@container (max-width: 560px) {
+  .cds-testimonial > div {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Customer story details: facts, then results, each column ruled on the left. */
+.cds-meta > * {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 12px 24px 12px 32px;
+  border-left: 1px solid var(--cds-border-3);
+}
+.cds-meta dl {
+  display: grid;
+  grid-template-columns: 123px minmax(0, 1fr);
+  gap: 8px 0;
+  margin: 0;
+  font: 400 12px/18px var(--cds-sans);
+}
+.cds-meta dd {
+  margin: 0;
+  color: var(--cds-fg-3);
+}
+.cds-meta strong {
+  font: 500 25px/32px var(--cds-serif);
+}
+
+/* Page heroes. Sizes follow the hero's own width, up to the desktop spec. */
+.cds-hero {
+  container-type: inline-size;
+  padding: clamp(24px, 5cqw, 64px);
+}
+.cds-hero img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.cds-hero-lead {
+  max-width: 582px;
+  color: var(--cds-fg-3);
+  font: 400 17px/28px var(--cds-sans);
+}
+.cds-hero-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+@container (min-width: 720px) {
+  .cds-hero-lead {
+    font-size: 23px;
+    line-height: 36px;
+  }
+}
+/* Stagger: a two-line headline, first line left and second right, over an
+   illustration and the copy. */
+.cds-hero-stagger h3 {
+  margin: 0 0 clamp(24px, 4cqw, 52px);
+  font: 400 125.63px/110px var(--cds-serif);
+  font-size: clamp(40px, 8.7cqw, 125.63px);
+  line-height: 0.876;
+}
+.cds-hero-stagger h3 span {
+  display: block;
+}
+.cds-hero-stagger h3 span + span {
+  text-align: right;
+}
+.cds-hero-stagger > div {
+  display: grid;
+  grid-template-columns: minmax(0, 32fr) minmax(0, 19fr) minmax(0, 41fr);
+  align-items: center;
+}
+.cds-hero-stagger > div > .cds-hero-copy {
+  grid-column: 3;
+}
+/* Two columns: copy beside the illustration. One column: everything centred. */
+.cds-hero-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 32px;
+}
+.cds-hero-columns h3,
+.cds-hero-center h3 {
+  margin: 0;
+  font: 500 72px/80px var(--cds-serif);
+  font-size: clamp(36px, 5cqw, 72px);
+  line-height: 1.11;
+  text-wrap: balance;
+}
+.cds-hero-columns img {
+  width: 84%;
+  margin-inline: auto;
+}
+.cds-hero-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+}
+.cds-hero-center img {
+  width: min(320px, 60%);
+}
+@container (max-width: 560px) {
+  .cds-hero-stagger > div,
+  .cds-hero-columns {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .cds-hero-stagger > div > .cds-hero-copy {
+    grid-column: 1;
+  }
+  .cds-hero-stagger img,
+  .cds-hero-columns img {
+    width: 60%;
+    margin-inline: 0;
+  }
+}
+
+/* Feature highlight: an icon, a serif title and a paragraph. Stacked features
+   stand in ruled columns; an inline one runs across under a rule. */
+.cds-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 32px 0;
+}
+.cds-feature {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding: 12px 32px 24px;
+  border-left: 1px solid var(--cds-border-3);
+}
+.cds-feature svg {
+  width: 32px;
+  height: 32px;
+  stroke-width: 1.25;
+}
+.cds-feature[data-icon="pictogram"] svg {
+  width: 64px;
+  height: 64px;
+  stroke-width: 1;
+}
+.cds-feature p,
+.cds-feature-inline p {
+  margin: 0;
+  color: var(--cds-fg-3);
+  font: 400 15px/24px var(--cds-sans);
+}
+.cds-feature > div {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.cds-feature-inline {
+  container-type: inline-size;
+  padding: 32px 0;
+  border-top: 1px solid var(--cds-border-3);
+}
+.cds-feature-inline > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+.cds-feature-inline h4 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  font: 500 25px/32px var(--cds-serif);
+}
+.cds-feature-inline svg {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  stroke-width: 1.25;
+}
+.cds-feature-inline p {
+  font-size: 17px;
+  line-height: 28px;
+}
+@container (max-width: 560px) {
+  .cds-feature-inline > div {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* Site navigation: logo, five menus, two buttons; a breadcrumb bar beneath.
+   Below 760px of width the menus fold into a panel behind a menu button. */
+.cds-nav {
+  container-type: inline-size;
+  color: var(--cds-fg);
+}
+.cds-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px clamp(16px, 3.5cqw, 48px);
+}
+.cds-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+.cds-nav-item {
+  position: relative;
+}
+.cds-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 28px;
+  padding: 0 8px 0 12px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--cds-fg-2);
+  font: 400 15px/24px var(--cds-sans);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.cds-nav-link svg {
+  width: 16px;
+  height: 16px;
+}
+.cds-nav-link:hover,
+.cds-nav-link[aria-expanded="true"] {
+  background: var(--cds-bg-3);
+}
+.cds-nav-link:focus-visible,
+.cds-nav-group:focus-visible {
+  outline: 2px solid var(--cds-focus);
+  outline-offset: 2px;
+}
+.cds-nav-item .cds-menu {
+  position: absolute;
+  z-index: 2;
+  top: calc(100% + 12px);
+  left: 0;
+  width: 280px;
+  max-width: none;
+}
+.cds-nav-item[data-align="end"] .cds-menu {
+  right: 0;
+  left: auto;
+}
+.cds-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.cds-nav-toggle {
+  display: none;
+}
+.cds-nav-sub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px clamp(16px, 4cqw, 48px);
+  border-block: 1px solid var(--cds-border-3);
+  color: var(--cds-fg-3);
+  font: 400 12px/18px var(--cds-sans);
+}
+.cds-nav-sub i {
+  padding: 0 8px;
+  color: var(--cds-border);
+  font-style: normal;
+}
+.cds-nav-sub .cds-nav-link {
+  height: 24px;
+  color: inherit;
+  font-size: 12px;
+  line-height: 18px;
+}
+/* The folded menu: each group is a row that opens its links. */
+.cds-nav-panel {
+  display: none;
+  padding: 0 clamp(16px, 4cqw, 48px) 16px;
+}
+.cds-nav-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 0;
+  border: 0;
+  border-top: 1px solid var(--cds-border-3);
+  background: none;
+  color: var(--cds-fg);
+  font: 400 17px/28px var(--cds-sans);
+  text-align: left;
+  cursor: pointer;
+}
+.cds-nav-group svg {
+  width: 20px;
+  height: 20px;
+  color: var(--cds-fg-3);
+}
+.cds-nav-panel .cds-menu-item {
+  padding: 0;
+}
+.cds-nav-panel .cds-menu-header {
+  padding: 0;
+}
+.cds-nav-panel-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--cds-border-3);
+}
+/* Between the two, Contact sales makes room for the menus. */
+@container (max-width: 1000px) {
+  .cds-nav-actions .cds-btn[data-variant="tertiary"]:not(.cds-nav-toggle) {
+    display: none;
+  }
+}
+@container (max-width: 760px) {
+  .cds-nav-links,
+  .cds-nav-actions .cds-btn {
+    display: none;
+  }
+  .cds-nav-actions .cds-nav-toggle {
+    display: inline-flex;
+  }
+  .cds-nav-panel[data-open] {
+    display: block;
+  }
+}
+
+/*
+ * A page that wears a theme: the site's own colour tokens (styles.css) point at
+ * the theme's neutrals, so the page, its text, lines, pills and menus all
+ * follow, and Clay stands in for the site's blue.
+ */
+html:has([data-claude-page]) {
+  --bg: var(--cds-bg);
+  --bg-elevated: var(--cds-card-bg);
+  --bg-grouped: var(--cds-bg);
+  --bg-grouped-secondary: var(--cds-bg-3);
+  --bg-grouped-tertiary: var(--cds-bg-2);
+
+  --label: var(--cds-fg);
+  --label-secondary: var(--cds-fg-3);
+  --label-tertiary: color-mix(in srgb, var(--cds-fg) 30%, transparent);
+  --label-quaternary: color-mix(in srgb, var(--cds-fg) 18%, transparent);
+
+  --fill: color-mix(in srgb, var(--cds-fg) 20%, transparent);
+  --fill-secondary: color-mix(in srgb, var(--cds-fg) 16%, transparent);
+  --fill-tertiary: color-mix(in srgb, var(--cds-fg) 12%, transparent);
+  --fill-quaternary: color-mix(in srgb, var(--cds-fg) 8%, transparent);
+
+  --separator: color-mix(in srgb, var(--cds-fg) 12%, transparent);
+  --separator-opaque: var(--cds-border-2);
+
+  --gray: var(--cds-fg-3);
+  --gray-2: var(--cds-border);
+  --gray-3: var(--cds-border-2);
+  --gray-4: var(--cds-border-3);
+  --gray-5: var(--cds-bg-3);
+  --gray-6: var(--cds-bg-2);
+
+  --blue: var(--cds-clay-interactive);
+}
+html:has([data-claude-page^="dark"]),
+html.dark:has([data-claude-page="auto"]) {
+  --blue: var(--cds-clay-dark);
+}

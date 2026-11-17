@@ -22,7 +22,7 @@ export const ThemeSwitcher = forwardRef<
   const hydrated = useHydrated()
   const { resolved: currentTheme, setPref: setTheme } = useTheme()
   const classes = cn(
-    "relative grid h-5 w-5 shrink-0 place-items-center rounded-full bg-transparent outline-none [corner-shape:round] before:absolute before:-inset-2.5 before:content-[''] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    "relative grid h-5 w-5 shrink-0 place-items-center rounded-full bg-transparent [corner-shape:round] before:absolute before:-inset-2.5 before:content-['']",
     className
   )
 

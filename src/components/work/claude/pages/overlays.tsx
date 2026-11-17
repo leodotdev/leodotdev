@@ -1,0 +1,183 @@
+import { useEffect, useRef, useState } from "react"
+import {
+  TbCopy,
+  TbDownload,
+  TbExternalLink,
+  TbFileText,
+  TbPencil,
+  TbSparkles,
+  TbX,
+} from "react-icons/tb"
+import { DocHeader, Section, Spec, Specimen } from "@/components/work/claude/ui"
+
+const quiet = { "data-wave-hover": "off", "data-wave-manual": true } as const
+
+function Item({
+  icon,
+  external,
+  children,
+}: {
+  icon?: React.ReactNode
+  external?: boolean
+  children: string
+}) {
+  return (
+    <button type="button" className="cds-menu-item" {...quiet}>
+      {icon}
+      <span>{children}</span>
+      {external && <TbExternalLink aria-hidden />}
+    </button>
+  )
+}
+
+/** A term that explains itself: hover, focus or tap the dotted word. */
+function Tooltip() {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLParagraphElement>(null)
+
+  // Tapping elsewhere or pressing Escape puts it away.
+  useEffect(() => {
+    if (!open) return
+    const onDown = (e: PointerEvent) => {
+      if (!ref.current?.contains(e.target as Node)) setOpen(false)
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false)
+    }
+    document.addEventListener("pointerdown", onDown)
+    document.addEventListener("keydown", onKey)
+    return () => {
+      document.removeEventListener("pointerdown", onDown)
+      document.removeEventListener("keydown", onKey)
+    }
+  }, [open])
+
+  return (
+    <p ref={ref} className="cds-tip-text" data-open={open ? "" : undefined}>
+      Learn anything through conversation. Upload docs or{" "}
+      <span
+        className="relative inline-block"
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+      >
+        <button
+          type="button"
+          className="cds-tip"
+          aria-expanded={open}
+          aria-describedby="cds-tooltip-demo"
+          onFocus={() => setOpen(true)}
+          onBlur={() => setOpen(false)}
+          onClick={() => setOpen(true)}
+          {...quiet}
+        >
+          images
+        </button>
+        <span
+          id="cds-tooltip-demo"
+          role="tooltip"
+          className="cds-tooltip left-0"
+          hidden={!open}
+        >
+          <strong>Uploading docs &amp; images</strong>
+          Upload any file (PDF, Word, Excel) or image and Claude analyzes it to
+          answer your questions.
+        </span>
+      </span>{" "}
+      for deeper insights or create visual study aids with artifacts. Voice
+      makes complex topics easier to digest, while projects keeps your learning
+      organized.
+    </p>
+  )
+}
+
+export function OverlaysDoc() {
+  return (
+    <>
+      <DocHeader group="Components" title="Menu and tooltip">
+        Two things that open on top of the page: menus of actions, and a tooltip
+        for terms inside running text.
+      </DocHeader>
+
+      <Section
+        title="Menus"
+        description="A navigation component combining grouped lists of clickable options with contextual actions and organizational structure. Three kinds: a navigation menu with headed groups, a prompt-suggestion menu that can be dismissed, and a list of page actions."
+      >
+        <Specimen className="flex flex-wrap items-start gap-6 p-6 md:p-8">
+          <div className="cds-menu" role="group" aria-label="Navigation menu">
+            <div className="cds-menu-header">Products</div>
+            <Item>Claude</Item>
+            <Item>Claude Code</Item>
+            <div className="cds-menu-rule" />
+            <div className="cds-menu-header">Models</div>
+            <Item external>Opus</Item>
+            <Item external>Sonnet</Item>
+            <Item external>Haiku</Item>
+          </div>
+
+          <div
+            className="cds-menu"
+            data-type="list"
+            role="group"
+            aria-label="Prompt suggestions"
+          >
+            <div className="cds-menu-header !px-0">
+              <span className="flex items-center gap-1 px-2 font-medium">
+                <TbPencil aria-hidden className="h-4 w-4" />
+                Write
+              </span>
+              <button
+                type="button"
+                className="cds-btn"
+                data-variant="tertiary"
+                data-size="small"
+                data-icon="only"
+                style={{ borderColor: "transparent" }}
+                aria-label="Close"
+                {...quiet}
+              >
+                <TbX aria-hidden />
+              </button>
+            </div>
+            <Item>Write case studies</Item>
+            <Item>Write grant proposals</Item>
+            <Item>Write video scripts</Item>
+          </div>
+
+          <div
+            className="cds-menu"
+            data-type="list"
+            role="group"
+            aria-label="Page actions"
+          >
+            <Item icon={<TbCopy aria-hidden />}>Copy as markdown for LLMs</Item>
+            <Item icon={<TbDownload aria-hidden />}>
+              Download pitch-worthy PDF
+            </Item>
+            <Item icon={<TbFileText aria-hidden />}>View as markdown</Item>
+            <Item icon={<TbSparkles aria-hidden />}>
+              Ask questions about this page
+            </Item>
+          </div>
+        </Specimen>
+        <Spec>
+          Panel: 8px padding, 12px radius, a Border/Tertiary stroke and the
+          medium shadow. Rows are 36px tall with 15/24 text; group headers are
+          12/18.
+        </Spec>
+      </Section>
+
+      <Section
+        title="Tooltip"
+        description="Tooltips provide brief, contextual explanations without disrupting the reading experience. They appear on demand and disappear when no longer needed. On a phone, where there is no hover, a tap on the dotted word opens it and a tap outside closes it."
+      >
+        <Specimen className="flex min-h-72 items-start p-6 md:p-8">
+          <Tooltip />
+        </Specimen>
+        <Spec>
+          Card: 273px wide, 24px padding, 16px radius, a serif 15/24 title over
+          12/18 text. The surrounding text dims while it is open.
+        </Spec>
+      </Section>
+    </>
+  )
+}

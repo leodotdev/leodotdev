@@ -18,6 +18,10 @@ pnpm-debug.log*
 /.claude/settings.local.json
 /.claude/worktrees/
 
+# Anthropic's typefaces for the /work/claude docs: licensed files, deployed
+# with the site from a local copy but kept out of this public repository
+/public/fonts/
+
 # typescript
 *.tsbuildinfo
 

@@ -107,18 +107,17 @@ export function Navigation({ children }: NavigationProps) {
   return (
     <div className="border-b bg-background">
       <div className="mx-auto flex max-w-[960px] items-center justify-between px-6 py-4 md:px-12">
-        <div className="-mx-2 flex flex-1 flex-wrap items-center gap-2">
+        <div className="flex flex-1 flex-wrap items-center gap-2">
           {children}
-          <div className="flex h-10 items-center gap-4 px-2">
-            <ThemeSwitcher />
-            <GridSwitcher />
-          </div>
         </div>
-        <div className="flex">
+        {/* Contact, then the theme and grid switchers, as on the home page. */}
+        <div className="flex items-center gap-4">
           {/* Services link hidden for now
           <Button variant="pill" render={<a href="/soon" />}>Services</Button>
           */}
           <ContactMenu />
+          <ThemeSwitcher />
+          <GridSwitcher />
         </div>
       </div>
     </div>

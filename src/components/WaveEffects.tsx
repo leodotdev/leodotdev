@@ -30,6 +30,8 @@ const INTERACTIVE = "a[href], button"
  * of the hover wave with `data-wave-hover="off"` (a ring around a 20px dot).
  * Controls marked `data-wave-manual` handle their own clicks, because theirs
  * carry a DOM change (the theme switch, the Show more buttons).
+ * Anything inside a `data-no-wave` element never waves, on hover or on click
+ * (the Claude docs below their top bar).
  * The admin is left alone, and so is anyone who prefers reduced motion.
  */
 export function WaveEffects() {
@@ -38,8 +40,10 @@ export function WaveEffects() {
     const reduced = matchMedia("(prefers-reduced-motion: reduce)")
     const off = () => reduced.matches || location.pathname.startsWith("/admin")
     // Menu items (the Contact menu) are left out: no wave on hover or tap.
+    // So is everything inside a `data-no-wave` element.
     const find = (t: EventTarget | null) =>
-      t instanceof Element && !t.closest("[role='menu'], [role='menuitem']")
+      t instanceof Element &&
+      !t.closest("[role='menu'], [role='menuitem'], [data-no-wave]")
         ? (t.closest("[data-wave]") ?? t.closest(INTERACTIVE))
         : null
 

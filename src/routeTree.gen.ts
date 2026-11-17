@@ -19,8 +19,12 @@ import { Route as AdminExperienceRouteImport } from './routes/admin/experience'
 import { Route as AdminReferencesRouteImport } from './routes/admin/references'
 import { Route as SiteProjectsIndexRouteImport } from './routes/_site/projects.index'
 import { Route as SiteProjectsSlugRouteImport } from './routes/_site/projects.$slug'
+import { Route as SiteWorkIndexRouteImport } from './routes/_site/work.index'
+import { Route as SiteWorkClaudeRouteImport } from './routes/_site/work.claude'
 import { Route as AdminProjectsIndexRouteImport } from './routes/admin/projects.index'
 import { Route as AdminProjectsIdRouteImport } from './routes/admin/projects.$id'
+import { Route as SiteWorkClaudeIndexRouteImport } from './routes/_site/work.claude.index'
+import { Route as SiteWorkClaudeDocRouteImport } from './routes/_site/work.claude.$doc'
 
 const SiteRoute = SiteRouteImport.update({
   id: '/_site',
@@ -71,6 +75,16 @@ const SiteProjectsSlugRoute = SiteProjectsSlugRouteImport.update({
   path: '/projects/$slug',
   getParentRoute: () => SiteRoute,
 } as any)
+const SiteWorkIndexRoute = SiteWorkIndexRouteImport.update({
+  id: '/work/',
+  path: '/work/',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteWorkClaudeRoute = SiteWorkClaudeRouteImport.update({
+  id: '/work/claude',
+  path: '/work/claude',
+  getParentRoute: () => SiteRoute,
+} as any)
 const AdminProjectsIndexRoute = AdminProjectsIndexRouteImport.update({
   id: '/projects/',
   path: '/projects/',
@@ -80,6 +94,16 @@ const AdminProjectsIdRoute = AdminProjectsIdRouteImport.update({
   id: '/projects/$id',
   path: '/projects/$id',
   getParentRoute: () => AdminRoute,
+} as any)
+const SiteWorkClaudeIndexRoute = SiteWorkClaudeIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SiteWorkClaudeRoute,
+} as any)
+const SiteWorkClaudeDocRoute = SiteWorkClaudeDocRouteImport.update({
+  id: '/$doc',
+  path: '/$doc',
+  getParentRoute: () => SiteWorkClaudeRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -91,9 +115,13 @@ export interface FileRoutesByFullPath {
   '/admin/references': typeof AdminReferencesRoute
   '/admin/': typeof AdminIndexRoute
   '/projects/$slug': typeof SiteProjectsSlugRoute
+  '/work/claude': typeof SiteWorkClaudeRouteWithChildren
   '/admin/projects/$id': typeof AdminProjectsIdRoute
   '/projects/': typeof SiteProjectsIndexRoute
+  '/work/': typeof SiteWorkIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
+  '/work/claude/$doc': typeof SiteWorkClaudeDocRoute
+  '/work/claude/': typeof SiteWorkClaudeIndexRoute
 }
 export interface FileRoutesByTo {
   '/life-calendar': typeof SiteLifeCalendarRoute
@@ -105,7 +133,10 @@ export interface FileRoutesByTo {
   '/projects/$slug': typeof SiteProjectsSlugRoute
   '/admin/projects/$id': typeof AdminProjectsIdRoute
   '/projects': typeof SiteProjectsIndexRoute
+  '/work': typeof SiteWorkIndexRoute
   '/admin/projects': typeof AdminProjectsIndexRoute
+  '/work/claude/$doc': typeof SiteWorkClaudeDocRoute
+  '/work/claude': typeof SiteWorkClaudeIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -118,9 +149,13 @@ export interface FileRoutesById {
   '/_site/': typeof SiteIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/_site/projects/$slug': typeof SiteProjectsSlugRoute
+  '/_site/work/claude': typeof SiteWorkClaudeRouteWithChildren
   '/admin/projects/$id': typeof AdminProjectsIdRoute
   '/_site/projects/': typeof SiteProjectsIndexRoute
+  '/_site/work/': typeof SiteWorkIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
+  '/_site/work/claude/$doc': typeof SiteWorkClaudeDocRoute
+  '/_site/work/claude/': typeof SiteWorkClaudeIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -133,9 +168,13 @@ export interface FileRouteTypes {
     | '/admin/references'
     | '/admin/'
     | '/projects/$slug'
+    | '/work/claude'
     | '/admin/projects/$id'
     | '/projects/'
+    | '/work/'
     | '/admin/projects/'
+    | '/work/claude/$doc'
+    | '/work/claude/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/life-calendar'
@@ -147,7 +186,10 @@ export interface FileRouteTypes {
     | '/projects/$slug'
     | '/admin/projects/$id'
     | '/projects'
+    | '/work'
     | '/admin/projects'
+    | '/work/claude/$doc'
+    | '/work/claude'
   id:
     | '__root__'
     | '/_site'
@@ -159,9 +201,13 @@ export interface FileRouteTypes {
     | '/_site/'
     | '/admin/'
     | '/_site/projects/$slug'
+    | '/_site/work/claude'
     | '/admin/projects/$id'
     | '/_site/projects/'
+    | '/_site/work/'
     | '/admin/projects/'
+    | '/_site/work/claude/$doc'
+    | '/_site/work/claude/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -241,6 +287,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteProjectsSlugRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/_site/work/': {
+      id: '/_site/work/'
+      path: '/work'
+      fullPath: '/work/'
+      preLoaderRoute: typeof SiteWorkIndexRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/work/claude': {
+      id: '/_site/work/claude'
+      path: '/work/claude'
+      fullPath: '/work/claude'
+      preLoaderRoute: typeof SiteWorkClaudeRouteImport
+      parentRoute: typeof SiteRoute
+    }
     '/admin/projects/': {
       id: '/admin/projects/'
       path: '/projects'
@@ -255,15 +315,45 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProjectsIdRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_site/work/claude/': {
+      id: '/_site/work/claude/'
+      path: '/'
+      fullPath: '/work/claude/'
+      preLoaderRoute: typeof SiteWorkClaudeIndexRouteImport
+      parentRoute: typeof SiteWorkClaudeRoute
+    }
+    '/_site/work/claude/$doc': {
+      id: '/_site/work/claude/$doc'
+      path: '/$doc'
+      fullPath: '/work/claude/$doc'
+      preLoaderRoute: typeof SiteWorkClaudeDocRouteImport
+      parentRoute: typeof SiteWorkClaudeRoute
+    }
   }
 }
+
+interface SiteWorkClaudeRouteChildren {
+  SiteWorkClaudeDocRoute: typeof SiteWorkClaudeDocRoute
+  SiteWorkClaudeIndexRoute: typeof SiteWorkClaudeIndexRoute
+}
+
+const SiteWorkClaudeRouteChildren: SiteWorkClaudeRouteChildren = {
+  SiteWorkClaudeDocRoute: SiteWorkClaudeDocRoute,
+  SiteWorkClaudeIndexRoute: SiteWorkClaudeIndexRoute,
+}
+
+const SiteWorkClaudeRouteWithChildren = SiteWorkClaudeRoute._addFileChildren(
+  SiteWorkClaudeRouteChildren,
+)
 
 interface SiteRouteChildren {
   SiteLifeCalendarRoute: typeof SiteLifeCalendarRoute
   SiteSoonRoute: typeof SiteSoonRoute
   SiteIndexRoute: typeof SiteIndexRoute
   SiteProjectsSlugRoute: typeof SiteProjectsSlugRoute
+  SiteWorkClaudeRoute: typeof SiteWorkClaudeRouteWithChildren
   SiteProjectsIndexRoute: typeof SiteProjectsIndexRoute
+  SiteWorkIndexRoute: typeof SiteWorkIndexRoute
 }
 
 const SiteRouteChildren: SiteRouteChildren = {
@@ -271,7 +361,9 @@ const SiteRouteChildren: SiteRouteChildren = {
   SiteSoonRoute: SiteSoonRoute,
   SiteIndexRoute: SiteIndexRoute,
   SiteProjectsSlugRoute: SiteProjectsSlugRoute,
+  SiteWorkClaudeRoute: SiteWorkClaudeRouteWithChildren,
   SiteProjectsIndexRoute: SiteProjectsIndexRoute,
+  SiteWorkIndexRoute: SiteWorkIndexRoute,
 }
 
 const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)

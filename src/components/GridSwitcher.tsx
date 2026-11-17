@@ -41,7 +41,7 @@ export function GridSwitcher({ className }: { className?: string }) {
               listeners.forEach((notify) => notify())
             }}
             className={cn(
-              "relative h-5 w-5 shrink-0 rounded-full border-[1.5px] border-grid bg-grid/14 outline-none [corner-shape:round] before:absolute before:-inset-2.5 before:content-[''] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+              "relative h-5 w-5 shrink-0 rounded-full border-[1.5px] border-grid bg-grid/14 [corner-shape:round] before:absolute before:-inset-2.5 before:content-['']",
               className
             )}
           />

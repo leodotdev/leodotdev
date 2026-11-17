@@ -2,14 +2,22 @@ import { Separator } from "@/components/ui/separator"
 import { ExperienceClient } from "@/components/projects/experience-client"
 import { HeroSection } from "@/components/projects/hero-section"
 import { ProjectsWrapper } from "@/components/projects/projects-wrapper"
+import { RecentWorkSection } from "@/components/projects/recent-work"
 import { ReferencesScroll } from "@/components/projects/references-scroll"
 // import { ProjectsClient } from "@/components/projects/projects-client"
 import type { getHomePage } from "@/server/content"
 
 type PageData = Awaited<ReturnType<typeof getHomePage>>
 
-/** The home page, rendered at `/` and (for old links) at `/projects`. */
-export function HomePage({ experiences, references }: PageData) {
+/**
+ * The home page, rendered at `/` and (for old links) at `/projects`. `/work`
+ * renders it with `recentWork`, which adds the "Recent work" section.
+ */
+export function HomePage({
+  experiences,
+  references,
+  recentWork = false,
+}: PageData & { recentWork?: boolean }) {
   return (
     <ProjectsWrapper>
       <div className="flex flex-col">
@@ -21,6 +29,14 @@ export function HomePage({ experiences, references }: PageData) {
           <HeroSection />
 
           <Separator />
+
+          {recentWork && (
+            <>
+              <RecentWorkSection />
+
+              <Separator />
+            </>
+          )}
 
           <ExperienceClient experiences={experiences} />
 

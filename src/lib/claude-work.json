@@ -1,0 +1,686 @@
+[
+  {
+    "title": "Atoms",
+    "description": "Color, type, grid, units and iconography.",
+    "ratio": 1.7778,
+    "frames": [
+      {
+        "file": "atoms/iconography-01",
+        "label": "Iconography",
+        "w": 1920,
+        "h": 1080,
+        "tw": 1920,
+        "th": 1080
+      },
+      {
+        "file": "atoms/iconography-02",
+        "label": "Iconography",
+        "w": 1920,
+        "h": 1080,
+        "tw": 1920,
+        "th": 1080
+      }
+    ]
+  },
+  {
+    "title": "Organisms",
+    "description": "Navigation, footers, heroes, cards and the other blocks a page is assembled from.",
+    "ratio": 1.7778,
+    "frames": [
+      {
+        "file": "organisms/footer-01",
+        "label": "Footer",
+        "w": 5264,
+        "h": 1892,
+        "tw": 5264,
+        "th": 1892
+      },
+      {
+        "file": "organisms/footer-02",
+        "label": "Footer",
+        "w": 1920,
+        "h": 1892,
+        "tw": 1920,
+        "th": 1892
+      },
+      {
+        "file": "organisms/footer-03",
+        "label": "Footer",
+        "w": 2064,
+        "h": 1892,
+        "tw": 2064,
+        "th": 1892
+      },
+      {
+        "file": "organisms/headers-01",
+        "label": "Headers",
+        "w": 3975,
+        "h": 3049,
+        "tw": 3975,
+        "th": 3049
+      },
+      {
+        "file": "organisms/artifacts-01",
+        "label": "Artifacts",
+        "w": 1663,
+        "h": 4831,
+        "tw": 1663,
+        "th": 2079
+      },
+      {
+        "file": "organisms/artifacts-02",
+        "label": "Artifacts",
+        "w": 1280,
+        "h": 832,
+        "tw": 1280,
+        "th": 832
+      },
+      {
+        "file": "organisms/artifacts-03",
+        "label": "Artifacts",
+        "w": 744,
+        "h": 1080,
+        "tw": 744,
+        "th": 930
+      },
+      {
+        "file": "organisms/artifacts-04",
+        "label": "Artifacts",
+        "w": 744,
+        "h": 844,
+        "tw": 744,
+        "th": 844
+      },
+      {
+        "file": "organisms/artifacts-05",
+        "label": "Artifacts",
+        "w": 744,
+        "h": 844,
+        "tw": 744,
+        "th": 844
+      },
+      {
+        "file": "organisms/artifacts-06",
+        "label": "Artifacts",
+        "w": 390,
+        "h": 844,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "organisms/artifacts-07",
+        "label": "Artifacts",
+        "w": 390,
+        "h": 844,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "organisms/marginalia-01",
+        "label": "Marginalia",
+        "w": 1920,
+        "h": 3986,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "organisms/logo-wall-01",
+        "label": "Logo Wall",
+        "w": 1920,
+        "h": 1080,
+        "tw": 1920,
+        "th": 1080
+      },
+      {
+        "file": "organisms/logo-wall-02",
+        "label": "Logo Wall",
+        "w": 1920,
+        "h": 1080,
+        "tw": 1920,
+        "th": 1080
+      },
+      {
+        "file": "organisms/logo-wall-03",
+        "label": "Logo Wall",
+        "w": 1920,
+        "h": 1080,
+        "tw": 1920,
+        "th": 1080
+      },
+      {
+        "file": "organisms/video-lightbox-01",
+        "label": "Video: Lightbox",
+        "w": 1920,
+        "h": 1080,
+        "tw": 1920,
+        "th": 1080
+      },
+      {
+        "file": "organisms/video-lightbox-02",
+        "label": "Video: Lightbox",
+        "w": 1920,
+        "h": 1080,
+        "tw": 1920,
+        "th": 1080
+      },
+      {
+        "file": "organisms/video-reel-01",
+        "label": "Video: Reel",
+        "w": 1920,
+        "h": 1080,
+        "tw": 1920,
+        "th": 1080
+      }
+    ]
+  },
+  {
+    "title": "Templates",
+    "description": "The site's pages, on desktop and mobile.",
+    "ratio": 0.8,
+    "frames": [
+      {
+        "file": "templates/home-01",
+        "label": "Home",
+        "w": 1920,
+        "h": 7805,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/home-02",
+        "label": "Home",
+        "w": 390,
+        "h": 8821,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/home-03",
+        "label": "Home",
+        "w": 1920,
+        "h": 7544,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/home-04",
+        "label": "Home",
+        "w": 390,
+        "h": 8067,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/claude-code-01",
+        "label": "Claude Code",
+        "w": 1920,
+        "h": 12060,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/claude-code-02",
+        "label": "Claude Code",
+        "w": 390,
+        "h": 15690,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/api-01",
+        "label": "API",
+        "w": 1920,
+        "h": 9372,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/api-02",
+        "label": "API",
+        "w": 390,
+        "h": 12603,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/pricing-01",
+        "label": "Pricing",
+        "w": 1920,
+        "h": 2143,
+        "tw": 1920,
+        "th": 2143
+      },
+      {
+        "file": "templates/pricing-02",
+        "label": "Pricing",
+        "w": 390,
+        "h": 4211,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/pricing-03",
+        "label": "Pricing",
+        "w": 1920,
+        "h": 2716,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/pricing-04",
+        "label": "Pricing",
+        "w": 390,
+        "h": 4706,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/pricing-05",
+        "label": "Pricing",
+        "w": 1920,
+        "h": 4010,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/pricing-06",
+        "label": "Pricing",
+        "w": 390,
+        "h": 7552,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/plans-max-01",
+        "label": "Plans: Max",
+        "w": 1920,
+        "h": 6148,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/plans-max-02",
+        "label": "Plans: Max",
+        "w": 390,
+        "h": 8090,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/plans-team-01",
+        "label": "Plans: Team",
+        "w": 1920,
+        "h": 5853,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/plans-team-02",
+        "label": "Plans: Team",
+        "w": 390,
+        "h": 6523,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/plans-enterprise-01",
+        "label": "Plans: Enterprise",
+        "w": 1920,
+        "h": 8828,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/plans-enterprise-02",
+        "label": "Plans: Enterprise",
+        "w": 390,
+        "h": 10747,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/solutions-ai-agents-01",
+        "label": "Solutions: AI Agents",
+        "w": 1920,
+        "h": 7162,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/solutions-ai-agents-02",
+        "label": "Solutions: AI Agents",
+        "w": 390,
+        "h": 8753,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/solutions-coding-01",
+        "label": "Solutions: Coding",
+        "w": 1920,
+        "h": 7581,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/solutions-coding-02",
+        "label": "Solutions: Coding",
+        "w": 390,
+        "h": 8981,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/solutions-customer-support-01",
+        "label": "Solutions: Customer Support",
+        "w": 1920,
+        "h": 5767,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/solutions-customer-support-02",
+        "label": "Solutions: Customer Support",
+        "w": 390,
+        "h": 7120,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/solutions-education-01",
+        "label": "Solutions: Education",
+        "w": 1920,
+        "h": 7606,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/solutions-education-02",
+        "label": "Solutions: Education",
+        "w": 390,
+        "h": 11529,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/solutions-financial-services-01",
+        "label": "Solutions: Financial Services",
+        "w": 1920,
+        "h": 8063,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/solutions-financial-services-02",
+        "label": "Solutions: Financial Services",
+        "w": 390,
+        "h": 11107,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/solutions-government-01",
+        "label": "Solutions: Government",
+        "w": 1920,
+        "h": 5909,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/solutions-government-02",
+        "label": "Solutions: Government",
+        "w": 390,
+        "h": 7789,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/customer-stories-01",
+        "label": "Customer stories",
+        "w": 1920,
+        "h": 4327,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/customer-stories-02",
+        "label": "Customer stories",
+        "w": 1920,
+        "h": 2249,
+        "tw": 1920,
+        "th": 2249
+      },
+      {
+        "file": "templates/customer-stories-03",
+        "label": "Customer stories",
+        "w": 1920,
+        "h": 5259,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/customer-stories-04",
+        "label": "Customer stories",
+        "w": 390,
+        "h": 6718,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/customer-stories-05",
+        "label": "Customer stories",
+        "w": 1920,
+        "h": 4303,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/customer-stories-06",
+        "label": "Customer stories",
+        "w": 390,
+        "h": 6262,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/customer-story-01",
+        "label": "Customer story",
+        "w": 1920,
+        "h": 6463,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/customer-story-02",
+        "label": "Customer story",
+        "w": 390,
+        "h": 8703,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/customer-story-03",
+        "label": "Customer story",
+        "w": 1920,
+        "h": 6192,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/customer-story-04",
+        "label": "Customer story",
+        "w": 390,
+        "h": 10401,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/contact-sales-01",
+        "label": "Contact sales",
+        "w": 1920,
+        "h": 2018,
+        "tw": 1920,
+        "th": 2018
+      },
+      {
+        "file": "templates/contact-sales-02",
+        "label": "Contact sales",
+        "w": 390,
+        "h": 2667,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/contact-sales-03",
+        "label": "Contact sales",
+        "w": 1920,
+        "h": 3399,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/contact-sales-04",
+        "label": "Contact sales",
+        "w": 390,
+        "h": 4604,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "templates/contact-sales-05",
+        "label": "Contact sales",
+        "w": 1920,
+        "h": 2522,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "templates/contact-sales-06",
+        "label": "Contact sales",
+        "w": 1920,
+        "h": 2166,
+        "tw": 1920,
+        "th": 2166
+      }
+    ]
+  },
+  {
+    "title": "Partner and program pages",
+    "description": "Partner, startup, campus, contact and newsletter pages.",
+    "ratio": 0.8,
+    "frames": [
+      {
+        "file": "b2b/partners-claude-01",
+        "label": "Partners: Claude",
+        "w": 1920,
+        "h": 2143,
+        "tw": 1920,
+        "th": 2143
+      },
+      {
+        "file": "b2b/partners-claude-02",
+        "label": "Partners: Claude",
+        "w": 390,
+        "h": 4211,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "b2b/partners-mcp-01",
+        "label": "Partners: MCP",
+        "w": 1920,
+        "h": 2143,
+        "tw": 1920,
+        "th": 2143
+      },
+      {
+        "file": "b2b/partners-mcp-02",
+        "label": "Partners: MCP",
+        "w": 390,
+        "h": 4211,
+        "tw": 390,
+        "th": 844
+      },
+      {
+        "file": "b2b/partners-services-01",
+        "label": "Partners: Services",
+        "w": 1920,
+        "h": 2308,
+        "tw": 1920,
+        "th": 2308
+      },
+      {
+        "file": "b2b/partners-amazon-bedrock-01",
+        "label": "Partners: Amazon Bedrock",
+        "w": 1920,
+        "h": 3627,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "b2b/partners-google-cloud-01",
+        "label": "Partners: Google Cloud",
+        "w": 1920,
+        "h": 3747,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "b2b/startups-01",
+        "label": "Startups",
+        "w": 1920,
+        "h": 6824,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "b2b/campus-01",
+        "label": "Campus",
+        "w": 1920,
+        "h": 4538,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "b2b/contact-01",
+        "label": "Contact",
+        "w": 1920,
+        "h": 2166,
+        "tw": 1920,
+        "th": 2166
+      },
+      {
+        "file": "b2b/contact-02",
+        "label": "Contact",
+        "w": 1920,
+        "h": 3252,
+        "tw": 1920,
+        "th": 2400
+      },
+      {
+        "file": "b2b/newsletter-and-states-01",
+        "label": "Newsletter and states",
+        "w": 1920,
+        "h": 1324,
+        "tw": 1920,
+        "th": 1324
+      },
+      {
+        "file": "b2b/newsletter-and-states-02",
+        "label": "Newsletter and states",
+        "w": 1920,
+        "h": 1185,
+        "tw": 1920,
+        "th": 1185
+      },
+      {
+        "file": "b2b/newsletter-and-states-03",
+        "label": "Newsletter and states",
+        "w": 1920,
+        "h": 1293,
+        "tw": 1920,
+        "th": 1293
+      }
+    ]
+  }
+]

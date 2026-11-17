@@ -8,8 +8,7 @@ import type { Img } from "@/lib/image"
 import { uploadImage } from "@/lib/resize"
 import { cn } from "@/lib/utils"
 
-const control =
-  "w-full rounded-md border bg-transparent px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-ring"
+const control = "w-full rounded-md border bg-transparent px-3 py-2"
 
 export function Field({
   label,

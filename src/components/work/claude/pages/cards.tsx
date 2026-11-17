@@ -1,0 +1,154 @@
+import { useEffect, useState } from "react"
+import {
+  TbArrowUp,
+  TbCheck,
+  TbCopy,
+  TbPaperclip,
+  TbPlayerPlayFilled,
+  TbVideo,
+} from "react-icons/tb"
+import { Button } from "@/components/work/claude/specimens"
+import { DocHeader, Section, Spec, Specimen } from "@/components/work/claude/ui"
+
+const quiet = { "data-wave-hover": "off", "data-wave-manual": true } as const
+
+const LINKS = [
+  ["Claude Code documentation", "Developer doc"],
+  ["Claude Code tutorials", "Developer doc"],
+  ["How Anthropic teams use Claude Code", "Case study"],
+]
+
+const PROMPT =
+  "Create discussion questions that build on yesterday's lecture about supply chain disruption."
+
+/** A command that copies itself: the field says "Copied!" for three seconds. */
+function ClipboardCopy({ command }: { command: string }) {
+  const [copied, setCopied] = useState(false)
+  useEffect(() => {
+    if (!copied) return
+    const timer = setTimeout(() => setCopied(false), 3000)
+    return () => clearTimeout(timer)
+  }, [copied])
+  return (
+    <div className="cds-copy">
+      <code aria-live="polite">{copied ? "Copied!" : command}</code>
+      <button
+        type="button"
+        aria-label="Copy"
+        onClick={() => {
+          void navigator.clipboard.writeText(command)
+          setCopied(true)
+        }}
+        {...quiet}
+      >
+        {copied ? <TbCheck aria-hidden /> : <TbCopy aria-hidden />}
+      </button>
+    </div>
+  )
+}
+
+export function CardsDoc() {
+  return (
+    <>
+      <DocHeader group="Patterns" title="Cards and prompts">
+        Cards that lead somewhere, a prompt the visitor can send to Claude, and
+        a command to copy.
+      </DocHeader>
+
+      <Section
+        title="Link and video cards"
+        description="The active link card gets the medium shadow on hover. A video card presents video-based resources like webinars or presentations with accompanying metadata, and stacks when it runs out of width."
+      >
+        <Specimen className="flex flex-col gap-8 p-6 md:p-8">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {LINKS.map(([title, kind]) => (
+              <a
+                key={title}
+                className="cds-card-link !w-auto"
+                href="#cards"
+                onClick={(e) => e.preventDefault()}
+                {...quiet}
+              >
+                {title}
+                <span className="cds-meta-link">
+                  <TbPaperclip aria-hidden />
+                  {kind}
+                </span>
+              </a>
+            ))}
+          </div>
+
+          <div className="cds-card-video-wrap">
+            <div className="cds-card-video">
+              <div className="cds-card-video-media">
+                <button
+                  type="button"
+                  className="cds-play"
+                  aria-label="Play"
+                  {...quiet}
+                >
+                  <TbPlayerPlayFilled aria-hidden />
+                </button>
+              </div>
+              <div className="cds-card-video-body">
+                <span className="cds-meta-link">
+                  <TbVideo aria-hidden />
+                  Webinar
+                </span>
+                <div className="cds-card-title">
+                  How NBIM transformed the world&rsquo;s largest sovereign
+                  wealth fund with agentic AI
+                </div>
+                <Button variant="tertiary" icon="none">
+                  Register and watch
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Specimen>
+        <Spec>
+          Video card: 32px radius (24px stacked), a 64px play button, text
+          padded 32/64/32/48 with 32px between the label, the serif 19/24 title
+          and the button.
+        </Spec>
+      </Section>
+
+      <Section
+        title="Prompt box and clipboard copy"
+        description="The prompt box displays suggested prompts as editable templates, so a visitor can send one as written or change it first. Hovering a card darkens its text, adds a light shadow and expands the button to read Ask Claude, while its siblings dim. Clipboard copy shows a command; the copy button swaps it for Copied! for three seconds."
+      >
+        <Specimen className="flex flex-col gap-8 p-6 md:p-8">
+          <div className="cds-prompts">
+            {[0, 1, 2].map((i) => (
+              <label key={i} className="cds-prompt">
+                <textarea
+                  defaultValue={PROMPT}
+                  aria-label="Prompt"
+                  spellCheck={false}
+                />
+                <span className="cds-prompt-controls">
+                  <button
+                    type="button"
+                    className="cds-btn"
+                    data-variant="clay"
+                    data-icon="only"
+                    {...quiet}
+                  >
+                    <span>Ask Claude</span>
+                    <TbArrowUp aria-hidden />
+                  </button>
+                </span>
+              </label>
+            ))}
+          </div>
+          <ClipboardCopy command="npm install -g @anthropic-ai/claude-code" />
+        </Specimen>
+        <Spec>
+          Prompt box: 280px square at full size, 16px radius, 17/28 text with
+          24px padding, a 36px Clay button. Clipboard copy: 52px tall, 12px
+          radius, Anthropic Mono 12/18.
+        </Spec>
+      </Section>
+    </>
+  )
+}
