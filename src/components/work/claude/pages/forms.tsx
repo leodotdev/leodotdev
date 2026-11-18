@@ -1,9 +1,7 @@
 import { Check, Switch, TextInput } from "@/components/work/claude/specimens"
 import {
   Cell,
-  DocHeader,
   Section,
-  Spec,
   Specimen,
   ThemeStrip,
 } from "@/components/work/claude/ui"
@@ -11,15 +9,7 @@ import {
 export function FormsDoc() {
   return (
     <>
-      <DocHeader group="Components" title="Forms">
-        A text input, checkbox, radio and switch. All of them are real controls:
-        type in the fields, tick the boxes, flip the switches.
-      </DocHeader>
-
-      <Section
-        title="Text input"
-        description="A data entry component combining input fields with optional icons and action buttons to capture user information. Focus draws a 2px outline 4px away from the field."
-      >
+      <Section title="Text Input">
         <Specimen className="grid gap-x-8 gap-y-6 p-6 sm:grid-cols-2 md:p-8 xl:grid-cols-3">
           <Cell label="No icon">
             <TextInput />
@@ -43,16 +33,12 @@ export function FormsDoc() {
             <TextInput size="larger" leading />
           </Cell>
         </Specimen>
-        <Spec>
-          Medium 44px tall, 12px text, 12px radius. Larger 50px, 15px, 16px.
-          Icons are 20px, 8px from the text.
-        </Spec>
+        <ThemeStrip>
+          <TextInput leading />
+        </ThemeStrip>
       </Section>
 
-      <Section
-        title="Checkbox, radio and switch"
-        description="Clickable input controls with descriptive labels to capture user choices: checkboxes when a user can make multiple selections, radios for one of a set, and a switch for on and off. Controls step up from Border/Secondary to Border/Primary on hover, and keyboard focus draws an outline in Clay Dark."
-      >
+      <Section title="Checkbox, Radio & Switch">
         <Specimen className="grid gap-x-8 gap-y-8 p-6 sm:grid-cols-3 md:p-8">
           <Cell label="Checkbox" className="flex-col !items-start">
             <Check>Not selected</Check>
@@ -85,19 +71,7 @@ export function FormsDoc() {
             </Switch>
           </Cell>
         </Specimen>
-        <Spec>
-          Checkbox and radio: 20px control, 4px radius on the checkbox, 12px
-          check mark, 8px radio dot. Switch: 36 by 22px track with a 16px white
-          knob. Labels are Body 3, 12px from the control.
-        </Spec>
-      </Section>
-
-      <Section
-        title="Across themes"
-        description="Inputs and toggles change fill and stroke colors to correspond with different color themes. A selected control fills black on light themes and white on dark ones."
-      >
         <ThemeStrip>
-          <TextInput leading />
           <div className="flex flex-wrap justify-center gap-3">
             <Check defaultChecked>{""}</Check>
             <Check type="radio" defaultChecked>

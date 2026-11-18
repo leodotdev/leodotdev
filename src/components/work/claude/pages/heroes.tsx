@@ -1,6 +1,6 @@
 import { TbChartDots3, TbDatabase, TbStack2 } from "react-icons/tb"
 import { Button } from "@/components/work/claude/specimens"
-import { DocHeader, Section, Spec, Specimen } from "@/components/work/claude/ui"
+import { Section, Specimen } from "@/components/work/claude/ui"
 
 // The hero's own illustration, exported from the Figma file as an SVG.
 const ABACUS = "/work/claude/illustrations/hand-abacus.svg"
@@ -25,16 +25,7 @@ const Illustration = () => (
 export function HeroesDoc() {
   return (
     <>
-      <DocHeader group="Patterns" title="Heroes and features">
-        How a page opens, and how it lists what a product does. The heroes
-        resize with their box, so narrowing the window shows the smaller
-        breakpoints.
-      </DocHeader>
-
-      <Section
-        title="Page heroes"
-        description="Three layouts for the same content: Stagger splits the headline left and right over the illustration, 2 Columns sets copy beside it, and 1 Column centres everything."
-      >
+      <Section>
         <Specimen>
           <div className="cds-hero cds-hero-stagger">
             <h3>
@@ -70,17 +61,15 @@ export function HeroesDoc() {
             </div>
           </div>
         </Specimen>
-        <Spec>
-          At the 1920px desktop frame: the Stagger headline is the serif at
-          126/110, Regular; the other two use Display 1 (72/80, Medium). The
-          lead is the sans at 23/36 and the illustration is 459px or 591px.
-        </Spec>
       </Section>
+    </>
+  )
+}
 
-      <Section
-        title="Feature highlights"
-        description="A product showcase component that emphasizes key functionality through an icon, a serif title and a short paragraph. Features stand in ruled columns with the icon above, or run across the page with the icon beside the title."
-      >
+export function FeaturesDoc() {
+  return (
+    <>
+      <Section>
         <Specimen className="flex flex-col gap-10 p-6 md:p-8">
           <div className="cds-features">
             <div className="cds-feature" data-icon="pictogram">
@@ -115,11 +104,6 @@ export function HeroesDoc() {
             </div>
           </div>
         </Specimen>
-        <Spec>
-          Icon above: 12/32/24/32 padding, a 64px pictogram or 32px icon, 48px
-          to a 19/24 title, 15/24 text. Icon inline: 32px above and below, a
-          25/32 title, 17/28 text.
-        </Spec>
       </Section>
     </>
   )

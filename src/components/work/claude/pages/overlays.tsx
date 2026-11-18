@@ -8,7 +8,7 @@ import {
   TbSparkles,
   TbX,
 } from "react-icons/tb"
-import { DocHeader, Section, Spec, Specimen } from "@/components/work/claude/ui"
+import { Section, Specimen } from "@/components/work/claude/ui"
 
 const quiet = { "data-wave-hover": "off", "data-wave-manual": true } as const
 
@@ -90,18 +90,10 @@ function Tooltip() {
   )
 }
 
-export function OverlaysDoc() {
+export function MenuDoc() {
   return (
     <>
-      <DocHeader group="Components" title="Menu and tooltip">
-        Two things that open on top of the page: menus of actions, and a tooltip
-        for terms inside running text.
-      </DocHeader>
-
-      <Section
-        title="Menus"
-        description="A navigation component combining grouped lists of clickable options with contextual actions and organizational structure. Three kinds: a navigation menu with headed groups, a prompt-suggestion menu that can be dismissed, and a list of page actions."
-      >
+      <Section>
         <Specimen className="flex flex-wrap items-start gap-6 p-6 md:p-8">
           <div className="cds-menu" role="group" aria-label="Navigation menu">
             <div className="cds-menu-header">Products</div>
@@ -159,24 +151,18 @@ export function OverlaysDoc() {
             </Item>
           </div>
         </Specimen>
-        <Spec>
-          Panel: 8px padding, 12px radius, a Border/Tertiary stroke and the
-          medium shadow. Rows are 36px tall with 15/24 text; group headers are
-          12/18.
-        </Spec>
       </Section>
+    </>
+  )
+}
 
-      <Section
-        title="Tooltip"
-        description="Tooltips provide brief, contextual explanations without disrupting the reading experience. They appear on demand and disappear when no longer needed. On a phone, where there is no hover, a tap on the dotted word opens it and a tap outside closes it."
-      >
+export function TooltipDoc() {
+  return (
+    <>
+      <Section>
         <Specimen className="flex min-h-72 items-start p-6 md:p-8">
           <Tooltip />
         </Specimen>
-        <Spec>
-          Card: 273px wide, 24px padding, 16px radius, a serif 15/24 title over
-          12/18 text. The surrounding text dims while it is open.
-        </Spec>
       </Section>
     </>
   )

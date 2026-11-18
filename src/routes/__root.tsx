@@ -5,7 +5,7 @@ import {
   Scripts,
   createRootRoute,
 } from "@tanstack/react-router"
-import { THEME_COLOR, THEME_SCRIPT, ThemeProvider } from "@/lib/theme"
+import { DEFAULT, THEME_COLOR, THEME_SCRIPT, ThemeProvider } from "@/lib/theme"
 import { WaveEffects } from "@/components/WaveEffects"
 import { Button } from "@/components/ui/button"
 
@@ -30,16 +30,9 @@ export const Route = createRootRoute({
       { name: "twitter:card", content: "summary" },
       { name: "twitter:title", content: "Leo SF" },
       { name: "twitter:description", content: DESCRIPTION },
-      {
-        name: "theme-color",
-        content: THEME_COLOR.light,
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        name: "theme-color",
-        content: THEME_COLOR.dark,
-        media: "(prefers-color-scheme: dark)",
-      },
+      // The default theme's color; the theme script and provider keep it on
+      // the theme in use.
+      { name: "theme-color", content: THEME_COLOR[DEFAULT] },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -58,7 +51,14 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    // The server's HTML is in the default theme (dark); the script in the head
+    // switches it for a visitor who picked light, before the first paint.
+    <html
+      lang="en"
+      className={DEFAULT === "dark" ? "dark" : undefined}
+      style={{ colorScheme: DEFAULT }}
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
         <HeadContent />

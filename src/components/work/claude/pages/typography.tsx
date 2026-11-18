@@ -1,4 +1,4 @@
-import { DocHeader, Section, Specimen } from "@/components/work/claude/ui"
+import { Section, Specimen } from "@/components/work/claude/ui"
 
 const HEADLINE = "Meet Claude, your thinking partner"
 const SUBHEAD = "AI that thinks with you, not for you"
@@ -50,14 +50,9 @@ const STYLES: Array<[string, string, string, string]> = [
 export function TypographyDoc() {
   return (
     <>
-      <DocHeader group="Foundations" title="Typography">
-        Three variable families and fifteen text styles. The larger sizes grow
-        with the screen, and leading is a ratio of the size.
-      </DocHeader>
-
       <Section
         title="Families"
-        description="All three have a weight axis from 300 to 800. The serif and sans also have an optical-size axis, which follows the font size: large type gets the Display cut and small type the Text cut."
+        description="Serif, sans and mono, each with weights from 300 to 800."
       >
         <Specimen className="grid sm:grid-cols-3">
           {FAMILIES.map((family, i) => (
@@ -104,13 +99,13 @@ export function TypographyDoc() {
 
       <Section
         title="Scale"
-        description="Display and headline styles are set in the serif at Medium 500, large body in the serif at Regular 400, and body, caption and micro in the sans at Regular 400. Caption is tracked 0.01em and Micro 0.05em, in uppercase. Each row gives the size in pixels, on a 320px-wide screen and then at 1440px and wider, followed by the leading as a ratio."
+        description="Each row shows its size on a phone and on a wide screen, then its leading."
       >
         <Specimen>
           {STYLES.map(([name, className, size, sample], i) => (
             <div
               key={name}
-              className="grid items-baseline gap-x-8 gap-y-2 px-6 py-5 md:grid-cols-[8rem_minmax(0,1fr)] md:px-8"
+              className="flex flex-col gap-2 px-6 py-5 md:px-8"
               style={
                 i ? { borderTop: "1px solid var(--cds-border-3)" } : undefined
               }

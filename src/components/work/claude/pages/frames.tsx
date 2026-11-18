@@ -1,14 +1,10 @@
 import { FrameGallery } from "@/components/work/frame-gallery"
-import { DocHeader } from "@/components/work/claude/ui"
 import type { Doc } from "@/components/work/claude/docs"
 
 /** A docs page that shows its part of the system as frames from Figma. */
 export function FramesDoc({ doc }: { doc: Doc & { kind: "frames" } }) {
   return (
     <>
-      <DocHeader group={doc.group} title={doc.title}>
-        {doc.summary}
-      </DocHeader>
       <FrameGallery
         bare
         base="/work/claude"

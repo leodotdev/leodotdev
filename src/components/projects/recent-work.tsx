@@ -18,11 +18,11 @@ export function RecentWorkSection() {
           const linked = Boolean(work.to ?? work.href)
           const content = (
             <div className="flex w-full items-center justify-between gap-4 p-6">
-              <div className="flex min-w-0 flex-col">
+              <div className="flex min-w-0 flex-col gap-1">
                 <div
                   className={cn(
                     linked &&
-                      "group-hover/item:text-blue group-hover/item:underline"
+                      "group-hover/item:text-tint group-hover/item:underline"
                   )}
                 >
                   {work.title}
@@ -31,7 +31,7 @@ export function RecentWorkSection() {
                   {work.summary}
                 </div>
               </div>
-              <div className="flex max-w-[45%] flex-col items-end text-end md:max-w-none md:shrink-0">
+              <div className="flex max-w-[45%] flex-col items-end gap-1 text-end md:max-w-none md:shrink-0">
                 {work.client && <div>{work.client}</div>}
                 <div className="text-xs text-muted-foreground">{work.year}</div>
               </div>

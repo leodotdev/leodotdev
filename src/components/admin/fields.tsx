@@ -159,7 +159,7 @@ export function UploadButton({
         <TbPhotoUp className="h-4 w-4" />
         {busy ? "Uploading…" : label}
       </Button>
-      {error && <p className="text-xs text-red">{error}</p>}
+      {error && <p className="text-xs text-error">{error}</p>}
     </div>
   )
 }
@@ -206,7 +206,10 @@ export function SaveBar({
       </Button>
       {children}
       <span
-        className={cn("text-xs", error ? "text-red" : "text-muted-foreground")}
+        className={cn(
+          "text-xs",
+          error ? "text-error" : "text-muted-foreground"
+        )}
       >
         {error ??
           (dirty

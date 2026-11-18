@@ -225,7 +225,7 @@ function RowForm({
         <Button
           type="button"
           variant="ghost"
-          className="ml-auto text-red hover:text-red"
+          className="ml-auto text-error hover:text-error"
           onClick={async () => {
             if (!window.confirm("Delete this entry? This can't be undone."))
               return

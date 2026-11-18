@@ -22,7 +22,7 @@ const buttonVariants = cva(
         // The site's one button and link style: a pill on the raised surface.
         // Pass `render` to draw it as a link. The border is kept but
         // invisible, so the box (and the wave drawn on it) is unchanged.
-        // In the light theme the fill is the panel colour, the same white a
+        // In the light theme the fill is the panel color, the same white a
         // list row takes on hover; the dark theme keeps the raised surface.
         pill: "rounded-full border border-transparent bg-card font-semibold text-secondary-foreground [corner-shape:round] hover:bg-card/80",
       },

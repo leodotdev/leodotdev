@@ -1,13 +1,14 @@
 /*
  * The Claude.com design system, as documented at /work/claude. These are the
- * system's own tokens (taken from its Figma file), so the docs can show real
- * colours and type sizes. The site's own rules (two type sizes, Apple palette)
- * do not apply inside a `.cds` box.
+ * system's own tokens, so the docs can show real colors and type sizes. Its
+ * type styles and components apply inside a `.cds` box, where the site's own
+ * two-type-size rule does not.
  *
- * A theme can be worn two ways: by a `.cds` box with `data-theme`, or by the
- * whole page, when the page contains an element with `data-claude-page` (the
- * /work/claude layout). A `.cds` box without `data-theme` takes the page's.
- * `data-claude-page="auto"` is White, or Dark 3 when the site is in dark mode.
+ * The whole site wears this palette (styles.css builds its own tokens on the
+ * ones here): White in light mode and Dark 3 in dark mode. A `.cds` box with
+ * `data-theme` wears a theme of its own (the docs' figures, once a theme is
+ * picked for them); a `.cds` box without `data-theme` takes the page's. The
+ * site's defaults sit in :where(), so a box's own theme overrides them.
  */
 
 /* Anthropic's three typefaces (files supplied by Leo, in public/fonts). All
@@ -35,7 +36,7 @@
   font-display: swap;
 }
 
-/* The neutrals, Clay and the functional colours sit on the root, so a page can
+/* The neutrals, Clay and the functional colors sit on the root, so a page can
    wear a theme as well as a `.cds` box. */
 :root {
   --cds-gray-000: #ffffff;
@@ -66,6 +67,14 @@
   --cds-focus: var(--cds-clay-dark); /* every keyboard focus outline */
   --cds-error: #bf4d43;
   --cds-switch-blue: #2c84db;
+
+  /* Secondary colors: three pale ones and their three deeper partners. */
+  --cds-heather: #cbcadb;
+  --cds-cactus: #bcd1ca;
+  --cds-peach: #ebc9b7;
+  --cds-plum: #827dbd;
+  --cds-mineral: #629987;
+  --cds-sky: #6a9bcc;
 }
 
 .cds {
@@ -103,9 +112,8 @@
  * White (accent), Neutral 1 (neutral), Dark 2 (accent in dark mode) and
  * Dark 3 (dark, and main and neutral in dark mode).
  */
-:root,
-:where(.cds[data-theme]) {
-  /* Ivory, the default theme */
+:where(:root, .cds[data-theme]) {
+  /* Ivory, the system's default theme */
   --cds-bg: var(--cds-gray-050);
   --cds-bg-2: var(--cds-gray-100);
   --cds-bg-3: var(--cds-gray-150);
@@ -117,9 +125,9 @@
   --cds-border-3: var(--cds-gray-200);
 }
 
-.cds[data-theme="white"],
-html:has([data-claude-page="white"]),
-html:not(.dark):has([data-claude-page="auto"]) {
+/* White: also the site in light mode. */
+:where(html:not(.dark)),
+.cds[data-theme="white"] {
   --cds-bg: var(--cds-gray-000);
   --cds-bg-2: var(--cds-gray-050);
   --cds-bg-3: var(--cds-gray-100);
@@ -127,8 +135,7 @@ html:not(.dark):has([data-claude-page="auto"]) {
   --cds-border-2: var(--cds-gray-250);
   --cds-border-3: var(--cds-gray-150);
 }
-.cds[data-theme="neutral-1"],
-html:has([data-claude-page="neutral-1"]) {
+.cds[data-theme="neutral-1"] {
   --cds-bg: var(--cds-gray-150);
   --cds-bg-2: var(--cds-gray-200);
   --cds-bg-3: var(--cds-gray-250);
@@ -137,8 +144,7 @@ html:has([data-claude-page="neutral-1"]) {
   --cds-border-2: var(--cds-gray-350);
   --cds-border-3: var(--cds-gray-300);
 }
-.cds[data-theme="dark-2"],
-html:has([data-claude-page="dark-2"]) {
+.cds[data-theme="dark-2"] {
   --cds-bg: var(--cds-gray-850);
   --cds-bg-2: var(--cds-gray-800);
   --cds-bg-3: var(--cds-gray-750);
@@ -149,9 +155,9 @@ html:has([data-claude-page="dark-2"]) {
   --cds-border-2: var(--cds-gray-650);
   --cds-border-3: var(--cds-gray-750);
 }
-.cds[data-theme="dark-3"],
-html:has([data-claude-page="dark-3"]),
-html.dark:has([data-claude-page="auto"]) {
+/* Dark 3: also the site in dark mode. */
+:where(html.dark),
+.cds[data-theme="dark-3"] {
   --cds-bg: var(--cds-gray-950);
   --cds-bg-2: var(--cds-gray-900);
   --cds-bg-3: var(--cds-gray-800);
@@ -174,51 +180,101 @@ html.dark:has([data-claude-page="auto"]) {
 /*
  * Type styles, as claude.com sets them. The larger sizes grow with the
  * viewport, from a 320px-wide screen to a 1440px one, and leading is a ratio
- * of the size. Every style also has a sans cut on the site; these are the
+ * of the size. In a scaled figure of the docs (the Organisms page) they grow
+ * with the figure's width instead (`--cds-vw`, set at the end of this file):
+ * the figure is a small copy of a page as wide as it is laid out, so its type
+ * is the size it would be on that page, whatever the window. Every style also has a sans cut on the site; these are the
  * serif ones for display, headlines and large body.
  */
 .cds-display-1 {
-  font: 500 clamp(2.625rem, 2.625rem + 30 * (100vw - 20rem) / 1120, 4.5rem) /
+  font: 500
+    clamp(
+      2.625rem,
+      2.625rem + 30 * (var(--cds-vw, 100vw) - 20rem) / 1120,
+      4.5rem
+    ) /
     1.1 var(--cds-serif);
 }
 .cds-display-2 {
-  font: 500 clamp(2.25rem, 2.25rem + 28 * (100vw - 20rem) / 1120, 4rem) / 1.1
-    var(--cds-serif);
+  font: 500
+    clamp(2.25rem, 2.25rem + 28 * (var(--cds-vw, 100vw) - 20rem) / 1120, 4rem) /
+    1.1 var(--cds-serif);
 }
 .cds-headline-1 {
-  font: 500 clamp(2.125rem, 2.125rem + 18 * (100vw - 20rem) / 1120, 3.25rem) /
+  font: 500
+    clamp(
+      2.125rem,
+      2.125rem + 18 * (var(--cds-vw, 100vw) - 20rem) / 1120,
+      3.25rem
+    ) /
     1.2 var(--cds-serif);
 }
 .cds-headline-2 {
-  font: 500 clamp(1.875rem, 1.875rem + 14 * (100vw - 20rem) / 1120, 2.75rem) /
+  font: 500
+    clamp(
+      1.875rem,
+      1.875rem + 14 * (var(--cds-vw, 100vw) - 20rem) / 1120,
+      2.75rem
+    ) /
     1.2 var(--cds-serif);
 }
 .cds-headline-3 {
-  font: 500 clamp(1.75rem, 1.75rem + 8 * (100vw - 20rem) / 1120, 2.25rem) / 1.3
-    var(--cds-serif);
+  font: 500
+    clamp(
+      1.75rem,
+      1.75rem + 8 * (var(--cds-vw, 100vw) - 20rem) / 1120,
+      2.25rem
+    ) /
+    1.3 var(--cds-serif);
 }
 .cds-headline-4 {
-  font: 500 clamp(1.4375rem, 1.4375rem + 9 * (100vw - 20rem) / 1120, 2rem) / 1.1
-    var(--cds-serif);
+  font: 500
+    clamp(
+      1.4375rem,
+      1.4375rem + 9 * (var(--cds-vw, 100vw) - 20rem) / 1120,
+      2rem
+    ) /
+    1.1 var(--cds-serif);
 }
 .cds-headline-5 {
-  font: 500 clamp(1.25rem, 1.25rem + 5 * (100vw - 20rem) / 1120, 1.5625rem) /
+  font: 500
+    clamp(
+      1.25rem,
+      1.25rem + 5 * (var(--cds-vw, 100vw) - 20rem) / 1120,
+      1.5625rem
+    ) /
     1.2 var(--cds-serif);
 }
 .cds-headline-6 {
-  font: 500 clamp(1rem, 1rem + 3 * (100vw - 20rem) / 1120, 1.1875rem) / 1.2
-    var(--cds-serif);
+  font: 500
+    clamp(1rem, 1rem + 3 * (var(--cds-vw, 100vw) - 20rem) / 1120, 1.1875rem) /
+    1.2 var(--cds-serif);
 }
 .cds-body-large-1 {
-  font: 400 clamp(1.375rem, 1.375rem + 2 * (100vw - 20rem) / 1120, 1.5rem) / 1.6
-    var(--cds-serif);
+  font: 400
+    clamp(
+      1.375rem,
+      1.375rem + 2 * (var(--cds-vw, 100vw) - 20rem) / 1120,
+      1.5rem
+    ) /
+    1.6 var(--cds-serif);
 }
 .cds-body-large-2 {
-  font: 400 clamp(1.25rem, 1.25rem + 3 * (100vw - 20rem) / 1120, 1.4375rem) /
+  font: 400
+    clamp(
+      1.25rem,
+      1.25rem + 3 * (var(--cds-vw, 100vw) - 20rem) / 1120,
+      1.4375rem
+    ) /
     1.5 var(--cds-serif);
 }
 .cds-body-1 {
-  font: 400 clamp(1.1875rem, 1.1875rem + 1 * (100vw - 20rem) / 1120, 1.25rem) /
+  font: 400
+    clamp(
+      1.1875rem,
+      1.1875rem + 1 * (var(--cds-vw, 100vw) - 20rem) / 1120,
+      1.25rem
+    ) /
     1.6 var(--cds-sans);
 }
 .cds-body-2 {
@@ -245,11 +301,10 @@ html.dark:has([data-claude-page="auto"]) {
 }
 
 /*
- * Components. Sizes and colours are the ones claude.com's own stylesheet
- * gives each control; each theme sets the handful of colours they share.
+ * Components. Sizes and colors are the ones claude.com's own stylesheet
+ * gives each control; each theme sets the handful of colors they share.
  */
-:root,
-:where(.cds[data-theme]) {
+:where(:root, .cds[data-theme]) {
   --cds-control-bg: var(--cds-gray-200); /* secondary button */
   --cds-control-fg: var(--cds-gray-650);
   --cds-tertiary-fg: var(--cds-gray-600);
@@ -264,28 +319,28 @@ html.dark:has([data-claude-page="auto"]) {
   --cds-tab-track: var(--cds-switch-bg);
   --cds-tab-selected-bg: #ffffff;
   --cds-tab-selected-fg: var(--cds-gray-950);
+  /* Illustrations are drawn dark on light; dark themes turn them over. */
+  --cds-art-filter: none;
   /* Text is a touch lighter on dark fills (480) than on light ones (500). */
   --cds-weight: 500;
   --cds-inverse-weight: 480;
 }
-.cds[data-theme="white"],
-html:has([data-claude-page="white"]),
-html:not(.dark):has([data-claude-page="auto"]) {
+/* White: also the site in light mode. */
+:where(html:not(.dark)),
+.cds[data-theme="white"] {
   --cds-control-bg: var(--cds-gray-150);
   --cds-control-fg: var(--cds-gray-700);
   --cds-tertiary-fg: var(--cds-gray-650);
   --cds-switch-bg: var(--cds-gray-100);
 }
-.cds[data-theme="neutral-1"],
-html:has([data-claude-page="neutral-1"]) {
+.cds[data-theme="neutral-1"] {
   --cds-control-bg: var(--cds-gray-250);
   --cds-control-fg: var(--cds-gray-750);
   --cds-tertiary-fg: var(--cds-gray-700);
   --cds-switch-bg: var(--cds-gray-250);
 }
-.cds[data-theme^="dark"],
-html:has([data-claude-page^="dark"]),
-html.dark:has([data-claude-page="auto"]) {
+:where(html.dark),
+.cds[data-theme^="dark"] {
   --cds-control-fg: var(--cds-gray-050);
   --cds-tertiary-fg: var(--cds-gray-050);
   --cds-inverse-bg: var(--cds-gray-050);
@@ -295,19 +350,20 @@ html.dark:has([data-claude-page="auto"]) {
   --cds-check-fg: var(--cds-gray-950);
   --cds-tab-selected-bg: var(--cds-bg);
   --cds-tab-selected-fg: var(--cds-fg);
+  --cds-art-filter: invert(1) hue-rotate(180deg);
   --cds-weight: 480;
   --cds-inverse-weight: 500;
 }
-.cds[data-theme="dark-2"],
-html:has([data-claude-page="dark-2"]) {
+.cds[data-theme="dark-2"] {
   --cds-control-bg: var(--cds-gray-700);
   --cds-field-bg: #000000;
   --cds-switch-bg: var(--cds-gray-750);
   --cds-switch-on: var(--cds-gray-600);
+  --cds-tab-track: var(--cds-switch-bg);
 }
-.cds[data-theme="dark-3"],
-html:has([data-claude-page="dark-3"]),
-html.dark:has([data-claude-page="auto"]) {
+/* Dark 3: also the site in dark mode. */
+:where(html.dark),
+.cds[data-theme="dark-3"] {
   --cds-control-bg: var(--cds-gray-750);
   --cds-field-bg: var(--cds-gray-800);
   --cds-switch-bg: var(--cds-gray-800);
@@ -405,7 +461,7 @@ html.dark:has([data-claude-page="auto"]) {
   background: var(--btn-fill);
   color: var(--cds-tertiary-fg);
 }
-/* Primary and Clay grow a 2px ring of their own colour on hover. */
+/* Primary and Clay grow a 2px ring of their own color on hover. */
 .cds-btn[data-variant="primary"],
 .cds-btn[data-variant="clay"] {
   box-shadow: 0 0 0 0 var(--btn-ring);
@@ -433,7 +489,7 @@ html.dark:has([data-claude-page="auto"]) {
     0 0 0 1px var(--btn-fill),
     0 0 0 2px var(--cds-border-2);
 }
-/* Focus: a 2px outline in the focus colour, 4px away from the control. */
+/* Focus: a 2px outline in the focus color, 4px away from the control. */
 .cds-btn:focus-visible,
 .cds-btn[data-state="focus"] {
   outline: 2px solid var(--cds-focus);
@@ -560,45 +616,74 @@ html.dark:has([data-claude-page="auto"]) {
     0 0 0 6px var(--cds-focus);
 }
 
-/* Switch: a 36 by 22 track with a 16px white knob. On is the inverse colour
-   on light themes and a mid grey on dark ones, or blue. */
+/* Switch: claude.com's `Switch`, a 56 by 34 track with a hairline border and
+   a white knob half the width inside it, bordered and softly shadowed. On, the
+   track fills (the inverse color on light themes and a mid grey on dark ones,
+   or blue), both borders clear and the knob springs across. (The site also
+   ships a smaller, borderless `ToggleSwitch` in its cookie banner; this is
+   the design system's own.) */
+.cds-switch {
+  gap: 16px;
+}
 .cds-switch input {
   position: relative;
+  box-sizing: border-box;
   flex: none;
-  width: 36px;
-  height: 22px;
+  width: 56px;
+  height: 34px;
   margin: 0;
-  border: 0;
+  border: 1px solid var(--cds-border-2);
   border-radius: 9999px;
   background: var(--cds-switch-bg);
   appearance: none;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition:
+    background-color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out,
+    box-shadow 0.15s ease;
 }
 .cds-switch input::before {
   position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 16px;
-  height: 16px;
+  top: 50%;
+  left: 4px;
+  box-sizing: border-box;
+  width: 23px;
+  height: 23px;
+  border: 1px solid var(--cds-border);
   border-radius: 50%;
   background: #ffffff;
+  box-shadow: 0 4px 24px rgb(0 0 0 / 0.05);
   content: "";
-  transition: translate 0.2s;
+  translate: 0 -50%;
+  transition:
+    translate 0.4s cubic-bezier(0.35, 1.5, 0.6, 1),
+    border-color 0.2s ease-in-out;
 }
 .cds-switch input:checked {
+  border-color: transparent;
   background: var(--cds-switch-on);
 }
 .cds-switch input:checked::before {
-  translate: 14px 0;
+  border-color: transparent;
+  translate: 23px -50%;
 }
 .cds-switch input[data-tone="blue"]:checked {
   background: var(--cds-switch-blue);
 }
+@media (prefers-reduced-motion: reduce) {
+  .cds-switch input,
+  .cds-switch input::before {
+    transition: none;
+  }
+}
+/* Focus: the same 2px ring, 4px away, as the checkbox and radio. (claude.com
+   draws a closer one on its switch; the docs keep the three alike.) */
 .cds-switch input:focus-visible,
 .cds-switch input[data-state="focus"] {
-  outline: 1px solid var(--cds-focus);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow:
+    0 0 0 4px var(--cds-bg),
+    0 0 0 6px var(--cds-focus);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -609,14 +694,12 @@ html.dark:has([data-claude-page="auto"]) {
 }
 
 /* Surfaces that sit on top of the page: cards, menus, tooltips. */
-:root,
-:where(.cds[data-theme]) {
+:where(:root, .cds[data-theme]) {
   --cds-card-bg: #ffffff;
   --cds-card-border: var(--cds-gray-150);
 }
-.cds[data-theme^="dark"],
-html:has([data-claude-page^="dark"]),
-html.dark:has([data-claude-page="auto"]) {
+:where(html.dark),
+.cds[data-theme^="dark"] {
   --cds-card-bg: var(--cds-bg-2);
   --cds-card-border: var(--cds-border-3);
 }
@@ -661,17 +744,18 @@ html.dark:has([data-claude-page="auto"]) {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 24px;
+  gap: 16px;
   width: 300px;
   max-width: 100%;
   min-height: 200px;
-  padding: 32px 48px 24px 24px;
+  padding: 32px;
   border: 1px solid var(--cds-card-border);
-  border-radius: 32px;
+  border-radius: 24px;
   background: var(--cds-card-bg);
   color: var(--cds-fg);
-  font: 400 17px/28px var(--cds-serif);
+  font: 400 1.0625rem/1.6 var(--cds-serif);
   text-decoration: none;
+  text-wrap: pretty;
   transition: box-shadow 0.2s ease;
 }
 .cds-card-link:hover,
@@ -710,14 +794,20 @@ html.dark:has([data-claude-page="auto"]) {
   border: 0;
   border-radius: 8px;
   background: transparent;
-  color: var(--cds-fg-2);
+  color: var(--cds-fg);
   font: 400 15px/24px var(--cds-sans);
   text-align: left;
   text-decoration: none;
   cursor: pointer;
   transition:
     background-color 0.15s ease,
-    color 0.15s ease;
+    color 0.2s ease;
+}
+/* While one row is under the pointer, the others step back, as on
+   claude.com: the menu reads as one choice at a time. */
+.cds-menu:has(.cds-menu-item:is(:hover, [data-state="hover"]))
+  .cds-menu-item:not(:hover, [data-state="hover"]) {
+  color: var(--cds-fg-3);
 }
 .cds-menu-item svg {
   flex: none;
@@ -729,6 +819,7 @@ html.dark:has([data-claude-page="auto"]) {
   flex: 1;
 }
 .cds-menu-item:hover,
+.cds-menu-item[data-state="hover"],
 .cds-menu-item:focus-visible {
   outline: none;
   background: var(--cds-bg-3);
@@ -797,16 +888,17 @@ html.dark:has([data-claude-page="auto"]) {
   font: 400 15px/24px var(--cds-serif);
 }
 
-/* Tabs: a segmented control. The current tab sits on a white pill (the page
-   colour on dark themes); a hovered one only darkens its label. */
+/* Tabs: a segmented control, as claude.com's page sections draw it. The
+   current tab sits on a white pill (the page color on dark themes). Hovering
+   another tab gives it the page color and takes the pill off the current one
+   for as long as the pointer stays. Small and large keep tighter corners. */
 .cds-tabs {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 2px;
   max-width: 100%;
   padding: 4px;
-  border-radius: 12px;
+  border-radius: 16px;
   background: var(--cds-tab-track);
 }
 .cds-tab {
@@ -814,28 +906,30 @@ html.dark:has([data-claude-page="auto"]) {
   flex: none;
   align-items: center;
   gap: 8px;
-  height: 36px;
-  padding: 0 16px;
+  height: 40px;
+  padding: 8px 16px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 12px;
   background: transparent;
   color: var(--cds-fg-3);
-  font: 500 15px/24px var(--cds-sans);
+  font: 400 0.75rem/1.6 var(--cds-sans);
+  letter-spacing: 0.01em;
   white-space: nowrap;
   cursor: pointer;
   transition:
-    background-color 0.15s ease,
-    color 0.15s ease;
+    background-color 0.2s ease-in-out,
+    color 0.2s ease-in-out;
 }
 .cds-tab svg {
   flex: none;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
 }
 .cds-tab[data-icon] {
   padding-left: 12px;
 }
 .cds-tabs[data-size="small"] {
+  gap: 2px;
   padding: 2px;
   border-radius: 8px;
 }
@@ -844,7 +938,7 @@ html.dark:has([data-claude-page="auto"]) {
   height: 28px;
   padding: 0 12px;
   border-radius: 6px;
-  font-size: 12px;
+  font-weight: 500;
   line-height: 18px;
 }
 .cds-tabs[data-size="small"] .cds-tab svg {
@@ -854,16 +948,37 @@ html.dark:has([data-claude-page="auto"]) {
 .cds-tabs[data-size="small"] .cds-tab[data-icon] {
   padding-left: 8px;
 }
-.cds-tabs[data-size="large"] .cds-tab {
-  height: 40px;
+.cds-tabs[data-size="large"] {
+  gap: 2px;
+  border-radius: 12px;
 }
-.cds-tab:hover {
+.cds-tabs[data-size="large"] .cds-tab {
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  letter-spacing: 0;
+}
+.cds-tabs[data-size="large"] .cds-tab svg {
+  width: 18px;
+  height: 18px;
+}
+.cds-tab:hover,
+.cds-tab[data-state="hover"] {
   color: var(--cds-fg);
 }
 .cds-tab[aria-selected="true"],
 .cds-tab[aria-expanded="true"] {
   background: var(--cds-tab-selected-bg);
   color: var(--cds-tab-selected-fg);
+}
+.cds-tabs:not([data-size])
+  .cds-tab:not([aria-selected="true"]):is(:hover, [data-state="hover"]) {
+  background: var(--cds-bg);
+}
+.cds-tabs:not([data-size]):has(
+    .cds-tab:not([aria-selected="true"]):is(:hover, [data-state="hover"])
+  )
+  .cds-tab[aria-selected="true"]:not([aria-expanded="true"]) {
+  background: transparent;
 }
 .cds-tab:focus-visible,
 .cds-select:focus-visible,
@@ -1301,6 +1416,7 @@ html.dark:has([data-claude-page="auto"]) {
   display: block;
   width: 100%;
   height: auto;
+  filter: var(--cds-art-filter);
 }
 .cds-hero-lead {
   max-width: 582px;
@@ -1490,28 +1606,65 @@ html.dark:has([data-claude-page="auto"]) {
   font: 400 15px/24px var(--cds-sans);
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .cds-nav-link svg {
   width: 16px;
   height: 16px;
+  transition: rotate 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
+/* The chevron turns up while its menu shows. */
+.cds-nav-link:is(:hover, [data-state="hover"], [aria-expanded="true"]) svg {
+  rotate: 180deg;
+}
+/* As on claude.com: a link under the pointer, or with its menu open, only
+   comes forward in color, slowly. It gets no background. */
 .cds-nav-link:hover,
+.cds-nav-link[data-state="hover"],
 .cds-nav-link[aria-expanded="true"] {
-  background: var(--cds-bg-3);
+  color: var(--cds-fg);
 }
 .cds-nav-link:focus-visible,
 .cds-nav-group:focus-visible {
   outline: 2px solid var(--cds-focus);
   outline-offset: 2px;
 }
+/* A nav menu is as wide as its longest row, and no narrower than 280px. */
 .cds-nav-item .cds-menu {
   position: absolute;
   z-index: 2;
-  top: calc(100% + 12px);
+  top: calc(100% + 8px);
   left: 0;
-  width: 280px;
+  width: max-content;
+  min-width: 280px;
   max-width: none;
+  animation: cds-nav-menu 0.2s ease;
+}
+/* The gap between a link and its menu still counts as the menu, so the
+   pointer can cross it without the menu closing. */
+.cds-nav-item .cds-menu::before {
+  position: absolute;
+  top: -9px;
+  right: 0;
+  left: 0;
+  height: 9px;
+  content: "";
+}
+/* It fades in, settling down into place. */
+@keyframes cds-nav-menu {
+  from {
+    opacity: 0;
+    translate: 0 -4px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cds-nav-item .cds-menu {
+    animation: none;
+  }
+}
+.cds-nav-item .cds-menu-item {
+  border-radius: 4px;
+  white-space: nowrap;
 }
 .cds-nav-item[data-align="end"] .cds-menu {
   right: 0;
@@ -1522,8 +1675,50 @@ html.dark:has([data-claude-page="auto"]) {
   align-items: center;
   gap: 12px;
 }
+/* The menu button of the folded header, as claude.com draws it: three
+   hairlines, the last one short, that cross into an X while the menu is
+   open. */
 .cds-nav-toggle {
+  position: relative;
   display: none;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-right: -12px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--cds-fg-2);
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.cds-nav-toggle:is(:hover, [data-state="hover"]) {
+  color: var(--cds-fg);
+}
+.cds-nav-toggle i {
+  position: absolute;
+  width: 16px;
+  height: 1px;
+  background: currentColor;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.cds-nav-toggle i:nth-child(1) {
+  transform: translateY(-6px);
+}
+.cds-nav-toggle i:nth-child(3) {
+  width: 8px;
+  transform: translateY(6px) translateX(-4px);
+}
+.cds-nav-toggle[aria-expanded="true"] i:nth-child(1) {
+  transform: translateY(0) rotate(45deg);
+}
+.cds-nav-toggle[aria-expanded="true"] i:nth-child(2) {
+  opacity: 0;
+}
+.cds-nav-toggle[aria-expanded="true"] i:nth-child(3) {
+  width: 16px;
+  transform: translateY(0) translateX(0) rotate(-45deg);
 }
 .cds-nav-sub {
   display: flex;
@@ -1546,10 +1741,62 @@ html.dark:has([data-claude-page="auto"]) {
   font-size: 12px;
   line-height: 18px;
 }
-/* The folded menu: each group is a row that opens its links. */
+/* The folded menu, as on claude.com: a sheet that is wiped down over the
+   page from under the header (and wiped back up, faster, to close), its
+   groups rising into place one after another once it has started. It lies
+   over what is below the header, on the figure's background. Each group is
+   a row that opens its links. */
+.cds-nav {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+/* What is under the bar. It takes the rest of the figure's height, so the
+   sheet can fill it: the buttons at the sheet's foot sit at the bottom of a
+   phone-tall figure, and a long open group scrolls inside the sheet. */
+.cds-nav-body {
+  position: relative;
+  flex: 1;
+}
 .cds-nav-panel {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
   display: none;
-  padding: 0 clamp(16px, 4cqw, 48px) 16px;
+  flex-direction: column;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 0 clamp(16px, 4cqw, 48px) 24px;
+  background: var(--cds-bg);
+  clip-path: inset(0 0 100%);
+  visibility: hidden;
+  transition:
+    clip-path 0.4s cubic-bezier(0.645, 0.045, 0.355, 1),
+    visibility 0s linear 0.4s;
+}
+.cds-nav-panel[data-open] {
+  clip-path: inset(0);
+  visibility: visible;
+  transition: clip-path 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+.cds-nav-panel[data-open] > * {
+  animation: cds-nav-rise 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) both;
+  animation-delay: calc(0.32s + var(--i, 0) * 80ms);
+}
+@keyframes cds-nav-rise {
+  from {
+    opacity: 0;
+    translate: 0 20px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cds-nav-panel,
+  .cds-nav-panel[data-open] {
+    transition: none;
+  }
+  .cds-nav-panel[data-open] > * {
+    animation: none;
+  }
 }
 .cds-nav-group {
   display: flex;
@@ -1565,27 +1812,83 @@ html.dark:has([data-claude-page="auto"]) {
   text-align: left;
   cursor: pointer;
 }
-.cds-nav-group svg {
-  width: 20px;
-  height: 20px;
+/* A group's mark: a plus whose upright lies down into a minus when the
+   group is open. */
+.cds-nav-group b {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+}
+.cds-nav-group b::before,
+.cds-nav-group b::after {
+  position: absolute;
+  width: 16px;
+  height: 1px;
+  background: var(--cds-fg-3);
+  content: "";
+  transition: rotate 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.cds-nav-group b::after {
+  rotate: -90deg;
+}
+.cds-nav-group[aria-expanded="true"] b::after {
+  rotate: 0deg;
+}
+/* A group's links ease in under its row. */
+.cds-nav-group + div {
+  animation: cds-nav-rise 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) both;
+}
+/* Inside the sheet a group's links are plain rows of text, as on
+   claude.com: they sit on the sheet's left edge with no panel behind them,
+   the one under the pointer stays in the text color while the rest dim, a
+   small label heads each set, and sets are parted by space, not a rule. */
+.cds-nav-panel .cds-menu-item {
+  height: auto;
+  padding: 8px 0;
+  border-radius: 0;
+  background: none;
+}
+.cds-nav-panel:has(.cds-menu-item:is(:hover, [data-state="hover"]))
+  .cds-menu-item:not(:hover, [data-state="hover"]) {
   color: var(--cds-fg-3);
 }
-.cds-nav-panel .cds-menu-item {
-  padding: 0;
-}
 .cds-nav-panel .cds-menu-header {
+  min-height: 0;
+  margin-bottom: 8px;
   padding: 0;
 }
+.cds-nav-panel .cds-menu-rule {
+  height: 0;
+  margin: 32px 0 0;
+  background: none;
+}
+/* A group's links, under its row: 8px above (with the row's own 16px) and
+   32px below. */
+.cds-nav-group + div {
+  padding: 8px 0 32px;
+}
+/* The sheet's two buttons stay at its foot while a long group scrolls
+   behind them. */
 .cds-nav-panel-actions {
+  position: sticky;
+  bottom: -24px;
   display: grid;
+  flex: none;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  padding-top: 16px;
+  margin-top: auto;
+  margin-bottom: -24px;
+  padding: 16px 0 24px;
   border-top: 1px solid var(--cds-border-3);
+  background: var(--cds-bg);
 }
 /* Between the two, Contact sales makes room for the menus. */
 @container (max-width: 1000px) {
-  .cds-nav-actions .cds-btn[data-variant="tertiary"]:not(.cds-nav-toggle) {
+  .cds-nav-actions .cds-btn[data-variant="tertiary"] {
     display: none;
   }
 }
@@ -1597,46 +1900,848 @@ html.dark:has([data-claude-page="auto"]) {
   .cds-nav-actions .cds-nav-toggle {
     display: inline-flex;
   }
-  .cds-nav-panel[data-open] {
-    display: block;
+  .cds-nav-panel {
+    display: flex;
   }
 }
 
-/*
- * A page that wears a theme: the site's own colour tokens (styles.css) point at
- * the theme's neutrals, so the page, its text, lines, pills and menus all
- * follow, and Clay stands in for the site's blue.
- */
-html:has([data-claude-page]) {
-  --bg: var(--cds-bg);
-  --bg-elevated: var(--cds-card-bg);
-  --bg-grouped: var(--cds-bg);
-  --bg-grouped-secondary: var(--cds-bg-3);
-  --bg-grouped-tertiary: var(--cds-bg-2);
-
-  --label: var(--cds-fg);
-  --label-secondary: var(--cds-fg-3);
-  --label-tertiary: color-mix(in srgb, var(--cds-fg) 30%, transparent);
-  --label-quaternary: color-mix(in srgb, var(--cds-fg) 18%, transparent);
-
-  --fill: color-mix(in srgb, var(--cds-fg) 20%, transparent);
-  --fill-secondary: color-mix(in srgb, var(--cds-fg) 16%, transparent);
-  --fill-tertiary: color-mix(in srgb, var(--cds-fg) 12%, transparent);
-  --fill-quaternary: color-mix(in srgb, var(--cds-fg) 8%, transparent);
-
-  --separator: color-mix(in srgb, var(--cds-fg) 12%, transparent);
-  --separator-opaque: var(--cds-border-2);
-
-  --gray: var(--cds-fg-3);
-  --gray-2: var(--cds-border);
-  --gray-3: var(--cds-border-2);
-  --gray-4: var(--cds-border-3);
-  --gray-5: var(--cds-bg-3);
-  --gray-6: var(--cds-bg-2);
-
-  --blue: var(--cds-clay-interactive);
+/* Section header: an optional pictogram, a headline in one of five sizes
+   (`data-size`, P1 to P5), an optional subtitle and up to two buttons,
+   centered or set left. Narrow, the pictogram shrinks and the buttons stack. */
+.cds-header {
+  container-type: inline-size;
 }
-html:has([data-claude-page^="dark"]),
-html.dark:has([data-claude-page="auto"]) {
-  --blue: var(--cds-clay-dark);
+.cds-header-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--cds-header-pad, 64px) clamp(24px, 6cqw, 64px);
+  text-align: center;
+}
+.cds-header[data-align="left"] .cds-header-body {
+  align-items: flex-start;
+  text-align: left;
+}
+.cds-header-body > img {
+  width: 96px;
+  height: 96px;
+  margin-bottom: 24px;
+  filter: var(--cds-art-filter);
+}
+.cds-header[data-size="p5"] .cds-header-body > img {
+  width: 64px;
+  height: 64px;
+}
+.cds-header-body > h3 {
+  margin: 0;
+}
+.cds-header-body > p {
+  max-width: 458px;
+  margin: 16px 0 0;
+  color: var(--cds-fg-3);
+}
+.cds-header[data-size="p1"] .cds-header-body > p {
+  margin-top: 24px;
+  /* Body Large 2 in its sans cut. */
+  font-family: var(--cds-sans);
+}
+.cds-header:is([data-size="p1"], [data-size="p2"]) .cds-header-body > p {
+  max-width: 704px;
+}
+.cds-header[data-size="p5"] .cds-header-body > p {
+  margin-top: 12px;
+}
+.cds-header-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 32px;
+}
+@container (max-width: 480px) {
+  .cds-header-body > img {
+    width: 64px;
+    height: 64px;
+  }
+  .cds-header-actions {
+    flex-direction: column;
+    align-self: stretch;
+  }
+}
+
+/* Footer: always dark. The logo and a prompt field, the site's links in
+   headed groups, and Anthropic's mark, the copyright and social links. Wide,
+   the links stand in four columns beside the logo; narrow, everything is one
+   column with the links two abreast. The minimal footer keeps one group. */
+.cds-footer {
+  container-type: inline-size;
+  background: var(--cds-bg);
+  color: var(--cds-fg);
+}
+.cds-footer-grid {
+  display: grid;
+  grid-template-areas: "top" "links" "meta";
+  row-gap: 32px;
+  padding: 64px 24px;
+}
+.cds-footer[data-variant="minimal"] .cds-footer-grid {
+  row-gap: 48px;
+}
+.cds-footer-top {
+  grid-area: top;
+}
+.cds-footer-top > svg {
+  display: block;
+  width: 120px;
+  height: auto;
+}
+.cds-footer-top > svg + * {
+  max-width: 280px;
+  margin-top: 32px;
+}
+.cds-footer-links {
+  display: grid;
+  grid-area: links;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+}
+.cds-footer-links > div {
+  display: contents;
+}
+.cds-footer-block h4 {
+  margin: 0 0 8px;
+  color: var(--cds-fg-3);
+  font: 400 0.75rem/1.6 var(--cds-sans);
+  letter-spacing: 0.01em;
+}
+.cds-footer-block ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cds-footer-block a {
+  display: block;
+  padding: 4px 0;
+  color: var(--cds-fg);
+  font: 400 0.75rem/1.6 var(--cds-sans);
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+/* The same stepping back as in a menu: the links not under the pointer dim. */
+.cds-footer-links:has(a:hover) a:not(:hover) {
+  color: var(--cds-fg-3);
+}
+.cds-footer-meta {
+  display: flex;
+  grid-area: meta;
+  flex-direction: column;
+  color: var(--cds-fg-3);
+  font: 400 11px/1.5 var(--cds-sans);
+}
+/* Anthropic's wordmark, drawn in the text color. */
+.cds-footer-by {
+  width: 133px;
+  height: 12px;
+  margin-bottom: 8px;
+  background: currentColor;
+  mask: url("/work/claude/illustrations/by-anthropic.svg") center / contain
+    no-repeat;
+}
+.cds-footer-social {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+}
+.cds-footer-social a {
+  display: flex;
+  color: var(--cds-fg-3);
+  transition: color 0.2s;
+}
+.cds-footer-social a:hover {
+  color: var(--cds-fg);
+}
+.cds-footer-social svg {
+  width: 16px;
+  height: 16px;
+}
+@container (min-width: 760px) {
+  .cds-footer-grid {
+    grid-template:
+      "top links" auto
+      "meta links" 1fr / minmax(0, 1fr) minmax(0, 2.5fr);
+    gap: 48px 32px;
+    padding: 80px 40px;
+  }
+  .cds-footer[data-variant="minimal"] .cds-footer-grid {
+    grid-template-columns: minmax(0, 1fr) 216px;
+  }
+  .cds-footer-top > svg {
+    width: 144px;
+  }
+  .cds-footer-links {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 24px;
+  }
+  .cds-footer[data-variant="minimal"] .cds-footer-links {
+    grid-template-columns: 1fr;
+  }
+  .cds-footer-links > div {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .cds-footer-meta {
+    align-self: end;
+  }
+  .cds-footer-social {
+    gap: 24px;
+  }
+}
+
+/* Artifact: tabs over a stage that shows a result beside what made it. On
+   the left, on the system's blue, sit a prompt and its attachments in dark
+   cards; on the right the artifact, a white sheet that runs off the bottom.
+   Narrow, the stage shows one side at a time and a button switches. The
+   cards, the sheet and the stage keep their own colors on every theme. */
+.cds-artifact {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.cds-artifact .cds-tabs {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.cds-artifact-stage {
+  position: relative;
+  display: grid;
+  /* One row, as tall as the stage: the sheet runs past it and is cut off,
+     and the cards are centered in the stage, not in the sheet's height. */
+  grid-template: minmax(0, 1fr) / minmax(0, 493fr) minmax(0, 701fr);
+  align-self: stretch;
+  height: 512px;
+  overflow: hidden;
+  border-radius: 24px;
+  background: var(--cds-sky)
+    url("/work/claude/illustrations/artifact-lines.webp") center / cover;
+  box-shadow: 0 4px 24px rgb(0 0 0 / 0.05);
+}
+.cds-artifact-toggle {
+  display: none;
+  align-items: center;
+  justify-self: center;
+  gap: 4px;
+  height: 28px;
+  margin-top: 16px;
+  padding: 0 12px 0 8px;
+  border: 1px solid #ffffff;
+  border-radius: 6px;
+  background: transparent;
+  color: #ffffff;
+  font: 400 12px/18px var(--cds-sans);
+  cursor: pointer;
+}
+.cds-artifact-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+.cds-artifact-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  min-width: 0;
+  padding: clamp(16px, 5cqw, 64px);
+}
+.cds-artifact-card {
+  padding: 0 16px 24px;
+  border: 1px solid #30302e;
+  border-radius: 16px;
+  background: #141413;
+  box-shadow: var(--cds-shadow-md);
+  color: #87867f;
+  font: 400 12px/18px var(--cds-sans);
+}
+.cds-artifact-card > header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 52px;
+  color: #faf9f5;
+}
+.cds-artifact-card > header svg {
+  width: 20px;
+  height: 20px;
+}
+.cds-artifact-card > p {
+  margin: 0 0 24px;
+}
+.cds-artifact-files {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: -8px;
+}
+.cds-artifact-files > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+  aspect-ratio: 1;
+  padding: 16px 12px 12px;
+  border: 1px solid #30302e;
+  border-radius: 8px;
+}
+.cds-artifact-files b {
+  display: block;
+  color: #faf9f5;
+  font-weight: 400;
+}
+.cds-artifact-files small,
+.cds-artifact-files i {
+  font: 400 10px/16px var(--cds-sans);
+}
+.cds-artifact-files i {
+  align-self: flex-start;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #30302e;
+}
+.cds-artifact-sheet {
+  min-width: 0;
+  padding: 48px 48px 0 0;
+}
+.cds-artifact-sheet > div {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  height: 100%;
+  padding: 48px;
+  border-radius: 16px 16px 0 0;
+  background: #ffffff;
+  box-shadow: 0 24px 96px rgb(0 0 0 / 0.14);
+  color: #141413;
+  font: 400 15px/24px var(--cds-sans);
+}
+.cds-artifact-sheet h4 {
+  margin: 0;
+  font: 500 32px/36px var(--cds-serif);
+  text-wrap: balance;
+}
+.cds-artifact-sheet h5 {
+  margin: 0;
+  padding: 8px 0;
+  border-block: 1px solid #f0eee6;
+  font: 400 17px/28px var(--cds-serif);
+}
+.cds-artifact-sheet h6 {
+  margin: -8px 0 -16px;
+  font: 700 15px/24px var(--cds-sans);
+}
+.cds-artifact-sheet ul {
+  margin: 0;
+  padding-left: 1.25em;
+  list-style: disc;
+}
+.cds-artifact-sheet p {
+  margin: 0;
+}
+/* The artifact is drawn for five device sizes, and takes each as its box
+   narrows (drag the figure's edges): desktop above, then laptop, tablet,
+   phablet and mobile. The label under the stage names the one showing. */
+.cds-artifact-size {
+  align-self: center;
+  color: var(--cds-fg-3);
+  font: 400 0.75rem/1.6 var(--cds-sans);
+  letter-spacing: 0.01em;
+}
+.cds-artifact-size::after {
+  content: "Desktop";
+}
+/* Laptop: the same two columns, narrower on the left, in a taller stage. */
+@container (max-width: 740px) {
+  .cds-artifact-size::after {
+    content: "Laptop";
+  }
+  .cds-artifact-stage {
+    grid-template-columns: minmax(0, 408fr) minmax(0, 546fr);
+    height: 537px;
+  }
+  .cds-artifact-side {
+    padding: 40px;
+  }
+}
+/* Tablet: still two columns, in a shorter stage with less room around. */
+@container (max-width: 640px) {
+  .cds-artifact-size::after {
+    content: "Tablet";
+  }
+  .cds-artifact-stage {
+    grid-template-columns: minmax(0, 310fr) minmax(0, 338fr);
+    height: 432px;
+  }
+  .cds-artifact-side {
+    padding: 24px;
+  }
+  .cds-artifact-sheet {
+    padding: 32px 32px 0 0;
+  }
+  .cds-artifact-sheet > div {
+    gap: 24px;
+    padding: 32px;
+  }
+  .cds-artifact-sheet h4 {
+    font-size: 23px;
+    line-height: 30px;
+  }
+}
+/* Phablet: a square stage showing one side at a time, with a button to
+   switch between the result and the prompt. */
+@container (max-width: 540px) {
+  .cds-artifact-size::after {
+    content: "Phablet";
+  }
+  .cds-artifact-stage {
+    grid-template: auto minmax(0, 1fr) / minmax(0, 1fr);
+    /* Square: as tall as the artifact is wide. */
+    height: 100cqw;
+  }
+  .cds-artifact[data-view="prompt"] .cds-artifact-stage {
+    background: #141413;
+  }
+  .cds-artifact-toggle {
+    display: inline-flex;
+  }
+  .cds-artifact[data-view="result"] .cds-artifact-side,
+  .cds-artifact[data-view="prompt"] .cds-artifact-sheet {
+    display: none;
+  }
+  .cds-artifact-side {
+    justify-content: flex-start;
+    padding: 16px 64px 48px;
+  }
+  .cds-artifact-sheet {
+    padding: 16px 64px 0;
+  }
+  .cds-artifact-sheet > div {
+    gap: 24px;
+    padding: 48px;
+  }
+  .cds-artifact-sheet h4 {
+    font-size: 32px;
+    line-height: 36px;
+  }
+}
+/* Mobile: the same, closer to the edges. */
+@container (max-width: 400px) {
+  .cds-artifact-size::after {
+    content: "Mobile";
+  }
+  .cds-artifact-side {
+    padding: 16px;
+  }
+  .cds-artifact-sheet {
+    padding: 16px 32px 0;
+  }
+  .cds-artifact-sheet > div {
+    padding: 32px 24px;
+  }
+  .cds-artifact-sheet h4 {
+    font-size: 25px;
+    line-height: 30px;
+  }
+}
+
+/* A figure that can be made narrower, to show a responsive design at each
+   of its sizes (Resizable). The box stays centered; each side has a grip to
+   drag, and both sides move together. */
+.cds-resize {
+  position: relative;
+}
+.cds-resize-box {
+  position: relative;
+  max-width: 100%;
+  margin-inline: auto;
+}
+.cds-resize-grip {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: ew-resize;
+  touch-action: none;
+}
+.cds-resize-grip[data-side="left"] {
+  left: -24px;
+}
+.cds-resize-grip[data-side="right"] {
+  right: -24px;
+}
+/* The grip: a short rounded bar, halfway up the side. */
+.cds-resize-grip::after {
+  width: 6px;
+  height: 48px;
+  border-radius: 3px;
+  background: var(--cds-border);
+  content: "";
+  transition:
+    background-color 0.15s ease,
+    height 0.15s ease;
+}
+.cds-resize-grip:hover::after,
+.cds-resize-grip[data-state="hover"]::after,
+.cds-resize-grip[data-dragging]::after {
+  height: 64px;
+  background: var(--cds-fg);
+}
+.cds-resize-grip:focus-visible {
+  outline: none;
+}
+.cds-resize-grip:focus-visible::after {
+  box-shadow:
+    0 0 0 2px var(--cds-bg),
+    0 0 0 4px var(--cds-focus);
+}
+/* With no room to resize in (a phone), the grips go. */
+.cds-resize[data-fixed] .cds-resize-grip {
+  display: none;
+}
+
+/* Marginalia: small cards for a long page's margin. A card is 213px wide
+   and holds a short header and one thing: a menu, a figure or two, a
+   caption with a button, a file, a video, a prompt. The header sits inside
+   the card, or above it in the serif. */
+.cds-marginalia {
+  columns: 213px;
+  column-gap: 24px;
+}
+.cds-margin {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 213px;
+  max-width: 100%;
+  margin-bottom: 24px;
+  break-inside: avoid;
+  color: var(--cds-fg-3);
+  font: 400 12px/18px var(--cds-sans);
+}
+.cds-margin-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid var(--cds-card-border);
+  border-radius: 16px;
+  background: var(--cds-card-bg);
+  box-shadow: var(--cds-shadow-md);
+}
+.cds-margin p {
+  margin: 0;
+}
+.cds-margin-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--cds-fg);
+  font-weight: 600;
+}
+.cds-margin-head svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  color: var(--cds-fg-3);
+}
+/* Above the card: the serif, lined up with the card's text. */
+.cds-margin > .cds-margin-head {
+  padding: 4px 16px 0;
+  font: 400 15px/24px var(--cds-serif);
+}
+.cds-margin-menu {
+  display: flex;
+  flex-direction: column;
+  margin: -4px 0;
+}
+.cds-margin-menu button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: 0 1px 0 var(--cds-card-border);
+  color: var(--cds-fg-2);
+  font: 500 12px/18px var(--cds-sans);
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.cds-margin-menu button:last-child {
+  box-shadow: none;
+}
+.cds-margin-menu button:hover {
+  color: var(--cds-fg);
+}
+.cds-margin-menu svg {
+  width: 16px;
+  height: 16px;
+}
+.cds-margin-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 0 4px;
+}
+.cds-margin-stat + .cds-margin-stat {
+  padding-top: 20px;
+  border-top: 1px solid var(--cds-card-border);
+}
+.cds-margin-stat b {
+  color: var(--cds-fg);
+  font: 500 44px/48px var(--cds-serif);
+}
+.cds-margin-stat + .cds-margin-stat b,
+.cds-margin-stat:has(+ .cds-margin-stat) b {
+  font-size: 36px;
+  line-height: 40px;
+}
+.cds-margin-media {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 102px;
+  padding: 8px;
+  border-radius: 8px;
+  background: var(--cds-bg-3);
+}
+.cds-margin-media[data-type="video"] {
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--cds-clay) 30%, var(--cds-card-bg));
+}
+/* A file's preview: a tag, three lines and a page. */
+.cds-margin-file {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  justify-content: space-between;
+}
+.cds-margin-file i {
+  padding: 2px 8px;
+  border: 1px solid var(--cds-card-border);
+  border-radius: 4px;
+  background: var(--cds-bg);
+  font: 400 10px/16px var(--cds-sans);
+}
+.cds-margin-file span {
+  display: block;
+  width: 52px;
+  height: 9px;
+  margin-top: 4px;
+  border-radius: 100px;
+  background: var(--cds-bg);
+}
+.cds-margin-page {
+  flex: none;
+  align-self: stretch;
+  aspect-ratio: 1;
+  border-radius: 4px;
+  background: var(--cds-bg);
+}
+
+/* Logo wall: customer logos between two rules, five to a row, fewer as the
+   wall narrows. The logos keep their own colors. */
+.cds-logo-wall {
+  container-type: inline-size;
+}
+.cds-logo-wall > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  row-gap: 48px;
+  padding: 64px 0;
+  border-block: 1px solid var(--cds-border-3);
+}
+.cds-logo-wall img {
+  flex: none;
+  width: 20%;
+  height: auto;
+  filter: var(--cds-art-filter);
+}
+@container (max-width: 700px) {
+  .cds-logo-wall > div {
+    row-gap: 24px;
+    padding: 48px 0;
+  }
+  .cds-logo-wall img {
+    width: 33.333%;
+  }
+}
+@container (max-width: 420px) {
+  .cds-logo-wall img {
+    width: 50%;
+  }
+}
+
+/* Video. A still stands in for the film: the system's Clay, lightened. */
+.cds-video {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--cds-clay) 30%, var(--cds-card-bg));
+}
+/* The playhead: a large square button in the middle of a video. */
+.cds-playhead {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  border: 1px solid var(--cds-border-2);
+  border-radius: 16px;
+  background: var(--cds-bg);
+  color: var(--cds-fg-3);
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    scale 0.2s ease;
+}
+.cds-playhead:hover {
+  color: var(--cds-fg);
+  scale: 1.04;
+}
+.cds-playhead svg {
+  width: 36px;
+  height: 36px;
+}
+/* Reel: a tall video, as on a phone. */
+.cds-reel {
+  width: 336px;
+  max-width: 100%;
+  aspect-ratio: 336 / 598;
+}
+/* Lightbox: the page dims and blurs behind a video, with a button to close
+   it. Here it covers its figure, not the window. */
+.cds-lightbox-page {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 520px;
+  padding: 48px;
+}
+.cds-lightbox-page > .cds-video {
+  width: min(100%, 560px);
+  aspect-ratio: 16 / 9;
+}
+.cds-lightbox {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 5cqw, 64px);
+  background: rgb(0 0 0 / 0.8);
+  backdrop-filter: blur(20px);
+}
+.cds-lightbox > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+  width: 100%;
+  max-width: 1194px;
+}
+.cds-lightbox .cds-video {
+  align-self: stretch;
+  aspect-ratio: 1194 / 604;
+  border-radius: 8px;
+}
+.cds-lightbox-close {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 8px;
+  background: #faf9f5;
+  box-shadow: 0 4px 24px rgb(0 0 0 / 0.2);
+  color: #141413;
+  cursor: pointer;
+}
+.cds-lightbox-close svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* An illustration or pictogram on its own: turned over on dark themes. */
+.cds-art {
+  display: block;
+  height: auto;
+  filter: var(--cds-art-filter);
+}
+
+/* The demo cursor: a small arrow that tries a figure out by itself
+   (DemoCursor). It is moved from script; a click spreads a ring from its
+   tip. It takes the theme's text color, so it shows on every theme. */
+.cds-demo-cursor {
+  position: absolute;
+  z-index: 5;
+  top: -2px;
+  left: -2px;
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: 2px 2px;
+}
+.cds-demo-cursor svg {
+  display: block;
+  overflow: visible;
+  fill: var(--cds-fg);
+  stroke: var(--cds-bg);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 2px 4px rgb(0 0 0 / 0.25));
+  transform-origin: 2px 2px;
+}
+.cds-demo-cursor::after {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 24px;
+  height: 24px;
+  border: 1.5px solid var(--cds-clay);
+  border-radius: 50%;
+  opacity: 0;
+  content: "";
+}
+.cds-demo-cursor[data-press]::after {
+  animation: cds-demo-ring 0.5s ease-out;
+}
+@keyframes cds-demo-ring {
+  from {
+    opacity: 0.9;
+    scale: 0.3;
+  }
+  to {
+    opacity: 0;
+    scale: 1.5;
+  }
+}
+
+/* A scaled figure (the docs' Organisms page) is a small copy of a page as
+   wide as the figure is laid out, so the fluid type sizes above measure that
+   width, not the window's. */
+[data-scaled] .cds[data-figure] {
+  container-type: inline-size;
+  --cds-vw: 100cqw;
 }

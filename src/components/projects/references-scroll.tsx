@@ -37,7 +37,7 @@ export function ReferencesScroll({ references }: ReferencesScrollProps) {
                     </AvatarFallback>
                   </Avatar>
                   <a
-                    className="group-hover/item:text-blue group-hover/item:underline"
+                    className="group-hover/item:text-tint group-hover/item:underline"
                     href={reference.linkedinUrl}
                     target="_blank"
                     onClick={(e) => e.stopPropagation()}

@@ -145,6 +145,7 @@ function ClipTile({ clip }: { clip: Clip }) {
             src={animated(clip.id)}
             alt={clip.label}
             loading="lazy"
+            draggable={false}
             className="size-full object-cover"
           />
         </picture>
@@ -154,20 +155,21 @@ function ClipTile({ clip }: { clip: Clip }) {
 }
 
 // The strip's own slow drift, in pixels per second, and how long it leaves the
-// visitor alone after they scroll or tap it, in milliseconds.
+// visitor alone after they scroll, drag or tap it, in milliseconds.
 const DRIFT = 24
 const HOLD = 4000
 
 /**
- * A row of clips that drifts sideways on its own (and scrolls by hand) and runs
- * to the page's edges, with a credit under it: the clips are the studio's,
- * from its own case study.
+ * A row of clips that runs to the page's edges, with a credit under it: the
+ * clips are the studio's, from its own case study.
  *
- * The drift loops: once the first clip has left on the left it moves to the
- * end of the row, and the row scrolls back by that clip's width in the same
+ * The row drifts sideways on its own, scrolls by touch or trackpad, and can be
+ * grabbed with the mouse and thrown. It is endless both ways: whenever the
+ * row has moved off centre, a clip that is out of sight on the long side moves
+ * to the other end, and the row scrolls by that clip's width in the same
  * commit, so nothing on screen moves. The drift stops under the mouse, while
- * the keyboard is inside the row and for a while after a touch or wheel, and
- * never runs for a visitor who asked for reduced motion.
+ * the keyboard is inside the row and for a while after any touch, wheel or
+ * drag, and never runs for a visitor who asked for reduced motion.
  */
 export function MediaStrip() {
   const strip = useRef<HTMLUListElement>(null)
@@ -175,26 +177,64 @@ export function MediaStrip() {
   // Where the drift has got to. Kept here, not read back each frame: a browser
   // may round scrollLeft, and a fraction of a pixel a frame would round away.
   const position = useRef(0)
-  // The distance to scroll back once the first clip has moved to the end.
+  // How far to scroll back once a clip has moved from one end to the other.
   const owed = useRef(0)
 
   useLayoutEffect(() => {
-    if (!strip.current || !owed.current) return
+    const row = strip.current
+    if (!row || !owed.current) return
+    row.scrollLeft -= owed.current
     position.current -= owed.current
-    strip.current.scrollLeft = position.current
     owed.current = 0
   }, [clips])
 
   useEffect(() => {
     const row = strip.current
     if (!row) return
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches
+
+    // Keeps clips waiting on both sides: one move per call, and only of a
+    // clip that is out of sight.
+    const balance = () => {
+      const items = row.children
+      const max = row.scrollWidth - row.clientWidth
+      if (owed.current || max <= 0 || items.length < 2) return
+      const view = row.getBoundingClientRect()
+      const first = items[0].getBoundingClientRect()
+      const last = items[items.length - 1].getBoundingClientRect()
+      // A clip's width plus the gap after (or before) it.
+      const head = items[1].getBoundingClientRect().left - first.left
+      const tail =
+        last.right - items[items.length - 2].getBoundingClientRect().right
+      if (row.scrollLeft > (max + head) / 2 && first.right < view.left - 1) {
+        owed.current = head
+        setClips(([clip, ...rest]) => [...rest, clip])
+      } else if (
+        row.scrollLeft < (max - tail) / 2 &&
+        last.left > view.right + 1
+      ) {
+        owed.current = -tail
+        setClips((all) => [all[all.length - 1], ...all.slice(0, -1)])
+      }
+    }
+    // Several moves, a frame apart, until the row is centred again.
+    const rebalance = () => {
+      balance()
+      if (owed.current) requestAnimationFrame(rebalance)
+    }
 
     let frame = 0
     let last = 0
     let moving = false
     let hovering = false
+    // The mouse has hold of the row, or has just thrown it.
+    let held = false
     let stillUntil = 0
+    const hold = () => {
+      stillUntil = performance.now() + HOLD
+    }
 
     const step = (now: number) => {
       frame = requestAnimationFrame(step)
@@ -203,6 +243,7 @@ export function MediaStrip() {
       const max = row.scrollWidth - row.clientWidth
       if (
         hovering ||
+        held ||
         now < stillUntil ||
         max <= 0 ||
         owed.current ||
@@ -219,32 +260,96 @@ export function MediaStrip() {
         max
       )
       row.scrollLeft = position.current
-
-      // The first clip is out of sight: send it to the end of the row.
-      const [first, second] = row.children
-      if (
-        first.getBoundingClientRect().right <
-        row.getBoundingClientRect().left - 1
-      ) {
-        owed.current =
-          second.getBoundingClientRect().left -
-          first.getBoundingClientRect().left
-        setClips(([head, ...rest]) => [...rest, head])
-      }
+      balance()
     }
 
     const observer = new IntersectionObserver(([entry]) => {
       cancelAnimationFrame(frame)
       moving = false
-      if (!entry.isIntersecting) return
+      if (!entry.isIntersecting || reduced) return
       last = performance.now()
       frame = requestAnimationFrame(step)
     })
     observer.observe(row)
 
-    const hold = () => {
-      stillUntil = performance.now() + HOLD
+    // Grab and throw, with the mouse. Touch and trackpads scroll the row
+    // themselves.
+    let pressed = false
+    let dragging = false
+    let lastX = 0
+    let lastTime = 0
+    let velocity = 0
+    let glide = 0
+    const down = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse" || e.button !== 0) return
+      if (e.target instanceof Element && e.target.closest("button")) return
+      cancelAnimationFrame(glide)
+      pressed = true
+      dragging = false
+      held = true
+      lastX = e.clientX
+      lastTime = e.timeStamp
+      velocity = 0
     }
+    const move = (e: PointerEvent) => {
+      if (!pressed) return
+      const dx = e.clientX - lastX
+      if (!dragging) {
+        if (Math.abs(dx) < 4) return
+        dragging = true
+        row.setPointerCapture(e.pointerId)
+        row.dataset.dragging = ""
+      }
+      const dt = Math.max(e.timeStamp - lastTime, 1)
+      velocity = 0.8 * (dx / dt) + 0.2 * velocity
+      lastX = e.clientX
+      lastTime = e.timeStamp
+      row.scrollLeft -= dx
+      balance()
+    }
+    const release = () => {
+      held = false
+      hold()
+    }
+    const up = (e: PointerEvent) => {
+      if (!pressed) return
+      pressed = false
+      if (!dragging) return release()
+      delete row.dataset.dragging
+      // The click that follows a drag is swallowed (below); after that, clicks
+      // count again.
+      setTimeout(() => {
+        dragging = false
+      })
+      // Let go while still: nothing to throw.
+      if (reduced || e.timeStamp - lastTime > 80) return release()
+      let before = performance.now()
+      const coast = (now: number) => {
+        const dt = Math.min(now - before, 50)
+        before = now
+        row.scrollLeft -= velocity * dt
+        velocity *= Math.pow(0.95, dt / 16.7)
+        balance()
+        if (Math.abs(velocity) > 0.02) glide = requestAnimationFrame(coast)
+        else release()
+      }
+      glide = requestAnimationFrame(coast)
+    }
+    const click = (e: MouseEvent) => {
+      if (!dragging) return
+      e.preventDefault()
+      e.stopPropagation()
+    }
+
+    // After a scroll the row did not make itself (touch, trackpad), centre it
+    // once the scroll has come to rest; moving clips mid-fling would stop it.
+    let settle = 0
+    const scrolled = () => {
+      if (moving || held) return
+      clearTimeout(settle)
+      settle = window.setTimeout(rebalance, 150)
+    }
+
     const enter = (e: PointerEvent) => {
       if (e.pointerType === "mouse") hovering = true
     }
@@ -256,13 +361,27 @@ export function MediaStrip() {
       row.addEventListener(type, hold, { passive: true })
     row.addEventListener("pointerenter", enter)
     row.addEventListener("pointerleave", leave)
+    row.addEventListener("pointerdown", down)
+    row.addEventListener("pointermove", move)
+    row.addEventListener("pointerup", up)
+    row.addEventListener("pointercancel", up)
+    row.addEventListener("click", click, true)
+    row.addEventListener("scroll", scrolled, { passive: true })
 
     return () => {
       cancelAnimationFrame(frame)
+      cancelAnimationFrame(glide)
+      clearTimeout(settle)
       observer.disconnect()
       for (const type of taken) row.removeEventListener(type, hold)
       row.removeEventListener("pointerenter", enter)
       row.removeEventListener("pointerleave", leave)
+      row.removeEventListener("pointerdown", down)
+      row.removeEventListener("pointermove", move)
+      row.removeEventListener("pointerup", up)
+      row.removeEventListener("pointercancel", up)
+      row.removeEventListener("click", click, true)
+      row.removeEventListener("scroll", scrolled)
     }
   }, [])
 
@@ -272,7 +391,7 @@ export function MediaStrip() {
       <ul
         ref={strip}
         aria-label="Clips of the finished site"
-        className="-mx-6 scrollbar-hide flex gap-3 overflow-x-auto px-6 md:-mx-12 md:px-12"
+        className="-mx-6 scrollbar-hide flex cursor-grab gap-3 overflow-x-auto px-6 select-none data-[dragging]:cursor-grabbing md:-mx-12 md:px-12"
       >
         {clips.map((clip) => (
           <ClipTile key={clip.id} clip={clip} />
@@ -281,7 +400,7 @@ export function MediaStrip() {
       <figcaption className="text-xs text-muted-foreground">
         Videos from{" "}
         <a
-          className="underline decoration-dotted hover:text-blue hover:decoration-solid"
+          className="underline decoration-dotted hover:text-tint hover:decoration-solid"
           href="https://dbco.online/"
           target="_blank"
           rel="noreferrer"

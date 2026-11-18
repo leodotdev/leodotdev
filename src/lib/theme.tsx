@@ -6,29 +6,31 @@ import {
   useSyncExternalStore,
 } from "react"
 
-export type ThemePref = "light" | "dark" | "system"
-type Resolved = "light" | "dark"
+// The site is dark unless the visitor has switched it to light. The system's
+// light or dark setting plays no part: the pick is stored, and with none
+// stored the theme is DEFAULT.
+
+export type ThemePref = "light" | "dark"
 
 const KEY = "theme"
 const CHANGE = "theme-change"
-const DARK = "(prefers-color-scheme: dark)"
+export const DEFAULT: ThemePref = "dark"
 
 /**
  * Browser chrome color (status bar, tab strip) for each theme: the computed
- * --background. Both media-scoped metas get the chosen theme's color, so a
- * user's pick wins over the system setting.
+ * --background. The meta gets the color of the theme in use.
  */
-export const THEME_COLOR = { light: "#f2f2f7", dark: "#000000" } as const
+export const THEME_COLOR = { light: "#ffffff", dark: "#141413" } as const
 
 /** Inline in <head> before CSS so the first paint has the right theme. */
-export const THEME_SCRIPT = `(function(){try{var p=localStorage.getItem("${KEY}");var d=p==="dark"||((!p||p==="system")&&matchMedia("${DARK}").matches);var e=document.documentElement;e.classList.toggle("dark",d);e.style.colorScheme=d?"dark":"light";document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute("content",d?"${THEME_COLOR.dark}":"${THEME_COLOR.light}")})}catch(_){}})()`
+export const THEME_SCRIPT = `(function(){try{var d=localStorage.getItem("${KEY}")!=="light";var e=document.documentElement;e.classList.toggle("dark",d);e.style.colorScheme=d?"dark":"light";document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute("content",d?"${THEME_COLOR.dark}":"${THEME_COLOR.light}")})}catch(_){}})()`
 
 function readPref(): ThemePref {
   try {
     const p = localStorage.getItem(KEY)
-    return p === "light" || p === "dark" ? p : "system"
+    return p === "light" || p === "dark" ? p : DEFAULT
   } catch {
-    return "system"
+    return DEFAULT
   }
 }
 
@@ -41,36 +43,19 @@ function subscribePref(cb: () => void) {
   }
 }
 
-function subscribeSystem(cb: () => void) {
-  const mq = matchMedia(DARK)
-  mq.addEventListener("change", cb)
-  return () => mq.removeEventListener("change", cb)
-}
-
 type ThemeContext = {
-  pref: ThemePref
-  resolved: Resolved
+  /** The theme in use. */
+  resolved: ThemePref
   setPref: (p: ThemePref) => void
 }
 const Ctx = createContext<ThemeContext | null>(null)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  // Server snapshot is "system/light"; the inline script already painted the
-  // real theme, and these stores pick up the stored value on hydration.
-  const pref = useSyncExternalStore(
-    subscribePref,
-    readPref,
-    () => "system" as const
-  )
-  const systemDark = useSyncExternalStore(
-    subscribeSystem,
-    () => matchMedia(DARK).matches,
-    () => false
-  )
-  const resolved: Resolved =
-    pref === "system" ? (systemDark ? "dark" : "light") : pref
+  // The server renders the default; the inline script already painted the
+  // real theme, and this store picks up the stored value on hydration.
+  const resolved = useSyncExternalStore(subscribePref, readPref, () => DEFAULT)
 
-  // Keep <html> in sync when the system theme flips or another tab changes it.
+  // Keep <html> in sync when the pick changes, here or in another tab.
   useEffect(() => {
     const el = document.documentElement
     el.classList.toggle("dark", resolved === "dark")
@@ -81,17 +66,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   const setPref = useCallback((p: ThemePref) => {
     try {
-      if (p === "system") localStorage.removeItem(KEY)
-      else localStorage.setItem(KEY, p)
+      localStorage.setItem(KEY, p)
     } catch {
       // storage unavailable: theme still applies for this page view via the event below
     }
     window.dispatchEvent(new Event(CHANGE))
   }, [])
 
-  return (
-    <Ctx.Provider value={{ pref, resolved, setPref }}>{children}</Ctx.Provider>
-  )
+  return <Ctx.Provider value={{ resolved, setPref }}>{children}</Ctx.Provider>
 }
 
 export function useTheme(): ThemeContext {

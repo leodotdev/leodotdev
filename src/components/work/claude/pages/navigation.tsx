@@ -4,15 +4,14 @@ import {
   TbCopy,
   TbDownload,
   TbExternalLink,
-  TbMenu2,
-  TbMinus,
-  TbPlus,
   TbSparkles,
-  TbX,
 } from "react-icons/tb"
+import { DemoCursor } from "@/components/work/claude/demo-cursor"
+import { Resizable } from "@/components/work/claude/resizable"
 import { ClaudeLogo } from "@/components/work/claude/logo"
+import type { DemoStep } from "@/components/work/claude/demo-cursor"
 import { Button } from "@/components/work/claude/specimens"
-import { DocHeader, Section, Spec, Specimen } from "@/components/work/claude/ui"
+import { Section, Specimen } from "@/components/work/claude/ui"
 
 const quiet = { "data-wave-hover": "off", "data-wave-manual": true } as const
 
@@ -63,6 +62,57 @@ const MENUS: Array<[label: string, groups: Array<Group>]> = [
   ],
 ]
 
+// What the demo cursor does, in order: look around, resize, look around
+// again, and so on. Wide, it rests on each menu's link, which opens the menu
+// (they open on hover), and looks down its rows. Then it takes the
+// right-hand grip and narrows the figure until the header folds, opens the
+// folded menu and its groups, narrows it to a phone and does the same, and
+// lets it out again. A step whose control is hidden at the current width is
+// skipped, so each stretch only uses what is showing.
+const DEMO: Array<DemoStep> = [
+  // Close a folded menu or group left open.
+  { on: ".cds-nav-toggle, .cds-nav-group", click: "close", rest: 200 },
+  // Wide: the menus open under the cursor, as they do under a pointer.
+  { on: ".cds-nav-link", text: "Meet Claude", rest: 600 },
+  { on: ".cds-menu-item", text: "Claude Code" },
+  { on: ".cds-menu-item", text: "Sonnet" },
+  { on: ".cds-nav-link", text: "Platform", rest: 600 },
+  { on: ".cds-menu-item", text: "Developer docs" },
+  { on: ".cds-nav-link", text: "Solutions", rest: 600 },
+  { on: ".cds-menu-item", text: "Coding" },
+  { on: ".cds-menu-item", text: "Education" },
+  { on: ".cds-nav-sub .cds-nav-link", rest: 600 },
+  { on: ".cds-menu-item", text: "Download pitch-worthy PDF" },
+  { on: ".cds-nav-sub span", rest: 400 },
+  // Narrower: the header folds into a menu button.
+  { on: ".cds-resize-grip", nth: 1, drag: 600 },
+  { on: ".cds-nav-toggle", click: "open" },
+  { on: ".cds-nav-group", text: "Meet Claude", click: "open" },
+  { on: ".cds-nav-panel .cds-menu-item", text: "Claude Code" },
+  { on: ".cds-nav-group", text: "Solutions", click: "open" },
+  { on: ".cds-nav-panel .cds-menu-item", text: "Customer support" },
+  { on: ".cds-nav-group", text: "Solutions", click: "close" },
+  { on: ".cds-nav-toggle", click: "close", rest: 500 },
+  // A phone.
+  { on: ".cds-resize-grip", nth: 1, drag: 390 },
+  { on: ".cds-nav-toggle", click: "open" },
+  { on: ".cds-nav-group", text: "Pricing", click: "open" },
+  { on: ".cds-nav-panel .cds-menu-item", text: "Max plan" },
+  { on: ".cds-nav-group", text: "Pricing", click: "close" },
+  { on: ".cds-nav-panel-actions .cds-btn", text: "Try Claude", click: true },
+  { on: ".cds-nav-toggle", click: "close", rest: 500 },
+  // And back out.
+  { on: ".cds-resize-grip", nth: 1, drag: 4000 },
+  { on: ".cds-nav-link", text: "Learn", rest: 600 },
+  { on: ".cds-menu-item", text: "Customer stories" },
+  {
+    on: ".cds-nav-actions .cds-btn",
+    text: "Try Claude",
+    click: true,
+    rest: 700,
+  },
+]
+
 function Links({ groups }: { groups: Array<Group> }) {
   return groups.map((group, i) => [
     i > 0 && <div key={`rule-${i}`} className="cds-menu-rule" />,
@@ -87,6 +137,25 @@ function SiteNavigation() {
   const ref = useRef<HTMLDivElement>(null)
   const toggle = (name: string) => setOpen(open === name ? null : name)
 
+  // As on claude.com, a menu opens while the pointer is on its link or on
+  // the menu itself, and closes when it leaves both. A mouse click on the
+  // link therefore only keeps it open; a tap or the keyboard, which do not
+  // hover, toggle it.
+  const hover = (name: string) => ({
+    onPointerEnter: (e: React.PointerEvent) => {
+      if (e.pointerType === "mouse") setOpen(name)
+    },
+    onPointerLeave: (e: React.PointerEvent) => {
+      if (e.pointerType === "mouse")
+        setOpen((now) => (now === name ? null : now))
+    },
+  })
+  const press = (e: React.MouseEvent, name: string) => {
+    const pointer = (e.nativeEvent as PointerEvent).pointerType
+    if (e.detail > 0 && pointer === "mouse") setOpen(name)
+    else toggle(name)
+  }
+
   useEffect(() => {
     if (!open || open === "panel") return
     const onDown = (e: PointerEvent) => {
@@ -109,12 +178,12 @@ function SiteNavigation() {
         <ClaudeLogo className="h-6 w-auto shrink-0" />
         <div className="cds-nav-links">
           {MENUS.map(([label, groups]) => (
-            <div key={label} className="cds-nav-item">
+            <div key={label} className="cds-nav-item" {...hover(label)}>
               <button
                 type="button"
                 className="cds-nav-link"
                 aria-expanded={open === label}
-                onClick={() => toggle(label)}
+                onClick={(e) => press(e, label)}
                 {...quiet}
               >
                 {label}
@@ -135,97 +204,101 @@ function SiteNavigation() {
           <Button icon="none">Try Claude</Button>
           <button
             type="button"
-            className="cds-btn cds-nav-toggle"
-            data-variant="tertiary"
-            data-icon="only"
+            className="cds-nav-toggle"
             aria-label="Menu"
             aria-expanded={open === "panel"}
             onClick={() => toggle("panel")}
             {...quiet}
           >
-            {open === "panel" ? <TbX aria-hidden /> : <TbMenu2 aria-hidden />}
+            <i />
+            <i />
+            <i />
           </button>
         </div>
       </div>
 
-      <div
-        className="cds-nav-panel"
-        data-open={open === "panel" ? "" : undefined}
-      >
-        {MENUS.map(([label, groups]) => (
-          <div key={label}>
+      {/* Under the bar: the breadcrumb bar, and over it, when the header is
+          folded and its menu open, the menu's sheet. */}
+      <div className="cds-nav-body">
+        <div
+          className="cds-nav-panel"
+          data-open={open === "panel" ? "" : undefined}
+        >
+          {MENUS.map(([label, groups], i) => (
+            // `--i` staggers the groups as the sheet opens.
+            <div key={label} style={{ "--i": i } as React.CSSProperties}>
+              <button
+                type="button"
+                className="cds-nav-group"
+                aria-expanded={group === label}
+                onClick={() => setGroup(group === label ? null : label)}
+                {...quiet}
+              >
+                {label}
+                <b aria-hidden />
+              </button>
+              {group === label && (
+                <div>
+                  <Links groups={groups} />
+                </div>
+              )}
+            </div>
+          ))}
+          <div
+            className="cds-nav-panel-actions"
+            style={{ "--i": MENUS.length + 1 } as React.CSSProperties}
+          >
             <button
               type="button"
-              className="cds-nav-group"
-              aria-expanded={group === label}
-              onClick={() => setGroup(group === label ? null : label)}
+              className="cds-btn"
+              data-variant="tertiary"
               {...quiet}
             >
-              {label}
-              {group === label ? (
-                <TbMinus aria-hidden />
-              ) : (
-                <TbPlus aria-hidden />
-              )}
+              Contact sales
             </button>
-            {group === label && (
-              <div className="pb-4">
-                <Links groups={groups} />
+            <button
+              type="button"
+              className="cds-btn"
+              data-variant="primary"
+              {...quiet}
+            >
+              Try Claude
+            </button>
+          </div>
+        </div>
+
+        <div className="cds-nav-sub">
+          <span>
+            Solutions<i>/</i>For individuals
+          </span>
+          <div className="cds-nav-item" data-align="end" {...hover("explore")}>
+            <button
+              type="button"
+              className="cds-nav-link"
+              aria-expanded={open === "explore"}
+              onClick={(e) => press(e, "explore")}
+              {...quiet}
+            >
+              Explore here
+              <TbChevronDown aria-hidden />
+            </button>
+            {open === "explore" && (
+              <div className="cds-menu">
+                <button type="button" className="cds-menu-item" {...quiet}>
+                  <TbCopy aria-hidden />
+                  <span>Copy as markdown for LLMs</span>
+                </button>
+                <button type="button" className="cds-menu-item" {...quiet}>
+                  <TbDownload aria-hidden />
+                  <span>Download pitch-worthy PDF</span>
+                </button>
+                <button type="button" className="cds-menu-item" {...quiet}>
+                  <TbSparkles aria-hidden />
+                  <span>Ask questions about this page</span>
+                </button>
               </div>
             )}
           </div>
-        ))}
-        <div className="cds-nav-panel-actions">
-          <button
-            type="button"
-            className="cds-btn"
-            data-variant="tertiary"
-            {...quiet}
-          >
-            Contact sales
-          </button>
-          <button
-            type="button"
-            className="cds-btn"
-            data-variant="primary"
-            {...quiet}
-          >
-            Try Claude
-          </button>
-        </div>
-      </div>
-
-      <div className="cds-nav-sub">
-        <span>
-          Solutions<i>/</i>For individuals
-        </span>
-        <div className="cds-nav-item" data-align="end">
-          <button
-            type="button"
-            className="cds-nav-link"
-            aria-expanded={open === "explore"}
-            onClick={() => toggle("explore")}
-            {...quiet}
-          >
-            Explore here
-            <TbChevronDown aria-hidden />
-          </button>
-          {open === "explore" && (
-            <div className="cds-menu" data-type="list">
-              <button type="button" className="cds-menu-item" {...quiet}>
-                <TbCopy aria-hidden />
-                <span>Copy as markdown for LLMs</span>
-              </button>
-              <button type="button" className="cds-menu-item" {...quiet}>
-                <TbDownload aria-hidden />
-                <span>Download pitch-worthy PDF</span>
-              </button>
-              <button type="button" className="cds-menu-item" {...quiet}>
-                <TbSparkles aria-hidden />
-                <span>Ask questions about this page</span>
-              </button>
-            </div>
-          )}
         </div>
       </div>
     </div>
@@ -235,25 +308,22 @@ function SiteNavigation() {
 export function NavigationDoc() {
   return (
     <>
-      <DocHeader group="Patterns" title="Navigation">
-        The site header: a comprehensive site-wide wayfinding component that
-        provides hierarchical access to all major sections. It works here, and
-        folds into a menu button when its box gets narrow.
-      </DocHeader>
-
       <Section
-        title="Header and sub-navigation"
-        description="The logo, five menus and two buttons, over a breadcrumb bar whose Explore here menu offers the page as markdown or a PDF. Each menu opens the navigation menu from Components; below 760px they collapse into one panel of rows that open in turn."
+        title="Header & Sub-navigation"
+        description="The logo, five menus and two buttons, over a breadcrumb bar."
       >
-        <Specimen className="min-h-[30rem]">
-          <SiteNavigation />
+        <Specimen>
+          <DemoCursor steps={DEMO} className="px-6 md:px-8">
+            {/* As tall as the phone the folded menu was drawn for. */}
+            <Resizable
+              label="Header width"
+              min={360}
+              className="flex min-h-[812px] flex-col"
+            >
+              <SiteNavigation />
+            </Resizable>
+          </DemoCursor>
         </Specimen>
-        <Spec>
-          Bar: 24px above and below, logo 24px tall, menu buttons 28px tall with
-          15/24 text and a 16px chevron, 8px apart; Contact sales and Try Claude
-          are medium buttons 12px apart. Sub-navigation: 12/18 text between two
-          rules.
-        </Spec>
       </Section>
     </>
   )

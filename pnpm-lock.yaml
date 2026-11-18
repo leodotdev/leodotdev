@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   distortion-wave@0.1.2:
-    hash: f33f4cbd1d145ae49d95b4cb97e89baab254ae2f0ead8700371edbe523424598
+    hash: f650be5a4ad22b3745b7c580d2ebe70ff0bb3158877f03c63d1f585b8eb0bb99
     path: patches/distortion-wave@0.1.2.patch
 
 importers:
@@ -39,7 +39,7 @@ importers:
         version: 2.1.1
       distortion-wave:
         specifier: 0.1.2
-        version: 0.1.2(patch_hash=f33f4cbd1d145ae49d95b4cb97e89baab254ae2f0ead8700371edbe523424598)
+        version: 0.1.2(patch_hash=f650be5a4ad22b3745b7c580d2ebe70ff0bb3158877f03c63d1f585b8eb0bb99)
       drizzle-orm:
         specifier: 0.45.4
         version: 0.45.4
@@ -4110,7 +4110,7 @@ snapshots:
 
   diff@9.0.0: {}
 
-  distortion-wave@0.1.2(patch_hash=f33f4cbd1d145ae49d95b4cb97e89baab254ae2f0ead8700371edbe523424598): {}
+  distortion-wave@0.1.2(patch_hash=f650be5a4ad22b3745b7c580d2ebe70ff0bb3158877f03c63d1f585b8eb0bb99): {}
 
   drizzle-kit@0.31.11:
     dependencies:

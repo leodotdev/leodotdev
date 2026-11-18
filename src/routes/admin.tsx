@@ -49,7 +49,7 @@ function AdminLayout() {
         </nav>
         <span className="ml-auto flex items-center gap-4 text-xs text-muted-foreground">
           {admin.email}
-          <a href="/" className="underline decoration-dotted hover:text-blue">
+          <a href="/" className="underline decoration-dotted hover:text-tint">
             View site
           </a>
         </span>

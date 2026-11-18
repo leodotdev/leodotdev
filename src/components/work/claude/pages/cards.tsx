@@ -8,13 +8,12 @@ import {
   TbVideo,
 } from "react-icons/tb"
 import { Button } from "@/components/work/claude/specimens"
-import { DocHeader, Section, Spec, Specimen } from "@/components/work/claude/ui"
+import { Section, Specimen } from "@/components/work/claude/ui"
 
 const quiet = { "data-wave-hover": "off", "data-wave-manual": true } as const
 
 const LINKS = [
   ["Claude Code documentation", "Developer doc"],
-  ["Claude Code tutorials", "Developer doc"],
   ["How Anthropic teams use Claude Code", "Case study"],
 ]
 
@@ -50,17 +49,14 @@ function ClipboardCopy({ command }: { command: string }) {
 export function CardsDoc() {
   return (
     <>
-      <DocHeader group="Patterns" title="Cards and prompts">
-        Cards that lead somewhere, a prompt the visitor can send to Claude, and
-        a command to copy.
-      </DocHeader>
-
       <Section
-        title="Link and video cards"
-        description="The active link card gets the medium shadow on hover. A video card presents video-based resources like webinars or presentations with accompanying metadata, and stacks when it runs out of width."
+        title="Link & Video Cards"
+        description="A link card lifts on hover. A video card stacks when it gets narrow."
       >
         <Specimen className="flex flex-col gap-8 p-6 md:p-8">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Two abreast at most: a card needs its width, or its title sets
+              a word to a line. */}
+          <div className="grid gap-6 sm:grid-cols-2">
             {LINKS.map(([title, kind]) => (
               <a
                 key={title}
@@ -106,16 +102,11 @@ export function CardsDoc() {
             </div>
           </div>
         </Specimen>
-        <Spec>
-          Video card: 32px radius (24px stacked), a 64px play button, text
-          padded 32/64/32/48 with 32px between the label, the serif 19/24 title
-          and the button.
-        </Spec>
       </Section>
 
       <Section
-        title="Prompt box and clipboard copy"
-        description="The prompt box displays suggested prompts as editable templates, so a visitor can send one as written or change it first. Hovering a card darkens its text, adds a light shadow and expands the button to read Ask Claude, while its siblings dim. Clipboard copy shows a command; the copy button swaps it for Copied! for three seconds."
+        title="Prompt Box & Clipboard Copy"
+        description="Prompts to send as written or change first, and a command that copies in one click."
       >
         <Specimen className="flex flex-col gap-8 p-6 md:p-8">
           <div className="cds-prompts">
@@ -143,11 +134,6 @@ export function CardsDoc() {
           </div>
           <ClipboardCopy command="npm install -g @anthropic-ai/claude-code" />
         </Specimen>
-        <Spec>
-          Prompt box: 280px square at full size, 16px radius, 17/28 text with
-          24px padding, a 36px Clay button. Clipboard copy: 52px tall, 12px
-          radius, Anthropic Mono 12/18.
-        </Spec>
       </Section>
     </>
   )

@@ -1,15 +1,24 @@
+import { useRouter } from "@tanstack/react-router"
 import { useEffect } from "react"
-import { endWave, isTap, isWaving, loadWave, pointer, wave } from "@/lib/wave"
+import {
+  endAllWaves,
+  endWave,
+  isTap,
+  isWaving,
+  linger,
+  loadWave,
+  pointer,
+  wave,
+} from "@/lib/wave"
 
 /**
- * Hover and tap waves keep the library's full palette, warm colours included,
- * but drop two things that turn stark on a light card: the crisp hairline the
- * wave leaves on the element's outline (a hard orange arc at the corner), and
- * part of the colour-channel split, which fringes dark text in orange.
- * A negative width is what switches the hairline off completely.
+ * Hover and tap waves wear the site's palette (src/lib/wave.ts) and drop part
+ * of the color-channel split, which fringes dark text in color. They keep
+ * the outline the wave leaves behind, at the original's pace (`linger()`):
+ * the elements have no border of their own, so this is the only time they
+ * wear one.
  */
 const QUIET = {
-  hairWidth: -2,
   aberration: 0.2,
 }
 
@@ -31,26 +40,45 @@ const INTERACTIVE = "a[href], button"
  * Controls marked `data-wave-manual` handle their own clicks, because theirs
  * carry a DOM change (the theme switch, the Show more buttons).
  * Anything inside a `data-no-wave` element never waves, on hover or on click
- * (the Claude docs below their top bar).
+ * (the Claude docs below their top bar), unless it sits in a `data-wave`
+ * element of its own inside that area (the topic rows of the docs' overview).
+ * A wave never outlives its page: going to another page ends the ones still
+ * playing, both as the navigation starts and again as the new page mounts.
  * The admin is left alone, and so is anyone who prefers reduced motion.
  */
 export function WaveEffects() {
+  const router = useRouter()
+  useEffect(() => {
+    const end = (e: { pathChanged: boolean }) => {
+      if (e.pathChanged) endAllWaves()
+    }
+    const stops = [
+      router.subscribe("onBeforeNavigate", end),
+      router.subscribe("onBeforeRouteMount", end),
+    ]
+    return () => stops.forEach((stop) => stop())
+  }, [router])
+
   useEffect(() => {
     void loadWave()
     const reduced = matchMedia("(prefers-reduced-motion: reduce)")
     const off = () => reduced.matches || location.pathname.startsWith("/admin")
     // Menu items (the Contact menu) are left out: no wave on hover or tap.
-    // So is everything inside a `data-no-wave` element.
-    const find = (t: EventTarget | null) =>
-      t instanceof Element &&
-      !t.closest("[role='menu'], [role='menuitem'], [data-no-wave]")
-        ? (t.closest("[data-wave]") ?? t.closest(INTERACTIVE))
-        : null
+    // So is everything inside a `data-no-wave` element, except a `data-wave`
+    // element placed inside it, which has asked for its wave.
+    const find = (t: EventTarget | null) => {
+      if (!(t instanceof Element)) return null
+      if (t.closest("[role='menu'], [role='menuitem']")) return null
+      const row = t.closest("[data-wave]")
+      const quiet = t.closest("[data-no-wave]")
+      if (quiet) return row && quiet.contains(row) ? row : null
+      return row ?? t.closest(INTERACTIVE)
+    }
 
     // Until a wave hands back to the real element, the element is shown as a
     // snapshot taken on hover. If the pointer leaves before that, the wave is
     // ended, or the snapshot would keep showing the hover state (a row's
-    // panel colour) for a second after the pointer has gone.
+    // panel color) for a second after the pointer has gone.
     const handedBack = new WeakSet<Element>()
     const onOut = (e: PointerEvent) => {
       if (e.pointerType !== "mouse") return
@@ -77,6 +105,7 @@ export function WaveEffects() {
         handedBack.delete(el)
         void wave(el, undefined, {
           ...QUIET,
+          ...linger(),
           focus: e,
           onSettled: () => handedBack.add(el),
         })
@@ -97,7 +126,7 @@ export function WaveEffects() {
       // one only where asked for. Touch and pen: the tap is the trigger.
       if (!isTap(e) && !e.target.closest("[data-wave-click]")) return
       if (!el) return
-      void wave(el, undefined, { ...QUIET, focus: e })
+      void wave(el, undefined, { ...QUIET, ...linger(), focus: e })
     }
 
     document.addEventListener("pointerover", onOver)

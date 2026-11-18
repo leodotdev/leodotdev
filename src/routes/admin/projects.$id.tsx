@@ -81,7 +81,7 @@ function Editor({ initial }: { initial: Project }) {
         <a
           href={`/projects/${saved.slug}`}
           target="_blank"
-          className="text-xs text-muted-foreground underline decoration-dotted hover:text-blue"
+          className="text-xs text-muted-foreground underline decoration-dotted hover:text-tint"
         >
           View on site
         </a>
@@ -337,7 +337,7 @@ function Editor({ initial }: { initial: Project }) {
         <Button
           type="button"
           variant="ghost"
-          className="ml-auto text-red hover:text-red"
+          className="ml-auto text-error hover:text-error"
           onClick={async () => {
             if (
               !window.confirm(`Delete "${saved.name}"? This can't be undone.`)

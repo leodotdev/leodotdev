@@ -51,7 +51,7 @@ export const ThemeSwitcher = forwardRef<
                 {
                   source: e.currentTarget,
                   focus: e.nativeEvent,
-                  // Keep the dot clear of colour: nothing gathers on it
+                  // Keep the dot clear of color: nothing gathers on it
                   // before the wave leaves, and the glow trailing behind the
                   // wave stays out of a wider zone around it. On a 20px dot
                   // both read as a burst.

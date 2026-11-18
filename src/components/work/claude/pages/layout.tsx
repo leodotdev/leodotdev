@@ -1,4 +1,4 @@
-import { DocHeader, Section, Spec, Specimen } from "@/components/work/claude/ui"
+import { Section, Specimen } from "@/components/work/claude/ui"
 
 // The outer margin grows from 32px on a 320px screen to 64px at 1440px, where
 // the content stops growing; these are its values at four common widths.
@@ -24,14 +24,9 @@ const SHADOWS = [
 export function LayoutDoc() {
   return (
     <>
-      <DocHeader group="Foundations" title="Layout">
-        A twelve-column grid, seventeen spacing steps, ten radii and three
-        shadows.
-      </DocHeader>
-
       <Section
         title="Grid"
-        description="Twelve columns with a 32px gutter from 834px wide; below that, a single column. The outer margin grows from 32px on a 320px screen to 64px at 1440px, where the content stops growing. The diagrams are drawn to scale against the desktop frame."
+        description="Twelve columns from 834px wide, one below. Drawn to scale against the desktop frame."
       >
         <Specimen className="flex flex-col gap-6 p-6 md:p-8">
           {BREAKPOINTS.map((b) => (
@@ -76,8 +71,8 @@ export function LayoutDoc() {
       </Section>
 
       <Section
-        title="Spacing, radius and shadow"
-        description="Spacing runs from 2px to 200px in seventeen steps and radii from 2px to 64px in ten; both are named by their pixel value. Three soft shadows raise cards, menus and overlays."
+        title="Spacing, Radius & Shadow"
+        description="Spacing from 2px to 200px, radii from 2px to 64px, and three soft shadows."
       >
         <Specimen className="grid gap-x-12 gap-y-8 p-6 md:grid-cols-2 md:p-8">
           <div className="flex flex-col gap-3">
@@ -131,7 +126,6 @@ export function LayoutDoc() {
             </div>
           </div>
         </Specimen>
-        <Spec>Buttons use the 8px radius, inputs 12px and 16px.</Spec>
       </Section>
     </>
   )

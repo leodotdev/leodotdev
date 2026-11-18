@@ -24,7 +24,7 @@ function ProjectPage() {
   return (
     <div>
       {/* Navigation */}
-      <Navigation>
+      <Navigation className="border-b pb-12">
         <BackButton />
       </Navigation>
 

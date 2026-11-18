@@ -1,21 +1,6 @@
-import { ContactMenu } from "@/components/Navigation"
-import { GridSwitcher } from "@/components/GridSwitcher"
-import { ThemeSwitcher } from "@/components/ThemeSwitcher"
+import { Navigation } from "@/components/Navigation"
 
+/** The home page's top: the name and title, Contact and the switchers. */
 export function HeroSection() {
-  return (
-    <div>
-      <div className="flex items-center justify-between gap-4 px-6 pt-12 md:px-12">
-        <div>
-          <div className="font-semibold">Leo Succar</div>
-          <div className="text-muted-foreground">Designer &amp; Developer</div>
-        </div>
-        <div className="flex items-center gap-4">
-          <ContactMenu />
-          <ThemeSwitcher />
-          <GridSwitcher />
-        </div>
-      </div>
-    </div>
-  )
+  return <Navigation />
 }

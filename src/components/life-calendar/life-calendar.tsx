@@ -37,18 +37,18 @@ const dayHeaders = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
 
 // A tint of a system accent for each month
 const monthColors: { [key: number]: string } = {
-  0: "bg-yellow/30 dark:bg-yellow/20", // Jan
-  1: "bg-yellow/30 dark:bg-yellow/20", // Feb
-  2: "bg-orange/30 dark:bg-orange/20", // Mar
-  3: "bg-red/40 dark:bg-red/20", // Apr
-  4: "bg-pink/40 dark:bg-pink/20", // May
-  5: "bg-pink/55 dark:bg-pink/30", // Jun
-  6: "bg-purple/40 dark:bg-purple/20", // Jul
-  7: "bg-purple/55 dark:bg-purple/30", // Aug
-  8: "bg-blue/40 dark:bg-blue/20", // Sep
-  9: "bg-cyan/40 dark:bg-cyan/20", // Oct
-  10: "bg-green/40 dark:bg-green/20", // Nov
-  11: "bg-green/55 dark:bg-green/30", // Dec
+  0: "bg-peach/70 dark:bg-peach/25", // Jan
+  1: "bg-peach/70 dark:bg-peach/25", // Feb
+  2: "bg-clay/35 dark:bg-clay/25", // Mar
+  3: "bg-error/35 dark:bg-error/25", // Apr
+  4: "bg-heather/60 dark:bg-heather/20", // May
+  5: "bg-heather dark:bg-heather/35", // Jun
+  6: "bg-plum/40 dark:bg-plum/25", // Jul
+  7: "bg-plum/55 dark:bg-plum/35", // Aug
+  8: "bg-sky/40 dark:bg-sky/25", // Sep
+  9: "bg-cactus/70 dark:bg-cactus/25", // Oct
+  10: "bg-mineral/40 dark:bg-mineral/25", // Nov
+  11: "bg-mineral/55 dark:bg-mineral/35", // Dec
 }
 
 function getDaysInMonth(year: number, month: number): CalendarDay[] {
@@ -220,8 +220,7 @@ export function LifeCalendar() {
                 key={`${weekIndex}-${dayIndex}`}
                 className={cn(
                   "border-r py-2 text-center text-xs font-semibold",
-                  (dayIndex === 0 || dayIndex === 6) &&
-                    "bg-orange/15 dark:bg-orange/15"
+                  (dayIndex === 0 || dayIndex === 6) && "bg-tint/15"
                 )}
               >
                 {day}
@@ -297,7 +296,7 @@ export function LifeCalendar() {
                             day.isCurrentMonth &&
                             day.dayNumber > 0 &&
                             !day.isToday &&
-                            "bg-orange/15 dark:bg-orange/15",
+                            "bg-tint/15",
                           day.isToday &&
                             "bg-destructive font-bold text-destructive-foreground"
                         )}

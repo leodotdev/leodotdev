@@ -54,7 +54,7 @@ function ProjectsAdmin() {
         <Button type="submit" disabled={busy || !toSlug(name)}>
           {busy ? "Creating…" : "New project"}
         </Button>
-        {error && <p className="w-full text-xs text-red">{error}</p>}
+        {error && <p className="w-full text-xs text-error">{error}</p>}
       </form>
 
       <ul className="flex flex-col divide-y border-y">

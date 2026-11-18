@@ -108,7 +108,7 @@ export function HomePage({
             <div className=" text-muted-foreground">
               Built using{" "}
               <a
-                className="underline decoration-dotted hover:text-blue hover:decoration-solid"
+                className="underline decoration-dotted hover:text-tint hover:decoration-solid"
                 target="_blank"
                 href="https://tailwindcss.com/"
               >
@@ -116,7 +116,7 @@ export function HomePage({
               </a>
               ,{" "}
               <a
-                className="underline decoration-dotted hover:text-blue hover:decoration-solid"
+                className="underline decoration-dotted hover:text-tint hover:decoration-solid"
                 target="_blank"
                 href="https://ui.shadcn.com/"
               >
@@ -124,7 +124,7 @@ export function HomePage({
               </a>{" "}
               +{" "}
               <a
-                className="underline decoration-dotted hover:text-blue hover:decoration-solid"
+                className="underline decoration-dotted hover:text-tint hover:decoration-solid"
                 target="_blank"
                 href="https://base-ui.com/"
               >
@@ -132,7 +132,7 @@ export function HomePage({
               </a>
               , and{" "}
               <a
-                className="underline decoration-dotted hover:text-blue hover:decoration-solid"
+                className="underline decoration-dotted hover:text-tint hover:decoration-solid"
                 target="_blank"
                 href="https://workers.cloudflare.com/"
               >

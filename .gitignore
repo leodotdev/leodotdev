@@ -19,8 +19,9 @@ pnpm-debug.log*
 /.claude/worktrees/
 
 # Anthropic's typefaces for the /work/claude docs: licensed files, deployed
-# with the site from a local copy but kept out of this public repository
-/public/fonts/
+# with the site from a local copy but kept out of this public repository.
+# (Paper Mono, in the same folder, is open source and is committed.)
+/public/fonts/anthropic-*
 
 # typescript
 *.tsbuildinfo

@@ -15,7 +15,7 @@ function CompanyLink({ exp }: { exp: Experience }) {
   if (!exp.companyUrl) return <span>{exp.company}</span>
   return (
     <a
-      className="group-hover/item:text-blue group-hover/item:underline"
+      className="group-hover/item:text-tint group-hover/item:underline"
       href={exp.companyUrl}
       target="_blank"
       onClick={(e) => e.stopPropagation()}
@@ -43,7 +43,7 @@ function ProjectLinks({ exp }: { exp: Experience }) {
           {i > 0 && (i === names.length - 1 ? " & " : ", ")}
           {urls[i] ? (
             <a
-              className="underline decoration-dotted hover:text-blue hover:decoration-solid"
+              className="underline decoration-dotted hover:text-tint hover:decoration-solid"
               href={urls[i]}
               target="_blank"
               onClick={(e) => e.stopPropagation()}
@@ -109,7 +109,7 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
                     {exp.company.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col">
+                <div className="flex flex-col gap-1">
                   {exp.position && <div>{exp.position}</div>}
                   {(exp.contract || exp.team || exp.project) && (
                     <div className="text-xs text-muted-foreground">
@@ -123,7 +123,7 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
                           Client:{" "}
                           {exp.projectCompanyUrl ? (
                             <a
-                              className="underline decoration-dotted hover:text-blue hover:decoration-solid"
+                              className="underline decoration-dotted hover:text-tint hover:decoration-solid"
                               href={exp.projectCompanyUrl}
                               target="_blank"
                               onClick={(e) => e.stopPropagation()}
@@ -141,7 +141,7 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
                   )}
                 </div>
               </div>
-              <div className="flex max-w-[45%] flex-col items-end text-end md:max-w-none md:shrink-0">
+              <div className="flex max-w-[45%] flex-col items-end gap-1 text-end md:max-w-none md:shrink-0">
                 <div>
                   {exp.displayName ? (
                     <>

@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { flushSync } from "react-dom"
 import { TbArrowUpRight, TbCheck, TbCopy, TbChevronDown } from "react-icons/tb"
+import { BackButtonExit } from "@/components/BackButton"
 import { GridSwitcher } from "@/components/GridSwitcher"
 import { ThemeSwitcher } from "@/components/ThemeSwitcher"
 import { Button } from "@/components/ui/button"
@@ -15,7 +16,9 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 interface NavigationProps {
-  children?: React.ReactNode // For custom first item like BackButton
+  /** What goes before the name: the Back button, on a page under the home page. */
+  children?: React.ReactNode
+  className?: string
 }
 
 /** The Contact dropdown: Twitter, copy email, LinkedIn and GitHub. */
@@ -103,22 +106,51 @@ export function ContactMenu() {
   )
 }
 
-export function Navigation({ children }: NavigationProps) {
+/**
+ * The top of every page: the name and title, then Contact and the theme and
+ * grid switchers. The home page shows it as is; a page under it passes the
+ * Back button, which sits to the left of the name. The button slides in,
+ * moving the name over, and slides out again on the page that follows.
+ */
+export function Navigation({ children, className }: NavigationProps) {
+  // With the Back button a phone is short of room: the row's gaps tighten
+  // from 16px to 8px there, and the title wraps onto two lines as it does on
+  // the home page.
+  const back = Boolean(children)
   return (
-    <div className="border-b bg-background">
-      <div className="mx-auto flex max-w-[960px] items-center justify-between px-6 py-4 md:px-12">
-        <div className="flex flex-1 flex-wrap items-center gap-2">
-          {children}
+    <div
+      className={cn(
+        "flex items-center justify-between gap-4 px-6 pt-12 md:px-12",
+        back && "max-md:gap-2",
+        className
+      )}
+    >
+      <div
+        className={cn(
+          "flex min-w-0 items-center gap-4",
+          back && "max-md:gap-2"
+        )}
+      >
+        {/* Without a Back button of its own, a page shows the last page's
+            one leaving, if it had one. */}
+        {children ?? <BackButtonExit />}
+        <div className="min-w-0">
+          <div className="font-semibold">Leo Succar</div>
+          <div className="text-muted-foreground">Designer &amp; Developer</div>
         </div>
-        {/* Contact, then the theme and grid switchers, as on the home page. */}
-        <div className="flex items-center gap-4">
-          {/* Services link hidden for now
-          <Button variant="pill" render={<a href="/soon" />}>Services</Button>
-          */}
-          <ContactMenu />
-          <ThemeSwitcher />
-          <GridSwitcher />
-        </div>
+      </div>
+      <div
+        className={cn(
+          "flex shrink-0 items-center gap-4",
+          back && "max-md:gap-2"
+        )}
+      >
+        {/* Services link hidden for now
+        <Button variant="pill" render={<a href="/soon" />}>Services</Button>
+        */}
+        <ContactMenu />
+        <ThemeSwitcher />
+        <GridSwitcher />
       </div>
     </div>
   )

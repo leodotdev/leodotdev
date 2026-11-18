@@ -2,9 +2,13 @@ import chapters from "@/lib/claude-work.json"
 import type { GalleryFrame } from "@/components/work/frame-gallery"
 
 // The topics of the Claude.com design system docs at /work/claude, in order.
-// Each group of topics is one page (a tab). A "live" topic is built in HTML and
-// CSS (src/components/work/claude/pages); a "frames" topic still shows frames
-// exported from the Figma file and is replaced by a live one as it is rebuilt.
+// They are grouped the way the system's Figma file is, by its four pages:
+// Atoms (color, type, grid, icons), Molecules (buttons, links, inputs, menus),
+// Organisms (the sections built from them) and Templates (whole pages). Each
+// group of topics is one page (a tab). A "live" topic is built in HTML and
+// CSS (src/components/work/claude/pages); a "frames" topic shows frames
+// exported from the Figma file. Only the Templates group is frames now: whole
+// pages, kept as pictures.
 
 export type Doc = {
   slug: string
@@ -68,117 +72,124 @@ function frames(
 
 export const DOCS: Array<Doc> = [
   live(
-    "Foundations",
+    "Atoms",
     "color",
     "Color",
-    "A warm neutral ramp, six secondary colours, Clay, and five themes."
+    "A warm neutral ramp, six secondary colors, Clay, and five themes."
   ),
   live(
-    "Foundations",
+    "Atoms",
     "typography",
     "Typography",
     "Three families and fifteen text styles."
   ),
   live(
-    "Foundations",
+    "Atoms",
     "layout",
     "Layout",
     "The grid, spacing units, radii and shadow."
   ),
-  frames(
-    "Foundations",
+  live(
+    "Atoms",
     "iconography",
     "Iconography",
-    "Icons, pictograms and illustrations.",
-    "Atoms",
-    ["Iconography"]
+    "Illustrations and pictograms, in three sizes and on every theme."
   ),
 
   live(
-    "Components",
+    "Molecules",
     "buttons",
-    "Buttons and links",
+    "Buttons & Links",
     "Four button variants in three sizes, and three kinds of link."
   ),
   live(
-    "Components",
+    "Molecules",
     "forms",
     "Forms",
     "Text input, checkbox, radio and switch."
   ),
   live(
-    "Components",
-    "overlays",
-    "Menu and tooltip",
-    "Three kinds of menu, and a tooltip for inline terms."
+    "Molecules",
+    "menu",
+    "Menu",
+    "Navigation menus, prompt suggestions and page actions."
+  ),
+  live(
+    "Molecules",
+    "tooltip",
+    "Tooltip",
+    "A short explanation for a term in running text."
   ),
 
   live(
-    "Patterns",
+    "Organisms",
     "navigation",
     "Navigation",
     "The site header, with its menus and breadcrumb bar."
   ),
-  frames(
-    "Patterns",
-    "footer",
-    "Footer and headers",
-    "The footer on every breakpoint, and section headers.",
+  live(
     "Organisms",
-    ["Footer", "Headers"]
+    "headers",
+    "Headers & Footer",
+    "Section headers in five sizes, and the site footer."
+  ),
+  live("Organisms", "heroes", "Page Heroes", "Three page-hero layouts."),
+  live(
+    "Organisms",
+    "features",
+    "Feature Highlight",
+    "An icon, a title and a paragraph, in columns or across the page."
   ),
   live(
-    "Patterns",
-    "heroes",
-    "Heroes and features",
-    "Three page-hero layouts, and feature highlights."
-  ),
-  live(
-    "Patterns",
+    "Organisms",
     "cards",
-    "Cards and prompts",
+    "Cards & Prompts",
     "Link and video cards, the prompt box and clipboard copy."
   ),
-  frames(
-    "Patterns",
-    "artifacts",
-    "Artifacts and marginalia",
-    "The artifact viewer on every breakpoint, and the cards that sit beside long pages.",
+  live(
     "Organisms",
-    ["Artifacts", "Marginalia"]
+    "artifacts",
+    "Artifacts & Marginalia",
+    "The artifact viewer, and the cards that sit beside long pages."
   ),
   live(
-    "Patterns",
-    "disclosure",
-    "Tabs and disclosure",
-    "Tabs, select, accordion and carousel."
+    "Organisms",
+    "tabs",
+    "Tabs",
+    "A segmented control in three sizes, with an overflow menu."
+  ),
+  live("Organisms", "select", "Select", "A field that opens a list."),
+  live("Organisms", "accordion", "Accordion", "Rows that open and close."),
+  live(
+    "Organisms",
+    "carousel",
+    "Carousel",
+    "Bullets between a previous and a next button."
   ),
   live(
-    "Patterns",
+    "Organisms",
     "proof",
     "Proof",
     "Quotes, proof cards, testimonials and customer-story details."
   ),
-  frames(
-    "Patterns",
-    "media",
-    "Logo wall and video",
-    "The logo wall, the video lightbox and the video reel.",
+  live(
     "Organisms",
-    ["Logo Wall", "Video: Lightbox", "Video: Reel"]
+    "media",
+    "Logo Wall & Video",
+    "The logo wall, the video lightbox and the video reel."
   ),
 
   frames(
-    "Pages",
+    "Templates",
     "templates",
     "Templates",
     "The site's pages, on desktop and mobile.",
     "Templates"
   ),
   frames(
-    "Pages",
-    "partner-pages",
-    "Partner pages",
+    "Templates",
+    "b2b-pages",
+    "Templates: B2B Pages",
     "Partner, startup, campus, contact and newsletter pages.",
     "Partner and program pages"
   ),

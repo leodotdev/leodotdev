@@ -1,11 +1,5 @@
 import { THEMES } from "@/components/work/claude/docs"
-import {
-  DocHeader,
-  Section,
-  Spec,
-  Specimen,
-  usePreviewTheme,
-} from "@/components/work/claude/ui"
+import { Section, Specimen, usePreviewTheme } from "@/components/work/claude/ui"
 import { cn } from "@/lib/utils"
 
 const GRAYS = [
@@ -42,7 +36,7 @@ const ACCENTS: Array<[string, string, boolean?]> = [
   ["Sky", "#6a9bcc", true],
 ]
 
-// Clay and its two darker shades, then the two colours with one job each.
+// Clay and its two darker shades, then the two colors with one job each.
 const CLAY = [
   ["Clay", "#d97757"],
   ["Clay Interactive", "#c6613f"],
@@ -56,15 +50,7 @@ export function ColorDoc() {
 
   return (
     <>
-      <DocHeader group="Foundations" title="Color">
-        A warm neutral ramp, six secondary colours and one accent, Clay. Five
-        themes decide which neutrals a surface uses.
-      </DocHeader>
-
-      <Section
-        title="Palette"
-        description="Twenty-one neutrals from white to black, six secondary colours, Clay with its two darker shades, and one colour each for errors and the blue switch."
-      >
+      <Section title="Palette">
         <Specimen className="flex flex-col items-center gap-2 px-4 py-10 md:px-8 md:py-16">
           <div className="grid w-full grid-cols-7 gap-1 sm:grid-cols-[repeat(21,minmax(0,1fr))] md:gap-1.5">
             {GRAYS.map(([step, value], i) => (
@@ -112,16 +98,11 @@ export function ColorDoc() {
             ))}
           </div>
         </Specimen>
-        <Spec>
-          Heather, Cactus and Peach are for light themes; dark themes swap them
-          for Plum, Mineral and Clay. Clay Dark is the accent on dark themes and
-          the focus outline everywhere.
-        </Spec>
       </Section>
 
       <Section
         title="Themes"
-        description="A theme is three neighbouring neutrals used as the primary, secondary and tertiary background, with foregrounds and borders to match. Ivory is the default. Select a theme and these pages wear it."
+        description="Five themes, each three neighboring neutrals. Pick one and the figures wear it."
       >
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
           {THEMES.map(({ id, name }) => (
@@ -132,7 +113,7 @@ export function ColorDoc() {
               data-wave-manual
               aria-pressed={theme === id}
               className="group flex flex-col gap-1.5 text-left"
-              onClick={() => setTheme(id)}
+              onClick={(e) => setTheme(id, e)}
             >
               <Specimen
                 theme={id}
@@ -141,7 +122,7 @@ export function ColorDoc() {
                   // less that padding for the chips' own 8px corners.
                   "flex w-full flex-col items-stretch gap-1.5 p-3",
                   theme === id
-                    ? "outline-2 outline-blue"
+                    ? "outline-2 outline-tint"
                     : "group-hover:outline-gray"
                 )}
               >
@@ -171,10 +152,6 @@ export function ColorDoc() {
             </button>
           ))}
         </div>
-        <Spec>
-          In dark mode, White switches to Dark 2; Ivory and Neutral 1 switch to
-          Dark 3.
-        </Spec>
       </Section>
     </>
   )

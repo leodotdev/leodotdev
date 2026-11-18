@@ -12,13 +12,9 @@ import {
   TbPlus,
   TbSearch,
 } from "react-icons/tb"
-import {
-  Cell,
-  DocHeader,
-  Section,
-  Spec,
-  Specimen,
-} from "@/components/work/claude/ui"
+import { DemoCursor } from "@/components/work/claude/demo-cursor"
+import { Cell, Section, Specimen } from "@/components/work/claude/ui"
+import type { DemoStep } from "@/components/work/claude/demo-cursor"
 
 const quiet = { "data-wave-hover": "off", "data-wave-manual": true } as const
 
@@ -248,56 +244,84 @@ function Carousel() {
   )
 }
 
-export function DisclosureDoc() {
+// What the demo cursor tries on the tabs figure. The figure has five sets of
+// tabs with the same names, so a step says which set it means (`nth`): the
+// first, the medium and large ones, and the last, whose overflow menu it
+// opens to pick a tab from. It ends with every set back on its first tab.
+const TABS_DEMO: Array<DemoStep> = [
+  { on: '[aria-expanded="true"]', click: "close", rest: 200 },
+  { on: ".cds-tab", text: "Code", click: true },
+  { on: ".cds-tab", text: "Research", click: true },
+  { on: ".cds-tab", text: "Create", click: true },
+  { on: ".cds-tab", text: "Code", nth: 2, click: true },
+  { on: ".cds-tab", text: "Research", nth: 3, click: true },
+  { on: ".cds-tab[aria-expanded]", nth: 3, click: "open" },
+  { on: ".cds-menu-item", text: "Analyze" },
+  { on: ".cds-menu-item", text: "Create", click: true },
+  { on: ".cds-tab", text: "Learn", nth: 4, click: true, rest: 600 },
+  { on: ".cds-tab", text: "Learn", nth: 3, click: true },
+  { on: ".cds-tab", text: "Learn", nth: 2, click: true },
+  { on: ".cds-tab", text: "Learn", click: true, rest: 700 },
+]
+
+export function TabsDoc() {
   return (
     <>
-      <DocHeader group="Patterns" title="Tabs and disclosure">
-        Four ways to show one thing at a time: tabs, a select, an accordion and
-        a carousel. All of them work.
-      </DocHeader>
-
-      <Section
-        title="Tabs and select"
-        description="A navigational component that organizes related content into labeled panels, allowing users to switch between different views within the same interface area. The current tab sits on a white pill; a hovered one darkens its label. When tabs run out of room the rest move into an overflow menu, and on narrow screens a select takes their place."
-      >
-        <Specimen className="grid gap-x-8 gap-y-8 p-6 md:p-8">
-          <Cell label="With icons">
-            <Tabs icons />
-          </Cell>
-          <Cell label="Small, medium and large">
-            <Tabs size="small" max={3} />
-            <Tabs max={3} />
-            <Tabs size="large" max={3} />
-          </Cell>
-          <div className="grid gap-8 pb-28 sm:grid-cols-2">
+      <Section>
+        <Specimen>
+          <DemoCursor
+            steps={TABS_DEMO}
+            className="grid gap-x-8 gap-y-8 p-6 pb-28 md:p-8 md:pb-28"
+          >
+            <Cell label="With icons">
+              <Tabs icons />
+            </Cell>
+            <Cell label="Small, medium & large">
+              <Tabs size="small" max={3} />
+              <Tabs max={3} />
+              <Tabs size="large" max={3} />
+            </Cell>
             <Cell label="Overflow menu">
               <Tabs max={3} />
             </Cell>
-            <Cell label="Select">
-              <Select />
-            </Cell>
-          </div>
+          </DemoCursor>
         </Specimen>
-        <Spec>
-          Tabs sit in a track with 4px padding and a 12px radius (2px and 8px at
-          the small size); each tab is a 28, 36 or 40px button with medium 500
-          text. The select is 36px tall with a 12px radius and 20px icons.
-        </Spec>
       </Section>
+    </>
+  )
+}
 
-      <Section
-        title="Accordion and carousel"
-        description="The accordion is a space-efficient content organization component that displays collapsible question-and-answer pairs or content sections with expand/collapse functionality. The carousel's controls are two icon buttons either side of a row of bullets."
-      >
-        <Specimen className="grid items-start gap-x-12 gap-y-10 p-6 md:p-8 xl:grid-cols-[minmax(0,1fr)_auto]">
+export function SelectDoc() {
+  return (
+    <>
+      <Section>
+        <Specimen className="p-6 pb-56 md:p-8 md:pb-56">
+          <Select />
+        </Specimen>
+      </Section>
+    </>
+  )
+}
+
+export function AccordionDoc() {
+  return (
+    <>
+      <Section>
+        <Specimen className="p-6 md:p-8">
           <Accordion />
+        </Specimen>
+      </Section>
+    </>
+  )
+}
+
+export function CarouselDoc() {
+  return (
+    <>
+      <Section>
+        <Specimen className="flex justify-center p-6 md:p-8">
           <Carousel />
         </Specimen>
-        <Spec>
-          Accordion rows have 32px above and below a serif 19/24 question, a
-          20px plus or minus, and a 17/28 answer. Carousel bullets are 5px, 16px
-          apart, 32px from the buttons.
-        </Spec>
       </Section>
     </>
   )

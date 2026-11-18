@@ -1,4 +1,4 @@
-import { DocHeader, Section, Spec, Specimen } from "@/components/work/claude/ui"
+import { Section, Specimen } from "@/components/work/claude/ui"
 
 // The quotes and figures are the ones in the Figma file's own specimens.
 
@@ -13,14 +13,9 @@ const FACTS = [
 export function ProofDoc() {
   return (
     <>
-      <DocHeader group="Patterns" title="Proof">
-        How customers speak on the site: pull quotes, inline quotes, proof
-        cards, testimonials and the facts beside a customer story.
-      </DocHeader>
-
       <Section
         title="Quotes"
-        description="A pull quote sets a line in the display serif between two rules. An inline quote sits in running content, hanging off a rule on its left."
+        description="A pull quote between two rules, and an inline quote hanging off one."
       >
         <Specimen className="flex flex-col gap-12 p-6 md:p-8">
           <figure className="cds-pullquote m-0">
@@ -44,16 +39,11 @@ export function ProofDoc() {
             <footer>Matthew Quan, Enterprise Growth Lead, Clay</footer>
           </blockquote>
         </Specimen>
-        <Spec>
-          Pull quote: Headline 2 (44/56) with 96px above and below and 48px to
-          the name. Inline quote: serif 20/32, 32px from its rule, with a 15/24
-          attribution.
-        </Spec>
       </Section>
 
       <Section
-        title="Proof cards and testimonial"
-        description="A proof card pairs a customer's logo with either a short quote or one large figure; several sit side by side or in a carousel. The testimonial blurb gives one customer a full row. Customer names stand in for their logos here."
+        title="Proof Cards & Testimonial"
+        description="A customer's logo with a short quote or one large figure. Names stand in for logos here."
       >
         <Specimen className="flex flex-col gap-12 p-6 md:p-8">
           <div className="cds-proofs">
@@ -93,16 +83,11 @@ export function ProofDoc() {
             </div>
           </div>
         </Specimen>
-        <Spec>
-          Proof card: 12/32/16/32 padding, a 64px logo row, 48px to the body; a
-          quote is 15/24 and a figure is the serif at 72/80, weight 300.
-          Testimonial: 32px above and below, quote in Body 1 (20/32).
-        </Spec>
       </Section>
 
       <Section
-        title="Customer story details"
-        description="The facts about a customer and two or three results, shown beside their story."
+        title="Customer Story Details"
+        description="The facts and results shown beside a customer's story."
       >
         <Specimen className="p-6 md:p-8">
           <div className="cds-meta">
@@ -124,10 +109,6 @@ export function ProofDoc() {
             </div>
           </div>
         </Specimen>
-        <Spec>
-          Facts are 12/18 with a 123px label column; results are serif 25/32
-          over a 12/18 line.
-        </Spec>
       </Section>
     </>
   )
