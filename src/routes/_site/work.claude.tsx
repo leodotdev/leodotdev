@@ -63,7 +63,7 @@ const FACTS: Array<[label: string, values: Array<React.ReactNode>]> = [
       "Leo Succar",
     ],
   ],
-  ["Client", ["Anthropic"]],
+  ["Client", ["Design Business Company"]],
   ["Year", ["2025–26"]],
 ]
 

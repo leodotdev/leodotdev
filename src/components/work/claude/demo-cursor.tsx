@@ -23,6 +23,19 @@ export type DemoStep = {
    * sent to it as `demo-drag` events, and the cursor rides along.
    */
   drag?: number
+  /**
+   * Type this into it: a text field, or a box with one inside. The field is
+   * not really focused (that would take the visitor's focus); its box is
+   * marked `data-state="focus"`, which the system's fields style the same
+   * way. What a field held before comes back when the steps start over, or
+   * when the cursor leaves.
+   */
+  type?: string
+  /**
+   * Where on it to rest, as fractions of its width and height. Without this
+   * the cursor picks a spot a little off its middle.
+   */
+  at?: [x: number, y: number]
   /** How long to rest on it, in ms. */
   rest?: number
 }
@@ -32,9 +45,9 @@ const ease = "cubic-bezier(0.45, 0, 0.2, 1)"
 
 /**
  * A small cursor that tries a figure out by itself: it travels between the
- * figure's own controls, hovers them, clicks them and drags them, so menus
- * open, tabs change and a figure resizes as they would for a visitor, then
- * starts over.
+ * figure's own controls, hovers them, clicks them, types in them and drags
+ * them, so menus open, tabs change, fields fill and a figure resizes as they
+ * would for a visitor, then starts over.
  *
  * It is a guest. The moment the visitor's own pointer (or keyboard focus)
  * enters the figure it leaves, and it comes back a little after they go.
@@ -105,6 +118,24 @@ export function DemoCursor({
       under = el
     }
 
+    // The fields it has typed in, and what each held before.
+    const typed = new Map<HTMLInputElement | HTMLTextAreaElement, string>()
+    const restore = () => {
+      for (const [field, value] of typed) field.value = value
+      typed.clear()
+    }
+
+    /** A press: the arrow dips, and a ring spreads from its tip. */
+    const press = async () => {
+      arrow.animate([{ scale: 1 }, { scale: 0.8, offset: 0.4 }, { scale: 1 }], {
+        duration: 260,
+        easing: ease,
+      })
+      tip.toggleAttribute("data-press", true)
+      await sleep(520)
+      tip.toggleAttribute("data-press", false)
+    }
+
     const find = (step: DemoStep) => {
       let skip = step.nth ?? 0
       for (const el of root.querySelectorAll<HTMLElement>(step.on)) {
@@ -150,15 +181,15 @@ export function DemoCursor({
     }
 
     /**
-     * A point on an element, in the figure's pixels: a little off its middle,
-     * or its exact middle for something to be gripped.
+     * A point on an element, in the figure's pixels: the spot asked for, or
+     * else one a little off its middle.
      */
-    const pointOn = (el: Element, exact = false) => {
+    const pointOn = (el: Element, spot?: [number, number]) => {
       const frame = root.getBoundingClientRect()
       const box = el.getBoundingClientRect()
       const k = scale()
-      const fx = exact ? 0.5 : 0.4 + Math.random() * 0.25
-      const fy = exact ? 0.5 : 0.5 + Math.random() * 0.2
+      const fx = spot ? spot[0] : 0.4 + Math.random() * 0.25
+      const fy = spot ? spot[1] : 0.5 + Math.random() * 0.2
       return {
         x: (box.left - frame.left + box.width * fx) / k,
         y: (box.top - frame.top + box.height * fy) / k,
@@ -169,6 +200,7 @@ export function DemoCursor({
       run++
       playing = false
       hover(null)
+      restore()
       if (!shown) return
       // Off, up and away.
       void travel(at.x + 36, at.y - 28, 0)
@@ -188,7 +220,11 @@ export function DemoCursor({
           const open = el.getAttribute("aria-expanded") === "true"
           if (step.click === "open" && open) continue
           if (step.click === "close" && !open) continue
-          const point = pointOn(el, step.drag !== undefined)
+          // Something to be gripped is taken by its exact middle.
+          const point = pointOn(
+            el,
+            step.at ?? (step.drag !== undefined ? [0.5, 0.5] : undefined)
+          )
           await travel(point.x, point.y)
           if (!live()) return
           hover(el)
@@ -249,20 +285,40 @@ export function DemoCursor({
             await sleep(700)
             if (!live()) return
           }
+          if (step.type !== undefined && el.isConnected) {
+            const field = el.matches("input, textarea")
+              ? el
+              : el.querySelector("input, textarea")
+            if (
+              field instanceof HTMLInputElement ||
+              field instanceof HTMLTextAreaElement
+            ) {
+              // A click into the field, which then looks focused, and the
+              // text a letter at a time, at an uneven pace.
+              await press()
+              if (!live()) return
+              if (!typed.has(field)) typed.set(field, field.value)
+              if (hovered === el) el.setAttribute("data-state", "focus")
+              field.value = ""
+              for (const letter of step.type) {
+                field.value += letter
+                await sleep(30 + Math.random() * 60)
+                if (!live()) return
+              }
+              await sleep(600)
+              if (!live()) return
+            }
+          }
           if (step.click && el.isConnected) {
-            // A press: the arrow dips, and a ring spreads from its tip.
-            arrow.animate(
-              [{ scale: 1 }, { scale: 0.8, offset: 0.4 }, { scale: 1 }],
-              { duration: 260, easing: ease }
-            )
-            tip.toggleAttribute("data-press", true)
+            const pressed = press()
             el.click()
-            await sleep(520)
-            tip.toggleAttribute("data-press", false)
+            await pressed
             if (!live()) return
           }
         }
         await sleep(900)
+        if (!live()) return
+        restore()
       }
     }
 
@@ -294,12 +350,18 @@ export function DemoCursor({
       visitor = false
       decide()
     }
+    // On screen means most of the figure is showing, or, for a figure taller
+    // than the window, that it fills half the window.
     const watcher = new IntersectionObserver(
-      ([entry]) => {
-        inView = entry.isIntersecting
+      (entries) => {
+        // Several updates can arrive together; the last is how things stand.
+        const entry = entries[entries.length - 1]
+        inView =
+          entry.intersectionRatio >= 0.6 ||
+          entry.intersectionRect.height >= window.innerHeight * 0.5
         decide()
       },
-      { threshold: 0.6 }
+      { threshold: Array.from({ length: 21 }, (_, i) => i / 20) }
     )
     watcher.observe(root)
     root.addEventListener("pointerenter", onEnter)
@@ -315,6 +377,7 @@ export function DemoCursor({
       root.removeEventListener("focusin", onFocusIn)
       root.removeEventListener("focusout", onFocusOut)
       hover(null)
+      restore()
       motion?.cancel()
     }
   }, [steps])

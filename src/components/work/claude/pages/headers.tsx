@@ -4,9 +4,11 @@ import {
   TbBrandX,
   TbBrandYoutubeFilled,
 } from "react-icons/tb"
+import { DemoCursor } from "@/components/work/claude/demo-cursor"
 import { ClaudeLogo } from "@/components/work/claude/logo"
 import { Button, TextInput } from "@/components/work/claude/specimens"
 import { Section, Specimen } from "@/components/work/claude/ui"
+import type { DemoStep } from "@/components/work/claude/demo-cursor"
 
 // A pictogram from the system's set, exported from the Figma file as an SVG.
 const PICTOGRAM = "/work/claude/illustrations/hand-link.svg"
@@ -220,15 +222,50 @@ function Footer({ minimal = false }: { minimal?: boolean }) {
   )
 }
 
+// What the demo cursor tries on a header: its two buttons, with a rest on
+// the pictogram between rounds.
+const HEADER_DEMO: Array<DemoStep> = [
+  { on: ".cds-btn", text: "Primary", click: true, rest: 600 },
+  { on: ".cds-btn", text: "Secondary", rest: 900 },
+  { on: "img", rest: 1800 },
+]
+
+const link = ".cds-footer-block a"
+
+// On the footer it writes in the field and sends it, then looks over a link
+// in each column (the others dim) and the social icons.
+const FOOTER_DEMO: Array<DemoStep> = [
+  { on: ".cds-input", type: "What can Claude do?" },
+  { on: ".cds-input .cds-btn", click: true },
+  { on: link, text: "Claude Code", rest: 600 },
+  { on: link, text: "Coding", rest: 600 },
+  { on: link, text: "Customer stories", rest: 600 },
+  { on: link, text: "Research", rest: 600 },
+  { on: link, text: "Support center", rest: 600 },
+  { on: ".cds-footer-social a", nth: 1, rest: 800 },
+]
+
+const MINIMAL_DEMO: Array<DemoStep> = [
+  { on: link, text: "Privacy policy", rest: 700 },
+  { on: link, text: "Terms of service", rest: 700 },
+  { on: link, text: "Usage policy", rest: 700 },
+  { on: ".cds-footer-social a", nth: 0, rest: 700 },
+  { on: ".cds-footer-social a", nth: 3, rest: 900 },
+]
+
 export function HeadersDoc() {
   return (
     <>
       <Section title="Headers">
         <Specimen>
-          <Header size="p1" />
+          <DemoCursor steps={HEADER_DEMO}>
+            <Header size="p1" />
+          </DemoCursor>
         </Specimen>
         <Specimen>
-          <Header size="p3" align="left" />
+          <DemoCursor steps={HEADER_DEMO}>
+            <Header size="p3" align="left" />
+          </DemoCursor>
         </Specimen>
       </Section>
 
@@ -244,13 +281,17 @@ export function HeadersDoc() {
 
       <Section title="Footer">
         <Specimen theme="dark-3">
-          <Footer />
+          <DemoCursor steps={FOOTER_DEMO}>
+            <Footer />
+          </DemoCursor>
         </Specimen>
       </Section>
 
       <Section title="Minimal Footer">
         <Specimen theme="dark-3">
-          <Footer minimal />
+          <DemoCursor steps={MINIMAL_DEMO}>
+            <Footer minimal />
+          </DemoCursor>
         </Specimen>
       </Section>
     </>

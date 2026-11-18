@@ -1202,33 +1202,56 @@
   padding: 0 8px;
   gap: 0;
 }
-.cds-prompt:hover,
-.cds-prompt:focus-within {
+/* Hovered: under the pointer, or marked so for the docs, on the box itself
+   or on something inside it. */
+.cds-prompt:is(:hover, [data-state="hover"], :has([data-state="hover"])),
+.cds-prompt:is(:focus-within, [data-state="focus"]) {
   box-shadow: 0 4px 20px rgb(0 0 0 / 0.04);
 }
-.cds-prompt:hover textarea,
-.cds-prompt:focus-within textarea {
+.cds-prompt:is(:hover, [data-state="hover"], :has([data-state="hover"]))
+  textarea,
+.cds-prompt:is(:focus-within, [data-state="focus"]) textarea {
   color: var(--cds-fg);
 }
-.cds-prompt:hover .cds-btn,
-.cds-prompt:focus-within .cds-btn {
+.cds-prompt:is(:hover, [data-state="hover"], :has([data-state="hover"]))
+  .cds-btn,
+.cds-prompt:is(:focus-within, [data-state="focus"]) .cds-btn {
   gap: 8px;
   padding: 0 12px 0 16px;
 }
-.cds-prompt:hover .cds-btn span,
-.cds-prompt:focus-within .cds-btn span {
+.cds-prompt:is(:hover, [data-state="hover"], :has([data-state="hover"]))
+  .cds-btn
+  span,
+.cds-prompt:is(:focus-within, [data-state="focus"]) .cds-btn span {
   max-width: 100px;
   opacity: 1;
 }
-.cds-prompts:has(.cds-prompt:hover) .cds-prompt:not(:hover) {
+.cds-prompts:has(
+    .cds-prompt:hover,
+    .cds-prompt[data-state="hover"],
+    .cds-prompt [data-state="hover"]
+  )
+  .cds-prompt:not(:hover, [data-state="hover"], :has([data-state="hover"])) {
   border-color: var(--cds-border-3);
   background: var(--cds-bg);
   box-shadow: 0 4px 20px rgb(0 0 0 / 0.04);
 }
-.cds-prompts:has(.cds-prompt:hover) .cds-prompt:not(:hover) textarea {
+.cds-prompts:has(
+    .cds-prompt:hover,
+    .cds-prompt[data-state="hover"],
+    .cds-prompt [data-state="hover"]
+  )
+  .cds-prompt:not(:hover, [data-state="hover"], :has([data-state="hover"]))
+  textarea {
   color: var(--cds-border);
 }
-.cds-prompts:has(.cds-prompt:hover) .cds-prompt:not(:hover) .cds-btn {
+.cds-prompts:has(
+    .cds-prompt:hover,
+    .cds-prompt[data-state="hover"],
+    .cds-prompt [data-state="hover"]
+  )
+  .cds-prompt:not(:hover, [data-state="hover"], :has([data-state="hover"]))
+  .cds-btn {
   background: transparent;
   box-shadow: 0 0 0 1px var(--cds-border-3);
   color: var(--cds-border);
@@ -1269,7 +1292,8 @@
   color: var(--cds-fg-3);
   cursor: pointer;
 }
-.cds-copy button:hover {
+.cds-copy button:hover,
+.cds-copy button[data-state="hover"] {
   color: var(--cds-fg);
 }
 .cds-copy button:focus-visible {
@@ -2027,7 +2051,8 @@
   transition: color 0.2s;
 }
 /* The same stepping back as in a menu: the links not under the pointer dim. */
-.cds-footer-links:has(a:hover) a:not(:hover) {
+.cds-footer-links:has(a:is(:hover, [data-state="hover"]))
+  a:not(:hover, [data-state="hover"]) {
   color: var(--cds-fg-3);
 }
 .cds-footer-meta {
@@ -2056,7 +2081,8 @@
   color: var(--cds-fg-3);
   transition: color 0.2s;
 }
-.cds-footer-social a:hover {
+.cds-footer-social a:hover,
+.cds-footer-social a[data-state="hover"] {
   color: var(--cds-fg);
 }
 .cds-footer-social svg {
@@ -2487,7 +2513,8 @@
 .cds-margin-menu button:last-child {
   box-shadow: none;
 }
-.cds-margin-menu button:hover {
+.cds-margin-menu button:hover,
+.cds-margin-menu button[data-state="hover"] {
   color: var(--cds-fg);
 }
 .cds-margin-menu svg {
@@ -2618,7 +2645,8 @@
     color 0.15s ease,
     scale 0.2s ease;
 }
-.cds-playhead:hover {
+.cds-playhead:hover,
+.cds-playhead[data-state="hover"] {
   color: var(--cds-fg);
   scale: 1.04;
 }

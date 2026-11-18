@@ -8,7 +8,9 @@ import {
   TbSparkles,
   TbX,
 } from "react-icons/tb"
+import { DemoCursor } from "@/components/work/claude/demo-cursor"
 import { Section, Specimen } from "@/components/work/claude/ui"
+import type { DemoStep } from "@/components/work/claude/demo-cursor"
 
 const quiet = { "data-wave-hover": "off", "data-wave-manual": true } as const
 
@@ -57,8 +59,13 @@ function Tooltip() {
       Learn anything through conversation. Upload docs or{" "}
       <span
         className="relative inline-block"
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
+        // Pointer events, not mouse ones: the docs' demo cursor sends these.
+        onPointerEnter={(e) => {
+          if (e.pointerType === "mouse") setOpen(true)
+        }}
+        onPointerLeave={(e) => {
+          if (e.pointerType === "mouse") setOpen(false)
+        }}
       >
         <button
           type="button"
@@ -90,66 +97,98 @@ function Tooltip() {
   )
 }
 
+// What the demo cursor tries: it looks down each of the three menus in turn
+// (the rows it is not on dim) and picks one.
+const MENU_DEMO: Array<DemoStep> = [
+  { on: ".cds-menu-item", text: "Claude Code" },
+  { on: ".cds-menu-item", text: "Sonnet" },
+  { on: ".cds-menu-item", text: "Haiku", click: true },
+  { on: ".cds-menu-item", text: "Write grant proposals" },
+  { on: ".cds-menu-item", text: "Write video scripts", click: true },
+  { on: ".cds-menu-item", text: "Download pitch-worthy PDF" },
+  { on: ".cds-menu-item", text: "View as markdown" },
+  {
+    on: ".cds-menu-item",
+    text: "Ask questions about this page",
+    click: true,
+    rest: 700,
+  },
+]
+
+// It rests on the dotted word, which opens the tooltip, reads it, and moves
+// off down the paragraph, which closes it.
+const TOOLTIP_DEMO: Array<DemoStep> = [
+  { on: ".cds-tip", rest: 2800 },
+  { on: ".cds-tip-text", at: [0.8, 0.9], rest: 1600 },
+]
+
 export function MenuDoc() {
   return (
     <>
       <Section>
-        <Specimen className="flex flex-wrap items-start gap-6 p-6 md:p-8">
-          <div className="cds-menu" role="group" aria-label="Navigation menu">
-            <div className="cds-menu-header">Products</div>
-            <Item>Claude</Item>
-            <Item>Claude Code</Item>
-            <div className="cds-menu-rule" />
-            <div className="cds-menu-header">Models</div>
-            <Item external>Opus</Item>
-            <Item external>Sonnet</Item>
-            <Item external>Haiku</Item>
-          </div>
-
-          <div
-            className="cds-menu"
-            data-type="list"
-            role="group"
-            aria-label="Prompt suggestions"
+        <Specimen>
+          <DemoCursor
+            steps={MENU_DEMO}
+            className="flex flex-wrap items-start gap-6 p-6 md:p-8"
           >
-            <div className="cds-menu-header !px-0">
-              <span className="flex items-center gap-1 px-2 font-medium">
-                <TbPencil aria-hidden className="h-4 w-4" />
-                Write
-              </span>
-              <button
-                type="button"
-                className="cds-btn"
-                data-variant="tertiary"
-                data-size="small"
-                data-icon="only"
-                style={{ borderColor: "transparent" }}
-                aria-label="Close"
-                {...quiet}
-              >
-                <TbX aria-hidden />
-              </button>
+            <div className="cds-menu" role="group" aria-label="Navigation menu">
+              <div className="cds-menu-header">Products</div>
+              <Item>Claude</Item>
+              <Item>Claude Code</Item>
+              <div className="cds-menu-rule" />
+              <div className="cds-menu-header">Models</div>
+              <Item external>Opus</Item>
+              <Item external>Sonnet</Item>
+              <Item external>Haiku</Item>
             </div>
-            <Item>Write case studies</Item>
-            <Item>Write grant proposals</Item>
-            <Item>Write video scripts</Item>
-          </div>
 
-          <div
-            className="cds-menu"
-            data-type="list"
-            role="group"
-            aria-label="Page actions"
-          >
-            <Item icon={<TbCopy aria-hidden />}>Copy as markdown for LLMs</Item>
-            <Item icon={<TbDownload aria-hidden />}>
-              Download pitch-worthy PDF
-            </Item>
-            <Item icon={<TbFileText aria-hidden />}>View as markdown</Item>
-            <Item icon={<TbSparkles aria-hidden />}>
-              Ask questions about this page
-            </Item>
-          </div>
+            <div
+              className="cds-menu"
+              data-type="list"
+              role="group"
+              aria-label="Prompt suggestions"
+            >
+              <div className="cds-menu-header !px-0">
+                <span className="flex items-center gap-1 px-2 font-medium">
+                  <TbPencil aria-hidden className="h-4 w-4" />
+                  Write
+                </span>
+                <button
+                  type="button"
+                  className="cds-btn"
+                  data-variant="tertiary"
+                  data-size="small"
+                  data-icon="only"
+                  style={{ borderColor: "transparent" }}
+                  aria-label="Close"
+                  {...quiet}
+                >
+                  <TbX aria-hidden />
+                </button>
+              </div>
+              <Item>Write case studies</Item>
+              <Item>Write grant proposals</Item>
+              <Item>Write video scripts</Item>
+            </div>
+
+            <div
+              className="cds-menu"
+              data-type="list"
+              role="group"
+              aria-label="Page actions"
+            >
+              <Item icon={<TbCopy aria-hidden />}>
+                Copy as markdown for LLMs
+              </Item>
+              <Item icon={<TbDownload aria-hidden />}>
+                Download pitch-worthy PDF
+              </Item>
+              <Item icon={<TbFileText aria-hidden />}>View as markdown</Item>
+              <Item icon={<TbSparkles aria-hidden />}>
+                Ask questions about this page
+              </Item>
+            </div>
+          </DemoCursor>
         </Specimen>
       </Section>
     </>
@@ -160,8 +199,13 @@ export function TooltipDoc() {
   return (
     <>
       <Section>
-        <Specimen className="flex min-h-72 items-start p-6 md:p-8">
-          <Tooltip />
+        <Specimen>
+          <DemoCursor
+            steps={TOOLTIP_DEMO}
+            className="flex min-h-72 items-start p-6 md:p-8"
+          >
+            <Tooltip />
+          </DemoCursor>
         </Specimen>
       </Section>
     </>

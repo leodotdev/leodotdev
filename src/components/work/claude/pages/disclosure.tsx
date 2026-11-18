@@ -291,12 +291,44 @@ export function TabsDoc() {
   )
 }
 
+// It opens the list, looks down it and picks an option, twice, ending on the
+// first again.
+const SELECT_DEMO: Array<DemoStep> = [
+  { on: ".cds-select", click: "open" },
+  { on: ".cds-menu-item", text: "Code" },
+  { on: ".cds-menu-item", text: "Research", click: true, rest: 500 },
+  { on: ".cds-select", click: "open", rest: 700 },
+  { on: ".cds-menu-item", text: "Create" },
+  { on: ".cds-menu-item", text: "Learn", click: true, rest: 700 },
+]
+
+// It opens the second row, which closes the first, reads the answer, and
+// opens the first again.
+const ACCORDION_DEMO: Array<DemoStep> = [
+  { on: ".cds-accordion-head", nth: 1, click: "open" },
+  { on: ".cds-accordion-body", rest: 1600 },
+  { on: ".cds-accordion-head", nth: 0, click: "open" },
+  { on: ".cds-accordion-body", rest: 1600 },
+]
+
+// Three slides on and three back.
+const CAROUSEL_DEMO: Array<DemoStep> = [
+  { on: '[aria-label="Next"]', click: true },
+  { on: '[aria-label="Next"]', click: true, rest: 300 },
+  { on: '[aria-label="Next"]', click: true, rest: 300 },
+  { on: '[aria-label="Previous"]', click: true },
+  { on: '[aria-label="Previous"]', click: true, rest: 300 },
+  { on: '[aria-label="Previous"]', click: true, rest: 300 },
+]
+
 export function SelectDoc() {
   return (
     <>
       <Section>
-        <Specimen className="p-6 pb-56 md:p-8 md:pb-56">
-          <Select />
+        <Specimen>
+          <DemoCursor steps={SELECT_DEMO} className="p-6 pb-56 md:p-8 md:pb-56">
+            <Select />
+          </DemoCursor>
         </Specimen>
       </Section>
     </>
@@ -307,8 +339,10 @@ export function AccordionDoc() {
   return (
     <>
       <Section>
-        <Specimen className="p-6 md:p-8">
-          <Accordion />
+        <Specimen>
+          <DemoCursor steps={ACCORDION_DEMO} className="p-6 md:p-8">
+            <Accordion />
+          </DemoCursor>
         </Specimen>
       </Section>
     </>
@@ -319,8 +353,13 @@ export function CarouselDoc() {
   return (
     <>
       <Section>
-        <Specimen className="flex justify-center p-6 md:p-8">
-          <Carousel />
+        <Specimen>
+          <DemoCursor
+            steps={CAROUSEL_DEMO}
+            className="flex justify-center p-6 md:p-8"
+          >
+            <Carousel />
+          </DemoCursor>
         </Specimen>
       </Section>
     </>

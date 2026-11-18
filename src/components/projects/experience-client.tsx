@@ -1,7 +1,8 @@
 import React from "react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import { ROW, ROW_LINK, RowContent } from "@/components/projects/list-row"
 import { ShowMoreButton, useShowMore } from "@/components/projects/show-more"
+import { cn } from "@/lib/utils"
 import { TbArrowUpRight, TbDownload } from "react-icons/tb"
 import type { Experience } from "@/server/db/schema"
 
@@ -15,7 +16,7 @@ function CompanyLink({ exp }: { exp: Experience }) {
   if (!exp.companyUrl) return <span>{exp.company}</span>
   return (
     <a
-      className="group-hover/item:text-tint group-hover/item:underline"
+      className={ROW_LINK}
       href={exp.companyUrl}
       target="_blank"
       onClick={(e) => e.stopPropagation()}
@@ -95,75 +96,59 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
           <div
             key={exp.id}
             data-wave
-            className="group/item cursor-pointer rounded-[20px] border border-transparent bg-background hover:bg-card md:mx-6"
+            className={cn(ROW, "cursor-pointer")}
             onClick={() => {
               const url = exp.companyUrl
               if (url) window.open(url, "_blank")
             }}
           >
-            <div className="flex w-full items-center justify-between gap-4 p-6">
-              <div className="flex min-w-0 flex-row items-center gap-3">
-                <Avatar className={exp.roundLogo ? "" : "rounded-md"}>
-                  <AvatarImage src={exp.logo} />
-                  <AvatarFallback className="text-muted-foreground">
-                    {exp.company.charAt(0)}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col gap-1">
-                  {exp.position && <div>{exp.position}</div>}
-                  {(exp.contract || exp.team || exp.project) && (
-                    <div className="text-xs text-muted-foreground">
-                      {exp.contract && "Contract"}
-                      {exp.contract &&
-                        (exp.projectCompany || exp.project || exp.team) &&
-                        ", "}
-                      {exp.team}
-                      {exp.projectCompany && (
-                        <>
-                          Client:{" "}
-                          {exp.projectCompanyUrl ? (
-                            <a
-                              className="underline decoration-dotted hover:text-tint hover:decoration-solid"
-                              href={exp.projectCompanyUrl}
-                              target="_blank"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              {exp.projectCompany}
-                            </a>
-                          ) : (
-                            <span>{exp.projectCompany}</span>
-                          )}
-                          {exp.project && ", "}
-                        </>
-                      )}
-                      {exp.project && <ProjectLinks exp={exp} />}
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="flex max-w-[45%] flex-col items-end gap-1 text-end md:max-w-none md:shrink-0">
-                <div>
-                  {exp.displayName ? (
-                    <>
-                      {exp.displayName} (now <CompanyLink exp={exp} />)
-                    </>
-                  ) : (
-                    <CompanyLink exp={exp} />
-                  )}
-                </div>
-                <div className="flex flex-col items-end text-xs md:flex-row md:gap-2">
-                  <p className="text-muted-foreground">{exp.location}</p>
-                  {exp.duration && (
-                    <>
-                      <span className="hidden text-muted-foreground md:inline">
-                        ·
-                      </span>
-                      <p>{exp.duration}</p>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
+            <RowContent
+              logo={exp.logo}
+              roundLogo={exp.roundLogo}
+              fallback={exp.company.charAt(0)}
+              title={exp.position}
+              detail={
+                (exp.contract || exp.team || exp.project) && (
+                  <>
+                    {exp.contract && "Contract"}
+                    {exp.contract &&
+                      (exp.projectCompany || exp.project || exp.team) &&
+                      ", "}
+                    {exp.team}
+                    {exp.projectCompany && (
+                      <>
+                        Client:{" "}
+                        {exp.projectCompanyUrl ? (
+                          <a
+                            className="underline decoration-dotted hover:text-tint hover:decoration-solid"
+                            href={exp.projectCompanyUrl}
+                            target="_blank"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {exp.projectCompany}
+                          </a>
+                        ) : (
+                          <span>{exp.projectCompany}</span>
+                        )}
+                        {exp.project && ", "}
+                      </>
+                    )}
+                    {exp.project && <ProjectLinks exp={exp} />}
+                  </>
+                )
+              }
+              name={
+                exp.displayName ? (
+                  <>
+                    {exp.displayName} (now <CompanyLink exp={exp} />)
+                  </>
+                ) : (
+                  <CompanyLink exp={exp} />
+                )
+              }
+              location={exp.location}
+              duration={exp.duration}
+            />
           </div>
         ))}
       </div>

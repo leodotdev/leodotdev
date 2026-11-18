@@ -1,11 +1,12 @@
 import { Link } from "@tanstack/react-router"
+import { ROW, ROW_LINK, RowContent } from "@/components/projects/list-row"
 import { recentWork } from "@/lib/recent-work"
-import { cn } from "@/lib/utils"
 
-const ROW =
-  "group/item block rounded-[20px] border border-transparent bg-background hover:bg-card md:mx-6"
-
-/** The hand-written "Recent work" list; only rendered at leo.dev/work. */
+/**
+ * The hand-written "Recent work" list; only rendered at leo.dev/work. Its
+ * rows are the Experience list's rows (`RowContent`), with a work's name
+ * where a position goes and who it was for where the company goes.
+ */
 export function RecentWorkSection() {
   return (
     <div id="recent-work">
@@ -17,25 +18,22 @@ export function RecentWorkSection() {
         {recentWork.map((work) => {
           const linked = Boolean(work.to ?? work.href)
           const content = (
-            <div className="flex w-full items-center justify-between gap-4 p-6">
-              <div className="flex min-w-0 flex-col gap-1">
-                <div
-                  className={cn(
-                    linked &&
-                      "group-hover/item:text-tint group-hover/item:underline"
-                  )}
-                >
-                  {work.title}
-                </div>
-                <div className="text-xs text-pretty text-muted-foreground">
-                  {work.summary}
-                </div>
-              </div>
-              <div className="flex max-w-[45%] flex-col items-end gap-1 text-end md:max-w-none md:shrink-0">
-                {work.client && <div>{work.client}</div>}
-                <div className="text-xs text-muted-foreground">{work.year}</div>
-              </div>
-            </div>
+            <RowContent
+              logo={work.logo}
+              roundLogo={work.roundLogo}
+              fallback={(work.client ?? work.title).charAt(0)}
+              title={work.title}
+              detail={work.summary}
+              name={
+                work.client && (
+                  <span className={linked ? ROW_LINK : undefined}>
+                    {work.client}
+                  </span>
+                )
+              }
+              location={work.location}
+              duration={work.year}
+            />
           )
           // A row is the link itself: to the work's own page, or to an
           // outside address. A row with neither is plain.

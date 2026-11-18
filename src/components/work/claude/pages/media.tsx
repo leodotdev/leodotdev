@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { TbPlayerPlayFilled, TbX } from "react-icons/tb"
+import { DemoCursor } from "@/components/work/claude/demo-cursor"
 import { Section, Specimen } from "@/components/work/claude/ui"
+import type { DemoStep } from "@/components/work/claude/demo-cursor"
 
 const quiet = { "data-wave-hover": "off", "data-wave-manual": true } as const
 
@@ -68,6 +70,20 @@ function Lightbox() {
   )
 }
 
+// What the demo cursor tries: it closes the lightbox, which shows the video
+// on its page, and presses play to open it again.
+const LIGHTBOX_DEMO: Array<DemoStep> = [
+  { on: ".cds-lightbox-close", click: true, rest: 900 },
+  { on: ".cds-playhead", click: true, rest: 900 },
+  { on: ".cds-lightbox .cds-video", rest: 1800 },
+]
+
+// The reel's playhead grows a little under the cursor.
+const REEL_DEMO: Array<DemoStep> = [
+  { on: ".cds-playhead", click: true, rest: 900 },
+  { on: ".cds-reel", at: [0.5, 0.88], rest: 1800 },
+]
+
 export function MediaDoc() {
   return (
     <>
@@ -92,15 +108,22 @@ export function MediaDoc() {
 
       <Section title="Video: Lightbox">
         <Specimen className="[container-type:inline-size]">
-          <Lightbox />
+          <DemoCursor steps={LIGHTBOX_DEMO}>
+            <Lightbox />
+          </DemoCursor>
         </Specimen>
       </Section>
 
       <Section title="Video: Reel">
-        <Specimen className="flex justify-center p-6 md:p-8">
-          <div className="cds-video cds-reel">
-            <Playhead />
-          </div>
+        <Specimen>
+          <DemoCursor
+            steps={REEL_DEMO}
+            className="flex justify-center p-6 md:p-8"
+          >
+            <div className="cds-video cds-reel">
+              <Playhead />
+            </div>
+          </DemoCursor>
         </Specimen>
       </Section>
     </>

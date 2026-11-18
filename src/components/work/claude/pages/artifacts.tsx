@@ -275,6 +275,17 @@ const ARTIFACT_DEMO: Array<DemoStep> = [
   { on: ".cds-tab", text: "Founders", click: true, rest: 800 },
 ]
 
+// On the marginalia it looks down the first card's menu and presses the
+// cards' buttons.
+const MARGINALIA_DEMO: Array<DemoStep> = [
+  { on: ".cds-margin-menu button", nth: 0 },
+  { on: ".cds-margin-menu button", nth: 1 },
+  { on: ".cds-margin-menu button", nth: 2, click: true },
+  { on: ".cds-margin .cds-btn", text: "Watch webinar", click: true },
+  { on: ".cds-margin .cds-play", click: true },
+  { on: ".cds-margin .cds-btn", text: "Ask Claude", click: true, rest: 700 },
+]
+
 export function ArtifactsDoc() {
   return (
     <>
@@ -298,8 +309,10 @@ export function ArtifactsDoc() {
         title="Marginalia"
         description="Small cards beside key content: related resources, case studies and statistics, without interrupting the reading."
       >
-        <Specimen className="p-6 md:p-8">
-          <Marginalia />
+        <Specimen>
+          <DemoCursor steps={MARGINALIA_DEMO} className="p-6 md:p-8">
+            <Marginalia />
+          </DemoCursor>
         </Specimen>
       </Section>
     </>
