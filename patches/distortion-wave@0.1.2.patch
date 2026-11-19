@@ -1,5 +1,5 @@
 diff --git a/dist/distortion-wave.js b/dist/distortion-wave.js
-index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..8be53fa85c323ce8bf8aba0ea9527df4c15631a0 100644
+index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..379020fe9c06f8fa35a4aa63d6f2fc8ab238357a 100644
 --- a/dist/distortion-wave.js
 +++ b/dist/distortion-wave.js
 @@ -50,7 +50,9 @@ function styleText(cs, def, parentCS, isRoot, onUrl) {
@@ -86,7 +86,13 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..8be53fa85c323ce8bf8aba0ea9527df4
    for (const [p, v] of urlProps) ctx.tasks.push(inlineUrls(v).then((nv) => {
      if (nv !== v) clone.setAttribute("style", clone.getAttribute("style").replace(`${p}:${v};`, `${p}:${nv};`));
    }));
-@@ -272,8 +308,15 @@ async function snapshotElement(el, { dpr = 1, clip = null, rootOpacity = null }
+@@ -267,17 +303,24 @@ function cloneTree(src, parentCS, isRoot, ctx) {
+   return clone;
+ }
+ var escapeXml = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+-async function snapshotElement(el, { dpr = 1, clip = null, rootOpacity = null } = {}) {
++async function snapshotElement(el, { dpr = 1, clip = null, rootOpacity = null, rootClipPath = null } = {}) {
+   const t0 = performance.now();
    await document.fonts.ready;
    const r = el.getBoundingClientRect();
    const w = el.offsetWidth ?? r.width, h = el.offsetHeight ?? r.height;
@@ -103,6 +109,11 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..8be53fa85c323ce8bf8aba0ea9527df4
      tasks: [],
      css: "",
      n: 0,
+-    rootOverrides: (cs) => `margin:0!important;position:relative!important;inset:auto!important;float:none!important;transform:none!important;translate:none!important;rotate:none!important;scale:none!important;box-sizing:border-box!important;width:${w}px!important;height:${h}px!important;` + (cs.display.startsWith("inline") && cs.display !== "inline-block" && cs.display !== "inline-flex" && cs.display !== "inline-grid" ? "display:inline-block!important;" : "") + (rootOpacity != null ? `opacity:${rootOpacity}!important;` : "")
++    rootOverrides: (cs) => `margin:0!important;position:relative!important;inset:auto!important;float:none!important;transform:none!important;translate:none!important;rotate:none!important;scale:none!important;box-sizing:border-box!important;width:${w}px!important;height:${h}px!important;` + (cs.display.startsWith("inline") && cs.display !== "inline-block" && cs.display !== "inline-flex" && cs.display !== "inline-grid" ? "display:inline-block!important;" : "") + (rootOpacity != null ? `opacity:${rootOpacity}!important;` : "") + (rootClipPath != null ? `clip-path:${rootClipPath}!important;` : "")
+   };
+   const clone = cloneTree(el, null, true, ctx);
+   if (!clone) throw new Error("distortion-wave: element is not rendered (display:none?)");
 @@ -285,7 +328,14 @@ async function snapshotElement(el, { dpr = 1, clip = null, rootOpacity = null }
    const fonts = await embeddedFonts();
    const xml = new XMLSerializer().serializeToString(clone);
@@ -263,7 +274,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..8be53fa85c323ce8bf8aba0ea9527df4
  function isFixed(el) {
    for (let n = el; n && n !== document.documentElement; n = n.parentElement) if (getComputedStyle(n).position === "fixed") return true;
    return false;
-@@ -1104,7 +1195,12 @@ function measure(el) {
+@@ -1104,14 +1195,21 @@ function measure(el) {
    const w = el.offsetWidth ?? rect.width, h = el.offsetHeight ?? rect.height;
    const x0 = Math.max(rect.left, 0), y0 = Math.max(rect.top, 0), x1 = Math.min(rect.right, innerWidth), y1 = Math.min(rect.bottom, innerHeight);
    const fixed = isFixed(el), sx = fixed ? 0 : scrollX, sy = fixed ? 0 : scrollY;
@@ -277,15 +288,16 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..8be53fa85c323ce8bf8aba0ea9527df4
    return {
      w,
      h,
-@@ -1112,6 +1208,7 @@ function measure(el) {
+     fixed,
      opacity: cs.opacity,
++    clipPath: cs.clipPath,
      radii,
      boxless: !hasVisibleBox(cs),
 +    cornerN: cornerExponent(cs),
      visible: x1 > x0 && y1 > y0,
      shape: { x: sh.x + sx, y: sh.y + sy, w: sh.w, h: sh.h },
      shapeRadii: sh.radii,
-@@ -1141,8 +1238,15 @@ function deferred() {
+@@ -1141,8 +1239,15 @@ function deferred() {
    return { p, res, rej };
  }
  function pickDpr(m, maxTex) {
@@ -303,7 +315,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..8be53fa85c323ce8bf8aba0ea9527df4
  }
  var prepared = /* @__PURE__ */ new WeakMap();
  function prepareWave(target) {
-@@ -1172,6 +1276,8 @@ var DEFAULTS = { variant: "auto", palette: "aurora", speed: 1, particles: true,
+@@ -1172,6 +1277,8 @@ var DEFAULTS = { variant: "auto", palette: "aurora", speed: 1, particles: true,
  var WaveTransition = class {
    constructor(target, update, opts) {
      this.target = target;
@@ -312,7 +324,14 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..8be53fa85c323ce8bf8aba0ea9527df4
      this.update = update || (() => {
      });
      this.o = { ...DEFAULTS, ...opts };
-@@ -1216,7 +1322,7 @@ var WaveTransition = class {
+@@ -1210,13 +1317,13 @@ var WaveTransition = class {
+     }
+     const o = this.o, target = this.target;
+     const reduced = o.reducedMotion ?? matchMedia("(prefers-reduced-motion: reduce)").matches;
+-    const before = measure(target);
++    let before = measure(target);
+     const r = before.visible && target !== document.body && target !== document.documentElement ? acquire() : null;
+     this.r = r;
      if (!r || this._skipped) return this._plain();
      const dpr = pickDpr(before, r.maxTex);
      let t0 = performance.now();
@@ -321,7 +340,7 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..8be53fa85c323ce8bf8aba0ea9527df4
      this.metrics.captureBefore = Math.round(performance.now() - t0);
      if (this._skipped) return this._plain();
      const base = { ...PRESETS[this._variant(before)] || BASE };
-@@ -1231,7 +1337,7 @@ var WaveTransition = class {
+@@ -1231,7 +1338,7 @@ var WaveTransition = class {
      this.dots = new Float32Array(Math.max(this.particles.length, 1) * 4);
      this.origin = this._originPage(before);
      this.canvasPage = before.page;
@@ -330,13 +349,22 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..8be53fa85c323ce8bf8aba0ea9527df4
      t0 = performance.now();
      r.setLayer("old", oldShot.canvas, cfg.blurNear * this.dpr, cfg.blur * this.dpr);
      this.metrics.upload = Math.round(performance.now() - t0);
-@@ -1242,13 +1348,23 @@ var WaveTransition = class {
+@@ -1241,14 +1348,32 @@ var WaveTransition = class {
+     this.fadeOnly = reduced;
      this._d.ready.res();
      this._startLoop();
++    // An update may move the page itself (a tab that swaps in its next page from the top). The
++    // picture then stays where it is in the window, not where it was on the page: everything
++    // measured before the update is moved by as much as the page scrolled while it ran.
++    const sx0 = scrollX, sy0 = scrollY;
      await this._runUpdate();
 -    await nextFrame();
 -    await Promise.all([...target.querySelectorAll("img")].map((i) => i.decode?.().catch(() => {
 -    })));
++    if (!before.fixed && !this._done && (scrollX !== sx0 || scrollY !== sy0)) {
++      this._shift(scrollX - sx0, scrollY - sy0);
++      before = this.before;
++    }
 +    if (!this._still) {
 +      await nextFrame();
 +      // Only pictures near the window are waited for. One that loads lazily and is still far off
@@ -354,29 +382,110 @@ index 2b8043fadafb7067b1ef6726c3dad04f8b71dc4b..8be53fa85c323ce8bf8aba0ea9527df4
      t0 = performance.now();
 -    const newShot = after.visible ? await snapshotElement(target, { dpr: this.dpr, clip: after.clip, rootOpacity: before.opacity }) : null;
 +    // a wave with no update (a hover) reuses its first snapshot instead of capturing the same thing twice
-+    const newShot = this._still ? oldShot : after.visible ? await snapshotElement(target, { dpr: this.dpr, clip: after.clip, rootOpacity: before.opacity }) : null;
++    const newShot = this._still ? oldShot : after.visible ? await snapshotElement(target, { dpr: this.dpr, clip: after.clip, rootOpacity: before.opacity, rootClipPath: before.clipPath }) : null;
      this.metrics.captureAfter = Math.round(performance.now() - t0);
      if (this._done) return;
      if (!newShot) {
-@@ -1258,7 +1374,7 @@ var WaveTransition = class {
+@@ -1258,7 +1383,8 @@ var WaveTransition = class {
      r.setLayer("new", newShot.canvas, cfg.blurNear * this.dpr, cfg.blur * this.dpr);
      this.after = after;
      this.canvasPage = union(before.page, after.page);
 -    this.rects = { old: rel(before.page, this.canvasPage), new: rel(after.page, this.canvasPage), shape: rel(before.shape, this.canvasPage), radii: before.shapeRadii, boxless: before.boxless && after.boxless, clipped: before.clipped || after.clipped };
++    this._cover(after);
 +    this.rects = { old: rel(before.page, this.canvasPage), new: rel(after.page, this.canvasPage), shape: rel(before.shape, this.canvasPage), radii: before.shapeRadii, cornerN: before.cornerN, boxless: before.boxless && after.boxless, clipped: before.clipped || after.clipped };
      this.shapes = { from: rel(before.shape, this.canvasPage), to: rel(after.shape, this.canvasPage), r0: before.shapeRadii, r1: after.shapeRadii };
      this._resizeCanvas();
      this.gateOpen = true;
-@@ -1323,6 +1439,9 @@ var WaveTransition = class {
+@@ -1296,8 +1422,16 @@ var WaveTransition = class {
+     };
+   }
+   _mount() {
+-    const c = this.r.canvas;
++    // The canvas lies in the page, so it scrolls with it like any other content. (Held to the
++    // window and moved against the scroll once a frame, it trails a scrolling page by a frame.)
++    // Over a fixed target it is fixed too.
++    const c = this.r.canvas, f = this.before.fixed;
++    c.style.position = f ? "fixed" : "absolute";
++    c.style.transform = "none";
+     document.body.appendChild(c);
++    const b = c.getBoundingClientRect();
++    this._at = f ? { x: b.left, y: b.top } : { x: b.left + scrollX, y: b.top + scrollY };
++    this._tf = null;
+     this._resizeCanvas();
+   }
+   _resizeCanvas() {
+@@ -1308,19 +1442,66 @@ var WaveTransition = class {
+     c.style.height = p.h + "px";
+     this._place();
+   }
++  _shift(dx, dy) {
++    const mv = (r) => r && { ...r, x: r.x + dx, y: r.y + dy };
++    const b = this.before;
++    this.before = { ...b, shape: mv(b.shape), page: mv(b.page), el: mv(b.el) };
++    this.origin = { ...this.origin, src: mv(this.origin.src), touch: mv(this.origin.touch) };
++    if (this._view) this._view = mv(this._view);
++    this.canvasPage = this.before.page;
++    this._place();
++  }
+   _place() {
+-    const p = this.canvasPage, f = this.before.fixed;
+-    this.r.canvas.style.transform = `translate3d(${p.x - (f ? 0 : scrollX)}px,${p.y - (f ? 0 : scrollY)}px,0)`;
++    const p = this.canvasPage, o = this._at;
++    const tf = `translate3d(${p.x - o.x}px,${p.y - o.y}px,0)`;
++    if (tf !== this._tf) this.r.canvas.style.transform = this._tf = tf;
+   }
+   _hide() {
+-    const s = this.target.style;
+-    this._saved = ["opacity", "transition"].map((k) => [k, s.getPropertyValue(k), s.getPropertyPriority(k)]);
++    const s = this.target.style, m = this.before;
++    this._saved = ["opacity", "clip-path", "transition"].map((k) => [k, s.getPropertyValue(k), s.getPropertyPriority(k)]);
+     s.setProperty("transition", "none", "important");
+-    s.setProperty("opacity", "0", "important");
++    // the window the wave starts in, in the same space as the measures
++    this._view = { x: m.fixed ? 0 : scrollX, y: m.fixed ? 0 : scrollY, w: innerWidth, h: innerHeight };
++    this._cover(m);
++  }
++  _put(k) {
++    const e = this._saved.find((x) => x[0] === k);
++    if (e[1]) this.target.style.setProperty(k, e[1], e[2]);
++    else this.target.style.removeProperty(k);
++  }
++  // Hides the target where its picture is, and only there. The picture covers the part of the
++  // target that is in the window; a target that reaches past the window keeps the rest of itself
++  // on the page, so scrolling during the wave brings the real page into view, not a blank. A
++  // target wholly in the window is hidden as a whole. `m` is the target's current measure.
++  _cover(m) {
++    if (!this._saved) return;
++    const s = this.target.style, v = this._view, e = m.el;
++    let a = this.before.page;
++    if (m !== this.before) {
++      // what the update added, as far as the window the wave started in showed it
++      const x0 = Math.max(e.x, v.x), y0 = Math.max(e.y, v.y), x1 = Math.min(e.x + e.w, v.x + v.w), y1 = Math.min(e.y + e.h, v.y + v.h);
++      if (x1 > x0 && y1 > y0) a = union(a, { x: x0, y: y0, w: x1 - x0, h: y1 - y0 });
++    }
++    const L = a.x <= e.x + 0.5, T = a.y <= e.y + 0.5, R = a.x + a.w >= e.x + e.w - 0.5, B = a.y + a.h >= e.y + e.h - 0.5;
++    if (L && T && R && B) {
++      this._put("clip-path");
++      s.setProperty("opacity", "0", "important");
++      return;
++    }
++    // A hole in the target, in its own (laid-out) pixels. Where the hole ends at the target's
++    // edge it runs a little past it, so no sliver of the edge is left showing.
++    const k = m.w > 0 && e.w > 0 && Math.abs(e.w / m.w - 1) > 0.01 ? e.w / m.w : 1, pad = 4, far = 1e7;
++    const x0 = (a.x - e.x) / k - (L ? pad : 0), y0 = (a.y - e.y) / k - (T ? pad : 0);
++    const x1 = (a.x + a.w - e.x) / k + (R ? pad : 0), y1 = (a.y + a.h - e.y) / k + (B ? pad : 0);
++    this._put("opacity");
++    s.setProperty("clip-path", `path(evenodd,"M${-far} ${-far}H${far}V${far}H${-far}ZM${x0} ${y0}H${x1}V${y1}H${x0}Z")`, "important");
+   }
+   _show() {
+     if (!this._saved) return;
      for (const [k, v, pr] of this._saved) {
++      // The element is back, and that is committed, before its own transition is restored;
++      // otherwise a `transition: opacity` on the target fades it in from 0 and the end of the wave flashes.
++      if (k === "transition") void this.target.offsetWidth;
        if (v) this.target.style.setProperty(k, v, pr);
        else this.target.style.removeProperty(k);
-+      // Opacity comes back first and is committed before the element's own transition is restored;
-+      // otherwise a `transition: opacity` on the target fades it in from 0 and the end of the wave flashes.
-+      if (k === "opacity") void this.target.offsetWidth;
      }
-     this._saved = null;
-   }
 diff --git a/src/capture.js b/src/capture.js
 index 499226d28b9eb84c8d9bebc39119159be7c7e65e..43a4620d0276cb129e1b3319e8a44959c40006bc 100644
 --- a/src/capture.js

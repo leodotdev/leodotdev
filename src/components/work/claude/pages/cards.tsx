@@ -8,16 +8,62 @@ import {
   TbVideo,
 } from "react-icons/tb"
 import { DemoCursor } from "@/components/work/claude/demo-cursor"
+import { Resizable } from "@/components/work/claude/resizable"
 import { Button } from "@/components/work/claude/specimens"
 import { Section, Specimen } from "@/components/work/claude/ui"
 import type { DemoStep } from "@/components/work/claude/demo-cursor"
 
 const quiet = { "data-wave-hover": "off", "data-wave-manual": true } as const
 
+// The file's own sample cards: its row of three, and the story its card
+// with an image carries.
 const LINKS = [
   ["Claude Code documentation", "Developer doc"],
+  ["Claude Code tutorials", "Developer doc"],
   ["How Anthropic teams use Claude Code", "Case study"],
 ]
+const STORY = [
+  "Gradient Labs transforms financial services customer support with Claude",
+  "Customer story",
+]
+
+/**
+ * A link card: a title over the kind of thing it leads to. With `image` it
+ * also carries an illustration on a tile, above the text or, where the card
+ * has the width for it, beside it.
+ */
+function LinkCard({
+  title,
+  kind,
+  image = false,
+}: {
+  title: string
+  kind: string
+  image?: boolean
+}) {
+  return (
+    <a
+      className="cds-card-link"
+      data-image={image ? "" : undefined}
+      href="#cards"
+      onClick={(e) => e.preventDefault()}
+      {...quiet}
+    >
+      {image && (
+        <span className="cds-card-link-art">
+          <img src="/work/claude/illustrations/node-cursor.svg" alt="" />
+        </span>
+      )}
+      <span className="cds-card-link-text">
+        <span>{title}</span>
+        <span className="cds-meta-link">
+          <TbPaperclip aria-hidden />
+          {kind}
+        </span>
+      </span>
+    </a>
+  )
+}
 
 const PROMPT =
   "Create discussion questions that build on yesterday's lecture about supply chain disruption."
@@ -51,13 +97,28 @@ function ClipboardCopy({ command }: { command: string }) {
   )
 }
 
-// What the demo cursor tries: the link cards lift under it, then the video
-// card's two buttons.
-const CARDS_DEMO: Array<DemoStep> = [
+// What the demo cursor tries. It waits under the middle of the cards, off
+// all of them, so they show at rest, then looks over each: the one under it
+// lifts and the others step back. Each time round it starts from there.
+const LINKS_DEMO: Array<DemoStep> = [
+  { on: ".cds-card-links", at: [0.5, 1.08], idle: true, rest: 1200 },
   { on: ".cds-card-link", nth: 0, rest: 1000 },
   { on: ".cds-card-link", nth: 1, rest: 1000 },
+  { on: ".cds-card-link", nth: 2, rest: 1000 },
+]
+
+// It looks at the card with an image and presses the video card's two
+// buttons, then narrows the pair: the video goes above its text, then the
+// image above its title, down to a phone's width, and it lets them out again.
+const ADAPT_DEMO: Array<DemoStep> = [
+  { on: ".cds-card-link", rest: 700 },
   { on: ".cds-play", click: true },
   { on: ".cds-card-video .cds-btn", click: true, rest: 700 },
+  { on: ".cds-resize-grip", nth: 1, drag: 520 },
+  { on: ".cds-resize-grip", nth: 1, drag: 400 },
+  { on: ".cds-resize-grip", nth: 1, drag: 326 },
+  { on: ".cds-play", click: true, rest: 700 },
+  { on: ".cds-resize-grip", nth: 1, drag: 4000 },
 ]
 
 // It looks over the prompts (the others step back), sends the second as
@@ -80,76 +141,69 @@ const PROMPTS_DEMO: Array<DemoStep> = [
 export function CardsDoc() {
   return (
     <>
-      <Section
-        title="Link & Video Cards"
-        description="A link card lifts on hover. A video card stacks when it gets narrow."
-      >
-        <Specimen>
-          <DemoCursor
-            steps={CARDS_DEMO}
-            className="flex flex-col gap-8 p-6 md:p-8"
-          >
-            {/* Two abreast at most: a card needs its width, or its title sets
-              a word to a line. */}
-            <div className="grid gap-6 sm:grid-cols-2">
+      <Section title="Link & Video Cards">
+        <Specimen caption="Hovering one card lifts it and dims its siblings.">
+          <DemoCursor steps={LINKS_DEMO} className="p-6 md:p-8">
+            <div className="cds-card-links">
               {LINKS.map(([title, kind]) => (
-                <a
-                  key={title}
-                  className="cds-card-link !w-auto"
-                  href="#cards"
-                  onClick={(e) => e.preventDefault()}
-                  {...quiet}
-                >
-                  {title}
-                  <span className="cds-meta-link">
-                    <TbPaperclip aria-hidden />
-                    {kind}
-                  </span>
-                </a>
+                <LinkCard key={title} title={title} kind={kind} />
               ))}
             </div>
-
-            <div className="cds-card-video-wrap">
-              <div className="cds-card-video">
-                <div className="cds-card-video-media">
-                  <button
-                    type="button"
-                    className="cds-play"
-                    aria-label="Play"
-                    {...quiet}
-                  >
-                    <TbPlayerPlayFilled aria-hidden />
-                  </button>
-                </div>
-                <div className="cds-card-video-body">
-                  <span className="cds-meta-link">
-                    <TbVideo aria-hidden />
-                    Webinar
-                  </span>
-                  <div className="cds-card-title">
-                    How NBIM transformed the world&rsquo;s largest sovereign
-                    wealth fund with agentic AI
+          </DemoCursor>
+        </Specimen>
+        <Specimen caption="With an image or a video, the card is a row where it has room and a column where it does not.">
+          <DemoCursor steps={ADAPT_DEMO} className="p-6 md:p-8">
+            {/* As tall as the two cards at their narrowest, so the figure
+                keeps one height while it is resized. */}
+            <Resizable
+              label="Card width"
+              // The video goes above its text first, then the image above
+              // its title.
+              sizes={[["Desktop"], ["Tablet", 560], ["Mobile", 459]]}
+              className="flex min-h-[800px] flex-col items-center justify-center gap-8"
+            >
+              <div className="cds-card-link-fit">
+                <LinkCard image title={STORY[0]} kind={STORY[1]} />
+              </div>
+              <div className="cds-card-video-wrap">
+                <div className="cds-card-video">
+                  <div className="cds-card-video-media">
+                    <button
+                      type="button"
+                      className="cds-play"
+                      aria-label="Play"
+                      {...quiet}
+                    >
+                      <TbPlayerPlayFilled aria-hidden />
+                    </button>
                   </div>
-                  <Button variant="tertiary" icon="none">
-                    Register and watch
-                  </Button>
+                  <div className="cds-card-video-body">
+                    <span className="cds-meta-link">
+                      <TbVideo aria-hidden />
+                      Webinar
+                    </span>
+                    <div className="cds-card-title">
+                      How NBIM transformed the world&rsquo;s largest sovereign
+                      wealth fund with agentic AI
+                    </div>
+                    <Button variant="tertiary" icon="none">
+                      Register and watch
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Resizable>
           </DemoCursor>
         </Specimen>
       </Section>
 
-      <Section
-        title="Prompt Box & Clipboard Copy"
-        description="Prompts to send as written or change first, and a command that copies in one click."
-      >
-        <Specimen>
+      <Section title="Prompt Box & Clipboard Copy">
+        <Specimen caption="Prompts are editable, and a copy holds “Copied!” for three seconds.">
           <DemoCursor
             steps={PROMPTS_DEMO}
-            className="flex flex-col gap-8 p-6 md:p-8"
+            className="flex flex-col items-center gap-8 p-6 md:p-8"
           >
-            <div className="cds-prompts">
+            <div className="cds-prompts w-full">
               {[0, 1, 2].map((i) => (
                 <label key={i} className="cds-prompt">
                   <textarea

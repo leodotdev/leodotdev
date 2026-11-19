@@ -83,7 +83,7 @@ const DEMO: Array<DemoStep> = [
   { on: ".cds-menu-item", text: "Education" },
   { on: ".cds-nav-sub .cds-nav-link", rest: 600 },
   { on: ".cds-menu-item", text: "Download pitch-worthy PDF" },
-  { on: ".cds-nav-sub span", rest: 400 },
+  { on: ".cds-nav-sub a", rest: 600 },
   // Narrower: the header folds into a menu button.
   { on: ".cds-resize-grip", nth: 1, drag: 600 },
   { on: ".cds-nav-toggle", click: "open" },
@@ -269,7 +269,16 @@ function SiteNavigation() {
 
         <div className="cds-nav-sub">
           <span>
-            Solutions<i>/</i>For individuals
+            {/* The breadcrumb's first step is a link back up; the last is
+                the page itself. The link is for show. */}
+            <a
+              href="#navigation"
+              onClick={(e) => e.preventDefault()}
+              {...quiet}
+            >
+              Solutions
+            </a>
+            <i>/</i>For individuals
           </span>
           <div className="cds-nav-item" data-align="end" {...hover("explore")}>
             <button
@@ -308,16 +317,18 @@ function SiteNavigation() {
 export function NavigationDoc() {
   return (
     <>
-      <Section
-        title="Header & Sub-navigation"
-        description="The logo, five menus and two buttons, over a breadcrumb bar."
-      >
-        <Specimen>
-          <DemoCursor steps={DEMO} className="px-6 md:px-8">
+      <Section title="Header & Sub-navigation">
+        <Specimen caption="19 variants, across its open menus, on desktop and mobile.">
+          {/* The header sits at the top of its page, so there is no padding
+              above it; below, the figure's usual padding, which puts the
+              size label where every resizable figure has it. */}
+          <DemoCursor steps={DEMO} className="px-6 pb-6 md:px-8 md:pb-8">
             {/* As tall as the phone the folded menu was drawn for. */}
             <Resizable
               label="Header width"
               min={360}
+              // One button goes first; then the header folds.
+              sizes={[["Desktop"], ["Tablet", 1000], ["Mobile", 760]]}
               className="flex min-h-[812px] flex-col"
             >
               <SiteNavigation />

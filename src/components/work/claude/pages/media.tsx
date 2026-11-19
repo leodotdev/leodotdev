@@ -88,7 +88,10 @@ export function MediaDoc() {
   return (
     <>
       <Section title="Logo Wall">
-        <Specimen className="p-6 md:p-8">
+        <Specimen
+          caption="More than 150 customer logos live in one component."
+          className="p-6 md:p-8"
+        >
           <div className="cds-logo-wall">
             <div>
               {LOGOS.map(([file, name]) => (
@@ -107,7 +110,10 @@ export function MediaDoc() {
       </Section>
 
       <Section title="Video: Lightbox">
-        <Specimen className="[container-type:inline-size]">
+        <Specimen
+          caption="We decided: “Mobile OS? Use OS lightbox. Desktop OS? Use Claude lightbox.”"
+          className="[container-type:inline-size]"
+        >
           <DemoCursor steps={LIGHTBOX_DEMO}>
             <Lightbox />
           </DemoCursor>
@@ -115,7 +121,7 @@ export function MediaDoc() {
       </Section>
 
       <Section title="Video: Reel">
-        <Specimen>
+        <Specimen caption="Built “to drive traffic to Instagram.”">
           <DemoCursor
             steps={REEL_DEMO}
             className="flex justify-center p-6 md:p-8"

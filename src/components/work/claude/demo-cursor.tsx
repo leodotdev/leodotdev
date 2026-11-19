@@ -36,9 +36,23 @@ export type DemoStep = {
    * the cursor picks a spot a little off its middle.
    */
   at?: [x: number, y: number]
+  /**
+   * Only go there and wait: the element is not marked as hovered or told
+   * the pointer has come. With `at`, a way to rest on a figure's empty
+   * middle between two things, so everything shows at rest.
+   */
+  idle?: true
   /** How long to rest on it, in ms. */
   rest?: number
 }
+
+// The cursor's shapes: the system's arrow, and what a real pointer turns into
+// over something to press, a text field and a control dragged sideways. The
+// pictures are macOS-style cursors from the apple_cursor project (GPL-3.0;
+// public/cursors, with their license). Their size and hot spots are set in
+// src/claude-ds.css.
+const SHAPES = ["arrow", "pointer", "text", "ew-resize"] as const
+type Shape = (typeof SHAPES)[number]
 
 const sleep = (ms: number) => new Promise((done) => setTimeout(done, ms))
 const ease = "cubic-bezier(0.45, 0, 0.2, 1)"
@@ -50,14 +64,17 @@ const ease = "cubic-bezier(0.45, 0, 0.2, 1)"
  * would for a visitor, then starts over.
  *
  * It is a guest. The moment the visitor's own pointer (or keyboard focus)
- * enters the figure it leaves, and it comes back a little after they go.
- * It only plays while the figure is on screen, never where nothing hovers
- * (a phone), and not for anyone who prefers reduced motion.
+ * enters the figure it leaves, and it comes back a little after they go; on
+ * a touch screen a tap in the figure sends it away for a few seconds. It
+ * only plays while the figure is on screen, and not for anyone who prefers
+ * reduced motion.
  *
  * A pretend pointer cannot make `:hover` match, so the element it rests on
  * is marked `data-state="hover"`, which the system's controls style the same
  * way, and is sent the pointer events of a real one arriving, so a menu that
- * opens on hover opens. Its clicks are real ones.
+ * opens on hover opens. Its clicks are real ones. It changes shape as a real
+ * pointer does: a hand over a button or a link, an I-beam in a text field,
+ * sideways arrows on a grip.
  */
 export function DemoCursor({
   steps,
@@ -75,7 +92,6 @@ export function DemoCursor({
     const root = figure.current
     const tip = cursor.current
     if (!root || !tip) return
-    if (!window.matchMedia("(hover: hover)").matches) return
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
     const arrow = tip.firstElementChild
     if (!arrow) return
@@ -90,10 +106,24 @@ export function DemoCursor({
     let playing = false
     let inView = false
     let visitor = false
+    // The visitor has just left the figure.
+    let away = false
     let comeback = 0
 
     const scale = () =>
       root.getBoundingClientRect().width / (root.offsetWidth || 1)
+
+    // The shape a real pointer would have over an element: a hand where its
+    // style asks for one or it is a link, the sideways arrows on something
+    // dragged that way, an I-beam in a text field, and the arrow otherwise.
+    const shapeOver = (el: Element): Shape => {
+      const asked = getComputedStyle(el).cursor
+      if (asked === "pointer" || el.closest("a[href]")) return "pointer"
+      if (asked === "ew-resize" || asked === "col-resize") return "ew-resize"
+      if (asked === "text" || el.matches("input, textarea")) return "text"
+      return "arrow"
+    }
+    const wear = (shape: Shape) => tip.setAttribute("data-shape", shape)
 
     // Marks the element under the cursor, and unmarks the one it left. An
     // element that already shows a state of its own is left as it is. The
@@ -104,6 +134,7 @@ export function DemoCursor({
       hovered?.removeAttribute("data-state")
       hovered = el && !el.hasAttribute("data-state") ? el : null
       hovered?.setAttribute("data-state", "hover")
+      wear(el ? shapeOver(el) : "arrow")
       if (el === under) return
       const event = (type: string, relatedTarget: Element | null) =>
         new PointerEvent(type, {
@@ -147,8 +178,11 @@ export function DemoCursor({
       return null
     }
 
-    /** Travels to a point along a slight curve, leaning into the turn. */
-    const travel = async (x: number, y: number, opacity = 1) => {
+    /**
+     * Travels to a point along a slight curve, leaning into the turn. Its
+     * first trip, the one that brings it into the figure, is a brisk one.
+     */
+    const travel = async (x: number, y: number, opacity = 1, brisk = false) => {
       const from = at
       const dx = x - from.x
       const dy = y - from.y
@@ -168,8 +202,12 @@ export function DemoCursor({
           opacity: shown ? opacity : t * opacity,
         })
       }
+      // On its way it is over nothing in particular: an arrow again.
+      wear("arrow")
       const next = tip.animate(frames, {
-        duration: Math.min(900, Math.max(320, length * 2.2)),
+        duration: brisk
+          ? Math.min(420, Math.max(220, length * 1.2))
+          : Math.min(900, Math.max(320, length * 2.2)),
         easing: ease,
         fill: "forwards",
       })
@@ -210,8 +248,17 @@ export function DemoCursor({
       playing = true
       const mine = ++run
       const live = () => mine === run
-      // Comes in from just outside the figure's right edge.
-      at = { x: root.offsetWidth + 24, y: 40 + Math.random() * 120 }
+      // Comes in from somewhere in the left half of the figure, within the
+      // part of the figure that is in the window.
+      const bounds = root.getBoundingClientRect()
+      const zoom = scale()
+      const top = Math.max(0, -bounds.top) / zoom
+      const bottom =
+        Math.min(bounds.height, window.innerHeight - bounds.top) / zoom
+      at = {
+        x: Math.random() * root.offsetWidth * 0.5,
+        y: top + Math.random() * Math.max(0, bottom - top),
+      }
       shown = false
       while (live()) {
         for (const step of steps) {
@@ -225,9 +272,12 @@ export function DemoCursor({
             el,
             step.at ?? (step.drag !== undefined ? [0.5, 0.5] : undefined)
           )
-          await travel(point.x, point.y)
+          // Going to rest on nothing, it lets go of what it was on as it
+          // leaves, not when it arrives.
+          if (step.idle) hover(null)
+          await travel(point.x, point.y, 1, !shown)
           if (!live()) return
-          hover(el)
+          hover(step.idle ? null : el)
           await sleep(step.rest ?? 420)
           if (!live()) return
           if (step.drag !== undefined && el.isConnected) {
@@ -295,6 +345,8 @@ export function DemoCursor({
             ) {
               // A click into the field, which then looks focused, and the
               // text a letter at a time, at an uneven pace.
+              // In the field the pointer is an I-beam.
+              wear("text")
               await press()
               if (!live()) return
               if (!typed.has(field)) typed.set(field, field.value)
@@ -326,8 +378,10 @@ export function DemoCursor({
       window.clearTimeout(comeback)
       if (visitor || !inView) return leave()
       if (playing) return
-      // Back a moment after the visitor has gone.
-      comeback = window.setTimeout(() => void play(), 900)
+      // In at once when the figure comes into view; a moment later when it
+      // is the visitor who has just gone.
+      comeback = window.setTimeout(() => void play(), away ? 700 : 150)
+      away = false
     }
 
     const onEnter = (e: PointerEvent) => {
@@ -338,7 +392,28 @@ export function DemoCursor({
     const onLeave = (e: PointerEvent) => {
       if (e.pointerType !== "mouse") return
       visitor = false
+      away = true
       decide()
+    }
+    // A finger does not hover, so on a touch screen the visitor's turn is a
+    // tap in the figure (not a touch that scrolls the page): the cursor
+    // leaves, and comes back a few seconds after their last tap. Its own
+    // clicks are not the visitor's.
+    let lastDown = "mouse"
+    let turn = 0
+    const onDown = (e: PointerEvent) => {
+      lastDown = e.pointerType
+    }
+    const onTap = (e: MouseEvent) => {
+      if (!e.isTrusted || lastDown === "mouse") return
+      visitor = true
+      decide()
+      window.clearTimeout(turn)
+      turn = window.setTimeout(() => {
+        visitor = false
+        away = true
+        decide()
+      }, 4000)
     }
     const onFocusIn = () => {
       visitor = true
@@ -348,17 +423,22 @@ export function DemoCursor({
       if (e.relatedTarget instanceof Node && root.contains(e.relatedTarget))
         return
       visitor = false
+      away = true
       decide()
     }
-    // On screen means most of the figure is showing, or, for a figure taller
-    // than the window, that it fills half the window.
+    // On screen means most of the figure's height is showing, or, for a
+    // figure taller than the window, that it fills half the window. Its
+    // width is left out of it: a figure wider than its box (a grid scrolled
+    // sideways on a phone) is cut off at the side however it is scrolled.
     const watcher = new IntersectionObserver(
       (entries) => {
         // Several updates can arrive together; the last is how things stand.
         const entry = entries[entries.length - 1]
+        const showing = entry.intersectionRect.height
         inView =
-          entry.intersectionRatio >= 0.6 ||
-          entry.intersectionRect.height >= window.innerHeight * 0.5
+          entry.isIntersecting &&
+          (showing >= entry.boundingClientRect.height * 0.6 ||
+            showing >= window.innerHeight * 0.5)
         decide()
       },
       { threshold: Array.from({ length: 21 }, (_, i) => i / 20) }
@@ -368,9 +448,14 @@ export function DemoCursor({
     root.addEventListener("pointerleave", onLeave)
     root.addEventListener("focusin", onFocusIn)
     root.addEventListener("focusout", onFocusOut)
+    root.addEventListener("pointerdown", onDown, { passive: true })
+    root.addEventListener("click", onTap)
     return () => {
       run++
       window.clearTimeout(comeback)
+      window.clearTimeout(turn)
+      root.removeEventListener("pointerdown", onDown)
+      root.removeEventListener("click", onTap)
       watcher.disconnect()
       root.removeEventListener("pointerenter", onEnter)
       root.removeEventListener("pointerleave", onLeave)
@@ -386,9 +471,19 @@ export function DemoCursor({
     <div ref={figure} className={cn("relative", className)}>
       {children}
       <span ref={cursor} aria-hidden className="cds-demo-cursor">
-        <svg viewBox="0 0 22 24" width="22" height="24">
-          <path d="M2 2 L2 19 L6.6 14.9 L9.6 21.6 L12.6 20.3 L9.7 13.8 L16 13.8 Z" />
-        </svg>
+        {/* Its shapes, one showing at a time, each placed so its hot spot
+            (the arrow's tip, the fingertip) is the cursor's point. */}
+        <span>
+          {SHAPES.map((shape) => (
+            <img
+              key={shape}
+              data-shape={shape}
+              src={`/cursors/${shape}.svg`}
+              alt=""
+              draggable={false}
+            />
+          ))}
+        </span>
       </span>
     </div>
   )

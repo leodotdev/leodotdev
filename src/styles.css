@@ -254,6 +254,7 @@ html:has([data-claude-page]) {
   .nav-list[data-orientation="vertical"] {
     flex-direction: column;
     flex-wrap: nowrap;
+    gap: 8px;
     align-items: flex-start;
   }
 }
@@ -356,6 +357,50 @@ html:has([data-claude-page]) {
   }
 }
 
+/* Full bleed: a box as wide as the window, wherever it sits in the page's
+   960px column (which is centered, so half the difference goes each side).
+   Its contents keep to where the box would have started and ended: the
+   padding gives back what the margin took, plus `--bleed-pad` for a box that
+   has side padding of its own (not inherited: a bleed inside a bleed starts
+   from none). `#app` clips sideways, since 100vw also counts a scrollbar
+   that takes room. */
+@property --bleed-pad {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@utility bleed {
+  margin-inline: calc(50% - 50vw);
+  padding-inline: calc(50vw - 50% + var(--bleed-pad, 0px));
+}
+
+/* A section's dividing line, drawn the width of the window whatever the
+   width of the section (which, like `bleed`, has to sit centered in the
+   window): `rule-t` above it, `rule-b` below, in place of `border-t` and
+   `border-b`. The line is laid over the section's edge and takes no room. */
+@utility rule-t {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset-inline: calc(50% - 50vw);
+    top: 0;
+    border-top: 1px solid var(--color-border);
+    pointer-events: none;
+  }
+}
+@utility rule-b {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    inset-inline: calc(50% - 50vw);
+    bottom: 0;
+    border-bottom: 1px solid var(--color-border);
+    pointer-events: none;
+  }
+}
+
 /* Hide scrollbar (Chrome, Safari, Opera; IE, Edge, Firefox) */
 @utility scrollbar-hide {
   -ms-overflow-style: none;
@@ -363,14 +408,6 @@ html:has([data-claude-page]) {
   &::-webkit-scrollbar {
     display: none;
   }
-}
-
-/* The page frame draws the side borders. In the projects grid mode the
-   projects section goes full-bleed, so the frame's borders are hidden and the
-   sections around it draw their own. */
-html.projects-grid .site-frame {
-  border-left-color: transparent;
-  border-right-color: transparent;
 }
 
 /* Layout overlay, toggled by the grid switcher next to the theme dot: a 0.5px
@@ -423,10 +460,8 @@ html.show-grid body::after {
   }
 }
 
-/* Above 960px the page frame has a 1px border on each side. */
 @media (min-width: 961px) {
   html.show-grid body::after {
     --cols: 12;
-    padding-inline: calc(var(--margin) + 1px);
   }
 }

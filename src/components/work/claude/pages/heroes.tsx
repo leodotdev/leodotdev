@@ -35,7 +35,7 @@ export function HeroesDoc() {
   return (
     <>
       <Section>
-        <Specimen>
+        <Specimen caption="Three heroes; this one is Hero: Stagger.">
           <DemoCursor steps={HERO_DEMO}>
             <div className="cds-hero cds-hero-stagger">
               <h3>
@@ -49,7 +49,7 @@ export function HeroesDoc() {
             </div>
           </DemoCursor>
         </Specimen>
-        <Specimen>
+        <Specimen caption="The second, Hero: 2 Columns.">
           <DemoCursor steps={HERO_DEMO}>
             <div className="cds-hero">
               <div className="cds-hero-columns">
@@ -62,7 +62,7 @@ export function HeroesDoc() {
             </div>
           </DemoCursor>
         </Specimen>
-        <Specimen>
+        <Specimen caption="The third, Hero: 1 Column.">
           <DemoCursor steps={HERO_DEMO}>
             <div className="cds-hero">
               <div className="cds-hero-center">
@@ -85,7 +85,10 @@ export function FeaturesDoc() {
   return (
     <>
       <Section>
-        <Specimen className="flex flex-col gap-10 p-6 md:p-8">
+        <Specimen
+          caption="One feature had to read long or short, with its icon above or inline."
+          className="flex flex-col gap-10 p-6 md:p-8"
+        >
           <div className="cds-features">
             <div className="cds-feature" data-icon="pictogram">
               <TbStack2 aria-hidden />

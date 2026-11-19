@@ -66,8 +66,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body>
         <ThemeProvider>
           {/* #app is what the theme switch's wave covers: body can't be a target */}
-          <div id="app" className="bg-background">
-            <div className="site-frame mx-auto min-h-screen max-w-[960px] bg-background min-[961px]:border-x">
+          <div id="app" className="overflow-x-clip bg-background">
+            {/* The page: a 960px column with no lines down its sides (Leo,
+                2026-11-19, "let's try": it had a border on each side from
+                961px). */}
+            <div className="site-frame mx-auto min-h-screen max-w-[960px] bg-background">
               {children}
             </div>
           </div>

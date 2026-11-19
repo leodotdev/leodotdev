@@ -24,13 +24,13 @@ const SHADOWS = [
 export function LayoutDoc() {
   return (
     <>
-      <Section
-        title="Grid"
-        description="Twelve columns from 834px wide, one below. Drawn to scale against the desktop frame."
-      >
-        <Specimen className="flex flex-col gap-6 p-6 md:p-8">
+      <Section title="Grid">
+        <Specimen
+          caption="The grid at four widths: Mobile, Tablet, Laptop, and Desktop."
+          className="flex flex-col gap-6 p-6 md:p-8"
+        >
           {BREAKPOINTS.map((b) => (
-            <div key={b.name} className="flex flex-col gap-2">
+            <div key={b.name} className="flex flex-col items-center gap-2">
               <div className="cds-caption" style={{ color: "var(--cds-fg-3)" }}>
                 <span style={{ color: "var(--cds-fg)" }}>{b.name}</span>{" "}
                 {b.width}px ·{" "}
@@ -70,11 +70,11 @@ export function LayoutDoc() {
         </Specimen>
       </Section>
 
-      <Section
-        title="Spacing, Radius & Shadow"
-        description="Spacing from 2px to 200px, radii from 2px to 64px, and three soft shadows."
-      >
-        <Specimen className="grid gap-x-12 gap-y-8 p-6 md:grid-cols-2 md:p-8">
+      <Section title="Spacing, Radius & Shadow">
+        <Specimen
+          caption="Spacing units are named by feel, from Tiniest to Hugest."
+          className="grid items-center justify-center gap-x-24 gap-y-8 p-6 md:grid-cols-[auto_24rem] md:p-8"
+        >
           <div className="flex flex-col gap-3">
             {UNITS.map((px) => (
               <div key={px} className="flex items-center gap-4">

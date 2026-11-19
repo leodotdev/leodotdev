@@ -1,4 +1,10 @@
-import { createContext, useContext, useState } from "react"
+import {
+  createContext,
+  useContext,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react"
 import { flushSync } from "react-dom"
 import { THEMES } from "@/components/work/claude/docs"
 import { useTheme } from "@/lib/theme"
@@ -95,58 +101,116 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
 export const usePreviewTheme = () => useContext(ThemeContext)
 
-// The topics read as chapters of one piece, with the figures leading and very
-// little writing. From 1024px a group's page keeps its list of chapters in
-// the left three columns (work.claude.$doc.tsx) and the chapters fill the
-// nine beside it, so everything here is laid out for that nine-column box: a
-// chapter's name (set by the page), then each block's name, a short note
-// under it where one is needed, and its figures.
+// The topics read as chapters of one piece, with the figures leading. From
+// 1024px a group's page keeps its list of chapters in the left three columns
+// (work.claude.$doc.tsx) and the chapters fill the nine beside it, so
+// everything here is laid out for that nine-column box: a chapter's name (set
+// by the page), then each block's name and its figures, each figure with a
+// caption under it.
 
 /**
- * One block of a chapter: its name and a short note, then its figures. A
- * chapter with a single block leaves the name off, since the chapter's own
- * title already says it.
- *
- * In a group whose chapters are marked `data-scaled` (Organisms), every
- * figure is a small copy of the real thing: from 1024px, where the box is
- * nine columns (642px), it is laid out at the page's full twelve (864px) and
- * drawn at 642/864 of its size. So a figure that needs the room (the site
- * header folds into a menu button below 760px, the footer stacks) shows
- * whole, and all of a group's figures are reduced by the same amount.
+ * One block of a chapter: its name, then its figures. A chapter with a single
+ * block leaves the name off, since the chapter's own title already says it.
  */
 export function Section({
   title,
-  description,
   children,
 }: {
   title?: string
-  /** One short sentence about what is shown. */
-  description?: React.ReactNode
   children: React.ReactNode
 }) {
   return (
     <section className="flex flex-col gap-4 pb-12">
-      {title && (
-        <div className="flex flex-col gap-1">
-          <h3 className="font-medium">{title}</h3>
-          {description && (
-            <p className="text-xs text-pretty text-muted-foreground">
-              {description}
-            </p>
-          )}
-        </div>
-      )}
-      <div className="flex min-w-0 flex-col gap-2">
-        <div className="flex min-w-0 flex-col gap-4 lg:group-data-[scaled]/chapter:[zoom:0.743]">
-          {children}
-        </div>
-        {/* The figures' caption, where they are drawn scaled down. It sits
-            outside the scaled box, at the page's own size. */}
-        <p className="hidden text-xs text-muted-foreground lg:group-data-[scaled]/chapter:block">
-          Scaled down
-        </p>
-      </div>
+      {title && <h3 className="font-medium">{title}</h3>}
+      <div className="flex min-w-0 flex-col gap-6">{children}</div>
     </section>
+  )
+}
+
+/**
+ * A figure and its caption. Every figure is a small copy of the real thing:
+ * from 1024px it is laid out a quarter wider than its box (1080px for the
+ * page's twelve columns, 864px) and drawn at 80% of its size. So a figure
+ * that needs the room (the site header folds into a menu button below 760px,
+ * the footer stacks) shows whole, and all figures are reduced by the same
+ * amount. The caption sits outside the scaled box, at the page's own size.
+ *
+ * `Specimen` and `ThemeStrip` wrap themselves in one when given a `caption`;
+ * use it directly around a figure made of several boxes, one with a demo
+ * cursor outside its box, or one that has no caption (it is still scaled).
+ */
+export function Figure({
+  caption,
+  children,
+}: {
+  /** One line on how it was built. A figure may go without. */
+  caption?: React.ReactNode
+  children: React.ReactNode
+}) {
+  return (
+    <figure className="m-0 flex min-w-0 flex-col gap-2">
+      <Scaled>{children}</Scaled>
+      {caption && (
+        <figcaption className="text-xs text-pretty text-muted-foreground">
+          {caption}
+        </figcaption>
+      )}
+    </figure>
+  )
+}
+
+// How much smaller a figure is drawn from 1024px. (The class in `Scaled`
+// that shrinks the page as first served has the same number.)
+const SCALE = 0.8
+
+/**
+ * The box that draws a figure smaller. The page arrives from the server with
+ * the figure shrunk by CSS `zoom`, which needs no script. Once the page is
+ * running, the figure is shrunk with a transform instead, in a box given the
+ * shrunken height. Zoom is not kept because Safari measures a zoomed box for
+ * its container queries after the zoom, where Chrome measures it before: in
+ * Safari every figure thought it was three quarters as wide as it is laid
+ * out, and the footer, the header and the cards showed their narrow layouts.
+ * A transform changes no measurements, so both browsers agree.
+ */
+function Scaled({ children }: { children: React.ReactNode }) {
+  const inner = useRef<HTMLDivElement>(null)
+  // The shrunken height, once measured; until then (and below 1024px, where
+  // figures are full size) the box is as tall as what it holds.
+  const [height, setHeight] = useState<number | null>(null)
+  useLayoutEffect(() => {
+    const el = inner.current
+    if (!el) return
+    const wide = window.matchMedia("(min-width: 1024px)")
+    const measure = () =>
+      setHeight(wide.matches ? el.offsetHeight * SCALE : null)
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(el)
+    wide.addEventListener("change", measure)
+    return () => {
+      observer.disconnect()
+      wide.removeEventListener("change", measure)
+    }
+  }, [])
+  return (
+    <div className="min-w-0" style={height === null ? undefined : { height }}>
+      <div
+        ref={inner}
+        className={height === null ? "min-w-0 lg:[zoom:0.8]" : "min-w-0"}
+        style={
+          height === null
+            ? undefined
+            : {
+                width: `${100 / SCALE}%`,
+                transform: `scale(${SCALE})`,
+                transformOrigin: "0 0",
+              }
+        }
+      >
+        {children}
+      </div>
+    </div>
   )
 }
 
@@ -156,16 +220,19 @@ export function Section({
  */
 export function Specimen({
   theme,
+  caption,
   className,
   children,
 }: {
   /** A theme the figure always wears; otherwise the one picked for figures. */
   theme?: ThemeId
+  /** Makes the box a figure of its own, with this under it. */
+  caption?: React.ReactNode
   className?: string
   children: React.ReactNode
 }) {
   const { picked } = usePreviewTheme()
-  return (
+  const box = (
     <div
       // "themed" figures take the picked theme; the wave looks for them.
       data-figure={theme ? "fixed" : "themed"}
@@ -178,11 +245,19 @@ export function Specimen({
       {children}
     </div>
   )
+  return caption ? <Figure caption={caption}>{box}</Figure> : box
 }
 
 /** The same contents once per theme, side by side in one strip. */
-export function ThemeStrip({ children }: { children: React.ReactNode }) {
-  return (
+export function ThemeStrip({
+  caption,
+  children,
+}: {
+  /** Makes the strip a figure of its own, with this under it. */
+  caption?: React.ReactNode
+  children: React.ReactNode
+}) {
+  const strip = (
     <div
       data-figure
       className="grid grid-cols-2 overflow-hidden rounded-[20px] outline outline-1 -outline-offset-1 outline-border sm:grid-cols-3 md:grid-cols-5"
@@ -204,6 +279,7 @@ export function ThemeStrip({ children }: { children: React.ReactNode }) {
       ))}
     </div>
   )
+  return caption ? <Figure caption={caption}>{strip}</Figure> : strip
 }
 
 /** A labelled cell inside a specimen: what is shown, then the thing itself. */

@@ -1,4 +1,4 @@
-import { Section, Specimen } from "@/components/work/claude/ui"
+import { Figure, Section, Specimen } from "@/components/work/claude/ui"
 
 const HEADLINE = "Meet Claude, your thinking partner"
 const SUBHEAD = "AI that thinks with you, not for you"
@@ -50,15 +50,15 @@ const STYLES: Array<[string, string, string, string]> = [
 export function TypographyDoc() {
   return (
     <>
-      <Section
-        title="Families"
-        description="Serif, sans and mono, each with weights from 300 to 800."
-      >
-        <Specimen className="grid sm:grid-cols-3">
+      <Section title="Families">
+        <Specimen
+          caption="Body is set in the sans and Body Large in the serif; each also comes in the other."
+          className="grid sm:grid-cols-3"
+        >
           {FAMILIES.map((family, i) => (
             <div
               key={family.name}
-              className="flex flex-col gap-6 p-6 md:p-8"
+              className="flex flex-col items-center gap-6 p-6 text-center md:p-8"
               style={
                 i ? { borderInlineStart: "1px solid var(--cds-border-3)" } : {}
               }
@@ -97,26 +97,28 @@ export function TypographyDoc() {
         </Specimen>
       </Section>
 
-      <Section
-        title="Scale"
-        description="Each row shows its size on a phone and on a wide screen, then its leading."
-      >
-        <Specimen>
-          {STYLES.map(([name, className, size, sample], i) => (
-            <div
-              key={name}
-              className="flex flex-col gap-2 px-6 py-5 md:px-8"
-              style={
-                i ? { borderTop: "1px solid var(--cds-border-3)" } : undefined
-              }
-            >
-              <div className="cds-caption" style={{ color: "var(--cds-fg-3)" }}>
-                <span style={{ color: "var(--cds-fg)" }}>{name}</span> {size}
+      <Section title="Scale">
+        <Figure>
+          <Specimen>
+            {STYLES.map(([name, className, size, sample], i) => (
+              <div
+                key={name}
+                className="flex flex-col gap-2 px-6 py-5 md:px-8"
+                style={
+                  i ? { borderTop: "1px solid var(--cds-border-3)" } : undefined
+                }
+              >
+                <div
+                  className="cds-caption"
+                  style={{ color: "var(--cds-fg-3)" }}
+                >
+                  <span style={{ color: "var(--cds-fg)" }}>{name}</span> {size}
+                </div>
+                <div className={className}>{sample}</div>
               </div>
-              <div className={className}>{sample}</div>
-            </div>
-          ))}
-        </Specimen>
+            ))}
+          </Specimen>
+        </Figure>
       </Section>
     </>
   )

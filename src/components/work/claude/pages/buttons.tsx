@@ -3,6 +3,7 @@ import { DemoCursor } from "@/components/work/claude/demo-cursor"
 import { Button, VARIANTS } from "@/components/work/claude/specimens"
 import {
   Cell,
+  Figure,
   Section,
   Specimen,
   ThemeStrip,
@@ -25,24 +26,6 @@ const GRID_DEMO: Array<DemoStep> = [
   { on: variant("clay"), nth: 4, rest: 700 },
 ]
 
-// The buttons at rest take their hover look under the cursor, next to the
-// column that shows it held.
-const STATES_DEMO: Array<DemoStep> = [
-  { on: ".cds-btn", text: "Primary", rest: 700 },
-  { on: ".cds-btn", text: "Secondary", rest: 700 },
-  { on: ".cds-btn", text: "Tertiary", rest: 700 },
-  { on: ".cds-btn", text: "Clay", click: true, rest: 700 },
-]
-
-// One button in each theme.
-const THEMES_DEMO: Array<DemoStep> = [
-  { on: variant("primary"), nth: 0, rest: 600 },
-  { on: variant("secondary"), nth: 1, rest: 600 },
-  { on: variant("tertiary"), nth: 2, rest: 600 },
-  { on: variant("clay"), nth: 3, rest: 600 },
-  { on: variant("primary"), nth: 4, click: true, rest: 600 },
-]
-
 const LINKS_DEMO: Array<DemoStep> = [
   { on: ".cds-link", rest: 1000 },
   { on: "a.cds-meta-link", rest: 1000 },
@@ -53,10 +36,13 @@ export function ButtonsDoc() {
   return (
     <>
       <Section title="Buttons">
-        <Specimen className="overflow-x-auto">
+        <Specimen
+          caption="One button, 48 variants."
+          className="overflow-x-auto"
+        >
           <DemoCursor
             steps={GRID_DEMO}
-            className="grid w-max min-w-full grid-cols-[repeat(6,auto)] items-center justify-start gap-x-4 gap-y-5 p-6"
+            className="grid w-max min-w-full grid-cols-[repeat(6,auto)] items-center justify-center gap-x-4 gap-y-5 p-6"
           >
             {COLUMNS.map((column) => (
               <div
@@ -82,11 +68,8 @@ export function ButtonsDoc() {
       </Section>
 
       <Section title="States & Themes">
-        <Specimen>
-          <DemoCursor
-            steps={STATES_DEMO}
-            className="grid gap-x-8 gap-y-6 p-6 sm:grid-cols-3 md:p-8"
-          >
+        <Specimen caption="We wanted a button at rest to hold “a calm, consistent tone.”">
+          <div className="grid justify-center gap-x-16 gap-y-6 p-6 sm:grid-cols-[repeat(3,auto)] md:p-8">
             {(
               [
                 ["At rest", undefined],
@@ -106,66 +89,66 @@ export function ButtonsDoc() {
                 ))}
               </Cell>
             ))}
-          </DemoCursor>
+          </div>
         </Specimen>
-        <DemoCursor steps={THEMES_DEMO}>
-          <ThemeStrip>
-            {VARIANTS.map((name) => (
-              <Button key={name} variant={name} size="small" />
-            ))}
-          </ThemeStrip>
-        </DemoCursor>
+        <ThemeStrip caption="Labels run thinner on dark backgrounds.">
+          {VARIANTS.map((name) => (
+            <Button key={name} variant={name} size="small" />
+          ))}
+        </ThemeStrip>
       </Section>
 
       <Section title="Links">
-        <Specimen>
-          <DemoCursor
-            steps={LINKS_DEMO}
-            className="grid items-start gap-8 p-6 md:grid-cols-[minmax(0,1fr)_auto] md:p-8"
-          >
-            <div className="flex flex-col gap-8">
-              <p
-                className="cds-body-3 max-w-[26ch]"
-                style={{ color: "var(--cds-fg-3)" }}
-              >
-                This is a string of words with a{" "}
+        <Figure>
+          <Specimen>
+            <DemoCursor
+              steps={LINKS_DEMO}
+              className="grid items-center justify-center gap-x-16 gap-y-8 p-6 md:grid-cols-[auto_auto] md:p-8"
+            >
+              <div className="flex flex-col gap-8">
+                <p
+                  className="cds-body-3 max-w-[26ch]"
+                  style={{ color: "var(--cds-fg-3)" }}
+                >
+                  This is a string of words with a{" "}
+                  <a
+                    className="cds-link"
+                    href="#links"
+                    data-wave-hover="off"
+                    data-wave-manual
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    link embedded
+                  </a>{" "}
+                  within it.
+                </p>
                 <a
-                  className="cds-link"
+                  className="cds-meta-link self-start"
                   href="#links"
                   data-wave-hover="off"
                   data-wave-manual
                   onClick={(e) => e.preventDefault()}
                 >
-                  link embedded
-                </a>{" "}
-                within it.
-              </p>
+                  <TbPaperclip aria-hidden />
+                  Developer doc
+                </a>
+              </div>
               <a
-                className="cds-meta-link self-start"
+                className="cds-card-link"
                 href="#links"
                 data-wave-hover="off"
                 data-wave-manual
                 onClick={(e) => e.preventDefault()}
               >
-                <TbPaperclip aria-hidden />
-                Developer doc
+                Claude Code documentation
+                <span className="cds-meta-link">
+                  <TbPaperclip aria-hidden />
+                  Developer doc
+                </span>
               </a>
-            </div>
-            <a
-              className="cds-card-link"
-              href="#links"
-              data-wave-hover="off"
-              data-wave-manual
-              onClick={(e) => e.preventDefault()}
-            >
-              Claude Code documentation
-              <span className="cds-meta-link">
-                <TbPaperclip aria-hidden />
-                Developer doc
-              </span>
-            </a>
-          </DemoCursor>
-        </Specimen>
+            </DemoCursor>
+          </Specimen>
+        </Figure>
       </Section>
     </>
   )

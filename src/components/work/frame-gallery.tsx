@@ -67,7 +67,7 @@ export function FrameGallery({
     <>
       {chapters.map((chapter) => (
         <div key={chapter.title} className="flex flex-col gap-12">
-          {!bare && <Separator />}
+          {!bare && <Separator bleed />}
           <section>
             <div
               className={cn(

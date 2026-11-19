@@ -1,4 +1,11 @@
-import { TbArrowRight, TbArrowUp, TbSearch, TbX } from "react-icons/tb"
+import { useEffect, useRef } from "react"
+import {
+  TbArrowLeft,
+  TbArrowRight,
+  TbArrowUp,
+  TbSearch,
+  TbX,
+} from "react-icons/tb"
 
 // The design system's controls as small React components over the `.cds-*`
 // classes in src/claude-ds.css. `state` shows a hover or focus state without
@@ -92,18 +99,28 @@ export function Check({
   type = "checkbox",
   name,
   defaultChecked,
+  indeterminate,
   state,
   children = "Label",
 }: {
   type?: "checkbox" | "radio"
   name?: string
   defaultChecked?: boolean
+  /** A checkbox that is neither on nor off: some of what it stands for is. */
+  indeterminate?: boolean
   state?: "hover" | "focus"
   children?: string
 }) {
+  // There is no attribute for it: the state is set on the element, and the
+  // browser clears it when the box is pressed.
+  const input = useRef<HTMLInputElement>(null)
+  useEffect(() => {
+    if (input.current) input.current.indeterminate = !!indeterminate
+  }, [indeterminate])
   return (
     <label className="cds-check">
       <input
+        ref={input}
         type={type}
         name={name}
         defaultChecked={defaultChecked}
@@ -136,5 +153,46 @@ export function Switch({
       />
       {children}
     </label>
+  )
+}
+
+/**
+ * A carousel's controls ("Carousel: UI" in the file): previous, a bullet for
+ * each stop with the current one dark, and next.
+ */
+export function CarouselUi({
+  count,
+  current,
+  onStep,
+  size,
+}: {
+  count: number
+  current: number
+  onStep: (by: 1 | -1) => void
+  size?: "small"
+}) {
+  const button = {
+    type: "button",
+    className: "cds-btn",
+    "data-variant": "tertiary",
+    "data-size": size,
+    "data-icon": "only",
+    "data-wave-hover": "off",
+    "data-wave-manual": true,
+  } as const
+  return (
+    <div className="cds-carousel-ui">
+      <button {...button} aria-label="Previous" onClick={() => onStep(-1)}>
+        <TbArrowLeft aria-hidden />
+      </button>
+      <div className="cds-bullets" aria-hidden>
+        {Array.from({ length: count }, (_, i) => (
+          <span key={i} data-current={i === current ? "" : undefined} />
+        ))}
+      </div>
+      <button {...button} aria-label="Next" onClick={() => onStep(1)}>
+        <TbArrowRight aria-hidden />
+      </button>
+    </div>
   )
 }

@@ -125,52 +125,17 @@ export const endWave = (el: Element) => active.get(el)?.skip()
 /** Whether a wave is playing on this element right now. */
 export const isWaving = (el: Element) => active.has(el)
 
-// While a wave carries a change, the page holds still. Such a wave shows a
-// picture of what was on screen, placed where it was, in place of the real
-// thing; scrolling would slide the page out from under the picture and leave
-// blank where the hidden page comes into view. So for the second or so the
-// wave lasts, the wheel, touch drags and the scrolling keys do nothing. (Keys
-// pressed in a control keep their meaning: Space still presses a button.)
-let holds = 0
-const SCROLL_KEYS = new Set([
-  " ",
-  "PageUp",
-  "PageDown",
-  "Home",
-  "End",
-  "ArrowUp",
-  "ArrowDown",
-])
-const hold = (e: Event) => e.preventDefault()
-const holdKeys = (e: KeyboardEvent) => {
-  if (!SCROLL_KEYS.has(e.key)) return
-  const control =
-    e.target instanceof Element &&
-    e.target.closest(
-      "a[href], button, input, textarea, select, [contenteditable], [role='slider']"
-    )
-  if (!control) e.preventDefault()
-}
-function holdScroll(until: Promise<unknown>) {
-  if (holds++ === 0) {
-    window.addEventListener("wheel", hold, { passive: false })
-    window.addEventListener("touchmove", hold, { passive: false })
-    window.addEventListener("keydown", holdKeys)
-  }
-  void until.finally(() => {
-    if (--holds > 0) return
-    window.removeEventListener("wheel", hold)
-    window.removeEventListener("touchmove", hold)
-    window.removeEventListener("keydown", holdKeys)
-  })
-}
-
 /**
  * Plays the distortion wave over `target` while `update` changes the DOM (wrap
  * React state changes in `flushSync`; an update that returns a promise is
- * waited for). `update` always runs, wave or not. The page cannot be
- * scrolled while such a wave plays (`holdScroll`).
+ * waited for). `update` always runs, wave or not.
  * Resolves when the wave is over (at once if there was none).
+ *
+ * The page can be scrolled while a wave plays. The wave shows a picture of
+ * the part of its target that was in the window, and the picture lies in the
+ * page and scrolls with it; the target is hidden only where the picture is,
+ * so what scrolls into view is the real page (both from the local patch of
+ * the library).
  *
  * A wave hides its target while it plays, so a wave on an element inside or
  * around the new target is ended first; otherwise the new capture would show
@@ -201,10 +166,7 @@ export function wave(
       ...options,
     })
     active.set(target, t)
-    if (update) {
-      changing.add(target)
-      holdScroll(t.finished)
-    }
+    if (update) changing.add(target)
     return t.finished.finally(() => {
       if (active.get(target) !== t) return
       active.delete(target)

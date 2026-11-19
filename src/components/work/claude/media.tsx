@@ -391,7 +391,7 @@ export function MediaStrip() {
       <ul
         ref={strip}
         aria-label="Clips of the finished site"
-        className="-mx-6 scrollbar-hide flex cursor-grab gap-3 overflow-x-auto px-6 select-none data-[dragging]:cursor-grabbing md:-mx-12 md:px-12"
+        className="bleed scrollbar-hide flex cursor-grab gap-3 overflow-x-auto select-none data-[dragging]:cursor-grabbing"
       >
         {clips.map((clip) => (
           <ClipTile key={clip.id} clip={clip} />

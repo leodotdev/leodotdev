@@ -2,6 +2,7 @@ import { DemoCursor } from "@/components/work/claude/demo-cursor"
 import { Check, Switch, TextInput } from "@/components/work/claude/specimens"
 import {
   Cell,
+  Figure,
   Section,
   Specimen,
   ThemeStrip,
@@ -55,10 +56,10 @@ export function FormsDoc() {
   return (
     <>
       <Section title="Text Input">
-        <Specimen>
+        <Specimen caption="Five icon arrangements in two sizes: ten variants.">
           <DemoCursor
             steps={INPUT_DEMO}
-            className="grid gap-x-8 gap-y-6 p-6 sm:grid-cols-2 md:p-8 xl:grid-cols-3"
+            className="grid justify-center gap-x-8 gap-y-6 p-6 sm:grid-cols-[repeat(2,minmax(0,20rem))] md:p-8 xl:grid-cols-[repeat(3,minmax(0,20rem))]"
           >
             <Cell label="No icon">
               <TextInput />
@@ -83,65 +84,72 @@ export function FormsDoc() {
             </Cell>
           </DemoCursor>
         </Specimen>
-        <DemoCursor steps={INPUT_THEMES_DEMO}>
-          <ThemeStrip>
-            <TextInput leading />
-          </ThemeStrip>
-        </DemoCursor>
+        <Figure caption="The input on each theme.">
+          <DemoCursor steps={INPUT_THEMES_DEMO}>
+            <ThemeStrip>
+              <TextInput leading />
+            </ThemeStrip>
+          </DemoCursor>
+        </Figure>
       </Section>
 
       <Section title="Checkbox, Radio & Switch">
-        <Specimen>
-          <DemoCursor
-            steps={CHECK_DEMO}
-            className="grid gap-x-8 gap-y-8 p-6 sm:grid-cols-3 md:p-8"
-          >
-            <Cell label="Checkbox" className="flex-col !items-start">
-              <Check>Not selected</Check>
-              <Check defaultChecked>Selected</Check>
-              <Check state="hover">:hover</Check>
-              <Check state="focus">:focus-visible</Check>
-            </Cell>
-            <Cell label="Radio" className="flex-col !items-start">
-              <Check type="radio" name="radio-demo">
-                Not selected
-              </Check>
-              <Check type="radio" name="radio-demo" defaultChecked>
-                Selected
-              </Check>
-              <Check type="radio" name="radio-hover" state="hover">
-                :hover
-              </Check>
-              <Check type="radio" name="radio-focus" state="focus">
-                :focus-visible
-              </Check>
-            </Cell>
-            <Cell label="Switch" className="flex-col !items-start">
-              <Switch>Off</Switch>
-              <Switch defaultChecked>On</Switch>
-              <Switch tone="blue" defaultChecked>
-                On, blue
-              </Switch>
-              <Switch defaultChecked state="focus">
-                :focus-visible
-              </Switch>
-            </Cell>
+        <Figure>
+          <Specimen>
+            <DemoCursor
+              steps={CHECK_DEMO}
+              className="grid justify-center gap-x-16 gap-y-8 p-6 sm:grid-cols-[repeat(3,auto)] md:p-8"
+            >
+              <Cell label="Checkbox" className="flex-col !items-start">
+                <Check>Not selected</Check>
+                <Check defaultChecked>Selected</Check>
+                <Check indeterminate>Indeterminate</Check>
+                <Check state="hover">:hover</Check>
+                <Check state="focus">:focus-visible</Check>
+              </Cell>
+              <Cell label="Radio" className="flex-col !items-start">
+                <Check type="radio" name="radio-demo">
+                  Not selected
+                </Check>
+                <Check type="radio" name="radio-demo" defaultChecked>
+                  Selected
+                </Check>
+                <Check type="radio" name="radio-hover" state="hover">
+                  :hover
+                </Check>
+                <Check type="radio" name="radio-focus" state="focus">
+                  :focus-visible
+                </Check>
+              </Cell>
+              <Cell label="Switch" className="flex-col !items-start">
+                <Switch>Off</Switch>
+                <Switch defaultChecked>On</Switch>
+                <Switch tone="blue" defaultChecked>
+                  On, blue
+                </Switch>
+                <Switch defaultChecked state="focus">
+                  :focus-visible
+                </Switch>
+              </Cell>
+            </DemoCursor>
+          </Specimen>
+        </Figure>
+        <Figure caption="The form controls on each theme.">
+          <DemoCursor steps={CHECK_THEMES_DEMO}>
+            <ThemeStrip>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Check defaultChecked>{""}</Check>
+                <Check type="radio" defaultChecked>
+                  {""}
+                </Check>
+              </div>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Switch>{""}</Switch>
+                <Switch defaultChecked>{""}</Switch>
+              </div>
+            </ThemeStrip>
           </DemoCursor>
-        </Specimen>
-        <DemoCursor steps={CHECK_THEMES_DEMO}>
-          <ThemeStrip>
-            <div className="flex flex-wrap justify-center gap-3">
-              <Check defaultChecked>{""}</Check>
-              <Check type="radio" defaultChecked>
-                {""}
-              </Check>
-            </div>
-            <div className="flex flex-wrap justify-center gap-3">
-              <Switch>{""}</Switch>
-              <Switch defaultChecked>{""}</Switch>
-            </div>
-          </ThemeStrip>
-        </DemoCursor>
+        </Figure>
       </Section>
     </>
   )

@@ -1,11 +1,9 @@
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import {
   TbBook,
   TbBulb,
   TbChartBar,
   TbChevronDown,
-  TbChevronLeft,
-  TbChevronRight,
   TbCode,
   TbDots,
   TbMinus,
@@ -13,7 +11,9 @@ import {
   TbSearch,
 } from "react-icons/tb"
 import { DemoCursor } from "@/components/work/claude/demo-cursor"
-import { Cell, Section, Specimen } from "@/components/work/claude/ui"
+import { CarouselUi } from "@/components/work/claude/specimens"
+import { useDismiss } from "@/components/work/claude/use-dismiss"
+import { Cell, Figure, Section, Specimen } from "@/components/work/claude/ui"
 import type { DemoStep } from "@/components/work/claude/demo-cursor"
 
 const quiet = { "data-wave-hover": "off", "data-wave-manual": true } as const
@@ -25,27 +25,6 @@ const VIEWS = [
   ["Analyze", TbChartBar],
   ["Create", TbBulb],
 ] as const
-
-/** Closes a popup when the pointer goes down outside it or Escape is pressed. */
-function useDismiss(open: boolean, close: () => void) {
-  const ref = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    if (!open) return
-    const onDown = (e: PointerEvent) => {
-      if (!ref.current?.contains(e.target as Node)) close()
-    }
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close()
-    }
-    document.addEventListener("pointerdown", onDown)
-    document.addEventListener("keydown", onKey)
-    return () => {
-      document.removeEventListener("pointerdown", onDown)
-      document.removeEventListener("keydown", onKey)
-    }
-  }, [open, close])
-  return ref
-}
 
 /**
  * Tabs. With `max`, the tabs beyond it move into an overflow menu behind a
@@ -211,35 +190,7 @@ function Carousel() {
       >
         {current + 1} of {SLIDES}
       </div>
-      <div className="cds-carousel-ui">
-        <button
-          type="button"
-          className="cds-btn"
-          data-variant="tertiary"
-          data-icon="only"
-          aria-label="Previous"
-          onClick={() => step(-1)}
-          {...quiet}
-        >
-          <TbChevronLeft aria-hidden />
-        </button>
-        <div className="cds-bullets" aria-hidden>
-          {Array.from({ length: SLIDES }, (_, i) => (
-            <span key={i} data-current={i === current ? "" : undefined} />
-          ))}
-        </div>
-        <button
-          type="button"
-          className="cds-btn"
-          data-variant="tertiary"
-          data-icon="only"
-          aria-label="Next"
-          onClick={() => step(1)}
-          {...quiet}
-        >
-          <TbChevronRight aria-hidden />
-        </button>
-      </div>
+      <CarouselUi count={SLIDES} current={current} onStep={step} />
     </div>
   )
 }
@@ -268,15 +219,16 @@ export function TabsDoc() {
   return (
     <>
       <Section>
-        <Specimen>
+        <Specimen caption="When tabs run out of room they overflow into a menu.">
           <DemoCursor
             steps={TABS_DEMO}
-            className="grid gap-x-8 gap-y-8 p-6 pb-28 md:p-8 md:pb-28"
+            // Each label and its row of tabs sit on the figure's center line.
+            className="grid grid-cols-[auto] justify-center justify-items-center gap-x-8 gap-y-8 px-6 py-28 md:px-8 [&>div]:items-center"
           >
             <Cell label="With icons">
               <Tabs icons />
             </Cell>
-            <Cell label="Small, medium & large">
+            <Cell label="Small, medium, large" className="flex-col">
               <Tabs size="small" max={3} />
               <Tabs max={3} />
               <Tabs size="large" max={3} />
@@ -325,8 +277,11 @@ export function SelectDoc() {
   return (
     <>
       <Section>
-        <Specimen>
-          <DemoCursor steps={SELECT_DEMO} className="p-6 pb-56 md:p-8 md:pb-56">
+        <Specimen caption="One heuristic repeated here, a hovered list-item's siblings dim on hover.">
+          <DemoCursor
+            steps={SELECT_DEMO}
+            className="flex justify-center px-6 py-56 md:px-8"
+          >
             <Select />
           </DemoCursor>
         </Specimen>
@@ -339,11 +294,16 @@ export function AccordionDoc() {
   return (
     <>
       <Section>
-        <Specimen>
-          <DemoCursor steps={ACCORDION_DEMO} className="p-6 md:p-8">
-            <Accordion />
-          </DemoCursor>
-        </Specimen>
+        <Figure>
+          <Specimen>
+            <DemoCursor
+              steps={ACCORDION_DEMO}
+              className="flex justify-center p-6 md:p-8"
+            >
+              <Accordion />
+            </DemoCursor>
+          </Specimen>
+        </Figure>
       </Section>
     </>
   )
@@ -353,14 +313,16 @@ export function CarouselDoc() {
   return (
     <>
       <Section>
-        <Specimen>
-          <DemoCursor
-            steps={CAROUSEL_DEMO}
-            className="flex justify-center p-6 md:p-8"
-          >
-            <Carousel />
-          </DemoCursor>
-        </Specimen>
+        <Figure>
+          <Specimen>
+            <DemoCursor
+              steps={CAROUSEL_DEMO}
+              className="flex justify-center p-6 md:p-8"
+            >
+              <Carousel />
+            </DemoCursor>
+          </Specimen>
+        </Figure>
       </Section>
     </>
   )

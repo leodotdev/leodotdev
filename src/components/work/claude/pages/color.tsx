@@ -1,5 +1,10 @@
 import { THEMES } from "@/components/work/claude/docs"
-import { Section, Specimen, usePreviewTheme } from "@/components/work/claude/ui"
+import {
+  Figure,
+  Section,
+  Specimen,
+  usePreviewTheme,
+} from "@/components/work/claude/ui"
 import { cn } from "@/lib/utils"
 
 const GRAYS = [
@@ -51,7 +56,10 @@ export function ColorDoc() {
   return (
     <>
       <Section title="Palette">
-        <Specimen className="flex flex-col items-center gap-2 px-4 py-10 md:px-8 md:py-16">
+        <Specimen
+          caption="The palette starts from one ramp of neutrals, 000 to 1000, plus accents and Clay."
+          className="flex flex-col items-center gap-2 px-4 py-10 md:px-8 md:py-16"
+        >
           <div className="grid w-full grid-cols-7 gap-1 sm:grid-cols-[repeat(21,minmax(0,1fr))] md:gap-1.5">
             {GRAYS.map(([step, value], i) => (
               <div
@@ -100,58 +108,57 @@ export function ColorDoc() {
         </Specimen>
       </Section>
 
-      <Section
-        title="Themes"
-        description="Five themes, each three neighboring neutrals. Pick one and the figures wear it."
-      >
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
-          {THEMES.map(({ id, name }) => (
-            <button
-              key={id}
-              type="button"
-              data-wave-hover="off"
-              data-wave-manual
-              aria-pressed={theme === id}
-              className="group flex flex-col gap-1.5 text-left"
-              onClick={(e) => setTheme(id, e)}
-            >
-              <Specimen
-                theme={id}
-                className={cn(
-                  // As tall as its three chips: 12px of padding, the 20px corner
-                  // less that padding for the chips' own 8px corners.
-                  "flex w-full flex-col items-stretch gap-1.5 p-3",
-                  theme === id
-                    ? "outline-2 outline-tint"
-                    : "group-hover:outline-gray"
-                )}
+      <Section title="Themes">
+        <Figure caption="Seven themes drawn, five on the site, Ivory the default.">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
+            {THEMES.map(({ id, name }) => (
+              <button
+                key={id}
+                type="button"
+                data-wave-hover="off"
+                data-wave-manual
+                aria-pressed={theme === id}
+                className="group flex flex-col gap-1.5 text-left"
+                onClick={(e) => setTheme(id, e)}
               >
-                {["Primary", "Secondary", "Tertiary"].map((level, i) => (
-                  <span
-                    key={level}
-                    className="cds-caption rounded-[8px] py-1 text-center"
-                    style={{
-                      background: `var(--cds-bg${i ? `-${i + 1}` : ""})`,
-                      border: "1px solid var(--cds-border-3)",
-                      color: i === 2 ? "var(--cds-fg)" : "var(--cds-fg-3)",
-                    }}
-                  >
-                    {level}
-                  </span>
-                ))}
-              </Specimen>
-              {/* Named as in the Figma file, which marks Ivory as the default. */}
-              <span
-                className={cn(
-                  "text-xs",
-                  theme !== id && "text-muted-foreground"
-                )}
-              >
-                {id === "ivory" ? `${name} (Default)` : name}
-              </span>
-            </button>
-          ))}
-        </div>
+                <Specimen
+                  theme={id}
+                  className={cn(
+                    // As tall as its three chips: 12px of padding, the 20px corner
+                    // less that padding for the chips' own 8px corners.
+                    "flex w-full flex-col items-stretch gap-1.5 p-3",
+                    theme === id
+                      ? "outline-2 outline-tint"
+                      : "group-hover:outline-gray"
+                  )}
+                >
+                  {["Primary", "Secondary", "Tertiary"].map((level, i) => (
+                    <span
+                      key={level}
+                      className="cds-caption rounded-[8px] py-1 text-center"
+                      style={{
+                        background: `var(--cds-bg${i ? `-${i + 1}` : ""})`,
+                        border: "1px solid var(--cds-border-3)",
+                        color: i === 2 ? "var(--cds-fg)" : "var(--cds-fg-3)",
+                      }}
+                    >
+                      {level}
+                    </span>
+                  ))}
+                </Specimen>
+                {/* Named as in the Figma file, which marks Ivory as the default. */}
+                <span
+                  className={cn(
+                    "text-xs",
+                    theme !== id && "text-muted-foreground"
+                  )}
+                >
+                  {id === "ivory" ? `${name} (Default)` : name}
+                </span>
+              </button>
+            ))}
+          </div>
+        </Figure>
       </Section>
     </>
   )

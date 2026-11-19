@@ -4,6 +4,12 @@ import { cn } from "@/lib/utils"
 const STEP = 16
 
 /**
+ * A figure's layouts, widest first: each one's name and the greatest box
+ * width it shows at (none for the widest).
+ */
+export type Sizes = Array<[name: string, upTo?: number]>
+
+/**
  * A figure whose width can be changed, to show a responsive design at each of
  * its sizes. The box sits centered in the room it has; dragging the grip on
  * either side narrows or widens it, both sides moving together so the grip
@@ -16,15 +22,22 @@ const STEP = 16
  *
  * The demo cursor resizes it too, through a `demo-drag` event on a grip
  * carrying the width to take (DemoCursor's `drag` step).
+ *
+ * Under the box a label names the layout showing ("Desktop", "Tablet",
+ * "Mobile"): `sizes` lists the figure's own layouts, widest first, each with
+ * the greatest box width it shows at (none for the widest), which are the
+ * widths its styles change at.
  */
 export function Resizable({
   min = 326,
   label = "Figure width",
+  sizes,
   className,
   children,
 }: {
   min?: number
   label?: string
+  sizes?: Sizes
   /** For the box that is resized (a height, say, which also centers the grips). */
   className?: string
   children: React.ReactNode
@@ -67,6 +80,13 @@ export function Resizable({
 
   const now = Math.min(width ?? max, max)
   const fixed = max <= min + STEP
+  // The layout showing: the narrowest one the box still fits. Before the
+  // room is measured it is the widest.
+  const size = sizes?.reduce(
+    (found, [name, upTo]) =>
+      upTo === undefined || (max > 0 && now <= upTo) ? name : found,
+    sizes[0][0]
+  )
 
   const grip = (side: "left" | "right") => (
     <button
@@ -77,6 +97,7 @@ export function Resizable({
       aria-valuemin={min}
       aria-valuemax={max}
       aria-valuenow={Math.round(now)}
+      aria-valuetext={size && `${size}, ${Math.round(now)} pixels`}
       className="cds-resize-grip"
       data-side={side}
       data-dragging={dragging === side ? "" : undefined}
@@ -132,6 +153,11 @@ export function Resizable({
         {grip("left")}
         {grip("right")}
       </div>
+      {size && (
+        <div className="cds-resize-size" aria-hidden>
+          {size}
+        </div>
+      )}
     </div>
   )
 }

@@ -111,7 +111,7 @@ export const DOCS: Array<Doc> = [
   live(
     "Molecules",
     "menu",
-    "Menu",
+    "Menus",
     "Navigation menus, prompt suggestions and page actions."
   ),
   live(

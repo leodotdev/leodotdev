@@ -21,26 +21,23 @@ export function HomePage({
   return (
     <ProjectsWrapper>
       <div className="flex flex-col">
-        {/* Top group: hero through references. The page frame in __root
-              draws the side borders. Only in the projects grid mode, where
-              the frame's borders are hidden so the projects section can go
-              full-bleed, does this group draw its own. */}
-        <div className="flex flex-col gap-12 pb-12 min-[961px]:[.projects-grid_&]:border-x">
+        {/* Top group: hero through references. */}
+        <div className="flex flex-col gap-12 pb-12">
           <HeroSection />
 
-          <Separator />
+          <Separator bleed />
 
           {recentWork && (
             <>
               <RecentWorkSection />
 
-              <Separator />
+              <Separator bleed />
             </>
           )}
 
           <ExperienceClient experiences={experiences} />
 
-          <Separator />
+          <Separator bleed />
 
           <ReferencesScroll references={references} />
         </div>
