@@ -1,0 +1,1739 @@
+/* The organisms content chapters of the Anthropic.com docs (lists, cards,
+   latest updates, tables, the accordion, and the fly-out), drawn from the
+   Organisms page of the system's Figma file. Their markup is in
+   src/components/work/anthropic/pages/organisms-content/. */
+
+/* A box the content's container queries measure. */
+.ads-oc-c {
+  container-type: inline-size;
+  width: 100%;
+}
+
+/* Skeleton pieces of the pages these sit on. */
+.ads-oc-skel-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ads-oc-skel-heading[data-center] {
+  align-items: center;
+}
+.ads-oc-skel-text {
+  max-width: 640px;
+}
+.ads-oc-skel-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--ads-border-3);
+}
+.ads-oc-skel-nav > span {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+@container (max-width: 640px) {
+  .ads-oc-skel-nav > span > :not(:last-child) {
+    display: none;
+  }
+}
+
+/* The samples' links: nothing of the site's own. */
+:where(.ads)
+  :where(
+    .ads-list-item-title,
+    .ads-news-title,
+    .ads-thumb-title,
+    .ads-asset-title,
+    .ads-tout-title,
+    .ads-grid-item-title,
+    .ads-update-title,
+    .ads-row-title,
+    .ads-oc-link
+  ) {
+  color: var(--ads-fg);
+  text-decoration: none;
+}
+
+/* The "Tiny More Button": a pill of three dots; dark with a cross once
+   what it opens is open. */
+.ads-tiny-more {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  height: 18px;
+  padding: 0 8px;
+  border: 1px solid var(--ads-secondary-border);
+  border-radius: 96px;
+  background: var(--ads-secondary-bg);
+  color: var(--ads-secondary-fg);
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+.ads-tiny-more svg {
+  width: 18px;
+  height: 18px;
+}
+.ads-tiny-more:is(:hover, [data-state="hover"]) {
+  border-color: var(--ads-bg-4);
+  background: var(--ads-bg-4);
+}
+.ads-tiny-more[aria-expanded="true"] {
+  border-color: var(--ads-primary-bg);
+  background: var(--ads-primary-bg);
+  color: var(--ads-primary-fg);
+}
+.ads-tiny-more[aria-expanded="true"] svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* "Menu, Topic, Date": the more button, then a topic and a date. */
+.ads-mtd {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+  padding: 12px 0;
+  color: var(--ads-fg-3);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+  white-space: nowrap;
+}
+.ads-mtd > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* List Item Card. */
+.ads-list-items {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 320px;
+}
+.ads-list-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  padding: 16px;
+  border: 1px solid var(--ads-border-2);
+  border-radius: var(--ads-radius-smallest);
+  background: var(--ads-bg-2);
+  transition: background-color 0.15s ease;
+}
+.ads-list-item:is(:hover, [data-state="hover"], [data-open]),
+.ads-list-item:has([data-state="hover"]) {
+  background: var(--ads-bg-3);
+}
+.ads-list-item-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--ads-fg-3);
+  font: 400 11px/16.5px var(--ads-sans);
+  letter-spacing: 0.2px;
+}
+/* The more button darkens with its card ("Hover Card"), and more under
+   the pointer itself ("Hover See More"). */
+.ads-list-item:is(:hover, [data-state="hover"])
+  .ads-tiny-more:not([aria-expanded="true"]) {
+  border-color: var(--ads-bg-4);
+  background: var(--ads-border-2);
+}
+.ads-list-item
+  .ads-tiny-more:not([aria-expanded="true"]):is(:hover, [data-state="hover"]) {
+  border-color: var(--ads-bg-4);
+  background: var(--ads-bg-4);
+}
+.ads-list-item-head > span:first-child {
+  white-space: nowrap;
+}
+.ads-list-item-head > span + span {
+  flex: 1;
+}
+.ads-list-item-head .ads-tiny-more {
+  position: relative;
+  z-index: 1;
+  margin-left: auto;
+}
+/* The title is the card's link: it covers the whole card. */
+.ads-list-item-title {
+  padding-right: 16px;
+  color: var(--ads-fg-2);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+  text-wrap: pretty;
+}
+.ads-list-item-title::after {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  content: "";
+}
+.ads-list-item-title svg {
+  display: inline;
+  width: 13px;
+  height: 13px;
+  margin-left: 6px;
+  vertical-align: -2px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+/* "Hover Card": the title darkens and takes an arrow. Not while the
+   pointer is on the more button ("Hover See More"). */
+.ads-list-item:is(:hover, [data-state="hover"]):not(
+    :has(.ads-tiny-more:is(:hover, [data-state="hover"]))
+  )
+  .ads-list-item-title,
+.ads-list-item[data-open] .ads-list-item-title {
+  color: var(--ads-fg);
+}
+.ads-list-item:is(:hover, [data-state="hover"]):not(
+    :has(.ads-tiny-more:is(:hover, [data-state="hover"]))
+  )
+  .ads-list-item-title
+  svg,
+.ads-list-item[data-open] .ads-list-item-title svg {
+  opacity: 1;
+}
+.ads-list-item[data-open] .ads-list-item-title {
+  font-weight: 700;
+}
+.ads-list-item-summary {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 4px;
+  animation: ads-oc-in 0.25s ease both;
+}
+.ads-list-item-summary p {
+  padding: 4px 0;
+  color: var(--ads-fg-3);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+  text-wrap: pretty;
+}
+@keyframes ads-oc-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* News Item Large: the picture beside the text, or (narrow) the topic and
+   date over the picture and the rest under it. Between the two, on a
+   tablet, the picture and the text take half each, so the text keeps a
+   column worth reading (at the file's desktop shares it was barely 130px
+   wide just above a phone's width). */
+.ads-news {
+  display: grid;
+  grid-template-columns: minmax(0, 1020fr) minmax(0, 428fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "media meta"
+    "media body";
+  column-gap: 16px;
+}
+.ads-news[data-flip] {
+  grid-template-columns: minmax(0, 428fr) minmax(0, 1020fr);
+  grid-template-areas:
+    "meta media"
+    "body media";
+}
+.ads-news-media {
+  grid-area: media;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--ads-border-image);
+  border-radius: var(--ads-radius-tinier);
+}
+.ads-news-meta {
+  grid-area: meta;
+  padding: 36px 32px 12px;
+}
+.ads-news-body {
+  grid-area: body;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 32px 24px;
+}
+.ads-news-title {
+  font: 700 28px/33.6px var(--ads-sans);
+}
+.ads-news-body p {
+  color: var(--ads-fg-3);
+  font: 400 17px/26px var(--ads-sans);
+  text-wrap: pretty;
+}
+@container (max-width: 959px) {
+  .ads-news,
+  .ads-news[data-flip] {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .ads-news-meta {
+    padding: 24px 24px 12px;
+  }
+  .ads-news-body {
+    padding: 0 24px 24px;
+  }
+}
+@container (max-width: 639px) {
+  .ads-news,
+  .ads-news[data-flip] {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-template-areas:
+      "meta"
+      "media"
+      "body";
+  }
+  .ads-news-meta {
+    padding: 12px 0;
+  }
+  .ads-news-body {
+    padding: 16px 0 0;
+  }
+}
+
+/* News Thumbnail Item. */
+.ads-thumbs {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 560px;
+}
+.ads-thumb {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    "media meta"
+    "media text";
+  align-content: start;
+  column-gap: 24px;
+  padding: 24px 32px;
+  border-left: 1px solid var(--ads-border-2);
+}
+.ads-thumb[data-style="right"] {
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "meta media"
+    "text media";
+}
+.ads-thumb[data-style="text"] {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "meta"
+    "text";
+  padding: 32px;
+  border-left: 0;
+}
+.ads-thumb-media {
+  grid-area: media;
+  width: 144px;
+  height: 144px;
+  border-radius: var(--ads-radius-tinier);
+}
+.ads-thumb[data-style="smaller"] .ads-thumb-media {
+  width: 80px;
+  height: 80px;
+}
+.ads-thumb-meta {
+  grid-area: meta;
+}
+.ads-thumb-text {
+  grid-area: text;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 32px;
+}
+.ads-thumb[data-style="right"] .ads-thumb-text {
+  padding-right: 16px;
+}
+.ads-thumb-title {
+  max-width: 540px;
+  color: var(--ads-fg);
+  font: 700 17px/22px var(--ads-sans);
+  text-wrap: pretty;
+}
+.ads-thumb-text p {
+  max-width: 360px;
+  color: var(--ads-fg-3);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+}
+/* "Mobile Image Left" and "Mobile Image Right": the topic and date across
+   the top, a small picture beside the headline. */
+@container (max-width: 479px) {
+  .ads-thumb {
+    grid-template-areas:
+      "meta meta"
+      "media text";
+    column-gap: 16px;
+    padding: 0 24px 16px;
+  }
+  .ads-thumb[data-style="right"] {
+    grid-template-areas:
+      "meta meta"
+      "text media";
+  }
+  .ads-thumb[data-style="text"] {
+    padding: 0 24px 16px;
+  }
+  .ads-thumb-media,
+  .ads-thumb[data-style="smaller"] .ads-thumb-media {
+    width: 64px;
+    height: 64px;
+  }
+  .ads-thumb-text,
+  .ads-thumb[data-style="right"] .ads-thumb-text {
+    padding-right: 0;
+  }
+}
+
+/* Related List: the constellation panel, in an article's margin. */
+.ads-related {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 280px;
+}
+.ads-related-head {
+  color: var(--ads-fg-2);
+  font: 700 22px/27.5px var(--ads-sans);
+}
+.ads-related-head span {
+  font-family: var(--ads-serif);
+  font-weight: 400;
+}
+.ads-related-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ads-constellation {
+  position: relative;
+  width: 246px;
+  height: 101px;
+}
+.ads-constellation-lines {
+  position: absolute;
+  top: 7.71px;
+  left: 9.55px;
+  width: 227.68px;
+  height: 84.9px;
+}
+/* Each post a round picture, ringed in the panel's background. */
+.ads-constellation-node {
+  position: absolute;
+  width: 18.29px;
+  height: 18.29px;
+  border: 3.66px solid var(--ads-bg-2);
+  border-radius: 999px;
+  object-fit: cover;
+}
+.ads-rel-article {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  align-content: start;
+  column-gap: 64px;
+  row-gap: 24px;
+  padding: 24px 0;
+}
+.ads-rel-article > * {
+  grid-column: 1;
+}
+.ads-rel-article > .ads-related {
+  grid-row: 2 / span 4;
+  grid-column: 2;
+  align-self: start;
+}
+/* Narrow, it comes inline between the paragraphs, centered on the column
+   and 360px wide, as the file's tablet page has it (4801:30805). */
+@container (max-width: 639px) {
+  .ads-rel-article {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ads-rel-article > .ads-related {
+    grid-row: auto;
+    grid-column: 1;
+    justify-self: center;
+    width: min(360px, 100%);
+    margin: 16px 0;
+  }
+}
+
+/* A link that is only words and an arrow (the tout card's "Read the
+   report"). */
+.ads-oc-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  color: var(--ads-fg-3);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.ads-oc-text-link svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.15s ease;
+}
+.ads-oc-text-link:is(:hover, [data-state="hover"]) {
+  color: var(--ads-fg);
+}
+.ads-oc-text-link:is(:hover, [data-state="hover"]) svg {
+  transform: translateX(2px);
+}
+
+/* Asset. */
+.ads-asset {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  max-width: 100%;
+}
+.ads-asset-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ads-asset-media {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: var(--ads-radius-tinier);
+  object-fit: cover;
+}
+.ads-asset-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 24px;
+}
+.ads-asset-title {
+  font: 700 17px/22px var(--ads-sans);
+}
+.ads-asset-text p {
+  color: var(--ads-fg-2);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+}
+
+/* Tout Card: Row, or Column where it is narrow. */
+.ads-tout {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 516px;
+  max-width: 100%;
+  padding: 16px 32px 16px 16px;
+  border: 1px solid var(--ads-border-2);
+  border-radius: var(--ads-radius-smaller);
+  background: var(--ads-bg-2);
+}
+.ads-tout-media {
+  flex: none;
+  width: 96px;
+  height: 96px;
+  border-radius: var(--ads-radius-tinier);
+  object-fit: cover;
+}
+.ads-tout-body {
+  display: flex;
+  flex-direction: column;
+}
+.ads-tout-title {
+  padding: 8px 0;
+  color: var(--ads-fg-2);
+  font: 700 17px/22px var(--ads-sans);
+  text-wrap: pretty;
+}
+@container (max-width: 399px) {
+  .ads-tout {
+    flex-direction: column;
+    align-items: stretch;
+    width: 342px;
+    padding: 16px;
+  }
+  .ads-tout-media {
+    width: 100%;
+    height: 156px;
+  }
+  .ads-tout-body {
+    padding-right: 16px;
+  }
+}
+
+/* Case Study Card. */
+.ads-cases {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+.ads-case {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 286px;
+  padding: 32px;
+  border: 1px solid var(--ads-border-2);
+  border-radius: var(--ads-radius-smaller);
+  background: var(--ads-bg-2);
+}
+.ads-case-logo {
+  display: flex;
+  align-items: center;
+  height: 54px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ads-border-2);
+}
+.ads-case-text {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ads-case-text h4 {
+  font: 700 22px/27.5px var(--ads-sans);
+}
+.ads-case-text p {
+  color: var(--ads-fg-2);
+  font: 400 17px/26px var(--ads-sans);
+}
+
+/* Table Grid Item, in the index's Grid view. */
+.ads-post-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 32px 16px;
+}
+.ads-grid-item {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.ads-grid-item-media {
+  width: 100%;
+  aspect-ratio: 1;
+  border: 1px solid var(--ads-border-image);
+  border-radius: var(--ads-radius-tinier);
+  object-fit: cover;
+}
+.ads-grid-item-title {
+  padding: 16px 24px 0 0;
+  font: 700 17px/22px var(--ads-sans);
+  text-wrap: pretty;
+}
+
+/* Latest Updates Module. */
+.ads-updates {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 600px;
+  max-width: 100%;
+}
+.ads-updates h4 {
+  font: 700 28px/33.6px var(--ads-sans);
+}
+.ads-updates-list {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.ads-update {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 24px;
+  border-top: 1px solid var(--ads-border-2);
+  animation: ads-oc-in 0.3s ease both;
+}
+.ads-update-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ads-fg-3);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+}
+/* The "New" tag: a tiny primary button. */
+.ads-update-new {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 8px;
+  border-radius: 6px;
+  background: var(--ads-primary-bg);
+  color: var(--ads-primary-fg);
+  font: 400 11px/16.5px var(--ads-sans);
+  letter-spacing: 0.2px;
+}
+.ads-update-title {
+  padding: 8px 48px 8px 0;
+  font: 700 22px/27.5px var(--ads-sans);
+  text-wrap: pretty;
+}
+.ads-update p {
+  margin-bottom: 12px;
+  color: var(--ads-fg-3);
+  font: 400 17px/26px var(--ads-sans);
+  text-wrap: pretty;
+}
+
+/* Accordion Item: a row that opens its text and button under it. */
+.ads-accordion-item {
+  border-top: 1px solid var(--ads-border-2);
+}
+.ads-accordion-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+  padding: 16px 0;
+  border: 0;
+  background: none;
+  color: var(--ads-fg);
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.ads-accordion-count {
+  flex: none;
+  padding-top: 3px;
+  color: var(--ads-fg-3);
+  font: 400 13px/20px var(--ads-mono);
+}
+.ads-accordion-title {
+  flex: 1;
+  font: 500 17px/26px var(--ads-sans);
+  text-wrap: pretty;
+}
+.ads-accordion-row svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  color: var(--ads-fg-2);
+  transition: transform 0.25s ease;
+}
+.ads-accordion-item[data-open] .ads-accordion-row svg {
+  transform: rotate(180deg);
+}
+/* The text opens by growing its row of a one-row grid to its height. */
+.ads-accordion-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.ads-accordion-panel > div {
+  overflow: hidden;
+}
+.ads-accordion-item[data-open] .ads-accordion-panel {
+  grid-template-rows: 1fr;
+}
+.ads-accordion-item:not([data-open]) .ads-accordion-panel {
+  visibility: hidden;
+  transition:
+    grid-template-rows 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+    visibility 0s 0.3s;
+}
+.ads-accordion-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 32px 24px;
+}
+.ads-accordion-body p {
+  color: var(--ads-fg-3);
+  font: 400 17px/26px var(--ads-sans);
+  text-wrap: pretty;
+}
+/* The file's two hover explorations. "Table row like": the item under the
+   pointer (its text and button too, when open) fills with the third
+   background, reaching 16px past the rules each side, with its edge drawn
+   all round and its corners rounded; its edge covers the rule under it. At
+   rest every item has a clear edge of the same width, its top drawn as the
+   rule, and overlaps the next by a pixel, so the hover moves nothing. */
+.ads-accordion[data-hover="row"] .ads-accordion-item {
+  position: relative;
+  margin-bottom: -1px;
+  border: 1px solid transparent;
+  border-top-color: var(--ads-border-2);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+.ads-accordion[data-hover="row"]
+  .ads-accordion-item:is(:hover, :has([data-state="hover"])) {
+  z-index: 1;
+  margin-inline: -16px;
+  padding-inline: 16px;
+  border-color: var(--ads-border);
+  border-radius: var(--ads-radius-tiny);
+  background: var(--ads-bg-3);
+}
+/* "Dim siblings (except strokes) to quarternary": everything but the item
+   under the pointer turns the quaternary text color, the open one's button
+   too (its fill; its label stays), while the rules stay as they are. The
+   demo cursor's mark is found by a descendant selector, since a `:has()`
+   inside another is not allowed and drops the whole rule. */
+.ads-accordion[data-hover="dim"]
+  :is(.ads-accordion-count, .ads-accordion-row svg, .ads-accordion-body p) {
+  transition:
+    color 0.15s ease,
+    transform 0.25s ease;
+}
+.ads-accordion[data-hover="dim"]:has(
+    .ads-accordion-item:hover,
+    .ads-accordion-item [data-state="hover"]
+  )
+  .ads-accordion-item:not(:hover, :has([data-state="hover"]))
+  :is(.ads-accordion-row, .ads-accordion-count, .ads-accordion-row svg, p) {
+  color: var(--ads-fg-4);
+}
+.ads-accordion[data-hover="dim"]:has(
+    .ads-accordion-item:hover,
+    .ads-accordion-item [data-state="hover"]
+  )
+  .ads-accordion-item:not(:hover, :has([data-state="hover"]))
+  .ads-btn {
+  background: var(--ads-fg-4);
+}
+
+/* Accordion Card: the topics an article covers. */
+.ads-accordion-page {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 640px;
+  padding-top: 24px;
+}
+.ads-accordion-card {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 32px;
+  border: 1px solid var(--ads-border-3);
+  border-radius: var(--ads-radius-smaller);
+  background: var(--ads-bg-2);
+}
+.ads-accordion-card-head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ads-accordion-card-head h4 {
+  font: 700 22px/27.5px var(--ads-sans);
+}
+.ads-accordion-card-head p {
+  color: var(--ads-fg-3);
+  font: 400 17px/26px var(--ads-sans);
+  text-wrap: pretty;
+}
+.ads-accordion-card-head a {
+  color: var(--ads-fg-2);
+  text-decoration: underline;
+  text-decoration-color: var(--ads-border);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+@container (max-width: 479px) {
+  .ads-accordion-card {
+    padding: 24px 16px;
+  }
+}
+
+/* Table: the index of posts. Its filters first. */
+.ads-table {
+  display: flex;
+  flex-direction: column;
+}
+.ads-filters-counts {
+  display: flex;
+  gap: 32px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--ads-border-2);
+  color: var(--ads-fg-3);
+  font: 400 13px/20px var(--ads-mono);
+  letter-spacing: 0.13px;
+  text-transform: uppercase;
+}
+.ads-filters-counts b {
+  margin-right: 12px;
+  color: var(--ads-fg);
+  font-weight: 400;
+}
+.ads-filters-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 0;
+}
+.ads-filters-left,
+.ads-filters-right,
+.ads-filters-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+.ads-filters-chips {
+  gap: 12px;
+}
+/* A topic picked in Filter: a dark chip with a cross that takes it off. */
+.ads-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 28px;
+  padding: 0 10px 0 12px;
+  border: 0;
+  border-radius: var(--ads-radius-tiny);
+  background: var(--ads-primary-bg);
+  color: var(--ads-primary-fg);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+  cursor: pointer;
+  animation: ads-oc-in 0.2s ease both;
+}
+.ads-chip svg {
+  width: 14px;
+  height: 14px;
+}
+.ads-chip:is(:hover, [data-state="hover"]) {
+  background: color-mix(
+    in srgb,
+    var(--ads-primary-bg) 86%,
+    var(--ads-primary-fg)
+  );
+}
+.ads-filter-menu-wrap {
+  position: relative;
+}
+.ads-filter-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  padding: 8px;
+  border: 1px solid var(--ads-border-2);
+  border-radius: var(--ads-radius-smaller);
+  background: var(--ads-off-bg);
+  box-shadow: var(--ads-shadow-lift);
+  animation: ads-oc-in 0.18s ease both;
+}
+.ads-filter-menu-wrap[data-align="end"] .ads-filter-menu {
+  right: 0;
+  left: auto;
+}
+.ads-filter-menu-item {
+  padding: 6px 8px;
+  border: 0;
+  border-radius: var(--ads-radius-tiny);
+  background: none;
+  color: var(--ads-fg-2);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.ads-filter-menu-item:is(:hover, [data-state="hover"]) {
+  background: var(--ads-bg-3);
+  color: var(--ads-fg);
+}
+.ads-filter-menu-item[aria-checked="true"] {
+  color: var(--ads-fg);
+  font-weight: 600;
+}
+.ads-search {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 200px;
+  height: 28px;
+  padding: 0 8px 0 12px;
+  border: 1px solid var(--ads-border-2);
+  border-radius: var(--ads-radius-tiny);
+  background: var(--ads-bg-2);
+  color: var(--ads-fg-3);
+}
+.ads-search:is(:focus-within, [data-state="focus"]) {
+  border-color: var(--ads-border);
+}
+.ads-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: none;
+  color: var(--ads-fg);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+  appearance: none;
+}
+.ads-search input::-webkit-search-cancel-button {
+  display: none;
+}
+.ads-search input::placeholder {
+  color: var(--ads-fg-4);
+}
+.ads-search svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+.ads-search button {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* The rows: Title, Description, Topic, Images, Date, and the more button,
+   in the widths anthropic.com's research table gives them. */
+.ads-row-top {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 449fr) minmax(0, 393fr) minmax(0, 321fr) minmax(0, 240fr)
+    minmax(0, 166fr) 52px;
+  align-items: center;
+  column-gap: 16px;
+  min-height: 52px;
+}
+.ads-row-top > * {
+  min-width: 0;
+  padding: 16px 0;
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+}
+/* Each row has a border all round, transparent but for the rule along its
+   top, and overlaps the next by its width, so a row that lights up draws
+   its whole edge without moving anything. `--fade` is the row's ground, for
+   the fades over its cut-off text. */
+.ads-row {
+  --fade: var(--ads-bg);
+  margin-bottom: -1px;
+  border: 1px solid transparent;
+  border-top-color: var(--ads-border-2);
+}
+.ads-row-head {
+  border-top-color: transparent;
+}
+.ads-row-head .ads-row-top > * {
+  color: var(--ads-fg-3);
+  font: 400 11px/16.5px var(--ads-mono);
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+}
+.ads-row-title {
+  display: block;
+  font-weight: 600;
+}
+.ads-row-topic,
+.ads-row-date {
+  color: var(--ads-fg-2);
+}
+.ads-row-images {
+  display: flex;
+  gap: 4px;
+  overflow: hidden;
+}
+.ads-row:not(.ads-row-head) .ads-row-images {
+  padding: 14px 0;
+}
+.ads-row-images img {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--ads-radius-tinier);
+  object-fit: cover;
+}
+.ads-row-more {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Text that does not fit its cell fades out under the cell's edge, and
+   slides along under the pointer (`Panning` in organisms-content/
+   panning.tsx): 48px fades into the row's ground, the one at the start
+   waiting out of sight until the text has moved, the one at the end
+   leaving once its end is in sight. */
+.ads-pan {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+.ads-pan-text {
+  display: block;
+  width: max-content;
+  white-space: nowrap;
+  transition: transform 0s linear;
+}
+.ads-pan::before,
+.ads-pan::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  width: 48px;
+  pointer-events: none;
+  transition: transform 0.2s ease-in-out;
+}
+.ads-pan::before {
+  left: 0;
+  background: linear-gradient(to left, transparent, var(--fade));
+}
+.ads-pan::after {
+  right: 0;
+  background: linear-gradient(to right, transparent, var(--fade));
+}
+.ads-pan[data-progress="init"]::before {
+  transform: translateX(-100%);
+}
+.ads-pan[data-progress="complete"]::after {
+  transform: translateX(100%);
+}
+.ads-pan:not([data-clipped])::before,
+.ads-pan:not([data-clipped])::after {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ads-pan::before,
+  .ads-pan::after {
+    transition: none;
+  }
+}
+
+/* A row opens with a click anywhere on it. Closed, it lights under the
+   pointer, reaching 16px past the table each side, its edge drawn and its
+   corners rounded, as an open one does. */
+.ads-row:not(.ads-row-head) > .ads-row-top {
+  cursor: pointer;
+}
+.ads-row:not(.ads-row-head, [data-open]):has(
+    > .ads-row-top:is(:hover, [data-state="hover"])
+  ) {
+  --fade: var(--ads-bg-2);
+  margin-inline: -16px;
+  padding-inline: 16px;
+  border-color: var(--ads-border-2);
+  border-radius: 8px;
+  background: var(--ads-bg-2);
+}
+/* Open: the row is a card of its own, a little wider than the table, its
+   title and description in full. */
+.ads-row[data-open] {
+  --fade: var(--ads-bg-3);
+  margin-inline: -16px;
+  padding-inline: 16px;
+  border-color: var(--ads-border-2);
+  border-radius: 8px;
+  background: var(--ads-bg-3);
+}
+.ads-row[data-open] .ads-row-top {
+  align-items: start;
+}
+.ads-row[data-open] .ads-pan-text {
+  width: auto;
+  white-space: normal;
+  transform: none !important;
+}
+.ads-row[data-open] .ads-pan::before,
+.ads-row[data-open] .ads-pan::after {
+  display: none;
+}
+.ads-row[data-open] .ads-tiny-more[aria-expanded="true"] {
+  height: 18px;
+  padding: 0 11px;
+}
+/* Under the title, the post's constellation; beside it, the related
+   articles, a little lower. */
+.ads-row-bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 449fr) minmax(0, 1120fr);
+  gap: 16px;
+  padding: 0 0 16px;
+  animation: ads-oc-in 0.25s ease both;
+}
+.ads-row-related {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  padding-top: 48px;
+}
+.ads-row-related > span {
+  font: 600 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+}
+/* Its related articles: a row of cards that scrolls sideways, out to the
+   open row's edge. */
+.ads-row-related-list {
+  display: flex;
+  gap: 8px;
+  margin: -4px -16px -4px -4px;
+  padding: 4px 16px 4px 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.ads-related-card {
+  position: relative;
+  display: flex;
+  flex: 0 0 288px;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--ads-secondary-border);
+  border-radius: 12px;
+  background: var(--ads-tertiary-bg);
+  color: var(--ads-fg-2);
+  transition: background-color 0.15s;
+}
+.ads-related-card:is([data-active], [data-state="hover"]),
+.ads-related-card:has([data-state="hover"]) {
+  background: var(--ads-off-bg);
+}
+.ads:is([data-theme="slate"], [data-theme="image"])
+  .ads-related-card:is([data-active], [data-state="hover"]),
+.ads:is([data-theme="slate"], [data-theme="image"])
+  .ads-related-card:has([data-state="hover"]) {
+  background: var(--ads-bg-2);
+}
+.ads-related-card-head {
+  display: flex;
+  gap: 16px;
+  color: var(--ads-fg-3);
+  font: 400 11px/1.5 var(--ads-sans);
+  letter-spacing: 0.018em;
+}
+.ads-related-card-title {
+  color: var(--ads-fg-2);
+  font: 400 13px/1.54 var(--ads-sans);
+  letter-spacing: 0.01em;
+  text-decoration: none;
+}
+.ads-related-card-title::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+/* The constellation: round thumbnails on a light ground, joined by 1px
+   lines in the text color (the tertiary one on a dark theme), the post
+   itself ringed. A node grows while its related article is under the
+   pointer. */
+.ads-graph {
+  aspect-ratio: 280 / 105;
+  width: 100%;
+}
+.ads-graph svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.ads-graph-edge,
+.ads-graph-ring {
+  fill: none;
+  stroke: var(--ads-fg);
+  stroke-width: 1px;
+}
+.ads:is([data-theme="slate"], [data-theme="image"])
+  :is(.ads-graph-edge, .ads-graph-ring) {
+  stroke: var(--ads-fg-3);
+}
+.ads-graph-node-bg {
+  fill: var(--ads-gray-050);
+}
+.ads-graph-node {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.2s ease;
+}
+.ads-graph-node[data-active] {
+  transform: scale(1.25);
+}
+
+/* The table head's little constellation: five dots that move into one
+   arrangement after another, the lines between them drawing in, over 18
+   seconds. */
+.ads-graph-icon {
+  --cycle: 18s;
+  --ease: cubic-bezier(0.65, 0, 0.35, 1);
+  display: block;
+  overflow: visible;
+}
+.ads-graph-icon-dot {
+  fill: var(--ads-fg);
+  transform: translate(var(--ax), var(--ay));
+  animation: ads-graph-rearrange var(--cycle) var(--ease) infinite;
+}
+.ads-graph-icon-lines {
+  fill: none;
+  stroke: var(--ads-fg-4);
+  stroke-width: 0.75px;
+  vector-effect: non-scaling-stroke;
+  transform: scale(0);
+  transform-origin: 18px 9px;
+  animation: ads-graph-connect var(--cycle) var(--ease) infinite;
+}
+.ads-graph-icon-lines[data-stage="b"] {
+  animation-delay: calc(var(--cycle) / 3);
+}
+.ads-graph-icon-lines[data-stage="c"] {
+  animation-delay: calc(var(--cycle) * 2 / 3);
+}
+@keyframes ads-graph-rearrange {
+  0%,
+  33.33%,
+  66.67%,
+  100% {
+    transform: translate(0);
+  }
+  2.78%,
+  30.56% {
+    transform: translate(var(--ax), var(--ay));
+  }
+  36.11%,
+  63.89% {
+    transform: translate(var(--bx), var(--by));
+  }
+  69.44%,
+  97.22% {
+    transform: translate(var(--cx), var(--cy));
+  }
+}
+@keyframes ads-graph-connect {
+  0%,
+  33.33%,
+  100% {
+    transform: scale(0);
+  }
+  2.78%,
+  30.56% {
+    transform: scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ads-graph-icon-dot,
+  .ads-graph-icon-lines {
+    animation: none;
+  }
+  .ads-graph-icon-lines[data-stage="a"] {
+    transform: none;
+  }
+}
+.ads-table-empty {
+  padding: 32px 0;
+  color: var(--ads-fg-3);
+  font: 400 13px/20px var(--ads-sans);
+  text-align: center;
+}
+.ads-post-grid[data-view="Grid"] {
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  padding-top: 8px;
+}
+.ads-post-grid[data-view="Gallery"] {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  padding-top: 8px;
+}
+
+/* Tablet: no Description or Images. */
+@container (max-width: 959px) {
+  .ads-row-top {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr) 52px;
+  }
+  .ads-row-desc,
+  .ads-row-images {
+    display: none;
+  }
+  .ads-row-bottom {
+    grid-template-columns: 280px minmax(0, 1fr);
+  }
+}
+/* Mobile: a date and topic over the title; the filters stack, the search
+   on top. */
+@container (max-width: 559px) {
+  .ads-row-head {
+    display: none;
+  }
+  .ads-row-top {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "date topic more"
+      "title title title";
+    column-gap: 12px;
+  }
+  .ads-row-top > * {
+    padding: 0;
+  }
+  .ads-row-date {
+    grid-area: date;
+    padding-top: 16px;
+  }
+  .ads-row-topic {
+    grid-area: topic;
+    padding-top: 16px;
+  }
+  .ads-row-more {
+    grid-area: more;
+    padding-top: 16px;
+  }
+  /* A phone's title wraps, two lines at most, as the site's does. */
+  .ads-row-title {
+    grid-area: title;
+    padding: 8px 0 16px;
+  }
+  .ads-row-title .ads-pan-text {
+    display: -webkit-box;
+    width: auto;
+    overflow: hidden;
+    white-space: normal;
+    text-wrap: pretty;
+    transform: none !important;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  .ads-row-title .ads-pan::before,
+  .ads-row-title .ads-pan::after {
+    display: none;
+  }
+  .ads-row[data-open] .ads-row-title .ads-pan-text {
+    display: block;
+    -webkit-line-clamp: none;
+  }
+  .ads-row-bottom {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ads-row-diagram {
+    order: 1;
+    aspect-ratio: 368 / 144;
+  }
+  .ads-row-related {
+    padding-top: 0;
+  }
+  .ads-filters-controls,
+  .ads-filters-left,
+  .ads-filters-right {
+    display: contents;
+  }
+  .ads-filters-controls {
+    display: flex;
+    justify-content: flex-start;
+    gap: 12px;
+  }
+  .ads-search {
+    order: -1;
+    width: 100%;
+  }
+  .ads-filters-chips {
+    order: 2;
+    width: 100%;
+  }
+  .ads-filter-menu-wrap[data-align="end"] .ads-filter-menu {
+    right: auto;
+    left: 0;
+  }
+}
+
+/* Table Card. */
+.ads-table-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 773px;
+}
+.ads-table-card-box {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-width: 0;
+  padding: 32px;
+  border: 1px solid var(--ads-border-2);
+  border-radius: var(--ads-radius-smaller);
+  background: var(--ads-bg-2);
+}
+.ads-table-card-title {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ads-table-card-title > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: 128px;
+}
+.ads-table-card-title h4 {
+  font: 700 22px/27.5px var(--ads-sans);
+}
+.ads-table-card-title p {
+  color: var(--ads-fg-3);
+  font: 400 17px/26px var(--ads-sans);
+}
+.ads-table-card-scroll {
+  margin: -4px;
+  padding: 4px;
+  overflow-x: auto;
+}
+.ads-table-card table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.ads-table-card :is(th, td) {
+  padding: 16px 24px 16px 0;
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+  text-align: left;
+  vertical-align: top;
+}
+.ads-table-card th {
+  padding-right: 16px;
+  color: var(--ads-fg-3);
+}
+.ads-table-card td {
+  border-top: 1px solid var(--ads-border-2);
+  color: var(--ads-fg);
+}
+.ads-table-card td b {
+  font-weight: 700;
+}
+.ads-table-card table[data-cols="3"] td:first-child span {
+  display: block;
+  color: var(--ads-fg-3);
+}
+.ads-table-card ul {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding-left: 18px;
+  list-style: disc;
+}
+.ads-table-card-caption {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  padding-right: 16px;
+  color: var(--ads-fg-3);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+}
+.ads-table-card-caption span {
+  flex: none;
+  font: 400 11px/16.5px var(--ads-mono);
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+}
+/* On a phone a wide table scrolls sideways in its card. */
+@container (max-width: 639px) {
+  .ads-table-card-box {
+    padding: 24px 16px;
+  }
+  .ads-table-card-title > div:first-child {
+    padding-right: 0;
+  }
+  .ads-table-card table[data-cols="3"] {
+    width: 600px;
+  }
+  .ads-table-card-scroll {
+    scrollbar-width: thin;
+  }
+}
+
+/* Fly-out: a panel at the page's right edge, off it until it opens. */
+.ads-flyout-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  min-height: 760px;
+  padding: 24px 32px 64px;
+  overflow: hidden;
+}
+.ads-flyout {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  width: min(560px, 100%);
+  background: var(--ads-bg-3);
+  box-shadow: var(--ads-shadow-lift);
+  transform: translateX(calc(100% + 32px));
+  visibility: hidden;
+  transition:
+    transform 0.5s cubic-bezier(0.32, 0.72, 0, 1),
+    visibility 0s 0.5s;
+}
+.ads-flyout[data-open] {
+  transform: none;
+  visibility: visible;
+  transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.ads-flyout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 32px 48px 24px 56px;
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+}
+.ads-flyout-close {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--ads-bg-4);
+  border-radius: 10px;
+  background: var(--ads-border-2);
+  color: var(--ads-fg-2);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease;
+}
+.ads-flyout-close svg {
+  width: 20px;
+  height: 20px;
+}
+.ads-flyout-close:is(:hover, [data-state="hover"]) {
+  box-shadow: 0 0 0 2px var(--ads-bg-4);
+}
+.ads-flyout-body {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-height: 0;
+  padding: 40px 48px 48px 56px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.ads-flyout-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ads-flyout-intro h4 {
+  font: 700 32px/37px var(--ads-sans);
+}
+.ads-flyout-intro p {
+  color: var(--ads-fg-2);
+  font: 400 20px/30px var(--ads-serif);
+}
+.ads-flyout-video {
+  position: relative;
+  flex: none;
+  aspect-ratio: 496 / 280;
+  overflow: hidden;
+  border-radius: var(--ads-radius-smaller);
+}
+.ads-flyout-video img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ads-flyout-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--ads-gray-000);
+  color: var(--ads-gray-950);
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+.ads-flyout-play svg {
+  width: 22px;
+  height: 22px;
+  stroke-width: 1.5;
+}
+.ads-flyout-play:is(:hover, [data-state="hover"]) {
+  transform: translate(-50%, -50%) scale(1.06);
+}
+.ads-flyout-meta {
+  margin: 0;
+}
+.ads-flyout-meta > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 12px 0;
+  border-top: 1px solid var(--ads-bg-4);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+}
+.ads-flyout-meta > div:last-child {
+  border-bottom: 1px solid var(--ads-bg-4);
+}
+.ads-flyout-meta dd {
+  margin: 0;
+  color: var(--ads-fg-3);
+}
+.ads-flyout-text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 16px;
+}
+.ads-flyout-text h5 {
+  font: 700 22px/27.5px var(--ads-sans);
+}
+.ads-flyout-text p {
+  color: var(--ads-fg-2);
+  font: 400 17px/26px var(--ads-serif);
+}
+.ads-flyout-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ads-flyout-stats > div {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--ads-bg-4);
+}
+.ads-flyout-stats b {
+  font: 600 48px/52px var(--ads-sans);
+}
+.ads-flyout-stats span {
+  color: var(--ads-fg-3);
+  font: 400 11px/16.5px var(--ads-sans);
+  letter-spacing: 0.2px;
+}

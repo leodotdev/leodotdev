@@ -39,9 +39,9 @@ const PERSON =
 
 // Each fact's values, one per line.
 const FACTS: Array<[label: string, values: Array<React.ReactNode>]> = [
-  ["Role", ["Design System Designer", "Web Designer"]],
+  ["My Role", ["Design System Designer", "Web Designer"]],
   [
-    "Team",
+    "Design Team",
     [
       <a
         key="jordan"
@@ -62,27 +62,52 @@ const FACTS: Array<[label: string, values: Array<React.ReactNode>]> = [
       "Leo Succar",
     ],
   ],
-  ["Client", ["Design Business Company"]],
+  [
+    "Client",
+    [
+      <span key="client">
+        <a className={PERSON} href="https://www.anthropic.com/" target="_blank">
+          Anthropic
+        </a>{" "}
+        via{" "}
+        <a className={PERSON} href="https://dbco.online/" target="_blank">
+          Design Business Company
+        </a>
+      </span>,
+    ],
+  ],
   ["Year", ["2025–26"]],
 ]
 
-/** The theme the figures wear: five dots, one per theme. */
-function ThemePicker() {
+/**
+ * The theme the figures wear: five dots, one per theme. `pair` leaves only
+ * the two a template's page can wear: Ivory, for its light sections, and
+ * Dark 3, for its dark ones.
+ */
+function ThemePicker({ pair }: { pair?: boolean }) {
   const { theme, setTheme } = usePreviewTheme()
+  const dark = theme.startsWith("dark")
+  const dots = pair
+    ? THEMES.filter(({ id }) => id === "ivory" || id === "dark-3")
+    : THEMES
+  // Of the pair, the dot for the kind of theme picked on another tab.
+  const on = (id: string) => (pair ? (id === "dark-3") === dark : theme === id)
   return (
     <div className="flex items-center gap-1.5" role="group" aria-label="Theme">
-      {THEMES.map(({ id, name }) => (
+      {dots.map(({ id, name }) => (
         <button
           key={id}
           type="button"
           data-theme={id}
           aria-label={`${name} theme`}
-          aria-pressed={theme === id}
+          aria-pressed={on(id)}
           title={name}
           onClick={(e) => setTheme(id, e)}
           className={cn(
-            "cds h-5 w-5 rounded-full outline outline-1 -outline-offset-1 outline-border [corner-shape:round]",
-            theme === id && "outline-2 outline-offset-1 outline-tint"
+            // Each dot is ringed in its own theme's border color, not the
+            // page's: a pale ring round a dark dot looked wrong.
+            "cds h-5 w-5 rounded-full outline outline-1 -outline-offset-1 outline-[color:var(--cds-border-2)] [corner-shape:round]",
+            on(id) && "outline-2 outline-offset-1 outline-tint"
           )}
         />
       ))}
@@ -92,13 +117,16 @@ function ThemePicker() {
 
 function ClaudeDocs() {
   const { pathname } = useLocation()
-  // The tabs with live figures: the theme dots and the spacing switch are
-  // for those. The Overview has none, and the Templates are pictures.
-  const figures = /^\/work\/claude\/(atoms|molecules|organisms)\/?$/.test(
-    pathname
+  // The tabs with live figures have the theme dots and the spacing switch;
+  // the Overview has none. The Templates have two dots only, Ivory and
+  // Dark 3 (Leo, 2026-11-19): a template's page sets a theme of its own for
+  // each section, a light one or a dark one, and the pick says which.
+  const open = pathname.replace(/\/$/, "").split("/")[3] ?? ""
+  const figures = ["atoms", "molecules", "organisms", "templates"].includes(
+    open
   )
   // The group whose page is open, if any: its chapters are the second row.
-  const group = findGroup(pathname.replace(/\/$/, "").split("/")[3] ?? "")
+  const group = findGroup(open)
 
   // The tab row stays at the top of the window while the page scrolls. Once
   // it is held there (the marker above it has gone off the top) it draws a
@@ -110,13 +138,32 @@ function ClaudeDocs() {
   // with a `clip-path`), so its last word could be wrong either way.
   const marker = useRef<HTMLDivElement>(null)
   const [stuck, setStuck] = useState(false)
+
+  // How tall the bar is, for the chapters under it: a chapter that is gone
+  // to (its name in the bar, a link from the overview) stops with its top
+  // rule on the bar's bottom line, the two drawn as one. The height is
+  // handed down as `--docs-bar`, which the chapters' `scroll-mt` uses; until
+  // it is measured the section's classes give the usual heights.
+  const bar = useRef<HTMLDivElement>(null)
+  const [barHeight, setBarHeight] = useState<number | null>(null)
+  useEffect(() => {
+    const el = bar.current
+    if (!el) return
+    const measure = () => setBarHeight(Math.round(el.offsetHeight))
+    // The observer also reports once when it starts watching.
+    const observer = new ResizeObserver(measure)
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
   useEffect(() => {
     const el = marker.current
     if (!el) return
     let frame = 0
     const measure = () => {
       frame = 0
-      setStuck(el.getBoundingClientRect().top < -0.5)
+      // At the top of the window counts as held: a tab swap leaves the bar
+      // exactly there, with the next page's first chapter right under it.
+      setStuck(el.getBoundingClientRect().top < 0.5)
     }
     const queue = () => {
       frame ||= requestAnimationFrame(measure)
@@ -187,8 +234,7 @@ function ClaudeDocs() {
                 Claude.com Design System &amp; Web Design
               </h1>
               <p className="max-w-cols-9 text-pretty text-muted-foreground">
-                As a team of 3 designers, we designed the pages and atomic
-                design system for the new{" "}
+                We designed the pages and atomic design system for the new{" "}
                 <a
                   className={PERSON}
                   href="https://claude.com/"
@@ -198,7 +244,8 @@ function ClaudeDocs() {
                 </a>{" "}
                 marketing website. These pages follow the system's own
                 structure: atoms, the molecules made from them, the organisms
-                those build, and the page templates.
+                those build, and the page templates bringing everything
+                together.
               </p>
             </div>
             <dl className="grid grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-4">
@@ -223,32 +270,40 @@ function ClaudeDocs() {
             column. */}
         <main
           ref={content}
-          className="bleed bg-background pb-12 [--bleed-pad:24px] md:[--bleed-pad:48px]"
+          className="bleed bg-background pb-12 [--bleed-pad:24px] [--docs-bar:165px] md:[--bleed-pad:48px] md:[--docs-bar:121px]"
+          style={
+            barHeight === null
+              ? undefined
+              : ({ "--docs-bar": `${barHeight}px` } as React.CSSProperties)
+          }
         >
           {/* The bar at the top of the section it switches, where it stays
               while the page scrolls. Its first row is the tabs: a plain row
               of names starting on the text column, with the theme dots at
-              the other end. Under it, exactly like it, is the row of the
-              open page's chapters. Neither row wraps: one that runs out of
-              room scrolls sideways, with an arrow button over whichever end
-              has names out of sight. On a phone the dots go under both. The
+              the other end. It does not wrap: run out of room, it scrolls
+              sideways, with an arrow button over whichever end has names out
+              of sight. The open page's chapters are not in the bar: they
+              are marks down the window's right edge (`ChapterNav`, below).
+              On a phone the dots go under the tabs. The
               bar spans the window, on the page's own color, so what scrolls
               under it is covered, the overview's strip of clips included. Its padding is the sections' own, 48px
               above and below its rows, and is the same whether the bar is
               resting at the top of the section or held at the top of the
-              window (Leo, 2026-11-19): the section has no top padding of
-              its own, and the content starts right under the bar's bottom
-              edge, where it draws its line once it is stuck. */}
+              window (Leo, 2026-11-19); on a phone the tabs and the dots are
+              24px apart. The section has no top padding of its own, and the
+              content starts right under the bar's bottom edge, where it
+              draws its line once it is stuck. */}
           <div ref={marker} />
           <div
             data-stuck={stuck || undefined}
             // While a theme pick waves over the figures (ThemeProvider), the
             // bar is lifted above the wave's canvas, which would otherwise
             // paint a figure's old look over it.
+            ref={bar}
             data-docs-bar
-            className="sticky top-0 z-20 bleed grid gap-x-6 gap-y-3 border-b border-transparent bg-background py-12 data-[lifted]:z-[2147483001] data-[stuck]:border-border md:grid-cols-[minmax(0,1fr)_auto] md:items-center"
+            className="sticky top-0 z-20 bleed grid gap-x-6 gap-y-6 border-b border-transparent bg-background py-12 data-[lifted]:z-[2147483001] data-[stuck]:border-border md:grid-cols-[minmax(0,1fr)_auto] md:items-center"
           >
-            <NavRow label="Design system" current={pathname}>
+            <NavRow label="Design system" current={pathname} underline>
               <Link
                 to="/work/claude"
                 activeOptions={{ exact: true }}
@@ -284,19 +339,21 @@ function ClaudeDocs() {
                 </Link>
               ))}
             </NavRow>
-            {/* For the figures: their theme, and the spacing view. Where a
-                tab has no live figures (Overview, Templates) the two are
-                left out. */}
+            {/* For the figures: their theme, and the spacing view. The
+                Overview, with no live figures, has neither; the Templates
+                have two of the themes. */}
             {figures && (
               <div className="flex shrink-0 items-center gap-3 max-md:order-last">
-                <ThemePicker />
+                <ThemePicker pair={open === "templates"} />
                 <SpacingToggle />
               </div>
             )}
-            {group && <ChapterNav group={group} className="md:col-span-2" />}
           </div>
           <Outlet />
         </main>
+        {/* The open page's chapters, as marks down the window's right
+            edge (ChapterNav). */}
+        {group && <ChapterNav group={group} />}
         <SpacingOverlay />
       </div>
     </ThemeProvider>

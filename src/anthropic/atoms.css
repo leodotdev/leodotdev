@@ -1,0 +1,569 @@
+/* The atoms of the Anthropic.com docs, from the Atoms page of the system's
+   Figma file. The Button is in src/anthropic-ds.css (`.ads-btn`); the
+   components here are exported from
+   src/components/work/anthropic/specimens.tsx for every area to use. */
+
+/* Play Button: a tertiary button holding the file's play mark, Small (44)
+   or Large (84), lifted by a soft shadow. Its hover and focus are the
+   tertiary button's. */
+.ads-play {
+  --play: 84px;
+  --play-icon: 36px;
+  --play-r: 16px;
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: var(--play);
+  height: var(--play);
+  padding: 0;
+  border: 1.5px solid var(--ads-tertiary-border);
+  border-radius: var(--play-r);
+  background: var(--ads-tertiary-bg);
+  color: var(--ads-tertiary-fg);
+  box-shadow: var(--ads-shadow-lift);
+  cursor: pointer;
+  corner-shape: round;
+  outline: 0 solid transparent;
+  outline-offset: 0;
+  transition-duration: 0.2s;
+  transition-property:
+    background-color, color, outline-width, outline-offset, outline-color;
+  transition-timing-function: ease-in-out;
+}
+.ads-play[data-size="small"] {
+  --play: 44px;
+  --play-icon: 24px;
+  --play-r: 10.67px;
+  border-width: 1px;
+}
+/* The mark is drawn 17 by 19.4 in a 24px box, so it keeps that share of
+   the icon's box at each size. Its file has a unit of empty margin all
+   round (19 by 21.4), so its edges lie inside the mask's picture: drawn
+   to the picture's edge, Safari shaved them off at some sizes. */
+.ads-play > span {
+  width: calc(var(--play-icon) * 19 / 24);
+  height: calc(var(--play-icon) * 21.4004 / 24);
+  margin-left: calc(var(--play-icon) * 0.06);
+  background: currentColor;
+  mask: url("/work/anthropic/atoms/play.svg") center / contain no-repeat;
+}
+.ads-play:is(:hover, [data-state="hover"]):not(:focus-visible) {
+  background: var(--ads-tertiary-border);
+  color: var(--ads-fg);
+  /* A pixel past its edge, over its border, as the buttons' ring
+     (anthropic-ds.css). */
+  outline: 2px solid var(--ads-tertiary-border);
+  outline-offset: -1px;
+}
+.ads-play:is(:focus-visible, [data-state="focus"]) {
+  color: var(--ads-fg);
+  outline: 2px solid var(--ads-sky);
+  outline-offset: 4px;
+}
+
+/* Tiny More Button: a Tiny, rounded-full button, wider than the icon-only
+   one so its three dots have room. Active it is Primary, with an arrow. */
+.ads-btn.ads-more[data-icon="only"] {
+  width: 36px;
+  overflow: visible;
+}
+.ads-more.ads-btn svg {
+  width: 20px;
+  height: 20px;
+  margin: -2px;
+}
+.ads-btn.ads-more[data-icon="only"][data-active] {
+  width: 28px;
+}
+.ads-more.ads-btn[data-active] svg {
+  width: 12px;
+  height: 12px;
+  margin: 0;
+}
+
+/* Radio and Checkbox: a control and its label, Small, Medium, or Large. The
+   control sits in a box as tall as the label's first line, so it stays on
+   that line when the label wraps. The colors are the theme's selection
+   tokens: Off and On, each with its hover. */
+.ads-choice {
+  --choice: 20px;
+  --choice-radio: 20px;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: var(--ads-fg);
+  font: 400 17px/26px var(--ads-sans);
+  cursor: pointer;
+}
+.ads-choice[data-size="small"] {
+  --choice: 16px;
+  --choice-radio: 16px;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.13px;
+}
+.ads-choice[data-size="large"] {
+  --choice: 24px;
+  --choice-radio: 22px;
+  gap: 16px;
+  font-size: 20px;
+  line-height: 30px;
+}
+.ads-choice[data-disabled] {
+  opacity: 0.5;
+  cursor: default;
+}
+.ads-choice-wrap {
+  display: flex;
+  flex: none;
+  align-items: center;
+  height: 1lh;
+}
+.ads-radio,
+.ads-checkbox input {
+  flex: none;
+  margin: 0;
+  border: 1px solid var(--ads-off-border);
+  background: var(--ads-off-bg);
+  appearance: none;
+  cursor: inherit;
+  outline: 0 solid transparent;
+  outline-offset: 2px;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    outline-color 0.15s ease;
+}
+.ads-radio {
+  display: grid;
+  place-content: center;
+  width: var(--choice-radio);
+  height: var(--choice-radio);
+  border-radius: 50%;
+  corner-shape: round;
+}
+.ads-radio::before {
+  width: calc(var(--choice-radio) * 0.4);
+  height: calc(var(--choice-radio) * 0.4);
+  border-radius: 50%;
+  background: var(--ads-on-fg);
+  content: "";
+  corner-shape: round;
+  scale: 0;
+  transition: scale 0.15s ease;
+}
+.ads-choice:not([data-disabled]):hover :is(.ads-radio, .ads-checkbox input),
+:is(.ads-radio, .ads-checkbox input)[data-state="hover"] {
+  border-color: var(--ads-off-hover);
+}
+.ads-radio:checked,
+.ads-checkbox input:is(:checked, :indeterminate) {
+  border-color: transparent;
+  background: var(--ads-on-bg);
+}
+.ads-radio:checked::before {
+  scale: 1;
+}
+.ads-choice:not([data-disabled]):hover
+  :is(.ads-radio:checked, .ads-checkbox input:is(:checked, :indeterminate)),
+:is(
+  .ads-radio:checked,
+  .ads-checkbox input:is(:checked, :indeterminate)
+)[data-state="hover"] {
+  background: var(--ads-on-hover);
+}
+/* Indeterminate fills with the theme's secondary foreground, not On. */
+.ads-checkbox input:indeterminate {
+  background: var(--ads-fg-2);
+}
+/* Focus: a 2px ring 2px out, in the theme's focus color. */
+:is(.ads-radio, .ads-checkbox input):is(:focus-visible, [data-state="focus"]) {
+  outline: 2px solid var(--ads-focus);
+}
+.ads-checkbox {
+  position: relative;
+  display: grid;
+  flex: none;
+  width: var(--choice);
+  height: var(--choice);
+}
+.ads-checkbox input {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  corner-shape: round;
+}
+/* The check or the dash, drawn over the box (the file's Check and Minus
+   icons, 4px smaller than the box). */
+.ads-checkbox svg {
+  position: absolute;
+  inset: 2px;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  color: var(--ads-on-fg);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.ads-checkbox input:checked:not(:indeterminate) ~ [data-mark="check"],
+.ads-checkbox input:indeterminate ~ [data-mark="dash"] {
+  opacity: 1;
+}
+
+/* Text Input and Select: a label (13/20) over a box, with a message under
+   it. The box is Small, Medium, Large, or Larger; the field tokens are the
+   theme's roles (Field/Background is the secondary background, and so on). */
+.ads-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  color: var(--ads-fg);
+}
+.ads-field[data-disabled] {
+  opacity: 0.5;
+}
+.ads-field-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ads-field-label,
+.ads-field-help,
+.ads-field-message {
+  margin: 0;
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+}
+.ads-field-help,
+.ads-field-message {
+  color: var(--ads-fg-3);
+}
+.ads-field[data-error] .ads-field-message {
+  color: var(--ads-error-fg);
+}
+.ads-input {
+  --input-h: 36px;
+  --input-pad: 16px;
+  --input-r: 10px;
+  --input-icon: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: var(--input-h);
+  padding: 0 var(--input-pad);
+  border: 1px solid var(--ads-border-2);
+  border-radius: var(--input-r);
+  background: var(--ads-bg-2);
+  color: var(--ads-fg);
+  font: 400 17px/26px var(--ads-sans);
+  corner-shape: round;
+  outline: 0 solid transparent;
+  outline-offset: 2px;
+  transition:
+    border-color 0.15s ease,
+    outline-color 0.15s ease;
+}
+.ads-input[data-size="small"] {
+  --input-h: 28px;
+  --input-pad: 12px;
+  --input-r: 8px;
+  gap: 4px;
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.13px;
+}
+.ads-input[data-size="large"] {
+  --input-h: 44px;
+  --input-pad: 20px;
+  --input-r: 12px;
+  --input-icon: 20px;
+  font-size: 20px;
+  line-height: 30px;
+}
+.ads-input[data-size="larger"] {
+  --input-h: 52px;
+  --input-pad: 24px;
+  --input-r: 14px;
+  --input-icon: 24px;
+  font-size: 22px;
+  line-height: 32px;
+}
+.ads-input > svg {
+  flex: none;
+  width: var(--input-icon);
+  height: var(--input-icon);
+  color: var(--ads-fg-3);
+}
+.ads-input input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+}
+.ads-input input::placeholder {
+  color: var(--ads-fg-4);
+  opacity: 1;
+}
+/* Hover: the border darkens and thickens to 1.5px. Error keeps its own
+   1.5px border in the error color. */
+.ads-field:not([data-disabled]) .ads-input:is(:hover, [data-state="hover"]) {
+  border-width: 1.5px;
+  border-color: var(--ads-fg-2);
+}
+.ads-field[data-error] .ads-input {
+  border-width: 1.5px;
+  border-color: var(--ads-error);
+}
+/* Focus: a 2px ring 2px out, in the theme's focus color; the border stays
+   as it was at rest. */
+.ads-input:is(:focus-within, [data-state="focus"]),
+.ads-field:not([data-disabled])
+  .ads-input:is(:focus-within, [data-state="focus"]):hover {
+  border-width: 1px;
+  border-color: var(--ads-border-2);
+  outline: 2px solid var(--ads-focus);
+}
+.ads-field[data-error] .ads-input:is(:focus-within, [data-state="focus"]) {
+  border-width: 1.5px;
+  border-color: var(--ads-error);
+}
+
+/* The select's box is a button: its value (or placeholder) and the caret. */
+.ads-select-anchor {
+  position: relative;
+}
+.ads-select {
+  justify-content: space-between;
+  text-align: left;
+  cursor: pointer;
+}
+.ads-select:disabled {
+  cursor: default;
+}
+.ads-select-value {
+  overflow: hidden;
+  color: var(--ads-fg-4);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ads-select[data-filled] .ads-select-value {
+  color: var(--ads-fg);
+}
+/* The list of choices, under the box and as wide as it. */
+.ads-select-list {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 4px);
+  right: 0;
+  left: 0;
+  margin: 0;
+  padding: 4px;
+  border: 1px solid var(--ads-border-2);
+  border-radius: 12px;
+  background: var(--ads-bg);
+  box-shadow: var(--ads-shadow-lift);
+  list-style: none;
+  corner-shape: round;
+  font: 400 17px/26px var(--ads-sans);
+}
+.ads-select-list[data-size="small"] {
+  font-size: 13px;
+  line-height: 20px;
+}
+.ads-select-list[data-size="large"],
+.ads-select-list[data-size="larger"] {
+  font-size: 20px;
+  line-height: 30px;
+}
+.ads-select-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 12px;
+  border-radius: 8px;
+  color: var(--ads-fg);
+  cursor: pointer;
+  corner-shape: round;
+}
+.ads-select-list li[data-active] {
+  background: var(--ads-bg-3);
+}
+.ads-select-list li svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+
+/* Slider: a tertiary pill (as tall and as padded as the button of its size)
+   holding a line in the pill's border color, the stretch up to the value
+   (or between the two values) darker, and a knob for each value. */
+.ads-slider {
+  --slider-h: 36px;
+  --slider-pad: 24px;
+  --knob: 16px;
+  display: flex;
+  align-items: center;
+  width: 145px;
+  height: var(--slider-h);
+  padding: 0 var(--slider-pad);
+  border: 1px solid var(--ads-tertiary-border);
+  border-radius: 999px;
+  background: var(--ads-tertiary-bg);
+  corner-shape: round;
+}
+.ads-slider[data-size="small"] {
+  --slider-h: 28px;
+  --slider-pad: 16px;
+  --knob: 12px;
+  width: 128px;
+}
+.ads-slider[data-size="large"] {
+  --slider-h: 44px;
+  --slider-pad: 32px;
+  --knob: 20px;
+  width: 161px;
+}
+.ads-slider-track {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  cursor: pointer;
+  touch-action: none;
+}
+.ads-slider-track::before,
+.ads-slider-fill {
+  position: absolute;
+  top: 50%;
+  height: 1px;
+  translate: 0 -50%;
+}
+.ads-slider-track::before {
+  right: 0;
+  left: 0;
+  background: var(--ads-tertiary-border);
+  content: "";
+}
+.ads-slider-fill {
+  background: var(--ads-fg-2);
+}
+.ads-slider-knob {
+  position: absolute;
+  top: 50%;
+  width: var(--knob);
+  height: var(--knob);
+  border-radius: 50%;
+  background: var(--ads-fg-2);
+  translate: -50% -50%;
+  corner-shape: round;
+  outline: 0 solid transparent;
+  outline-offset: 2px;
+}
+.ads-slider-knob:is(:focus-visible, [data-state="focus"]) {
+  outline: 2px solid var(--ads-focus);
+}
+
+/* Caption and Footnote: Default (a mono prefix, then the caption), Double
+   (two columns), Title, and the footer's footnote, its prefix on a line of
+   its own. */
+.ads-caption-row {
+  display: flex;
+  gap: 24px;
+  padding-right: 16px;
+  color: var(--ads-fg-2);
+}
+.ads-caption-row[data-type="footnote"] {
+  flex-direction: column;
+  gap: 8px;
+}
+.ads-caption-row[data-type="double"] {
+  gap: 16px;
+  color: var(--ads-fg);
+}
+.ads-caption-row[data-type="double"] > * {
+  flex: 1;
+  min-width: 0;
+}
+.ads-caption-row[data-type="title"] {
+  color: var(--ads-fg);
+  font: 400 13px/20px var(--ads-sans);
+}
+.ads-caption-row > .ads-caption-2-mono {
+  flex: none;
+  min-width: 64px;
+  color: var(--ads-fg-3);
+}
+.ads-caption-row p {
+  max-width: 600px;
+  margin: 0;
+}
+
+/* Powered by Claude: "Powered by" in small sans, Claude in serif, both in
+   the theme's quaternary foreground. */
+.ads-powered {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  color: var(--ads-fg-4);
+  white-space: nowrap;
+}
+.ads-powered > span:first-child {
+  font: 400 11px/16.5px var(--ads-sans);
+  letter-spacing: 0.2px;
+}
+.ads-powered > span:last-child {
+  font: 400 20px/1 var(--ads-serif);
+}
+
+/* Media: a picture cropped to one of seven aspect ratios, with a small
+   radius, and a play button over its middle where it is a video. */
+.ads-media {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  width: 100%;
+  border-radius: var(--ads-radius-tinier);
+  background: var(--ads-bg-3);
+  corner-shape: round;
+}
+.ads-media > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ads-media > .ads-play {
+  position: relative;
+}
+
+/* Rich Text: Headline. The headings of an article's text take the type
+   scale one step down (H1 is Heading 3), each with room above and below. */
+.ads-headline {
+  margin: 0;
+  padding: 64px 0 24px;
+  color: var(--ads-fg);
+}
+.ads-headline[data-size="h3"],
+.ads-headline[data-size="h4"] {
+  padding-top: 48px;
+}
+.ads-headline[data-size="h4-alt"] {
+  padding: 64px 0 16px;
+  font: 700 20px/24px var(--ads-sans);
+}
+.ads-headline[data-size="caption"] {
+  padding: 24px 0 12px;
+  font: 600 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+}

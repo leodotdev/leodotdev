@@ -126,7 +126,7 @@ export function MenuDoc() {
   return (
     <>
       <Section>
-        <Specimen caption="One menu working three ways: navigation, prompt suggestions, and lists.">
+        <Specimen figure>
           <DemoCursor
             steps={MENU_DEMO}
             className="flex flex-wrap items-start justify-center gap-6 p-6 md:p-8"
@@ -199,7 +199,7 @@ export function TooltipDoc() {
   return (
     <>
       <Section>
-        <Specimen caption="Tooltips are a token typed in Webflow: [[ url | tooltip headline | paragraph ]].">
+        <Specimen figure>
           <DemoCursor
             steps={TOOLTIP_DEMO}
             className="flex min-h-96 items-center justify-center p-6 md:p-8"

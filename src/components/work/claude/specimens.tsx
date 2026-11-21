@@ -164,12 +164,21 @@ export function CarouselUi({
   count,
   current,
   onStep,
+  onPick,
   size,
+  spread,
+  ends,
 }: {
   count: number
   current: number
   onStep: (by: 1 | -1) => void
+  /** Makes each bullet a button that goes to its stop. */
+  onPick?: (stop: number) => void
   size?: "small"
+  /** The arrows at the two ends of the row, the bullets between them. */
+  spread?: boolean
+  /** Stops at the first and last: the arrow with nowhere to go is dimmed. */
+  ends?: boolean
 }) {
   const button = {
     type: "button",
@@ -180,17 +189,46 @@ export function CarouselUi({
     "data-wave-hover": "off",
     "data-wave-manual": true,
   } as const
+  const first = ends && current <= 0
+  const last = ends && current >= count - 1
   return (
-    <div className="cds-carousel-ui">
-      <button {...button} aria-label="Previous" onClick={() => onStep(-1)}>
+    <div className="cds-carousel-ui" data-spread={spread ? "" : undefined}>
+      <button
+        {...button}
+        aria-label="Previous"
+        aria-disabled={first || undefined}
+        onClick={() => !first && onStep(-1)}
+      >
         <TbArrowLeft aria-hidden />
       </button>
-      <div className="cds-bullets" aria-hidden>
-        {Array.from({ length: count }, (_, i) => (
-          <span key={i} data-current={i === current ? "" : undefined} />
-        ))}
-      </div>
-      <button {...button} aria-label="Next" onClick={() => onStep(1)}>
+      {onPick ? (
+        <div className="cds-bullets">
+          {Array.from({ length: count }, (_, i) => (
+            <button
+              key={i}
+              type="button"
+              aria-label={`${i + 1} of ${count}`}
+              aria-current={i === current || undefined}
+              data-current={i === current ? "" : undefined}
+              data-wave-hover="off"
+              data-wave-manual
+              onClick={() => onPick(i)}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="cds-bullets" aria-hidden>
+          {Array.from({ length: count }, (_, i) => (
+            <span key={i} data-current={i === current ? "" : undefined} />
+          ))}
+        </div>
+      )}
+      <button
+        {...button}
+        aria-label="Next"
+        aria-disabled={last || undefined}
+        onClick={() => !last && onStep(1)}
+      >
         <TbArrowRight aria-hidden />
       </button>
     </div>

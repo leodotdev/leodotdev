@@ -8,7 +8,9 @@ import {
   linger,
   loadWave,
   pointer,
+  subscribeWaves,
   wave,
+  wavesOn,
 } from "@/lib/wave"
 
 /**
@@ -44,7 +46,8 @@ const INTERACTIVE = "a[href], button"
  * element of its own inside that area (the topic rows of the docs' overview).
  * A wave never outlives its page: going to another page ends the ones still
  * playing, both as the navigation starts and again as the new page mounts.
- * The admin is left alone, and so is anyone who prefers reduced motion.
+ * The admin is left alone, and so is anyone who has switched waves off
+ * (WaveSwitcher; they start off for anyone who prefers reduced motion).
  */
 export function WaveEffects() {
   const router = useRouter()
@@ -60,9 +63,14 @@ export function WaveEffects() {
   }, [router])
 
   useEffect(() => {
-    void loadWave()
-    const reduced = matchMedia("(prefers-reduced-motion: reduce)")
-    const off = () => reduced.matches || location.pathname.startsWith("/admin")
+    // The library is fetched once waves are on, which they are unless the
+    // visitor switched them off (or reduced motion started them off).
+    const load = () => {
+      if (wavesOn()) void loadWave()
+    }
+    load()
+    const unsubscribe = subscribeWaves(load)
+    const off = () => !wavesOn() || location.pathname.startsWith("/admin")
     // Menu items (the Contact menu) are left out: no wave on hover or tap.
     // So is everything inside a `data-no-wave` element, except a `data-wave`
     // element placed inside it, which has asked for its wave.
@@ -134,6 +142,7 @@ export function WaveEffects() {
     document.addEventListener("pointerdown", onDown, true)
     document.addEventListener("click", onClick)
     return () => {
+      unsubscribe()
       clearTimeout(hoverTimer)
       document.removeEventListener("pointerover", onOver)
       document.removeEventListener("pointerout", onOut)

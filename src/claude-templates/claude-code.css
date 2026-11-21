@@ -1,0 +1,664 @@
+/* The Claude Code template (pages/templates/claude-code.tsx; the "Claude
+   Code" frame on the Figma file's Templates page). It is built from the
+   system's header, tabs, proof cards, marginalia, testimonial, accordion,
+   link cards, and footer; what is here is what the page adds around them:
+   the hero and its terminal, the feature list between two margins of cards,
+   the logo tile, the session beside its copy, the plans, and the closing
+   section. Every size follows the page's own width, as on the Home
+   template. */
+
+/* The hero: a tag, the headline, a line under it, and two buttons, centered
+   over a terminal on a Clay tile. */
+.cds-cc-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(48px, 7cqw, 128px);
+  padding: clamp(40px, 6cqw, 96px) var(--tpl-side) 0;
+  text-align: center;
+}
+.cds-cc-hero > div:first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(20px, 2.4cqw, 32px);
+}
+/* Its padding is uneven on purpose: the mono's letters sit high in their
+   line, so a pixel more above and one less below puts the capitals in the
+   middle of the tag; the sides have half as much again as the top. */
+.cds-cc-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px 7px;
+  border: 1px solid var(--cds-border-3);
+  border-radius: 9px;
+  color: var(--cds-clay);
+  font: 400 14px/20px var(--cds-mono);
+}
+.cds-cc-tag i {
+  font-style: normal;
+}
+/* "Built for", then a prompt's arrow and the word being typed, in Clay. */
+.cds-cc-hero h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  column-gap: 0.11em;
+  font: 500 72px/1.1 var(--cds-serif);
+  font-size: clamp(40px, 5.6cqw, 72px);
+}
+.cds-cc-hero h3 span {
+  display: inline-flex;
+  align-items: center;
+  color: var(--cds-clay);
+  white-space: nowrap;
+}
+.cds-cc-hero h3 svg {
+  flex: none;
+  width: 0.89em;
+  height: 0.89em;
+  margin-right: -0.03em;
+  stroke-width: 1.5;
+}
+.cds-cc-hero h3 i {
+  font-style: normal;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cds-cc-hero h3 i {
+    animation: cds-cc-blink 1.1s steps(1) infinite;
+  }
+}
+@keyframes cds-cc-blink {
+  50% {
+    opacity: 0;
+  }
+}
+.cds-cc-hero p {
+  max-width: 40em;
+  color: var(--cds-fg-3);
+  font: 400 23px/1.5 var(--cds-sans);
+  font-size: clamp(17px, 1.9cqw, 23px);
+}
+.cds-cc-cta {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+/* The terminal: a window on the tile, its foot at the tile's foot. Its
+   colors are a terminal's own, the same on every theme, and its sizes
+   follow its type. */
+.cds-cc-stage {
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 82.6%;
+  padding-top: 4.7%;
+  border-radius: 24px;
+  background: var(--cds-clay);
+  text-align: left;
+}
+.cds-cc-window {
+  display: flex;
+  flex-direction: column;
+  width: 67.3%;
+  overflow: hidden;
+  border-radius: 0.55em 0.55em 0 0;
+  background: var(--cds-gray-850);
+  color: var(--cds-gray-450);
+  font: 400 18px/1.5 var(--cds-mono);
+  font-size: clamp(10px, 1.2cqw, 18px);
+}
+.cds-cc-window > div:first-child {
+  display: flex;
+  gap: 0.63em;
+  padding: 0.72em;
+  background: color-mix(in srgb, var(--cds-gray-000) 7%, var(--cds-gray-900));
+}
+.cds-cc-window > div:first-child i {
+  width: 0.72em;
+  height: 0.72em;
+  border-radius: 50%;
+  background: var(--cds-gray-450);
+}
+.cds-cc-window > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4em;
+  padding: 1.67em 1.44em;
+}
+.cds-cc-window pre {
+  margin: 0;
+  font: inherit;
+  white-space: pre-wrap;
+}
+.cds-cc-window b {
+  color: var(--cds-clay);
+  font-weight: inherit;
+}
+.cds-cc-window span {
+  padding: 0.78em;
+  border: 1px solid var(--cds-gray-050);
+  border-radius: 0.33em;
+  color: var(--cds-gray-050);
+}
+
+/* The proof cards under the hero, in the hero's own color. Narrow, the row
+   runs off the page's right edge: the carousel measures its own width, so
+   the page's margin is given as a share of that (8 parts of the page's 100
+   are 9.52 of the carousel's 84). */
+.cds-cc-proofs {
+  --cds-figure-pad: max(24px, 9.52cqw);
+  padding: clamp(56px, 9cqw, 104px) var(--tpl-side);
+}
+
+/* The tabs over the picture they would change. A set of tabs wider than a
+   phone scrolls sideways. */
+.cds-cc-tabs {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.cds-cc-tabs::-webkit-scrollbar {
+  display: none;
+}
+.cds-cc-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.cds-cc-media {
+  align-self: stretch;
+  aspect-ratio: 1438 / 683;
+  border-radius: 24px;
+  background: var(--cds-bg-2);
+}
+
+/* Marginalia beside a column of the page: the column keeps to the middle
+   and the cards stand in the page's margins, the right-hand one level with
+   the column's top and the left-hand one further down. A left margin with
+   several cards holds a deck of them (`Deck`), as wide as one card, over
+   the deck's own controls. The margins give way before the column does: a
+   card is as wide as what is left beside 360px of column, up to its own
+   213px. */
+.cds-cc-margins {
+  --cc-margin: clamp(140px, (100cqw - 472px) / 2, 213px);
+  display: grid;
+  grid-template-columns: var(--cc-margin) minmax(0, 1fr) var(--cc-margin);
+  column-gap: 32px;
+  align-items: start;
+  align-self: center;
+  width: min(100cqw - 48px, 1152px);
+}
+.cds-cc-margins-main {
+  grid-row: 1;
+  grid-column: 2;
+  min-width: 0;
+}
+.cds-cc-margins-left {
+  grid-row: 1;
+  grid-column: 1;
+  min-width: 0;
+  margin-top: clamp(96px, 22cqw, 400px);
+}
+/* Wide, the row and its wrapper are not boxes: the right-hand card is
+   placed on the grid, and the row's own copies of the left-hand cards and
+   its controls, which are the phone's, are not shown. */
+.cds-cc-margins-cards,
+.cds-cc-margins-row {
+  display: contents;
+}
+.cds-cc-margins-row > [data-side="left"],
+.cds-cc-margins-cards > .cds-carousel-ui {
+  display: none;
+}
+.cds-cc-margins-row > [data-side="right"] {
+  grid-row: 1;
+  grid-column: 3;
+}
+.cds-cc-margins .cds-margin {
+  margin-bottom: 0;
+}
+/* A lone statistic is set smaller here than in the system's own card. */
+.cds-cc-margins .cds-margin-stat b {
+  font-size: 36px;
+  line-height: 40px;
+}
+/* A logo drawn at its own size, not in the system's 139 by 40 box. */
+.cds-cc-margins .cds-margin-logo[data-own] {
+  height: 21px;
+  margin: 9.5px 0;
+}
+
+/* The features: under a rule each, an icon and a title beside a short
+   list. Where the column is too narrow for both, the list goes under. */
+.cds-cc-feature {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 32px;
+  padding: 32px 0 clamp(32px, 5cqw, 80px);
+  border-top: 1px solid var(--cds-border-3);
+}
+.cds-cc-feature:last-child {
+  padding-bottom: 0;
+}
+.cds-cc-feature h4 {
+  display: flex;
+  flex: 1 1 200px;
+  align-items: center;
+  align-self: flex-start;
+  gap: 12px;
+  font: 500 19px/24px var(--cds-serif);
+}
+.cds-cc-feature svg {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  stroke-width: 1.25;
+}
+.cds-cc-feature ul {
+  flex: 1 1 240px;
+  margin: 0;
+  padding: 0 0 0 1.2em;
+  color: var(--cds-fg-3);
+  font: 400 15px/24px var(--cds-sans);
+  list-style: disc;
+}
+.cds-cc-feature li + li {
+  margin-top: 8px;
+}
+
+/* A section's headline and the paragraph under it, where the page sets
+   them itself: centered, and at the left on a phone. */
+.cds-cc-lead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+}
+.cds-cc-lead p {
+  max-width: 704px;
+  color: var(--cds-fg-3);
+}
+/* The tools: a tile of logos, three to a row, beside a few words. The
+   logos keep their colors; a dark theme turns their light and dark over. */
+.cds-cc-tools {
+  display: grid;
+  grid-template-columns: minmax(0, 949fr) minmax(0, 459fr);
+  gap: 32px;
+  align-items: center;
+}
+.cds-cc-wall {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  row-gap: clamp(16px, 4.4cqw, 48px);
+  padding: clamp(32px, 5.9cqw, 64px) clamp(8px, 5.2cqw, 56px);
+  border-radius: 24px;
+  background: var(--cds-bg-3);
+}
+.cds-cc-wall img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: var(--cds-art-filter);
+}
+.cds-cc-tools > div:last-child,
+.cds-cc-use {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.cds-cc-tools > div:last-child {
+  padding-left: clamp(0px, 3.3cqw, 48px);
+}
+.cds-cc-tools h4,
+.cds-cc-use h4 {
+  font: 500 19px/24px var(--cds-serif);
+}
+.cds-cc-tools p,
+.cds-cc-use p,
+.cds-cc-install p,
+.cds-cc-note {
+  color: var(--cds-fg-3);
+  font: 400 15px/24px var(--cds-sans);
+}
+
+/* What it can do: the tabs over a session in the terminal, beside the
+   command that installs it and three things to use it for. */
+.cds-cc-uses {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.cds-cc-uses > div:last-child {
+  display: grid;
+  grid-template-columns: minmax(0, 827fr) minmax(0, 581fr);
+  gap: 32px;
+  align-items: center;
+  align-self: stretch;
+}
+.cds-cc-uses-copy {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 3.4cqw, 48px);
+  padding-left: clamp(0px, 3.3cqw, 48px);
+}
+.cds-cc-install {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+/* The session: a terminal's own colors again, and its own green for what
+   is done, as the file draws it. */
+.cds-cc-session {
+  --cc-done: #788c5d;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  box-sizing: border-box;
+  aspect-ratio: 827 / 683;
+  padding: clamp(20px, 3.4cqw, 48px);
+  border-radius: 24px;
+  background: var(--cds-gray-950);
+  color: var(--cds-gray-050);
+  font: 400 15px/1.6 var(--cds-mono);
+  font-size: clamp(11px, 1.25cqw, 15px);
+  white-space: pre-wrap;
+}
+.cds-cc-session b {
+  color: var(--cds-clay-dark);
+  font-weight: inherit;
+}
+.cds-cc-session [data-box] {
+  align-self: flex-start;
+  padding: 0.9em 1.2em;
+  border: 1px solid var(--cds-clay-dark);
+}
+.cds-cc-session [data-tone="done"] {
+  color: var(--cc-done);
+}
+.cds-cc-session [data-tone="now"] {
+  color: var(--cds-sky);
+}
+.cds-cc-session [data-tone="next"] {
+  color: var(--cds-gray-500);
+}
+
+/* What developers say: a headline over two testimonials, set well below
+   the session, in the same section. */
+.cds-cc-voices {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 6cqw, 96px);
+  margin-top: clamp(40px, 7cqw, 128px);
+}
+.cds-cc-voices > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: min(950px, 100%);
+  margin-inline: auto;
+}
+
+/* The plans: a card each. Their three parts (the plan, its price, and the
+   button) line up from card to card, on the rows of the cards' own grid. */
+.cds-cc-plans {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2.4cqw, 32px);
+  width: min(1194px, 100%);
+  margin-inline: auto;
+}
+.cds-cc-plan {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 3;
+  row-gap: 32px;
+  padding: clamp(20px, 2.6cqw, 32px);
+  border: 1px solid var(--cds-card-border);
+  border-radius: 24px;
+  background: var(--cds-card-bg);
+}
+.cds-cc-plan > div {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.cds-cc-plan > div:first-child {
+  padding-bottom: 16px;
+}
+.cds-cc-plan > div:nth-child(2) {
+  gap: 8px;
+}
+.cds-cc-plan img,
+.cds-cc-news img {
+  width: 64px;
+  height: 64px;
+  filter: var(--cds-art-filter);
+}
+.cds-cc-plan h4 {
+  font: 500 32px/1.1 var(--cds-serif);
+  font-size: clamp(25px, 3cqw, 32px);
+}
+.cds-cc-plan p {
+  color: var(--cds-fg-3);
+  font: 400 15px/24px var(--cds-sans);
+}
+.cds-cc-plan strong {
+  font: 600 25px/32px var(--cds-sans);
+}
+.cds-cc-plan small,
+.cds-cc-news small {
+  display: block;
+  color: var(--cds-fg-3);
+  font: 400 12px/18px var(--cds-sans);
+}
+.cds-cc-plan .cds-btn {
+  width: 100%;
+}
+.cds-cc-note {
+  margin-top: calc(-1 * clamp(8px, 2cqw, 24px));
+  text-align: center;
+}
+
+/* The questions keep to the column, whatever its width. One with no answer
+   in the file is not a button. */
+.cds-cc-margins .cds-accordion {
+  max-width: none;
+}
+.cds-cc-margins div.cds-accordion-head {
+  box-sizing: border-box;
+  cursor: default;
+}
+
+/* The link cards: three to a row, however narrow the row. */
+.cds-cc-rundown .cds-card-links {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: min(948px, 100%);
+  margin-inline: auto;
+}
+
+/* The closing section: a last headline and the command again, beside a
+   card to sign up for the newsletter on. */
+.cds-cc-close {
+  display: grid;
+  grid-template-columns: minmax(0, 704fr) minmax(0, 581fr);
+  gap: clamp(32px, 8cqw, 155px);
+  align-items: center;
+}
+.cds-cc-close > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 3.4cqw, 48px);
+}
+.cds-cc-close .cds-cc-install p {
+  color: var(--cds-fg);
+}
+.cds-cc-close .cds-copy {
+  width: min(566px, 100%);
+  font-size: clamp(12px, 1.4cqw, 17px);
+}
+.cds-cc-news {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: clamp(24px, 3cqw, 32px);
+  border: 1px solid var(--cds-card-border);
+  border-radius: 16px;
+  background: var(--cds-card-bg);
+}
+.cds-cc-news h4 {
+  font: 500 25px/1.2 var(--cds-serif);
+}
+.cds-cc-news p {
+  max-width: 445px;
+  color: var(--cds-fg-2);
+  font: 400 17px/28px var(--cds-sans);
+}
+.cds-cc-news .cds-input {
+  margin-top: 8px;
+}
+.cds-cc-news small {
+  max-width: 397px;
+}
+
+/* A rule between the closing section and the footer, as wide as the page's
+   content. */
+.cds-cc-foot::before {
+  content: "";
+  display: block;
+  margin-inline: var(--tpl-side);
+  border-top: 1px solid var(--cds-border-3);
+}
+
+/* A phone: everything in one column. */
+@container (max-width: 760px) {
+  /* The word being typed takes a line of its own. */
+  .cds-cc-hero h3 span {
+    flex-basis: 100%;
+    justify-content: center;
+  }
+  .cds-cc-cta {
+    flex-direction: column;
+    align-self: stretch;
+  }
+  /* The tile runs to the page's edges. */
+  .cds-cc-stage {
+    align-self: stretch;
+    width: auto;
+    margin-inline: calc(-1 * var(--tpl-side));
+    padding-top: 40px;
+    border-radius: 0;
+  }
+  .cds-cc-window {
+    width: calc(100% - 34px);
+    font-size: 12px;
+  }
+  .cds-cc-demo .cds-cc-tabs {
+    display: flex;
+    align-self: stretch;
+  }
+  .cds-cc-demo .cds-tab {
+    flex: 1;
+    justify-content: center;
+  }
+  .cds-cc-media {
+    aspect-ratio: 4 / 3;
+  }
+  /* The cards leave the margins for one row under the column, scrolled
+     sideways to the page's edges, over the controls. The left margin and
+     its deck go: the row has its own copies of those cards. */
+  .cds-cc-margins {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-self: stretch;
+    width: auto;
+  }
+  .cds-cc-margins-left {
+    display: none;
+  }
+  /* No wider than the page's column: the row inside it scrolls, and would
+     otherwise push its column, and the page, as wide as all its cards. */
+  .cds-cc-margins-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 0;
+    max-width: calc(100cqw - 2 * var(--tpl-side));
+  }
+  .cds-cc-margins-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    margin-inline: calc(-1 * var(--tpl-side));
+    /* Room for the cards' shadows inside the scrolling box. */
+    padding: 8px var(--tpl-side) 24px;
+    overflow-x: auto;
+    scroll-padding-inline: var(--tpl-side);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .cds-cc-margins-row::-webkit-scrollbar {
+    display: none;
+  }
+  .cds-cc-margins .cds-cc-margins-row > [data-side] {
+    display: block;
+    flex: none;
+    scroll-snap-align: start;
+  }
+  /* Cards that all fit stand in the middle. */
+  .cds-cc-margins .cds-cc-margins-row > :first-child {
+    margin-left: auto;
+  }
+  .cds-cc-margins .cds-cc-margins-row > :last-child {
+    margin-right: auto;
+  }
+  /* The controls span the page: an arrow at each side, the bullets between
+     them. */
+  .cds-cc-margins-cards > .cds-carousel-ui {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding-inline: 32px;
+  }
+  /* The icon goes above the title. */
+  .cds-cc-feature h4 {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    font-size: 20px;
+  }
+  .cds-cc-feature svg {
+    width: 32px;
+    height: 32px;
+  }
+  .cds-cc-lead {
+    align-items: flex-start;
+    text-align: left;
+  }
+  .cds-cc-tools,
+  .cds-cc-uses > div:last-child,
+  .cds-cc-plans,
+  .cds-cc-rundown .cds-card-links,
+  .cds-cc-close {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cds-cc-tools > div:last-child,
+  .cds-cc-uses-copy {
+    padding-left: 0;
+  }
+  .cds-cc-session {
+    aspect-ratio: auto;
+    font-size: 12px;
+  }
+  .cds-cc-plans {
+    gap: 32px;
+  }
+  .cds-cc-rundown .cds-card-link {
+    max-width: none;
+  }
+}

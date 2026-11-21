@@ -1,6 +1,15 @@
 import { useEffect, useRef, useState } from "react"
 import { DemoCursor } from "@/components/work/claude/demo-cursor"
 import { Resizable } from "@/components/work/claude/resizable"
+import {
+  SkeletonAside,
+  SkeletonBody,
+  SkeletonCarouselUi,
+  SkeletonContext,
+  SkeletonHeader,
+  SkeletonHeroEnd,
+  SkeletonImage,
+} from "@/components/work/claude/skeleton"
 import { CarouselUi } from "@/components/work/claude/specimens"
 import { Section, Specimen } from "@/components/work/claude/ui"
 import type { DemoStep } from "@/components/work/claude/demo-cursor"
@@ -39,7 +48,11 @@ const PROOFS: Array<Proof> = [
   AUGMENT,
 ]
 
-function ProofLogo({ logo: [file, name, width, height] }: { logo: Logo }) {
+export function ProofLogo({
+  logo: [file, name, width, height],
+}: {
+  logo: Logo
+}) {
   return (
     <div className="cds-proof-logo">
       <img
@@ -60,7 +73,7 @@ function ProofLogo({ logo: [file, name, width, height] }: { logo: Logo }) {
  * row scrolls sideways and snaps to a card; the arrows go a card at a time
  * and come round again, and there is a bullet for each place the row stops.
  */
-function Proofs() {
+export function Proofs() {
   const row = useRef<HTMLDivElement>(null)
   const [stops, setStops] = useState(1)
   const [current, setCurrent] = useState(0)
@@ -174,111 +187,159 @@ const FACTS = [
 export function ProofDoc() {
   return (
     <>
-      <Section title="Quotes">
-        <Specimen
-          caption="Two quotes: a prominent blockquote and a subtle inline one."
-          className="flex flex-col gap-12 p-6 md:p-8"
-        >
-          <figure className="cds-pullquote m-0">
-            <blockquote>
-              &ldquo;Claude has consistently demonstrated a remarkable capacity
-              for reasoning and provides well-balanced answers&rdquo;
+      <Section
+        title="Quotes"
+        caption="Two quotes: a prominent blockquote and a subtle inline one."
+      >
+        {/* Each kind of quote in a figure of its own. */}
+        <Specimen figure className="p-6 md:p-8">
+          <SkeletonContext
+            // In a customer's story: between two parts of its body.
+            before={<SkeletonBody />}
+            after={<SkeletonAside />}
+          >
+            <figure className="cds-pullquote m-0">
+              <blockquote>
+                &ldquo;Claude has consistently demonstrated a remarkable
+                capacity for reasoning and provides well-balanced answers&rdquo;
+              </blockquote>
+              <figcaption className="cds-attribution items-center">
+                Aarash Heydari
+                <span>Infrastructure engineer, Perplexity</span>
+              </figcaption>
+            </figure>
+          </SkeletonContext>
+        </Specimen>
+        <Specimen figure className="p-6 md:p-8">
+          {/* In the running text of a customer's story, between two
+              paragraphs. */}
+          <SkeletonBody>
+            <blockquote className="cds-quote-inline">
+              <p>
+                &ldquo;We&rsquo;re automating the mundane. 80% of Sales work
+                today is manual, laborious, data work. In the era of AI, humans
+                can focus on truly human, creative work, and we can leave the
+                data work in the hands of AI.&rdquo;
+              </p>
+              <footer>Matthew Quan, Enterprise Growth Lead, Clay</footer>
             </blockquote>
-            <figcaption className="cds-attribution items-center">
-              Aarash Heydari
-              <span>Infrastructure engineer, Perplexity</span>
-            </figcaption>
-          </figure>
-
-          <blockquote className="cds-quote-inline">
-            <p>
-              &ldquo;We&rsquo;re automating the mundane. 80% of Sales work today
-              is manual, laborious, data work. In the era of AI, humans can
-              focus on truly human, creative work, and we can leave the data
-              work in the hands of AI.&rdquo;
-            </p>
-            <footer>Matthew Quan, Enterprise Growth Lead, Clay</footer>
-          </blockquote>
+          </SkeletonBody>
         </Specimen>
       </Section>
 
-      <Section title="Proof Cards & Testimonial">
-        <Specimen caption="A credibility-building component that showcases customer testimonials, usage statistics, and partner logos to demonstrate product value and trustworthiness.">
-          <DemoCursor steps={PROOF_DEMO} className="p-6 md:p-8">
+      <Section
+        title="Proof Cards & Testimonial"
+        caption="A credibility-building component that showcases customer testimonials, usage statistics, and partner logos to demonstrate product value and trustworthiness. Client testimonials with company branding and attribution, in adaptable layout formats."
+      >
+        <Specimen figure>
+          <DemoCursor
+            steps={PROOF_DEMO}
+            className="p-6 [--cds-figure-pad:24px] md:p-8 md:[--cds-figure-pad:32px]"
+          >
             {/* As tall as the cards at their tallest, a phone's, so the
                 figure keeps one height while it is resized. */}
             <Resizable
               label="Carousel width"
               min={390}
               sizes={[["Desktop"], ["Tablet", 831], ["Mobile", 543]]}
-              className="flex min-h-[348px] flex-col justify-center"
+              className="flex min-h-[872px] flex-col justify-center sm:h-[872px]"
             >
-              <Proofs />
+              <SkeletonContext
+                // As on the Claude Code page: straight after the hero.
+                before={<SkeletonHeroEnd />}
+                after={<SkeletonHeader line />}
+              >
+                <Proofs />
+              </SkeletonContext>
             </Resizable>
           </DemoCursor>
         </Specimen>
-        <Specimen caption="Client testimonials with company branding and attribution, in adaptable layout formats.">
+        <Specimen figure>
           <DemoCursor steps={TESTIMONIAL_DEMO} className="p-6 md:p-8">
             <Resizable
               label="Testimonial width"
               min={390}
               sizes={[["Desktop"], ["Mobile", 700]]}
-              className="flex min-h-[452px] flex-col justify-center"
+              className="flex min-h-[768px] flex-col justify-center sm:h-[768px]"
             >
-              <div className="cds-testimonial">
-                <div>
-                  <div className="cds-testimonial-logo">
-                    <img
-                      src="/work/claude/logos/intercom-left.svg"
-                      alt="Intercom"
-                      width={141}
-                      height={23}
-                      draggable={false}
-                    />
+              <SkeletonContext
+                // As on a Solutions page: under a one-line heading, over
+                // the carousel's controls and the next section.
+                before={<SkeletonHeader pictogram={false} />}
+                after={
+                  <>
+                    <SkeletonCarouselUi />
+                    <SkeletonHeader />
+                  </>
+                }
+              >
+                <div className="cds-testimonial">
+                  <div>
+                    <div className="cds-testimonial-logo">
+                      <img
+                        src="/work/claude/logos/intercom-left.svg"
+                        alt="Intercom"
+                        width={141}
+                        height={23}
+                        draggable={false}
+                      />
+                    </div>
+                    <figure>
+                      <blockquote>
+                        &ldquo;With Claude, we&rsquo;re not just automating
+                        customer service&mdash;we&rsquo;re elevating it to truly
+                        human quality. This lets support teams think more
+                        strategically about customer experience and what makes
+                        interactions genuinely valuable.&rdquo;
+                      </blockquote>
+                      <figcaption className="cds-attribution">
+                        Fergal Reid
+                        <span>VP of AI at Intercom</span>
+                      </figcaption>
+                    </figure>
                   </div>
-                  <figure>
-                    <blockquote>
-                      &ldquo;With Claude, we&rsquo;re not just automating
-                      customer service&mdash;we&rsquo;re elevating it to truly
-                      human quality. This lets support teams think more
-                      strategically about customer experience and what makes
-                      interactions genuinely valuable.&rdquo;
-                    </blockquote>
-                    <figcaption className="cds-attribution">
-                      Fergal Reid
-                      <span>VP of AI at Intercom</span>
-                    </figcaption>
-                  </figure>
                 </div>
-              </div>
+              </SkeletonContext>
             </Resizable>
           </DemoCursor>
         </Specimen>
       </Section>
 
-      <Section title="Customer Story Details">
-        <Specimen
-          caption="A customer story carries one, two, or three statistics."
-          className="p-6 md:p-8"
-        >
-          <div className="cds-meta">
-            <div>
-              <dl>
-                {FACTS.map(([term, value]) => [
-                  <dt key={term}>{term}</dt>,
-                  <dd key={`${term}-value`}>{value}</dd>,
-                ])}
-              </dl>
+      <Section
+        title="Customer Story Details"
+        caption="A customer story carries one, two, or three statistics."
+      >
+        <Specimen figure className="p-6 md:p-8">
+          <SkeletonContext
+            // At the top of a customer's story: under its headline and
+            // picture, over the story itself.
+            before={
+              <>
+                <SkeletonHeader pictogram={false} line />
+                <SkeletonImage />
+              </>
+            }
+            after={<SkeletonBody />}
+          >
+            <div className="cds-meta">
+              <div>
+                <dl>
+                  {FACTS.map(([term, value]) => [
+                    <dt key={term}>{term}</dt>,
+                    <dd key={`${term}-value`}>{value}</dd>,
+                  ])}
+                </dl>
+              </div>
+              <div>
+                <strong>2x faster</strong>
+                <small>response times with Claude 3.5 Sonnet</small>
+              </div>
+              <div>
+                <strong>2x more accurate</strong>
+                <small>advanced problem solving with Claude 3 Opus</small>
+              </div>
             </div>
-            <div>
-              <strong>2x faster</strong>
-              <small>response times with Claude 3.5 Sonnet</small>
-            </div>
-            <div>
-              <strong>2x more accurate</strong>
-              <small>advanced problem solving with Claude 3 Opus</small>
-            </div>
-          </div>
+          </SkeletonContext>
         </Specimen>
       </Section>
     </>

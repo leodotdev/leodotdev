@@ -1,0 +1,897 @@
+/* The organisms article chapters of the Anthropic.com docs: the top of a
+   long piece (hero, metadata, contents), its text, its stats, and its form
+   (src/components/work/anthropic/pages/organisms-article/). Everything here
+   is inside an `.ads` figure and reads the theme's role tokens. */
+
+/* ---- The top of a long piece ------------------------------------------ */
+
+/* A page in a window that scrolls inside the figure. Its side margins are
+   the grid's (80px on a desktop, 48 on a tablet, 32 on a phone, drawn a
+   little smaller here); a page dragged wider than the figure keeps its
+   content to the middle. */
+.ads-art-page {
+  --art-side: max(56px, (100cqw - 1080px) / 2 + 56px);
+  container-type: inline-size;
+  position: relative;
+  height: 100%;
+  background: var(--ads-bg);
+}
+.ads-art-page[data-size="md"] {
+  --art-side: 40px;
+}
+.ads-art-page[data-size="xs"] {
+  --art-side: 24px;
+}
+.ads-art-scroll {
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+/* The site's header, as a skeleton: menus, the logo in the middle, menus
+   and round buttons; narrower, the logo at the left. */
+.ads-art-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px var(--art-side);
+}
+.ads-art-nav[data-wide] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+}
+.ads-art-nav-side {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  overflow: hidden;
+}
+.ads-art-nav-side[data-end] {
+  justify-content: flex-end;
+}
+
+/* The hero. At the widest size it is three columns, the contents, the
+   picture, and the metadata (as 428, 872, and 428 of the file's 1920), with
+   the headline across them and the piece's text under the picture. */
+.ads-art-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "head" "media" "meta" "body";
+  gap: 48px 16px;
+  padding: 64px var(--art-side) 0;
+}
+.ads-art-hero[data-size="xxl"] {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2.04fr) minmax(0, 1fr);
+  grid-template-areas:
+    "head head head"
+    "toc media meta"
+    "toc body .";
+}
+.ads-art-hero[data-size="xs"] {
+  gap: 32px;
+  padding-top: 32px;
+}
+.ads-art-head {
+  display: flex;
+  grid-area: head;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  text-align: center;
+  text-wrap: balance;
+}
+.ads-art-title {
+  margin: 0;
+  color: var(--ads-fg);
+}
+.ads-art-title > span {
+  display: block;
+}
+.ads-art-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+/* On a phone the headline runs on and sits at the left, over the buttons,
+   each the width of the page. */
+.ads-art-hero[data-size="xs"] .ads-art-head {
+  align-items: stretch;
+  text-align: left;
+}
+.ads-art-hero[data-size="xs"] .ads-art-title > span {
+  display: inline;
+}
+.ads-art-hero[data-size="xs"] .ads-art-ctas {
+  flex-direction: column;
+}
+.ads-art-hero[data-size="xs"] .ads-art-ctas .ads-btn {
+  width: 100%;
+}
+
+.ads-art-toc {
+  grid-area: toc;
+  min-width: 0;
+}
+.ads-art-toc > .ads-toc {
+  position: sticky;
+  top: 24px;
+  max-width: 280px;
+}
+
+.ads-art-media {
+  display: flex;
+  grid-area: media;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 896px;
+  margin: 0;
+  justify-self: center;
+}
+.ads-art-media img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--ads-radius-tinier);
+  object-fit: cover;
+}
+.ads-art-media figcaption {
+  color: var(--ads-fg-3);
+}
+/* On a phone the picture runs to the page's edges. */
+.ads-art-hero[data-size="xs"] .ads-art-media {
+  width: auto;
+  margin-inline: calc(-1 * var(--art-side));
+}
+.ads-art-hero[data-size="xs"] .ads-art-media img {
+  border-radius: 0;
+}
+.ads-art-hero[data-size="xs"] .ads-art-media figcaption {
+  padding-inline: var(--art-side);
+}
+
+/* The hero's metadata cell (the list in it is `.ads-art-meta`, below). */
+.ads-art-info {
+  grid-area: meta;
+  width: 100%;
+  max-width: 896px;
+  min-width: 0;
+  justify-self: center;
+}
+.ads-art-hero[data-size="xxl"] .ads-art-info {
+  max-width: 280px;
+  justify-self: end;
+}
+/* On a desktop a News hero keeps its picture, and the metadata under it, to
+   ten of the page's twelve columns (the file's Desktop LG: 930 of 1120);
+   a Team hero's run the page's width. */
+.ads-art-hero[data-type="news"][data-size="lg"]
+  :is(.ads-art-media, .ads-art-info) {
+  max-width: calc((100% - 11 * 16px) * 10 / 12 + 9 * 16px);
+}
+.ads-art-body {
+  grid-area: body;
+  width: 100%;
+  max-width: 640px;
+  min-width: 0;
+  justify-self: center;
+}
+.ads-art-hero[data-size="xxl"] .ads-art-body {
+  max-width: none;
+}
+
+/* The piece's text, as a skeleton under its first paragraph. Room at the
+   end lets the last part reach the top of the window. */
+.ads-art-text-skel {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding: 16px 0 240px;
+}
+.ads-art-text-skel > section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.ads-art-lede {
+  margin: 0;
+  padding-left: 24px;
+  border-left: 1px solid var(--ads-border);
+  color: var(--ads-fg-2);
+}
+.ads-art-skel-figure {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 7;
+  border-radius: var(--ads-radius-tinier);
+}
+
+/* The metadata beside the contents, as a figure of their own. */
+.ads-art-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 280px));
+  justify-content: center;
+  align-items: start;
+  gap: 48px 64px;
+}
+
+/* ---- Table of contents ------------------------------------------------- */
+
+.ads-toc ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ads-toc-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+  padding: 12px 0;
+  border: 0;
+  border-top: 1px solid var(--ads-border-2);
+  background: none;
+  color: var(--ads-fg);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.ads-toc-num {
+  flex: none;
+  min-width: 16px;
+  color: var(--ads-fg-3);
+  font-family: var(--ads-mono);
+}
+/* Following the piece, the contents dim all but the part in view. */
+.ads-toc[data-marking] .ads-toc-row {
+  color: var(--ads-fg-3);
+}
+.ads-toc[data-marking] .ads-toc-row:is(:hover, [data-state="hover"]),
+.ads-toc .ads-toc-row[aria-current] {
+  color: var(--ads-fg);
+}
+.ads-toc .ads-toc-row[aria-current] .ads-toc-num {
+  color: var(--ads-fg);
+}
+
+/* The contents folded into a bar under the header, stuck to the top of the
+   window, which opens to the whole list. */
+.ads-toc-bar {
+  position: sticky;
+  z-index: 5;
+  top: 0;
+  padding-inline: var(--art-side);
+  border-block: 1px solid var(--ads-border-2);
+  background: var(--ads-bg);
+}
+.ads-toc-bar-toggle {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  height: 42px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ads-fg);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+  text-align: left;
+  cursor: pointer;
+}
+.ads-toc-bar-toggle > span:nth-child(2) {
+  overflow: hidden;
+  min-width: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ads-toc-bar-toggle svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-left: auto;
+  color: var(--ads-fg-3);
+  transition: rotate 0.2s ease;
+}
+.ads-toc-bar[data-open] .ads-toc-bar-toggle svg {
+  rotate: 180deg;
+}
+.ads-toc-bar-list {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  max-height: 340px;
+  overflow-y: auto;
+  padding: 0 var(--art-side) 8px;
+  border-bottom: 1px solid var(--ads-border-2);
+  background: var(--ads-bg);
+  box-shadow: var(--ads-shadow-lift);
+}
+
+/* ---- Analysis metadata ------------------------------------------------- */
+
+.ads-art-meta {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+}
+.ads-meta-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  padding: 12px 0;
+  border-top: 1px solid var(--ads-border-2);
+}
+.ads-meta-row dt {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--ads-fg);
+}
+.ads-meta-row dd {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  color: var(--ads-fg-3);
+}
+.ads-meta-row dd[data-share] {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+/* As a row, under a narrower hero's picture: each line a column, its label
+   over its value. */
+.ads-art-meta[data-layout="row"] {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+  column-gap: 16px;
+}
+.ads-art-meta[data-layout="row"] .ads-meta-row {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+}
+.ads-meta-share {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ads-fg-3);
+  cursor: pointer;
+  place-items: center;
+  transition: color 0.15s ease;
+}
+.ads-meta-share::before {
+  width: 20px;
+  height: 20px;
+  background: currentColor;
+  content: "";
+  mask: var(--icon) center / contain no-repeat;
+}
+.ads-meta-share:is(:hover, [data-state="hover"]) {
+  color: var(--ads-fg);
+}
+.ads-meta-more {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ads-fg-3);
+  font: inherit;
+  letter-spacing: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.ads-meta-more:is(:hover, [data-state="hover"]) {
+  color: var(--ads-fg);
+}
+.ads-meta-tip {
+  display: inline-flex;
+}
+.ads-meta-info {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ads-fg-4);
+  cursor: pointer;
+  place-items: center;
+  transition: color 0.15s ease;
+}
+.ads-meta-info svg {
+  width: 17px;
+  height: 17px;
+}
+.ads-meta-info:is(:hover, [data-state="hover"], [aria-expanded="true"]) {
+  color: var(--ads-fg);
+}
+/* The label's note, under its line. On a phone it has a button to close
+   it; on a wider page it closes as the pointer leaves. */
+.ads-meta-tooltip {
+  position: absolute;
+  z-index: 6;
+  top: calc(100% - 6px);
+  right: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: min(300px, 100cqw - 32px);
+  padding: 12px 12px 12px 14px;
+  border: 1px solid var(--ads-border-2);
+  border-radius: var(--ads-radius-smallest);
+  background: var(--ads-off-bg);
+  box-shadow: var(--ads-shadow-lift);
+  color: var(--ads-fg-2);
+  text-align: left;
+}
+.ads-meta-tooltip-close {
+  display: grid;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ads-fg-3);
+  cursor: pointer;
+  place-items: center;
+}
+.ads-meta-tooltip-close svg {
+  width: 14px;
+  height: 14px;
+}
+.ads-art-page:not([data-size="xs"]) .ads-meta-tooltip-close {
+  display: none;
+}
+
+/* ---- A long piece's text ----------------------------------------------- */
+
+/* A page of text, in a window that scrolls inside its figure, and the
+   column the text keeps to. */
+.ads-lr-page {
+  container: lr / inline-size;
+  height: 100%;
+  background: var(--ads-bg);
+}
+.ads-lr-page[data-scrolls] {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.ads-lr-column {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 688px;
+  margin-inline: auto;
+  padding: 56px 48px 72px;
+}
+@container lr (max-width: 559px) {
+  .ads-lr-column {
+    gap: 24px;
+    padding: 32px 24px 48px;
+  }
+}
+
+.ads-lr {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1em;
+  color: var(--ads-fg);
+}
+.ads-lr p {
+  margin: 0;
+}
+.ads-lr :is(h2, h3) {
+  margin: 0.6em 0 0;
+  color: var(--ads-fg);
+}
+.ads-lr strong {
+  font-weight: 600;
+}
+.ads-lr-narrow {
+  max-width: 600px;
+  margin-inline: auto;
+}
+
+.ads-lr-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+/* Under the pointer a link turns the secondary text color, underline and
+   all. */
+.ads-lr-link:is(:hover, [data-state="hover"], [aria-expanded="true"]) {
+  color: var(--ads-fg-3);
+}
+
+/* A citation's card, or a footnote's note, opened from the text. */
+.ads-lr-pop-anchor {
+  position: relative;
+}
+.ads-lr-card {
+  position: absolute;
+  z-index: 6;
+  top: calc(100% + 6px);
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 260px;
+  padding: 12px 12px 14px 14px;
+  border: 1px solid var(--ads-border-2);
+  border-radius: var(--ads-radius-smallest);
+  background: var(--ads-off-bg);
+  box-shadow: var(--ads-shadow-lift);
+  color: var(--ads-fg);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+  text-align: left;
+  white-space: normal;
+}
+.ads-lr-card[data-kind="note"] {
+  right: -12px;
+  left: auto;
+}
+.ads-lr-card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+}
+.ads-lr-card-title {
+  flex: 1;
+  color: var(--ads-fg-2);
+}
+.ads-lr-card-text,
+.ads-lr-card-num {
+  color: var(--ads-fg-3);
+}
+.ads-lr-card-num {
+  flex: none;
+  padding-top: 2px;
+}
+.ads-lr-card-close {
+  display: grid;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ads-fg-3);
+  cursor: pointer;
+  place-items: center;
+}
+.ads-lr-card-close svg {
+  width: 14px;
+  height: 14px;
+}
+.ads-lr-card-close:is(:hover, [data-state="hover"]) {
+  color: var(--ads-fg);
+}
+
+/* A footnote's marker, raised, in the text's own face and the secondary
+   color, and its note under the paragraph: its number in mono, the note in
+   the sans. */
+.ads-lr-mark {
+  margin-left: 0.1em;
+  padding: 0 0.1em;
+  border: 0;
+  background: none;
+  color: var(--ads-fg-3);
+  font: 400 0.6em/0 var(--ads-serif);
+  vertical-align: super;
+  cursor: pointer;
+}
+sup.ads-lr-mark {
+  cursor: default;
+}
+button.ads-lr-mark:is(:hover, [data-state="hover"], [aria-expanded="true"]) {
+  color: var(--ads-fg);
+}
+.ads-lr-note {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 12px 0 0;
+  color: var(--ads-fg-2);
+}
+.ads-lr-note > span:first-child {
+  flex: none;
+  color: var(--ads-fg-3);
+}
+
+.ads-lr-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+  margin: 0;
+  padding-left: 1.25em;
+  list-style: disc;
+}
+
+/* The spotlight quote, centered, and the blockquote, ruled at the left. */
+.ads-lr-spotlight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin: 0.5em 0;
+  text-align: center;
+}
+.ads-lr-spotlight blockquote,
+.ads-lr-blockquote blockquote {
+  margin: 0;
+  color: var(--ads-fg);
+  text-wrap: pretty;
+}
+.ads-lr-spotlight figcaption {
+  display: flex;
+  flex-direction: column;
+  color: var(--ads-fg);
+}
+.ads-lr-spotlight figcaption > span:last-child,
+.ads-lr-blockquote figcaption > span {
+  color: var(--ads-fg-3);
+}
+.ads-lr-blockquote {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0.25em 0;
+  padding-left: 24px;
+  border-left: 1px solid var(--ads-border);
+}
+.ads-lr-blockquote figcaption {
+  color: var(--ads-fg);
+}
+
+/* ---- Stats ------------------------------------------------------------- */
+
+/* One stat: the figure over its description and caption (Center, Left),
+   ruled at the left, or beside them (Single). */
+.ads-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  padding: 12px 32px;
+  border-left: 1px solid var(--ads-border-2);
+}
+.ads-stat[data-type="center"] {
+  align-items: center;
+  text-align: center;
+}
+.ads-stat[data-type="single"] {
+  flex-direction: row;
+  align-items: center;
+  gap: 32px;
+  border-left: 0;
+}
+.ads-stat-value {
+  color: var(--ads-fg);
+  white-space: nowrap;
+}
+.ads-stat-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ads-stat-caption {
+  color: var(--ads-fg-3);
+}
+
+/* A row of stats in pages, with the pagination under it. */
+.ads-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  min-width: 0;
+}
+.ads-stats-window {
+  width: 100%;
+  overflow: hidden;
+}
+.ads-stats-track {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.ads-stats-cell {
+  display: flex;
+  flex: 0 0 calc(100% / var(--per, 2));
+  min-width: 0;
+}
+.ads-stats-cell > .ads-stat {
+  width: 100%;
+  padding-inline: 16px;
+}
+/* The first of each page is not ruled. */
+.ads-stats-cell[data-first] > .ads-stat {
+  border-left-color: transparent;
+}
+.ads-stats-pages {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  color: var(--ads-fg-3);
+}
+.ads-stats-single {
+  display: flex;
+  justify-content: center;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ads-stats-track {
+    transition: none;
+  }
+}
+
+/* ---- Form -------------------------------------------------------------- */
+
+/* The fields are the system's own (src/anthropic/atoms.css); in the form
+   they are its Small type in a box the Medium's height. */
+.ads-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 520px;
+}
+.ads-form .ads-input[data-size="small"] {
+  --input-h: 36px;
+}
+.ads-form .ads-field-label > span,
+.ads-form-legend > span {
+  color: var(--ads-fig);
+}
+.ads-form-solo {
+  margin-inline: auto;
+}
+.ads-form-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 24px;
+}
+.ads-form-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.ads-form-choices > div {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px;
+}
+.ads-form-legend {
+  padding: 0;
+  margin-bottom: 8px;
+  color: var(--ads-fg);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+}
+.ads-form-note {
+  margin: 0;
+  color: var(--ads-fg-3);
+}
+
+/* The form under its button in the text. */
+.ads-form-dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.ads-form-dropdown-button {
+  justify-content: space-between;
+  width: min(100%, 26rem);
+}
+.ads-form-dropdown-button svg {
+  transition: rotate 0.2s ease;
+}
+.ads-form-dropdown[data-open] .ads-form-dropdown-button svg {
+  rotate: 180deg;
+}
+
+/* The form in a panel from the left, over the page. */
+.ads-form-stage {
+  container-type: inline-size;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+.ads-form-stage > .ads-lr-page {
+  overflow: hidden;
+}
+.ads-form-flyout-scrim {
+  position: absolute;
+  z-index: 6;
+  inset: 0;
+  pointer-events: none;
+}
+.ads-form-flyout {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(100%, 480px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 24px 48px 40px 56px;
+  background: var(--ads-bg-3);
+  scrollbar-width: thin;
+  pointer-events: auto;
+  animation: ads-flyout-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.ads-form-flyout-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 24px;
+  color: var(--ads-fg);
+}
+.ads-form-flyout-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  margin-bottom: 40px;
+}
+.ads-form-flyout-intro h2 {
+  margin: 0;
+  color: var(--ads-fg);
+}
+.ads-form-flyout-intro p {
+  margin: 0;
+  color: var(--ads-fg-3);
+}
+@container (max-width: 559px) {
+  .ads-form-flyout {
+    padding: 20px 24px 32px;
+  }
+}
+@keyframes ads-flyout-in {
+  from {
+    translate: -100% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ads-form-flyout {
+    animation: none;
+  }
+}

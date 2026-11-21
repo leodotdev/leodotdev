@@ -22,19 +22,21 @@ export type RecentWork = {
   /** When, written like the experience list's dates ("2025–'26"). */
   year: string
   /** The work's own page on this site (a route under /work). */
-  to?: "/work/claude"
+  to?: "/work/claude" | "/work/anthropic"
   /** An outside link, for a work without its own page. */
   href?: string
 }
 
 export const recentWork: Array<RecentWork> = [
-  // Placeholder: replace before sharing the link.
   {
-    title: "Placeholder work one",
-    summary: "One line on what it is and what you did.",
-    client: "Client",
+    title: "Anthropic.com Design System & Web Design",
+    summary:
+      "The design system, components and pages of the Anthropic website.",
+    logo: "/logo-anthropic.svg",
+    client: "Design Business Company",
+    location: "Remote",
     year: "2026",
-    href: "https://example.com",
+    to: "/work/anthropic",
   },
   {
     title: "Claude.com Design System & Web Design",
@@ -45,11 +47,5 @@ export const recentWork: Array<RecentWork> = [
     location: "Remote",
     year: "2025–'26",
     to: "/work/claude",
-  },
-  // Placeholder: replace before sharing the link.
-  {
-    title: "Placeholder work three",
-    summary: "One line on what it is and what you did.",
-    year: "2025",
   },
 ]

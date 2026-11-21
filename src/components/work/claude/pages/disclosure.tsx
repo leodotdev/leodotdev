@@ -11,8 +11,14 @@ import {
   TbSearch,
 } from "react-icons/tb"
 import { DemoCursor } from "@/components/work/claude/demo-cursor"
-import { CarouselUi } from "@/components/work/claude/specimens"
+import { Deck } from "@/components/work/claude/deck"
+import { Button } from "@/components/work/claude/specimens"
 import { useDismiss } from "@/components/work/claude/use-dismiss"
+import {
+  SkeletonCards,
+  SkeletonContext,
+  SkeletonHeader,
+} from "@/components/work/claude/skeleton"
 import { Cell, Figure, Section, Specimen } from "@/components/work/claude/ui"
 import type { DemoStep } from "@/components/work/claude/demo-cursor"
 
@@ -30,7 +36,7 @@ const VIEWS = [
  * Tabs. With `max`, the tabs beyond it move into an overflow menu behind a
  * "more" button; picking one shows it in that slot as the current tab.
  */
-function Tabs({
+export function Tabs({
   size = "medium",
   icons = false,
   max = VIEWS.length,
@@ -99,7 +105,7 @@ function Tabs({
   )
 }
 
-function Select() {
+export function Select() {
   const [current, setCurrent] = useState(0)
   const [open, setOpen] = useState(false)
   const ref = useDismiss(open, () => setOpen(false))
@@ -149,7 +155,7 @@ const QUESTION = "How do I get started with Claude?"
 const ANSWER =
   "There are two ways to access Claude Code: with your Claude Pro or Max subscription, or with an Anthropic Console account. In both cases, you can download Claude Code using these instructions and then sign in with your respective Claude or Console account."
 
-function Accordion() {
+export function Accordion() {
   const [open, setOpen] = useState<number | null>(0)
   return (
     <div className="cds-accordion">
@@ -172,26 +178,44 @@ function Accordion() {
   )
 }
 
-const SLIDES = 7
+// The deck's cards: customer stories, as the site's margins carry them.
+const STORIES = [
+  ["asana.svg", "Asana", "Asana supercharges work management with Claude"],
+  [
+    "google-cloud.svg",
+    "Google Cloud",
+    "Building on Google Cloud’s Vertex AI with Claude",
+  ],
+  ["asana.svg", "Asana", "How Asana’s teams plan their work with Claude"],
+] as const
 
-function Carousel() {
-  const [current, setCurrent] = useState(0)
-  const step = (by: number) => setCurrent((current + by + SLIDES) % SLIDES)
+/**
+ * The carousel as the site uses it: a deck of marginalia cards, the current
+ * one on top and the next leaning out from behind it, over the controls
+ * (`Deck`, which is claude.com's own).
+ */
+export function Carousel() {
   return (
-    <div className="flex flex-col items-center gap-6">
-      <div
-        className="cds-headline-5 flex h-32 w-full max-w-sm items-center justify-center"
-        style={{
-          background: "var(--cds-card-bg)",
-          border: "1px solid var(--cds-card-border)",
-          borderRadius: "var(--cds-radius-smaller)",
-        }}
-        aria-live="polite"
-      >
-        {current + 1} of {SLIDES}
-      </div>
-      <CarouselUi count={SLIDES} current={current} onStep={step} />
-    </div>
+    <Deck
+      cards={STORIES.map(([file, name, text], i) => (
+        <div key={i} className="cds-margin">
+          <div className="cds-margin-card">
+            <div className="cds-margin-head">Customer story</div>
+            <img
+              className="cds-margin-logo"
+              src={`/work/claude/logos/${file}`}
+              alt={name}
+            />
+            <p>{text}</p>
+            <div>
+              <Button variant="tertiary" size="small" icon="none">
+                Read story
+              </Button>
+            </div>
+          </div>
+        </div>
+      ))}
+    />
   )
 }
 
@@ -218,8 +242,8 @@ const TABS_DEMO: Array<DemoStep> = [
 export function TabsDoc() {
   return (
     <>
-      <Section>
-        <Specimen caption="When tabs run out of room they overflow into a menu.">
+      <Section caption="When tabs run out of room they overflow into a menu.">
+        <Specimen figure>
           <DemoCursor
             steps={TABS_DEMO}
             // Each label and its row of tabs sit on the figure's center line.
@@ -263,21 +287,22 @@ const ACCORDION_DEMO: Array<DemoStep> = [
   { on: ".cds-accordion-body", rest: 1600 },
 ]
 
-// Three slides on and three back.
+// Through the deck to its last card, where the arrow has nowhere to go, and
+// back to the first by its bullets and its other arrow.
 const CAROUSEL_DEMO: Array<DemoStep> = [
-  { on: '[aria-label="Next"]', click: true },
-  { on: '[aria-label="Next"]', click: true, rest: 300 },
-  { on: '[aria-label="Next"]', click: true, rest: 300 },
-  { on: '[aria-label="Previous"]', click: true },
-  { on: '[aria-label="Previous"]', click: true, rest: 300 },
-  { on: '[aria-label="Previous"]', click: true, rest: 300 },
+  { on: '[aria-label="Next"]', click: true, rest: 500 },
+  { on: ".cds-deck-slide[data-active] .cds-btn", rest: 700 },
+  { on: '[aria-label="Next"]', click: true, rest: 500 },
+  { on: ".cds-deck-slide[data-active] .cds-btn", rest: 700 },
+  { on: '[aria-label="2 of 3"]', click: true, rest: 600 },
+  { on: '[aria-label="Previous"]', click: true, rest: 700 },
 ]
 
 export function SelectDoc() {
   return (
     <>
-      <Section>
-        <Specimen caption="One heuristic repeated here, a hovered list-item's siblings dim on hover.">
+      <Section caption="One heuristic repeated here, a hovered list-item's siblings dim on hover.">
+        <Specimen figure>
           <DemoCursor
             steps={SELECT_DEMO}
             className="flex justify-center px-6 py-56 md:px-8"
@@ -296,11 +321,23 @@ export function AccordionDoc() {
       <Section>
         <Figure>
           <Specimen>
-            <DemoCursor
-              steps={ACCORDION_DEMO}
-              className="flex justify-center p-6 md:p-8"
-            >
-              <Accordion />
+            {/* On its page: the section's header above it and the next
+                section under it, as a skeleton. */}
+            <DemoCursor steps={ACCORDION_DEMO} className="p-6 md:p-8">
+              <SkeletonContext
+                // As on the Claude Code page: under a one-line heading,
+                // with the link cards' section after it.
+                before={<SkeletonHeader pictogram={false} />}
+                after={
+                  <>
+                    <SkeletonHeader />
+                    <SkeletonCards />
+                  </>
+                }
+                className="flex justify-center"
+              >
+                <Accordion />
+              </SkeletonContext>
             </DemoCursor>
           </Specimen>
         </Figure>
@@ -317,9 +354,12 @@ export function CarouselDoc() {
           <Specimen>
             <DemoCursor
               steps={CAROUSEL_DEMO}
-              className="flex justify-center p-6 md:p-8"
+              className="flex justify-center px-6 py-16 md:px-8"
             >
-              <Carousel />
+              {/* As wide as a margin's column. */}
+              <div className="w-[216px]">
+                <Carousel />
+              </div>
             </DemoCursor>
           </Specimen>
         </Figure>

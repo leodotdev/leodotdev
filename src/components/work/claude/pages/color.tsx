@@ -55,9 +55,12 @@ export function ColorDoc() {
 
   return (
     <>
-      <Section title="Palette">
+      <Section
+        title="Palette"
+        caption="The palette starts from one ramp of neutrals, 000 to 1000, plus accents and Clay."
+      >
         <Specimen
-          caption="The palette starts from one ramp of neutrals, 000 to 1000, plus accents and Clay."
+          figure
           className="flex flex-col items-center gap-2 px-4 py-10 md:px-8 md:py-16"
         >
           <div className="grid w-full grid-cols-7 gap-1 sm:grid-cols-[repeat(21,minmax(0,1fr))] md:gap-1.5">
@@ -108,8 +111,11 @@ export function ColorDoc() {
         </Specimen>
       </Section>
 
-      <Section title="Themes">
-        <Figure caption="Seven themes drawn, five on the site, Ivory the default.">
+      <Section
+        title="Themes"
+        caption="Seven themes drawn, five on the site, Ivory the default."
+      >
+        <Figure>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
             {THEMES.map(({ id, name }) => (
               <button

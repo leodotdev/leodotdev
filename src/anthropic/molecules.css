@@ -1,0 +1,860 @@
+/*
+ * The molecules of the Anthropic.com docs (src/components/work/anthropic/
+ * pages/molecules.tsx and its folder). They follow the file's Molecules page:
+ * its role tokens map onto this system's as Background/Secondary →
+ * --ads-bg-2, Background/Tertiary → --ads-bg-3, Border/Secondary →
+ * --ads-border-2, Border/Tertiary → --ads-border-3, and Foreground/
+ * Secondary, Tertiary, Quaternary → --ads-fg-2, -3, -4.
+ */
+
+/* Menu: groups of items in a box that floats over the page. Desktop items
+   are small; Mobile ones are a tertiary button's size. A menu with sections
+   sets them in columns (`--cols`), each under its label. */
+.ads-menu {
+  --menu-item-h: 28px;
+  --menu-item-pad: 16px;
+  --menu-item-r: 8px;
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 1), minmax(0, 1fr));
+  gap: 8px;
+  width: max-content;
+  padding: 8px;
+  border: 1px solid var(--ads-border-3);
+  border-radius: 16px;
+  background: var(--ads-bg);
+  box-shadow: var(--ads-shadow-lift);
+}
+.ads-menu[data-device="mobile"] {
+  --menu-item-h: 36px;
+  --menu-item-pad: 24px;
+  --menu-item-r: 10px;
+  border-radius: 22px;
+}
+.ads-menu-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 180px;
+}
+.ads-menu[data-device="mobile"] .ads-menu-group {
+  width: 240px;
+}
+.ads-menu-label {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  margin-top: 8px;
+  padding: 0 var(--menu-item-pad);
+  color: var(--ads-fg-4);
+  font: 400 11px/16.5px var(--ads-sans);
+  letter-spacing: 0.2px;
+}
+.ads-menu[data-device="mobile"] .ads-menu-label {
+  margin-top: 0;
+}
+.ads-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  min-height: var(--menu-item-h);
+  padding: 4px var(--menu-item-pad);
+  border: 0;
+  border-radius: var(--menu-item-r);
+  background: transparent;
+  color: var(--ads-tertiary-fg);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.ads-menu[data-device="mobile"] .ads-menu-item {
+  font: var(--ads-tertiary-weight) 17px/26px var(--ads-sans);
+  letter-spacing: 0;
+}
+/* Hover, and the row the keyboard is on (a menu shows its highlighted row
+   in place of the site's focus outline): the fill is the tertiary
+   button's border color, as the file's Hover state has it. */
+.ads-menu-item:is(:hover, :focus-visible, [data-state="hover"]) {
+  outline: none;
+  background: var(--ads-tertiary-border);
+}
+
+/* Menu Button, Topics, Date: the tiny more button, a post's topic, and its
+   date, in a row. The button opens a menu under itself. */
+.ads-topic-date {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  color: var(--ads-fg-3);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+  white-space: nowrap;
+}
+.ads-menu-anchor {
+  position: relative;
+  display: inline-flex;
+}
+/* The menu sits in a wrapper of its own (`display: contents`). */
+.ads-menu-anchor .ads-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 2;
+  transform-origin: top left;
+  animation: ads-menu-in 0.16s cubic-bezier(0.2, 0, 0, 1);
+}
+@keyframes ads-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+}
+.ads-menu-btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 18px;
+  padding: 0;
+  border: 1px solid var(--ads-secondary-border);
+  border-radius: 96px;
+  background: var(--ads-secondary-bg);
+  color: var(--ads-secondary-fg);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease;
+}
+.ads-menu-btn svg {
+  width: 20px;
+  height: 20px;
+}
+.ads-menu-btn:is(:hover, [data-state="hover"], [aria-expanded="true"]) {
+  box-shadow: 0 0 0 2px var(--ads-secondary-border);
+}
+.ads-menu-btn:focus-visible {
+  outline: 2px solid var(--ads-focus);
+  outline-offset: 2px;
+}
+
+/* Button Group: buttons set edge to edge, the labels in Caption 1's
+   regular weight, as the file draws it (7395:39339), and built as
+   anthropic.com's is (its newsroom's "All, Product, Company", read from the
+   site on 2026-11-20). Only the group's two outer ends keep the buttons'
+   corners. Each button but the last draws its right border as a separator,
+   in its border's color (a Primary's, the pressed one's, in the tertiary
+   text color), and each but the first leaves its left border clear. Under
+   the pointer a button has no ring; it rises over its neighbors, drops its
+   separator, and takes its variant's hover (a Secondary's fill turns its
+   border's color and its label primary; a Primary stays as it is), while
+   the other Secondary and Tertiary labels fade to the fourth. Focus is the
+   file's "Focus Outline Ring", 2px of the focus color 4px out, the gap in
+   the page's ground drawn over the buttons beside it. */
+.ads-btn-group {
+  display: inline-flex;
+  isolation: isolate;
+}
+.ads-btn-group > .ads-btn {
+  --btn-sep: var(--ads-secondary-border);
+  font-weight: 400;
+  transition-property: background-color, color, border-color;
+}
+.ads-btn-group > .ads-btn[data-variant="primary"] {
+  --btn-sep: var(--ads-fg-3);
+}
+.ads-btn-group > .ads-btn[data-variant="tertiary"] {
+  --btn-sep: var(--ads-tertiary-border);
+}
+.ads-btn-group > .ads-btn:not(:last-child) {
+  border-right-color: var(--btn-sep);
+}
+.ads-btn-group > .ads-btn:not(:first-child) {
+  border-left-color: transparent;
+}
+.ads-btn-group > .ads-btn:not(:first-child, :last-child) {
+  border-radius: 0;
+}
+.ads-btn-group > .ads-btn:first-child:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.ads-btn-group > .ads-btn:last-child:not(:first-child) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.ads-btn-group > .ads-btn[data-icon="only"] {
+  width: 40px;
+}
+.ads-btn-group > .ads-btn:is(:hover, [data-state="hover"]) {
+  position: relative;
+  z-index: 1;
+  border-right-color: transparent;
+  outline: none;
+  box-shadow: none;
+}
+.ads-btn-group:has(> .ads-btn:is(:hover, [data-state="hover"]))
+  > .ads-btn:not(:hover, [data-state="hover"], [data-variant="primary"]) {
+  color: var(--ads-fg-4);
+}
+.ads-btn-group > .ads-btn:is(:focus-visible, [data-state="focus"]) {
+  z-index: 1;
+  outline: none;
+  box-shadow:
+    0 0 0 4px var(--ads-bg),
+    0 0 0 6px var(--ads-focus);
+}
+.ads-btn-group
+  > .ads-btn:not([data-variant="primary"]):is(
+    :focus-visible,
+    [data-state="focus"]
+  ) {
+  color: var(--ads-fg);
+}
+
+/* Tabs: a rounded track of small fully round buttons, the current one
+   filled as a primary button. */
+.ads-tabs {
+  display: inline-flex;
+  max-width: 100%;
+  padding: 8px;
+  border-radius: 24px;
+  background: var(--ads-bg-3);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.ads-tab {
+  flex: none;
+  height: 28px;
+  padding: 4px 16px;
+  border: 0;
+  border-radius: 96px;
+  background: transparent;
+  color: var(--ads-secondary-fg);
+  font: var(--ads-secondary-weight) 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+.ads-tab:is(:hover, [data-state="hover"]):not([aria-selected="true"]) {
+  color: var(--ads-fg);
+}
+.ads-tab[aria-selected="true"] {
+  background: var(--ads-primary-bg);
+  color: var(--ads-primary-fg);
+  font-weight: var(--ads-primary-weight);
+}
+.ads-tab:focus-visible {
+  outline: 2px solid var(--ads-focus);
+  outline-offset: 2px;
+}
+/* What a tab shows, in the docs: a skeleton of the view, which changes with
+   the tab so the switch is plain. */
+.ads-tab-panel {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
+  animation: ads-panel-in 0.24s ease;
+}
+@keyframes ads-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+.ads-tab-panel > div {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ads-border-2);
+}
+
+/* Pagination: two small tertiary arrow buttons either side of the page and
+   the count, in mono. */
+.ads-pagination {
+  display: inline-flex;
+  align-items: center;
+  gap: 32px;
+}
+.ads-pagination-count {
+  min-width: 48px;
+  color: var(--ads-fg-3);
+  font: 400 11px/16.5px var(--ads-mono);
+  letter-spacing: 0.2px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  white-space: pre;
+}
+.ads-pagination .ads-btn:focus-visible {
+  outline: 2px solid var(--ads-focus);
+  outline-offset: 2px;
+}
+.ads-pagination .ads-btn[aria-disabled="true"] {
+  pointer-events: auto;
+  cursor: default;
+}
+/* The list a pagination pages through, in the docs: rows of a skeleton. */
+.ads-paged-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.ads-paged-list > div {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr) 72px;
+  align-items: center;
+  gap: 24px;
+  padding: 20px 0;
+  border-top: 1px solid var(--ads-border-2);
+  animation: ads-panel-in 0.24s ease both;
+}
+.ads-paged-list > div:nth-child(2) {
+  animation-delay: 0.03s;
+}
+.ads-paged-list > div:nth-child(3) {
+  animation-delay: 0.06s;
+}
+.ads-paged-list > div:nth-child(4) {
+  animation-delay: 0.09s;
+}
+
+/* Audio Player: a title and the time over a play button and the playbar,
+   in a box of the second background. Its own width decides the layout: the
+   Narrow one sets the time under the title. Under the pointer (the file's
+   Hover state, its cursor resting on the box) the play mark darkens and the
+   playbar thickens. Version 2 (the Claude state) reads an article aloud,
+   with a voice button beside the time. */
+.ads-audio {
+  container-type: inline-size;
+  width: 100%;
+}
+.ads-audio-card {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  border: 1px solid var(--ads-border-2);
+  border-radius: 16px;
+  background: var(--ads-bg-2);
+}
+.ads-audio-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ads-audio-title {
+  flex: 1;
+  min-width: 0;
+  color: var(--ads-fg-2);
+  font: 400 17px/26px var(--ads-sans);
+}
+.ads-audio-side {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 16px;
+}
+.ads-audio-time {
+  display: flex;
+  flex: none;
+  gap: 8px;
+  color: var(--ads-fg-3);
+  font: 400 11px/16.5px var(--ads-mono);
+  letter-spacing: 0.2px;
+  font-variant-numeric: tabular-nums;
+  white-space: pre;
+}
+.ads-audio-play-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.ads-audio-play {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ads-fg-3);
+  cursor: pointer;
+  outline: 0 solid transparent;
+  outline-offset: 0;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    outline-width 0.15s ease,
+    outline-offset 0.15s ease,
+    outline-color 0.15s ease;
+}
+.ads-audio-play svg {
+  width: 24px;
+  height: 24px;
+  stroke-width: 1.5;
+}
+.ads-audio-card:is(:hover, :has([data-state="hover"])) .ads-audio-play {
+  color: var(--ads-fg-2);
+}
+/* Version 2's play is a Secondary, icon-only, rounded-full button with its
+   fill and border hidden: the mark alone in a 44px circle, which takes the
+   secondary button's hover. */
+.ads-audio[data-version="2"] .ads-audio-play {
+  width: 44px;
+  height: 44px;
+  color: var(--ads-secondary-fg);
+}
+.ads-audio[data-version="2"] .ads-audio-play:is(:hover, [data-state="hover"]) {
+  background: var(--ads-border-2);
+  color: var(--ads-fg);
+  outline: 2px solid var(--ads-secondary-border);
+  outline-offset: -1px;
+}
+.ads-audio-play:focus-visible,
+.ads-audio-bar:focus-visible {
+  outline: 2px solid var(--ads-focus);
+  outline-offset: 2px;
+}
+/* The bar's hit area is taller than the line drawn. */
+.ads-audio-bar {
+  position: relative;
+  flex: 1;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  touch-action: none;
+}
+.ads-audio-track {
+  position: absolute;
+  inset: 50% 0 auto;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--ads-border-2);
+  translate: 0 -50%;
+  transition: height 0.15s ease;
+}
+.ads-audio-progress {
+  height: 100%;
+  border-radius: 12px;
+  background: var(--ads-fg-2);
+}
+.ads-audio-card:is(:hover, :has([data-state="hover"])) .ads-audio-track,
+.ads-audio-bar[data-dragging] .ads-audio-track {
+  height: 8px;
+}
+@container (max-width: 359px) {
+  .ads-audio[data-version="1"] .ads-audio-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+@container (max-width: 519px) {
+  .ads-audio[data-version="2"] .ads-audio-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .ads-audio[data-version="2"] .ads-audio-side {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 16px;
+  }
+  .ads-audio[data-version="2"] .ads-audio-voice {
+    justify-content: space-between;
+  }
+}
+
+/* Analysis metadata: a label and its value under a rule, side by side or
+   one over the other. The value is mono, plain, a list, the share links,
+   or a link; a table of contents row has a number before its label. */
+.ads-meta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 16px;
+  padding: 12px 0;
+  border-top: 1px solid var(--ads-border-2);
+  color: var(--ads-fg);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+}
+.ads-meta[data-direction="vertical"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+.ads-meta[data-value="toc"] {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+.ads-meta-num {
+  color: var(--ads-fg-3);
+  font: 400 13px/20px var(--ads-mono);
+  font-variant-numeric: tabular-nums;
+}
+.ads-meta-value {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  color: var(--ads-fg-3);
+}
+.ads-meta[data-value="mono"] .ads-meta-value {
+  color: var(--ads-fg);
+  font: 400 13px/20px var(--ads-mono);
+  text-transform: uppercase;
+}
+.ads-meta[data-value="mono"][data-direction="horizontal"] .ads-meta-value {
+  justify-content: flex-end;
+}
+.ads-meta[data-value="list"] .ads-meta-value {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 11.5px;
+}
+.ads-meta[data-value="share"] .ads-meta-value {
+  gap: 12px;
+}
+.ads-meta-icon {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  color: var(--ads-fg-3);
+  transition: color 0.15s ease;
+}
+.ads-meta-icon svg {
+  width: 18px;
+  height: 18px;
+}
+.ads-meta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ads-fg-3);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.ads-meta-link svg {
+  width: 16px;
+  height: 16px;
+  transition: translate 0.2s ease;
+}
+:is(.ads-meta-icon, .ads-meta-link):is(:hover, [data-state="hover"]) {
+  color: var(--ads-fg);
+}
+.ads-meta-link:is(:hover, [data-state="hover"]) svg {
+  translate: 2px 0;
+}
+
+/* The Analysis Metadata figure: a skeleton of an analysis's top
+   (`MetadataPage` in pages/molecules.tsx). Wide, the contents, the text, and
+   the metadata side by side, as the file's analysis hero has them, the
+   metadata 280px wide (its rows' width there, so a date or the share links
+   keep to one line); narrow, the metadata in columns over the text and the
+   contents folded away. */
+.ads-meta-page {
+  height: 100%;
+  overflow: hidden;
+  padding: 48px 32px;
+  background: var(--ads-bg);
+}
+.ads-meta-page-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) 280px;
+  align-items: start;
+  gap: 32px;
+  max-width: 1016px;
+  margin-inline: auto;
+}
+.ads-meta-page-text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 12px;
+}
+.ads-meta-page-figure {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--ads-radius-tinier);
+}
+.ads-meta-page[data-narrow] {
+  padding: 32px 24px;
+}
+.ads-meta-page[data-narrow] .ads-meta-page-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+.ads-meta-page[data-narrow] .ads-meta-page-toc {
+  display: none;
+}
+.ads-meta-page[data-narrow] .ads-meta-page-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  order: -1;
+  column-gap: 16px;
+}
+
+/* Video: a 16:9 picture in rounded corners. */
+.ads-video {
+  container-type: inline-size;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #000;
+}
+/* The cover, as anthropic.com draws it: the picture, and the Play Button in
+   its middle, 56px, 64px from a 480px frame, 84px from a 720px one (the
+   site's own steps are the window's 768 and 1280px). */
+.ads-video-cover {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+.ads-video-cover > img,
+.ads-video-player > :is(video, img) {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ads-video-cover > .ads-play {
+  --play: 56px;
+  --play-icon: 24px;
+  --play-r: 12px;
+  position: relative;
+}
+@container (min-width: 480px) {
+  .ads-video-cover > .ads-play {
+    --play: 64px;
+    --play-icon: 28px;
+    --play-r: 13px;
+  }
+}
+@container (min-width: 720px) {
+  .ads-video-cover > .ads-play {
+    --play: 84px;
+    --play-icon: 36px;
+    --play-r: 16px;
+  }
+}
+/* Playing, the whole frame is the button that stops it. */
+.ads-video-player {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+/* Article Subnav, as anthropic.com draws it: a 48px bar under the site's
+   header, a rule above and below, holding the section being read (its
+   number in mono, then its name) and a chevron at the page's margin. It
+   lightens under the pointer. Opened, the contents grow down over the
+   page, one table of contents row each: the current one's number dark, and
+   while one is under the pointer, it lightens and the others dim. */
+.ads-subnav {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  border-bottom: 1px solid var(--ads-border-2);
+  background: var(--ads-bg);
+}
+.ads-subnav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  /* 48px under its rule. */
+  height: 49px;
+  padding: 0 var(--subnav-pad, 80px);
+  border: 0;
+  border-top: 1px solid var(--ads-border-2);
+  background: var(--ads-bg);
+  color: var(--ads-fg);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease-out;
+}
+.ads-subnav-bar:is(:hover, [data-state="hover"]) {
+  background: var(--ads-bg-2);
+}
+.ads-subnav-bar:focus-visible {
+  outline: 2px solid var(--ads-focus);
+  outline-offset: -4px;
+}
+.ads-subnav-label {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ads-subnav-num {
+  margin-right: 16px;
+  color: var(--ads-fg-3);
+  font-family: var(--ads-mono);
+  font-variant-numeric: tabular-nums;
+}
+.ads-subnav-name {
+  display: inline-block;
+  animation: ads-label-in 0.22s ease;
+}
+@keyframes ads-label-in {
+  from {
+    opacity: 0;
+    translate: 0 4px;
+  }
+}
+.ads-subnav-caret {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  transition: rotate 0.15s ease-out;
+}
+.ads-subnav-bar[aria-expanded="true"] .ads-subnav-caret {
+  rotate: 180deg;
+}
+.ads-subnav-list {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--ads-border-2);
+  background: var(--ads-bg);
+  box-shadow: 0 4px 24px rgb(0 0 0 / 0.05);
+  animation: ads-subnav-grow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@keyframes ads-subnav-grow {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+/* Each row's rule runs the full width, not only between the margins. */
+.ads-subnav-item {
+  display: block;
+  width: 100%;
+  padding: 0 var(--subnav-pad, 80px);
+  border: 0;
+  border-top: 1px solid var(--ads-border-2);
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease-out;
+}
+.ads-subnav-item .ads-meta {
+  border-top: 0;
+}
+.ads-subnav-item .ads-meta > * {
+  transition: color 0.2s ease-out;
+}
+.ads-subnav-item[aria-current="true"] .ads-meta-num {
+  color: var(--ads-fg);
+}
+.ads-subnav-item:is(:hover, :focus-visible, [data-state="hover"]) {
+  outline: none;
+  background: var(--ads-bg-2);
+}
+.ads-subnav-list:has(
+    .ads-subnav-item:is(:hover, :focus-visible, [data-state="hover"])
+  )
+  .ads-subnav-item:not(:hover, :focus-visible, [data-state="hover"])
+  .ads-meta
+  > * {
+  color: var(--ads-fg-4);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ads-subnav-list,
+  .ads-subnav-name {
+    animation: none;
+  }
+}
+
+/* The page the subnav is shown on: a skeleton of an analysis, in a window
+   that scrolls inside the figure. */
+.ads-article-window {
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--ads-bg);
+  container-type: inline-size;
+}
+.ads-article-head {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 18px var(--subnav-pad, 80px);
+}
+.ads-article-head > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ads-article-head > div:last-child {
+  justify-content: flex-end;
+}
+.ads-article-body {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 742px;
+  margin: 0 auto;
+  padding: 48px 24px 120px;
+}
+.ads-article-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  scroll-margin-top: 50px;
+}
+.ads-article-section + .ads-article-section {
+  padding-top: 32px;
+}
+@container (max-width: 1279px) {
+  .ads-article {
+    --subnav-pad: 48px;
+  }
+}
+@container (max-width: 767px) {
+  .ads-article {
+    --subnav-pad: 32px;
+  }
+}
+@container (max-width: 1023px) {
+  .ads-article-head {
+    grid-template-columns: auto 1fr;
+  }
+  .ads-article-head .ads-article-wide {
+    display: none;
+  }
+}
+@container (max-width: 639px) {
+  /* A phone's header has the mark in place of the wordmark. */
+  .ads-article-logo {
+    width: 28px !important;
+    height: 28px !important;
+  }
+}

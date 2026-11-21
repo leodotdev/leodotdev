@@ -1,0 +1,606 @@
+/* The organisms media chapters of the Anthropic.com docs (Quote Card & Quote
+   Carousel, Media Carousel & Video Playlist, Code Block & Claude Terminal,
+   Claude Narrator), drawn from the Figma file's "Article-related organisms".
+   The components are in src/components/work/anthropic/pages/organisms-media/. */
+
+/* The colors the file gives code, by kind of word: its light set, and on the
+   dark themes the same hues lightened. */
+.ads {
+  --ads-code-text: var(--ads-fg-2);
+  --ads-code-keyword: #a626a4;
+  --ads-code-op: #4078f2;
+  --ads-code-number: #b76b01;
+  --ads-code-string: #50a14f;
+  --ads-code-comment: var(--ads-fg-4);
+}
+.ads:is([data-theme="slate"], [data-theme="image"]) {
+  --ads-code-keyword: #c678dd;
+  --ads-code-op: #61afef;
+  --ads-code-number: #d19a66;
+  --ads-code-string: #98c379;
+}
+
+/* The article the organisms sit in, as a skeleton: a column of running text,
+   in the middle of the page. Its width is what the organisms' layouts
+   answer to (`ads-om-page`). */
+.ads-om-page {
+  container: ads-om-page / inline-size;
+}
+.ads-om-article {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  padding: 40px 32px;
+}
+.ads-om-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: min(100%, 640px);
+}
+.ads-om-wide {
+  width: min(100%, 960px);
+}
+@container ads-om-page (max-width: 600px) {
+  .ads-om-article {
+    gap: 32px;
+    padding: 32px 24px;
+  }
+}
+
+/* Caption or Footnote (and Fig Caption): a mono label beside the text, over
+   it on a phone. */
+.ads-fig-caption {
+  display: flex;
+  gap: 24px;
+  padding-right: 16px;
+}
+.ads-fig-caption > span {
+  flex: none;
+  width: 64px;
+  color: var(--ads-fg-3);
+}
+.ads-fig-caption > p {
+  max-width: 600px;
+  margin: 0;
+  color: var(--ads-fg-2);
+}
+@container ads-om-page (max-width: 600px) {
+  .ads-fig-caption {
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 0;
+  }
+}
+
+/* Quote Card: the logo over a rule, the quote in serif with its opening mark
+   hung in the margin, and who said it. */
+.ads-quote-card {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-width: 0;
+  margin: 0;
+  padding: 32px;
+  border: 1px solid var(--ads-border-2);
+  border-radius: var(--ads-radius-smaller);
+  background: var(--ads-bg-2);
+  color: var(--ads-fg);
+}
+.ads-quote-card-logo {
+  display: flex;
+  align-items: center;
+  height: 54px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ads-border-2);
+}
+.ads-quote-card-logo img {
+  display: block;
+  width: auto;
+  height: 21px;
+}
+.ads-quote-card blockquote {
+  margin: 0;
+  text-indent: -0.42em;
+}
+.ads-quote-card figcaption {
+  color: var(--ads-fg-3);
+}
+
+/* Quote Carousel: a row that scrolls sideways and snaps to a card, two at a
+   time, or one with the next peeking in on a phone; Pagination under it. */
+.ads-quote-carousel {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-width: 0;
+}
+.ads-quote-row {
+  display: flex;
+  gap: 32px;
+  /* Room for a focus ring inside a box that clips. */
+  margin: -4px;
+  padding: 4px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: 4px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  cursor: grab;
+}
+.ads-quote-row::-webkit-scrollbar {
+  display: none;
+}
+.ads-quote-row[data-dragging] {
+  scroll-snap-type: none;
+  cursor: grabbing;
+  user-select: none;
+}
+.ads-quote-row > * {
+  flex: 0 0 calc((100% - 32px) / 2);
+  scroll-snap-align: start;
+}
+@container ads-om-page (max-width: 600px) {
+  .ads-quote-row {
+    gap: 16px;
+  }
+  .ads-quote-row > * {
+    flex-basis: calc(100% - 48px);
+  }
+}
+.ads-quote-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+.ads-quote-pagination > span {
+  min-width: 7ch;
+  color: var(--ads-fg-3);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+/* A picture or video, 16:9: the file's still, or a field of color. */
+.ads-om-media {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+/* Media Carousel: the tabs (a button group, the current one primary), the
+   picture, and its caption. */
+.ads-media-carousel {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+.ads-media-carousel > .ads-fig-caption {
+  margin-top: -8px;
+}
+.ads-media-tabs {
+  display: flex;
+  max-width: 100%;
+  margin: -4px;
+  padding: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.ads-media-tabs::-webkit-scrollbar {
+  display: none;
+}
+.ads-media-tabs > .ads-btn {
+  margin-left: -1px;
+  border-radius: 0;
+}
+.ads-media-tabs > .ads-btn:first-child {
+  margin-left: 0;
+  border-radius: 8px 0 0 8px;
+}
+.ads-media-tabs > .ads-btn:last-child {
+  border-radius: 0 8px 8px 0;
+}
+.ads-media-tabs > .ads-btn:is(:hover, [data-state="hover"]) {
+  position: relative;
+  z-index: 1;
+}
+.ads-media-frame {
+  overflow: hidden;
+  border-radius: var(--ads-radius-tinier);
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+}
+.ads-media-track {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.3, 0, 0, 1);
+}
+.ads-media-track > * {
+  flex: none;
+  width: 100%;
+}
+.ads-media-track[data-dragging] {
+  transition: none;
+  cursor: grabbing;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ads-media-track {
+    transition: none;
+  }
+}
+
+/* The file's Play Button: a white tile with a play mark, over the video.
+   Its own class: `.ads-play` is the Play Button atom (atoms.css), which
+   this one, loaded later, used to restyle everywhere. */
+.ads-video-play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 11px;
+  background: var(--ads-gray-000);
+  color: var(--ads-gray-950);
+  box-shadow: 0 4px 24px rgb(0 0 0 / 0.12);
+  cursor: pointer;
+}
+.ads-video-play svg {
+  width: 36px;
+  height: 36px;
+  stroke-width: 1.5;
+}
+
+/* Video Playlist: the video beside its list (the list under it on a phone),
+   an optional label over the list. Each item is Inactive (plain), Hover (a
+   light fill, a play mark), or Active (a deeper fill, pause or play). */
+.ads-playlist {
+  display: grid;
+  grid-template-columns: minmax(0, 624fr) minmax(0, 328fr);
+  align-items: center;
+  gap: 32px;
+}
+@container ads-om-page (max-width: 760px) {
+  .ads-playlist {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.ads-playlist-video {
+  position: relative;
+  container-type: inline-size;
+  overflow: hidden;
+  border-radius: var(--ads-radius-smaller);
+}
+@container (max-width: 480px) {
+  .ads-video-play {
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+  }
+  .ads-video-play svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+.ads-playlist-pause {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.ads-playlist-side {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-width: 0;
+}
+.ads-playlist-side > p {
+  margin: 0;
+  color: var(--ads-fg);
+}
+.ads-playlist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ads-playlist-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 17px 24px;
+  border: 1px solid transparent;
+  border-radius: var(--ads-radius-smallest);
+  background: transparent;
+  color: var(--ads-fg-2);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+.ads-playlist-count {
+  flex: none;
+  width: 16px;
+  color: var(--ads-fg-3);
+}
+.ads-playlist-title {
+  flex: 1;
+  min-width: 0;
+}
+.ads-playlist-item svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.5;
+  opacity: 0;
+}
+.ads-playlist-item:is(:hover, [data-state="hover"]) {
+  border-color: var(--ads-border-2);
+  background: var(--ads-bg-2);
+}
+.ads-playlist-item[data-active] {
+  border-color: var(--ads-border-2);
+  background: var(--ads-bg-3);
+}
+.ads-playlist-item:is(:hover, [data-state="hover"], [data-active]) svg {
+  opacity: 1;
+}
+/* An item's name is its state, as in the file's samples. */
+.ads-playlist-title [data-word="hover"],
+.ads-playlist-item:is(:hover, [data-state="hover"]) [data-word="inactive"] {
+  display: none;
+}
+.ads-playlist-item:is(:hover, [data-state="hover"]) [data-word="hover"] {
+  display: inline;
+}
+
+/* Code Block (and Code Snippet): a header with the file's name and the
+   buttons, over the code, which scrolls inside the block until expanded. */
+.ads-code,
+.ads.ads-terminal {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--ads-border-2);
+  border-radius: var(--ads-radius-smaller);
+  background: var(--ads-bg-2);
+  color: var(--ads-fg);
+}
+.ads-code-header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 53px;
+  padding: 12px 12px 12px 24px;
+  border-bottom: 1px solid var(--ads-border-2);
+  background: var(--ads-bg);
+}
+.ads-code-name {
+  flex: 1;
+  min-width: 0;
+  color: var(--ads-fg);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+}
+.ads-code-name > span {
+  color: var(--ads-fg-4);
+}
+.ads-code-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+.ads-code-body {
+  max-height: 508px;
+  margin: 0;
+  padding: 24px;
+  overflow: auto;
+  color: var(--ads-code-text);
+  font: 400 13px/20px var(--ads-mono);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  tab-size: 4;
+  scrollbar-color: var(--ads-bg-4) transparent;
+  scrollbar-width: thin;
+}
+.ads-code[data-expanded] .ads-code-body {
+  max-height: none;
+}
+.ads-code-body [data-token="keyword"] {
+  color: var(--ads-code-keyword);
+}
+.ads-code-body [data-token="op"],
+.ads-code-body [data-token="name"] {
+  color: var(--ads-code-op);
+}
+.ads-code-body [data-token="number"] {
+  color: var(--ads-code-number);
+}
+.ads-code-body :is([data-token="string"], [data-token="type"]) {
+  color: var(--ads-code-string);
+}
+.ads-code-body [data-token="comment"] {
+  color: var(--ads-code-comment);
+  font-style: italic;
+}
+
+/* Claude Terminal: the same block in Slate, with the window's three lights
+   and its title in the middle. It keeps one height while the session
+   comes in. */
+.ads-terminal .ads-code-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+}
+.ads-terminal .ads-code-name {
+  text-align: center;
+}
+.ads-terminal-lights {
+  display: flex;
+  gap: 8px;
+}
+.ads-terminal-lights > i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff5f57;
+}
+.ads-terminal-lights > i:nth-child(2) {
+  background: #febc2e;
+}
+.ads-terminal-lights > i:nth-child(3) {
+  background: #28c840;
+}
+.ads-terminal .ads-code-body {
+  height: 460px;
+  max-height: none;
+  color: var(--ads-fg);
+}
+.ads-terminal-prompt {
+  display: flex;
+  gap: 8px;
+}
+.ads-terminal-answer {
+  display: block;
+  margin-top: 40px;
+}
+@container ads-om-page (max-width: 600px) {
+  .ads-terminal .ads-code-header {
+    padding-left: 16px;
+  }
+  .ads-terminal .ads-code-body {
+    height: 400px;
+    padding: 16px;
+  }
+}
+
+/* Claude Narrator: the voice picker over the audio player, at the article's
+   bottom right corner; on a phone across its foot, rounder, over a fade. */
+.ads-narrator-page {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+.ads-narrator {
+  position: absolute;
+  right: 32px;
+  bottom: 32px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(360px, calc(100% - 48px));
+}
+@container ads-om-page (max-width: 600px) {
+  .ads-narrator {
+    right: 24px;
+    bottom: 16px;
+    left: 24px;
+    width: auto;
+  }
+  .ads-narrator::before {
+    content: "";
+    position: absolute;
+    inset: -64px -24px -16px;
+    z-index: -1;
+    background: linear-gradient(transparent, var(--ads-bg) 45%);
+  }
+  .ads-narrator-player {
+    border-radius: var(--ads-radius-small);
+  }
+}
+.ads-narrator-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.ads-narrator-player {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid var(--ads-tertiary-border);
+  border-radius: var(--ads-radius-smaller);
+  background: var(--ads-bg-2);
+}
+.ads-narrator-play {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ads-fg);
+  cursor: pointer;
+}
+.ads-narrator-play svg {
+  width: 24px;
+  height: 24px;
+  stroke-width: 1.5;
+}
+.ads-narrator-track {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  height: 24px;
+  cursor: pointer;
+  touch-action: none;
+}
+.ads-narrator-line {
+  position: relative;
+  flex: 1;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--ads-border-2);
+  transition: height 0.15s ease;
+}
+.ads-narrator-line > span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: inherit;
+  background: var(--ads-fg-2);
+}
+/* The narrator's player is the file's Audio Player, so it takes that
+   molecule's hover: under the pointer the playbar thickens. Its play mark
+   is already the darkest it gets, so it stays as it is. */
+.ads-narrator-player:is(:hover, :has([data-state="hover"])) .ads-narrator-line {
+  height: 8px;
+}
+/* The slider's thumb: no mark of its own, only a place to hold the bar by
+   (and the focus ring). */
+.ads-narrator-thumb {
+  position: absolute;
+  top: 0;
+  width: 16px;
+  height: 24px;
+  margin-left: -8px;
+  border-radius: 4px;
+}
+.ads-narrator-time {
+  display: flex;
+  flex: none;
+  gap: 8px;
+  color: var(--ads-fg-2);
+  font: 400 11px/16.5px var(--ads-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.2px;
+}

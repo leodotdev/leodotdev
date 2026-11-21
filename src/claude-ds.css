@@ -4,11 +4,12 @@
  * type styles and components apply inside a `.cds` box, where the site's own
  * two-type-size rule does not.
  *
- * The whole site wears this palette (styles.css builds its own tokens on the
- * ones here): White in light mode and Dark 3 in dark mode. A `.cds` box with
- * `data-theme` wears a theme of its own (the docs' figures, once a theme is
- * picked for them); a `.cds` box without `data-theme` takes the page's. The
- * site's defaults sit in :where(), so a box's own theme overrides them.
+ * The site itself wears the Anthropic.com palette (anthropic-ds.css; it was
+ * this one until 2026-11-20, and the two share their grays). A `.cds` box
+ * with `data-theme` wears a theme of its own (the docs' figures, once a theme
+ * is picked for them); a `.cds` box without `data-theme` takes the page's
+ * light or dark mode: White or Dark 3. Those defaults sit in :where(), so a
+ * box's own theme overrides them.
  */
 
 /* Anthropic's three typefaces (files supplied by Leo, in public/fonts). All
@@ -125,7 +126,7 @@
   --cds-border-3: var(--cds-gray-200);
 }
 
-/* White: also the site in light mode. */
+/* White: also a theme-less `.cds` box in the site's light mode. */
 :where(html:not(.dark)),
 .cds[data-theme="white"] {
   --cds-bg: var(--cds-gray-000);
@@ -155,7 +156,7 @@
   --cds-border-2: var(--cds-gray-650);
   --cds-border-3: var(--cds-gray-750);
 }
-/* Dark 3: also the site in dark mode. */
+/* Dark 3: also a theme-less `.cds` box in the site's dark mode. */
 :where(html.dark),
 .cds[data-theme="dark-3"] {
   --cds-bg: var(--cds-gray-950);
@@ -309,6 +310,8 @@
   --cds-control-fg: var(--cds-gray-650);
   --cds-tertiary-fg: var(--cds-gray-600);
   --cds-field-bg: #ffffff;
+  /* The prompt input's field: an ordinary field's, except on Dark 3. */
+  --cds-prompt-bg: #ffffff;
   --cds-inverse-bg: var(--cds-gray-950); /* primary button */
   --cds-inverse-fg: var(--cds-gray-050);
   --cds-check-off: #ffffff;
@@ -321,11 +324,14 @@
   --cds-tab-selected-fg: var(--cds-gray-950);
   /* Illustrations are drawn dark on light; dark themes turn them over. */
   --cds-art-filter: none;
+  /* Asana's logo: its wordmark is a dark maroon, which the dark themes'
+     filter turned pink, so they show its white version instead. */
+  --cds-logo-asana: url("/work/claude/logos/asana.svg");
   /* Text is a touch lighter on dark fills (480) than on light ones (500). */
   --cds-weight: 500;
   --cds-inverse-weight: 480;
 }
-/* White: also the site in light mode. */
+/* White: also a theme-less `.cds` box in the site's light mode. */
 :where(html:not(.dark)),
 .cds[data-theme="white"] {
   --cds-control-bg: var(--cds-gray-150);
@@ -351,21 +357,25 @@
   --cds-tab-selected-bg: var(--cds-bg);
   --cds-tab-selected-fg: var(--cds-fg);
   --cds-art-filter: invert(1) hue-rotate(180deg);
+  --cds-logo-asana: url("/work/claude/logos/asana-dark.svg");
   --cds-weight: 480;
   --cds-inverse-weight: 500;
 }
 .cds[data-theme="dark-2"] {
   --cds-control-bg: var(--cds-gray-700);
   --cds-field-bg: #000000;
+  --cds-prompt-bg: #000000;
   --cds-switch-bg: var(--cds-gray-750);
   --cds-switch-on: var(--cds-gray-600);
   --cds-tab-track: var(--cds-switch-bg);
 }
-/* Dark 3: also the site in dark mode. */
+/* Dark 3: also a theme-less `.cds` box in the site's dark mode. */
 :where(html.dark),
 .cds[data-theme="dark-3"] {
   --cds-control-bg: var(--cds-gray-750);
   --cds-field-bg: var(--cds-gray-800);
+  /* Black, in the footer: it is darker there than an ordinary field. */
+  --cds-prompt-bg: var(--cds-gray-1000);
   --cds-switch-bg: var(--cds-gray-800);
   --cds-switch-on: var(--cds-gray-650);
   --cds-tab-track: var(--cds-gray-850);
@@ -1199,15 +1209,116 @@
   align-items: center;
   gap: 16px;
 }
-.cds-bullets span {
+.cds-bullets > * {
   width: 5px;
   height: 5px;
+  padding: 0;
+  border: 0;
   border-radius: 50%;
   background: var(--cds-border-2);
   transition: background-color 0.2s ease;
 }
-.cds-bullets span[data-current] {
-  background: var(--cds-fg);
+.cds-bullets > button {
+  /* A bullet to press: its 5px dot in 6px of room all round. */
+  box-sizing: content-box;
+  padding: 6px;
+  background-clip: content-box;
+  cursor: pointer;
+}
+.cds-bullets > button:is(:hover, [data-state="hover"]) {
+  background-color: var(--cds-fg-3);
+}
+.cds-bullets > [data-current],
+.cds-bullets > button[data-current]:is(:hover, [data-state="hover"]) {
+  background-color: var(--cds-fg);
+}
+/* Spread: the arrows at the row's two ends, the bullets between them, as
+   under a deck of marginalia. An arrow with nowhere to go is dimmed. */
+.cds-carousel-ui[data-spread] {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+}
+.cds-carousel-ui[data-spread] .cds-bullets {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0;
+  min-width: 0;
+}
+.cds-carousel-ui [aria-disabled="true"] {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* A deck of marginalia (deck.tsx), as claude.com has it: the cards share one
+   place, the current one on top. A card to come leans out to the right from
+   behind it, further back and turned more the further off it is; a card gone
+   past does the same to the left. Only the top card can be reached, and a
+   card more than two away is not shown. */
+.cds-deck {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.cds-deck-cards {
+  display: grid;
+  perspective: 1200px;
+}
+.cds-deck-slide {
+  position: relative;
+  z-index: calc(5 - var(--deck-distance, 0));
+  display: flex;
+  grid-area: 1 / 1;
+  min-width: 0;
+  backface-visibility: hidden;
+  pointer-events: none;
+  transform: translateX(
+      calc((8 - 0.75 * var(--deck-distance, 0)) * var(--deck-offset, 0) * 1%)
+    )
+    translateZ(calc(-100px * var(--deck-distance, 0)))
+    rotate(calc(2deg * var(--deck-offset, 0)));
+  transform-origin: center bottom;
+  transition:
+    transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1),
+    opacity 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.cds-deck-slide[data-active] {
+  pointer-events: auto;
+}
+.cds-deck-slide[data-hidden] {
+  opacity: 0;
+}
+/* Every card is as tall as the tallest, so the deck keeps one outline, and
+   has no shadow of its own: the cards lie on one another. */
+.cds-deck-slide > *,
+.cds-deck-slide > .cds-margin {
+  flex: 1;
+  width: auto;
+  min-width: 0;
+  margin: 0;
+}
+.cds-deck-slide .cds-margin-card {
+  flex: 1;
+  box-shadow: none;
+}
+.cds-deck > .cds-carousel-ui {
+  margin-top: 24px;
+}
+/* The deck's arrows are the larger icon buttons. */
+.cds-deck > .cds-carousel-ui .cds-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+}
+.cds-deck > .cds-carousel-ui .cds-btn svg {
+  width: 16px;
+  height: 16px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cds-deck-slide {
+    transition: none;
+  }
 }
 
 /* A card's serif title, shared by the video card and others. */
@@ -1235,24 +1346,50 @@
   min-height: 210px;
   background: var(--cds-gray-950);
 }
+/* The play button, as the file draws it: a white tile over the video with a
+   hairline edge and a soft stack of shadows, holding the outline of a
+   triangle set a little right of center, as the eye wants it. Under the
+   pointer the triangle darkens and the tile grows a touch, like the
+   lightbox's playhead. Its colors are fixed: it sits on the video, not on
+   the theme. */
 .cds-play {
   display: grid;
   place-items: center;
   width: 64px;
   height: 64px;
-  border: 1px solid var(--cds-gray-150);
-  border-radius: 12px;
+  padding: 0;
+  border: 0.73px solid #f0eee6;
+  border-radius: 11.64px;
   background: #ffffff;
   box-shadow:
-    0 1px 4px rgb(0 0 0 / 0.1),
-    0 7px 7px rgb(0 0 0 / 0.09),
-    0 16px 9px rgb(0 0 0 / 0.05);
-  color: var(--cds-gray-950);
+    0 1.45px 3.64px rgb(0 0 0 / 0.1),
+    0 7.27px 7.27px rgb(0 0 0 / 0.09),
+    0 16px 9.45px rgb(0 0 0 / 0.05),
+    0 28.36px 10.9px rgb(0 0 0 / 0.01);
+  color: #5e5d59;
   cursor: pointer;
+  transition:
+    color 0.15s ease,
+    scale 0.2s ease;
+}
+.cds-play:hover,
+.cds-play[data-state="hover"] {
+  color: #141413;
+  scale: 1.04;
 }
 .cds-play svg {
-  width: 24px;
-  height: 24px;
+  width: 17.28px;
+  height: 20.27px;
+  overflow: visible;
+  translate: 1.94px 0;
+}
+/* The icon set's triangle, where a play button uses it (the marginalia
+   cards): it is drawn right of the middle of its own square already, so the
+   file's nudge sent it too far. This one puts the triangle's center of
+   mass, not the middle of its box, on the button's center, which is where a
+   triangle looks centered. */
+.cds-play svg[viewBox="0 0 24 24"] {
+  translate: 0.72px 0;
 }
 .cds-card-video-body {
   display: flex;
@@ -1272,7 +1409,16 @@
   .cds-play {
     width: 48px;
     height: 48px;
-    border-radius: 9px;
+    border-width: 0.55px;
+    border-radius: 8.73px;
+  }
+  .cds-play svg {
+    width: 12.96px;
+    height: 15.2px;
+    translate: 1.45px 0;
+  }
+  .cds-play svg[viewBox="0 0 24 24"] {
+    translate: 0.54px 0;
   }
 }
 
@@ -1527,7 +1673,11 @@
     align-items: flex-start;
     gap: 24px;
   }
+  /* The row runs off the figure's right edge, as off a phone's. */
   .cds-proofs {
+    align-self: stretch;
+    width: auto;
+    margin-right: calc(-1 * var(--cds-figure-pad, 0px));
     mask-image: linear-gradient(to right, #000 calc(100% - 85px), transparent);
   }
   /* Scrolled to its end, the last card is whole: nothing to fade. */
@@ -1538,11 +1688,12 @@
     flex-basis: 256px;
     padding-right: 0;
   }
+  /* The controls span the page: an arrow at each side, the bullets
+     between them. */
   .cds-proof-carousel .cds-carousel-ui {
     display: flex;
     justify-content: space-between;
-    width: 100%;
-    max-width: 326px;
+    align-self: stretch;
   }
 }
 /* The logo at its own size, at the left of a box as tall as the tallest. */
@@ -1668,9 +1819,762 @@
   font: 500 25px/32px var(--cds-serif);
 }
 
+/* A template page (pages/template.tsx; the Home template's own styles
+   follow): a whole page, built from the organisms above. It sits in
+   a window of one height and scrolls inside it. Every size follows the
+   page's own width (the window is the container), so the page keeps its
+   proportions as the figure narrows, and stacks at a phone's width. Each
+   section sets its own theme (pages/home.tsx). */
+.cds-tpl-window {
+  /* Named, for a rule about something inside a container of its own (a
+     section header) that must still ask about the page's width. */
+  container: tpl / inline-size;
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: auto;
+  scrollbar-width: none;
+}
+.cds-tpl-window::-webkit-scrollbar {
+  display: none;
+}
+/* The window's own scrollbar: a thumb at the right, on any theme. Like a
+   system's, it shows only while the page is being scrolled (`data-active`,
+   set by the window while it scrolls and for a moment after), while the
+   pointer is on it, and while the demo cursor has hold of it, so the first
+   sight of it is the cursor scrolling the page. Its sizes are in lines of
+   `--cds-hair` (one pixel as drawn at the figure's scale), which keeps its
+   edges on whole pixels. */
+.cds-tpl-frame {
+  position: relative;
+  height: 100%;
+}
+/* A template figure's edge in bands, each in the ring color of the section
+   lying against it (`Edge` in pages/template.tsx): each band is the
+   figure's ring (`.cds-ring`, below) cut to its stretch, over the page and
+   its scrollbar, and the figure's own ring gives way to them. */
+.cds-ring:has(.cds-tpl-edge)::after {
+  box-shadow: none;
+}
+.cds-tpl-edge {
+  position: absolute;
+  z-index: 11;
+  inset: 0;
+  pointer-events: none;
+}
+.cds-tpl-edge > span {
+  position: absolute;
+  inset: -2px;
+  border-radius: calc(var(--cds-figure-r, 20px) + 2px);
+  box-shadow: inset 0 0 0 calc(2px + var(--cds-hair, 1px)) var(--edge);
+  transition: border-radius 0.4s cubic-bezier(0.2, 0, 0, 1);
+}
+.cds-tpl-scrollbar {
+  --hair: var(--cds-hair, 1px);
+  position: absolute;
+  z-index: 3;
+  top: calc(4 * var(--hair));
+  right: 0;
+  bottom: calc(4 * var(--hair));
+  width: calc(14 * var(--hair));
+  opacity: 0;
+  transition: opacity 0.3s ease 0.2s;
+}
+.cds-tpl-scrollbar[data-active],
+.cds-tpl-scrollbar:hover,
+.cds-tpl-scrollbar:has([data-state], [data-dragging]) {
+  opacity: 1;
+  transition-delay: 0s;
+  transition-duration: 0.1s;
+}
+.cds-tpl-thumb {
+  position: absolute;
+  right: calc(4 * var(--hair));
+  width: calc(6 * var(--hair));
+  min-height: calc(32 * var(--hair));
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgb(128 128 128 / 0.6);
+  cursor: default;
+  touch-action: none;
+}
+.cds-tpl-thumb:hover,
+.cds-tpl-thumb[data-state="hover"],
+.cds-tpl-thumb[data-dragging] {
+  background: rgb(128 128 128 / 0.9);
+}
+/* Reveals (reveal.ts), as on claude.com: a part of the page waits a little
+   low and unseen, and rises into place as it fades in, the parts of a group
+   one after another. A header's headline comes in by its words instead. */
+.cds-tpl [data-reveal] {
+  opacity: 0;
+  transform: translateY(var(--reveal-y, 10px));
+  transition:
+    opacity 0.75s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 0.75s cubic-bezier(0.25, 1, 0.5, 1);
+  transition-delay: calc(var(--reveal-index, 0) * var(--reveal-stagger, 0.1s));
+}
+.cds-tpl [data-reveal][data-revealed] {
+  opacity: 1;
+  transform: none;
+}
+/* anthropic.com's reveal (src/components/work/anthropic/reveal.ts): a whole
+   component fades in, without moving, over 1.4s on a cubic ease-out. */
+[data-reveal="fade"],
+.cds-tpl [data-reveal="fade"] {
+  opacity: 0;
+  transform: none;
+  transition: opacity 1.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition-delay: 0s;
+}
+[data-reveal="fade"][data-revealed] {
+  opacity: 1;
+}
+.cds-words > span {
+  display: inline-block;
+  opacity: 0;
+  transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1);
+  transition-delay: calc(var(--word-index, 0) * var(--word-stagger, 0s));
+}
+.cds-words[data-revealed] > span {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce), (scripting: none) {
+  .cds-words > span {
+    opacity: 1;
+    transition: none;
+  }
+}
+.cds-tpl {
+  /* The page's margin; on a page dragged wide it grows, so the content
+     keeps to the middle. */
+  --tpl-side: max(clamp(24px, 8cqw, 96px), (100cqw - 888px) / 2);
+  --cds-header-pad: 0px;
+}
+.cds-tpl h3,
+.cds-tpl h4,
+.cds-tpl p {
+  margin: 0;
+}
+.cds-tpl-section {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 6cqw, 72px);
+  padding: clamp(56px, 9cqw, 104px) var(--tpl-side);
+  border-top: 1px solid var(--cds-border-3);
+}
+.cds-tpl-section[data-tone="2"] {
+  background: var(--cds-bg-2);
+}
+/* The hero: the headline, a line under it, and the prompt input, beside the
+   illustration. */
+.cds-home-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(24px, 6cqw, 96px);
+  align-items: center;
+  padding: clamp(40px, 7cqw, 88px) var(--tpl-side);
+}
+.cds-home-hero > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+.cds-home-hero h3 {
+  font: 500 72px/1 var(--cds-serif);
+  font-size: clamp(40px, 5.6cqw, 72px);
+  line-height: 0.96;
+}
+.cds-home-hero p {
+  margin-bottom: 16px;
+  color: var(--cds-fg-3);
+  font: 400 23px/1.5 var(--cds-sans);
+  font-size: clamp(17px, 1.9cqw, 23px);
+}
+.cds-home-hero .cds-footer-prompt {
+  width: min(480px, 100%);
+}
+.cds-home-hero > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: var(--cds-art-filter);
+}
+.cds-home-downloads {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: calc(-1 * clamp(16px, 3cqw, 40px));
+  font: 400 15px/24px var(--cds-sans);
+}
+/* Three features down the left, a picture on the right. */
+.cds-home-split {
+  display: grid;
+  grid-template-columns: minmax(0, 336fr) minmax(0, 948fr);
+  gap: clamp(32px, 8cqw, 120px);
+  align-items: center;
+}
+.cds-home-feature {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 28px 0;
+  border-top: 1px solid var(--cds-border-3);
+}
+.cds-home-feature h4 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 500 19px/24px var(--cds-serif);
+}
+.cds-home-feature svg {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  stroke-width: 1.25;
+}
+.cds-home-feature p {
+  color: var(--cds-fg-3);
+  font: 400 15px/24px var(--cds-sans);
+}
+.cds-home-media {
+  aspect-ratio: 948 / 939;
+  border-radius: 24px;
+  background: var(--cds-bg-2);
+}
+/* The artifact, and under it what its tab is about. */
+.cds-home-artifact {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.cds-home-about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  width: min(950px, 100%);
+  margin-inline: auto;
+}
+.cds-home-about h4 {
+  font: 500 25px/32px var(--cds-serif);
+}
+.cds-home-about p {
+  color: var(--cds-fg-3);
+  font: 400 17px/28px var(--cds-sans);
+}
+/* The reels: a row that runs off both sides of the page and scrolls a reel
+   at a time, over the carousel's controls. */
+.cds-home-reels {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  margin-inline: calc(-1 * var(--tpl-side));
+}
+.cds-home-reels > div:first-child {
+  display: flex;
+  gap: clamp(16px, 2.4cqw, 32px);
+  width: 100%;
+  padding-inline: var(--tpl-side);
+  overflow-x: auto;
+  scroll-padding-inline: var(--tpl-side);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.cds-home-reels > div:first-child::-webkit-scrollbar {
+  display: none;
+}
+.cds-home-reels .cds-reel {
+  flex: none;
+  width: clamp(180px, 21cqw, 336px);
+  max-width: none;
+  scroll-snap-align: start;
+}
+/* The models: a card each, the name beside what it is for. */
+.cds-home-models {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: min(950px, 100%);
+  margin-inline: auto;
+}
+.cds-home-model {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  padding: clamp(24px, 4.4cqw, 48px);
+  border: 1px solid var(--cds-card-border);
+  border-radius: 32px;
+  background: var(--cds-card-bg);
+}
+.cds-home-model h4 {
+  font: 500 36px/1 var(--cds-serif);
+  font-size: clamp(28px, 3.3cqw, 36px);
+}
+.cds-home-model > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.cds-home-model p {
+  font: 400 17px/28px var(--cds-sans);
+}
+.cds-home-model small,
+.cds-home-release small {
+  color: var(--cds-fg-3);
+  font: 400 12px/18px var(--cds-sans);
+  letter-spacing: 0.15px;
+  white-space: pre-wrap;
+}
+/* The latest releases: a heading beside a list of links, the one under the
+   pointer on a card of its own. */
+.cds-home-releases {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  width: min(950px, 100%);
+  margin-inline: auto;
+  padding-top: 48px;
+  border-top: 1px solid var(--cds-border-3);
+}
+.cds-home-releases h4 {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  align-self: start;
+  max-width: 14em;
+  font: 500 25px/1.2 var(--cds-serif);
+}
+.cds-home-releases h4 img {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  filter: var(--cds-art-filter);
+}
+.cds-home-releases > div {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.cds-home-release {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px 32px;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+.cds-home-release span {
+  font: 400 17px/24px var(--cds-serif);
+}
+.cds-home-release span::after {
+  content: " →";
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.cds-home-release:hover,
+.cds-home-release[data-state="hover"] {
+  border-color: var(--cds-card-border);
+  background: var(--cds-card-bg);
+}
+.cds-home-release:hover span::after,
+.cds-home-release[data-state="hover"] span::after {
+  opacity: 1;
+}
+/* A phone: everything in one column. */
+@container (max-width: 760px) {
+  .cds-home-hero,
+  .cds-home-split,
+  .cds-home-about,
+  .cds-home-model,
+  .cds-home-releases {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cds-home-hero > img {
+    width: 80%;
+    margin-inline: auto;
+  }
+  .cds-home-reels .cds-reel {
+    width: min(256px, 70cqw);
+  }
+}
+
+/* Skeleton: the page around a component shown in use, as plain bars where
+   its text, buttons, and pictures would be, so only the component is drawn
+   for real (skeleton.tsx). A bar is a line of text unless given a size. What
+   is drawn round a component is what is round it on the site's own pages. */
+.cds-skel {
+  display: block;
+  flex: none;
+  max-width: 100%;
+  height: 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--cds-fg) 9%, transparent);
+}
+.cds-skel-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+/* A button or a field with a line round it, and one filled in. */
+.cds-skel-outline {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cds-fg) 18%, transparent);
+}
+.cds-skel-solid {
+  background: color-mix(in srgb, var(--cds-fg) 18%, transparent);
+}
+.cds-skel-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+/* A page's content keeps to the middle. Its side padding is the page's
+   margin, and once the page is wider than the figures are laid out (a figure
+   dragged wide) it grows with the page, so the content stays as wide as it
+   was, in the middle, while rules and backgrounds still run edge to edge. */
+.cds-skel-page,
+.cds-skel-under {
+  --cds-page-side: max(clamp(24px, 5cqw, 64px), (100cqw - 952px) / 2);
+}
+/* A page with a component on it, cut off at the bottom as a window cuts off
+   a page. */
+.cds-skel-page {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+/* The header, with the real one's own measures (`.cds-nav-bar`,
+   `.cds-nav-sub`): the logo, then the links and the two buttons at the
+   right, over the breadcrumb bar. */
+.cds-skel-nav {
+  flex: none;
+}
+.cds-skel-nav > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.cds-skel-nav > div:first-child {
+  padding: 24px clamp(16px, 3.5cqw, 48px);
+}
+.cds-skel-nav > div:last-child {
+  padding: 12px clamp(16px, 4cqw, 48px);
+  border-block: 1px solid var(--cds-border-3);
+}
+.cds-skel-nav > div:last-child > span {
+  display: flex;
+  gap: 16px;
+}
+.cds-skel-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-right: 12px;
+  margin-left: auto;
+}
+.cds-skel-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.cds-skel-nav-toggle {
+  display: none;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+  width: 36px;
+  padding: 8px;
+}
+/* The home page's hero: the copy and the prompt input beside a picture. */
+.cds-skel-hero {
+  display: grid;
+  flex: none;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(24px, 6cqw, 96px);
+  align-items: center;
+  padding: clamp(40px, 7cqw, 88px) var(--cds-page-side);
+}
+.cds-skel-hero > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+.cds-skel-hero .cds-skel-lines {
+  margin-block: 14px 18px;
+}
+.cds-skel-picture {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 24px;
+}
+/* A section's header, and a centered hero's end, and the page's closing
+   call: bars in a centered column. */
+.cds-skel-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.cds-skel-header .cds-skel-row {
+  justify-content: center;
+  margin-top: 8px;
+}
+.cds-skel-lead {
+  align-items: center;
+  width: min(520px, 84%);
+  margin-top: 8px;
+}
+.cds-skel-prefooter {
+  padding-top: 56px;
+  border-top: 1px solid var(--cds-border-3);
+}
+/* Three link cards. */
+.cds-skel-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  width: min(948px, 100%);
+  margin-inline: auto;
+}
+.cds-skel-cards > span {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  aspect-ratio: 3 / 2;
+  padding: 24px;
+  border-radius: 24px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cds-fg) 12%, transparent);
+}
+/* A list of questions. */
+.cds-skel-questions {
+  width: min(704px, 100%);
+  margin-inline: auto;
+}
+.cds-skel-questions > span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 0;
+  border-top: 1px solid var(--cds-border-3);
+}
+/* The top of the footer. */
+.cds-skel-footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(4, minmax(0, 1fr));
+  gap: 32px;
+  padding-top: 48px;
+  border-top: 1px solid var(--cds-border-3);
+}
+.cds-skel-footer > span {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+/* A set of tabs, and a carousel's controls. */
+.cds-skel-tabs {
+  display: flex;
+  align-items: center;
+  width: min(477px, 100%);
+  height: 44px;
+  padding: 4px;
+  border-radius: 12px;
+}
+.cds-skel-carousel-ui {
+  gap: 32px;
+  justify-content: center;
+}
+.cds-skel-before > .cds-skel-tabs {
+  align-self: center;
+}
+.cds-skel-carousel-ui > span {
+  display: flex;
+  gap: 16px;
+}
+/* A story's body: the part's name at the left, its text at the right. */
+.cds-skel-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px;
+  width: 100%;
+}
+.cds-skel-body > span {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  align-self: start;
+}
+.cds-skel-body > div {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.cds-skel-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1194 / 520;
+  border-radius: 16px;
+}
+.cds-skel-aside {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: center;
+}
+.cds-skel-aside > .cds-skel {
+  width: min(248px, 70%);
+  height: auto;
+  aspect-ratio: 248 / 300;
+  border-radius: 16px;
+  justify-self: center;
+}
+.cds-skel-aside > span:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+/* A row of customer logos between two rules. */
+.cds-skel-logos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 36px 0;
+  border-block: 1px solid var(--cds-border-3);
+  overflow: hidden;
+}
+/* A section's opening, and three features in columns. */
+.cds-skel-copy {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px;
+}
+.cds-skel-copy > span {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.cds-skel-features {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.cds-skel-features > span {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px 32px 16px;
+  border-left: 1px solid var(--cds-border-3);
+}
+/* What follows the component on a skeleton page, in the page's margins. */
+.cds-skel-rest {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 56px;
+  padding: 0 var(--cds-page-side) 64px;
+}
+/* Where the real component goes on a skeleton page, in the page's margins. */
+.cds-skel-slot {
+  flex: none;
+  padding: 64px var(--cds-page-side);
+}
+/* The page under the real header of the navigation figure. */
+.cds-skel-under {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.cds-nav:has(.cds-skel-under),
+.cds-nav-body:has(> .cds-skel-under) {
+  min-height: 0;
+}
+.cds-nav-body:has(> .cds-skel-under) {
+  display: flex;
+  flex-direction: column;
+}
+.cds-skel-under > .cds-skel-rest {
+  padding-top: 8px;
+}
+/* A component in its place on a page: what comes before it, and after. */
+.cds-skel-context {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.cds-skel-before,
+.cds-skel-after {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.cds-skel-before {
+  padding-bottom: 48px;
+}
+.cds-skel-after {
+  padding-top: 56px;
+}
+/* The header folds as the real one does. */
+@container (max-width: 1000px) {
+  .cds-skel-nav .cds-skel-outline {
+    display: none;
+  }
+}
+@container (max-width: 760px) {
+  .cds-skel-nav-links,
+  .cds-skel-nav .cds-skel-solid {
+    display: none;
+  }
+  .cds-skel-nav-toggle {
+    display: flex;
+  }
+}
+/* Narrow, everything is one column, and a row of three shows its first. */
+@container (max-width: 560px) {
+  .cds-skel-hero,
+  .cds-skel-body,
+  .cds-skel-aside,
+  .cds-skel-copy,
+  .cds-skel-cards,
+  .cds-skel-features,
+  .cds-skel-footer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cds-skel-cards > span + span,
+  .cds-skel-features > span + span,
+  .cds-skel-footer > span:nth-child(n + 3),
+  .cds-skel-logos > .cds-skel:nth-child(n + 3) {
+    display: none;
+  }
+  .cds-skel-logos {
+    justify-content: space-around;
+  }
+}
+
 /* Page heroes. Sizes follow the hero's own width, up to the desktop spec. */
 .cds-hero {
   container-type: inline-size;
+  /* No wider than a figure is laid out, and in the middle of a wider page:
+     its sizes follow its own width, so it then stays as it is. */
+  width: 100%;
+  max-width: 1080px;
+  margin-inline: auto;
   padding: clamp(24px, 5cqw, 64px);
 }
 .cds-hero img {
@@ -1838,12 +2742,20 @@
   container-type: inline-size;
   color: var(--cds-fg);
 }
+/* The header's margin. Its bar and breadcrumb bar reach across the page,
+   but what is in them keeps to the site's container, 1128px, in the middle:
+   on a figure dragged wide the logo and the buttons do not run off to the
+   edges (claude.com's header does the same in a wide window). The variable
+   is set on the header's parts, where `cqw` is the header's own width. */
+.cds-nav > * {
+  --nav-side: max(clamp(16px, 3.5cqw, 48px), (100cqw - 1128px) / 2);
+}
 .cds-nav-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 24px clamp(16px, 3.5cqw, 48px);
+  padding: 24px var(--nav-side);
 }
 .cds-nav-links {
   display: flex;
@@ -1986,7 +2898,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 8px clamp(16px, 4cqw, 48px);
+  padding: 8px max(clamp(16px, 4cqw, 48px), var(--nav-side));
   border-block: 1px solid var(--cds-border-3);
   color: var(--cds-fg-3);
   font: 400 12px/18px var(--cds-sans);
@@ -2248,8 +3160,10 @@
   width: 336px;
   max-width: 100%;
 }
+/* Its field is black in the footer (Dark 3), and its theme's own field
+   color anywhere else, as in the Home page's light hero. */
 .cds-footer-prompt .cds-input {
-  background: var(--cds-gray-1000);
+  background: var(--cds-prompt-bg);
 }
 .cds-footer-prompt .cds-menu {
   width: 100%;
@@ -2688,24 +3602,62 @@
   }
 }
 
-/* A figure that can be made narrower, to show a responsive design at each
-   of its sizes (Resizable). The box stays centered; each side has a grip to
-   drag, and both sides move together. */
-.cds-resize {
-  position: relative;
-}
-.cds-resize-box {
+/* The frame of a figure: the element around its box, the same size, which
+   does not clip as the box does. A figure that can be made narrower, to show
+   a responsive design at each of its sizes (Resizable), is narrowed by its
+   frame: it stays centered, with a grip on each side's border to drag, and
+   both sides move together. The demo cursor is drawn in the frame too. */
+.cds-frame {
   position: relative;
   max-width: 100%;
   margin-inline: auto;
 }
+/* A figure's edge: a ring just inside its box, on a layer over what is in
+   the box, so a figure whose contents fill it (a template's page) keeps its
+   edge. It is inside, not a shadow outside, because the distortion wave
+   pictures a figure at exactly its box, and anything outside is left out of
+   the picture (the ring then showed only in the corners while a theme pick
+   waved over a figure). The layer is larger than the box all round and its
+   ring that much thicker, so the ring's outer edge is cut once, by the box's
+   own rounded corner; a ring the box's exact size was cut twice there, by
+   itself and by the box, and came out thin in the corners. It is one line
+   of `--cds-hair` wide: a pixel as drawn, whatever the figure's scale. (A
+   border or an outline would not do: a browser rounds their widths to whole
+   pixels before the figure is scaled.)
+
+   Its corner is the figure's, `--cds-figure-r` (20px). A `Resizable` rounds
+   the figure further as it narrows to a tablet's layout (48px) and a phone's
+   (64px), so it reads as a device (Leo, 2026-11-20); box and ring ease to
+   the new corner together. */
+.cds-ring {
+  transition: border-radius 0.4s cubic-bezier(0.2, 0, 0, 1);
+}
+.cds-ring::after {
+  position: absolute;
+  z-index: 10;
+  inset: -2px;
+  border-radius: calc(var(--cds-figure-r, 20px) + 2px);
+  box-shadow: inset 0 0 0 calc(2px + var(--cds-hair, 1px))
+    var(--cds-ring, var(--cds-border-2));
+  content: "";
+  pointer-events: none;
+  transition: border-radius 0.4s cubic-bezier(0.2, 0, 0, 1);
+}
+.cds-resize-box {
+  position: relative;
+}
+/* A grip straddles the figure's border, as tall as the figure: it is
+   centered on the border's line, which lies just inside the frame's edge.
+   Its bar is five lines wide (`--cds-hair`, one pixel as drawn at the
+   figure's scale), two each side of the border, so it sits exactly on it. */
 .cds-resize-grip {
+  --hair: var(--cds-hair, 1px);
   position: absolute;
   top: 0;
   bottom: 0;
   display: grid;
   place-items: center;
-  width: 24px;
+  width: calc(24 * var(--hair));
   padding: 0;
   border: 0;
   background: transparent;
@@ -2713,16 +3665,16 @@
   touch-action: none;
 }
 .cds-resize-grip[data-side="left"] {
-  left: -24px;
+  left: calc(-11.5 * var(--hair));
 }
 .cds-resize-grip[data-side="right"] {
-  right: -24px;
+  right: calc(-11.5 * var(--hair));
 }
-/* The grip: a short rounded bar, halfway up the side. */
+/* The grip: a short rounded bar on the border, halfway up the side. */
 .cds-resize-grip::after {
-  width: 6px;
-  height: 48px;
-  border-radius: 3px;
+  width: calc(5 * var(--hair));
+  height: calc(48 * var(--hair));
+  border-radius: 999px;
   background: var(--cds-border);
   content: "";
   transition:
@@ -2732,7 +3684,7 @@
 .cds-resize-grip:hover::after,
 .cds-resize-grip[data-state="hover"]::after,
 .cds-resize-grip[data-dragging]::after {
-  height: 64px;
+  height: calc(64 * var(--hair));
   background: var(--cds-fg);
 }
 .cds-resize-grip:focus-visible {
@@ -2742,18 +3694,6 @@
   box-shadow:
     0 0 0 2px var(--cds-bg),
     0 0 0 4px var(--cds-focus);
-}
-/* Under the box, the name of the layout showing. */
-.cds-resize-size {
-  margin-top: 16px;
-  color: var(--cds-fg-3);
-  font: 400 0.75rem/1.6 var(--cds-sans);
-  letter-spacing: 0.01em;
-  text-align: center;
-}
-/* With no room to resize in (a phone), the grips go. */
-.cds-resize[data-fixed] .cds-resize-grip {
-  display: none;
 }
 
 /* Marginalia: small cards for a long page's margin. A card is 213px wide
@@ -2951,6 +3891,12 @@
   height: 40px;
   filter: var(--cds-art-filter);
 }
+/* A logo with a version of its own for dark themes is swapped, not turned
+   over by the filter (the themes set `--cds-logo-asana`). */
+.cds img[src$="/logos/asana.svg"] {
+  content: var(--cds-logo-asana);
+  filter: none;
+}
 .cds-margin-logo[data-raster] {
   height: 26px;
   margin: 7px 0;
@@ -2981,10 +3927,11 @@
   font-weight: 600;
 }
 
-/* Marginalia on a page. The page keeps its text to the middle and the cards
-   take the room at either side: the right-hand card level with the text, the
-   left-hand one further down. The left gutter holds a batch of cards, one
-   showing at a time, over the carousel's controls. */
+/* Marginalia on a page (`GutterCards` in pages/artifacts.tsx). The page keeps
+   its text to the middle and the cards take the room at either side: the
+   right-hand card level with the text, the left-hand one further down. A
+   batch of cards in the left gutter is a deck (deck.tsx), the current card
+   on top over the carousel's controls. */
 .cds-gutters {
   display: flex;
   flex-direction: column;
@@ -3009,6 +3956,12 @@
   margin-bottom: 8px;
   color: var(--cds-fg-3);
 }
+/* The lead as bars: two lines, centered like the rest of the head. */
+.cds-gutters-lead {
+  align-items: center;
+  width: min(34em, 100%);
+  margin-block: 8px 16px;
+}
 .cds-gutters-body {
   display: grid;
   grid-template-rows: auto 1fr;
@@ -3025,7 +3978,7 @@
 .cds-gutters-main > div {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
   padding: 36px 0;
   border-top: 1px solid var(--cds-border-3);
 }
@@ -3036,8 +3989,8 @@
 .cds-gutters-main p {
   color: var(--cds-fg-3);
 }
-/* Wide, the row and its wrapper are not boxes: the cards and the controls
-   are placed on the page's own grid. */
+/* Wide, the row and its wrapper are not boxes: the cards and the deck are
+   placed on the page's own grid. */
 .cds-gutters-cards,
 .cds-gutters-row {
   display: contents;
@@ -3045,27 +3998,32 @@
 .cds-gutters .cds-margin {
   margin-bottom: 0;
 }
-.cds-gutters [data-gutter="left"] {
+.cds-gutters [data-gutter="left"],
+.cds-gutters-deck {
   grid-row: 1;
   grid-column: 1;
   margin-top: 208px;
 }
-.cds-gutters [data-gutter="left"]:not([data-current]) {
-  display: none;
+/* The deck is the gutter's width, a card's, and has its controls in it. */
+.cds-gutters-deck {
+  grid-row: 1 / span 2;
 }
 .cds-gutters [data-gutter="right"] {
   grid-row: 1 / span 2;
   grid-column: 3;
 }
-.cds-gutters .cds-carousel-ui {
-  grid-row: 2;
-  grid-column: 1;
+/* A batch is in the page twice: in the deck, and in the row with controls
+   under it. Wide, the deck shows and the row's copy and controls do not. */
+.cds-gutters-batch,
+.cds-gutters-cards > .cds-carousel-ui {
+  display: none;
+}
+.cds-gutters-cards > .cds-carousel-ui {
   gap: 16px;
-  justify-self: center;
-  margin-top: 16px;
 }
 /* Narrow, the cards leave the gutters: one row under the text, every card of
-   the batch in it, scrolled sideways, with the controls under the row. */
+   the batch in it, scrolled sideways, with the controls under the row. The
+   deck is not shown. */
 @container (max-width: 640px) {
   .cds-gutters-head {
     margin-bottom: -28px;
@@ -3082,20 +4040,33 @@
     align-items: center;
     min-width: 0;
   }
+  /* The row runs to the figure's edges, as it runs to a phone's: it
+     reaches out over the figure's padding (`--cds-figure-pad`, set where the
+     figure is padded), and pads itself by as much, so the first card starts
+     on the text's edge and the cards stop there as they scroll. */
   .cds-gutters-row {
     position: relative;
     display: flex;
     gap: 16px;
     align-items: center;
-    width: 100%;
+    align-self: stretch;
+    width: auto;
+    margin-inline: calc(-1 * var(--cds-figure-pad, 0px));
     /* Room for the cards' shadows inside the scrolling box. */
-    padding: 8px 0 24px;
+    padding: 8px var(--cds-figure-pad, 0px) 24px;
     overflow-x: auto;
+    scroll-padding-inline: var(--cds-figure-pad, 0px);
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
   }
-  .cds-gutters .cds-margin[data-gutter] {
-    display: flex;
+  .cds-gutters-deck {
+    display: none;
+  }
+  /* The batch's wrapper is not a box: its cards are cards of the row. */
+  .cds-gutters-batch {
+    display: contents;
+  }
+  .cds-gutters-row .cds-margin {
     flex: none;
     margin-top: 0;
     scroll-snap-align: start;
@@ -3103,8 +4074,8 @@
   .cds-gutters-main > div {
     padding: 20px 0;
   }
-  .cds-gutters .cds-carousel-ui {
-    margin-top: 0;
+  .cds-gutters-cards > .cds-carousel-ui {
+    display: inline-flex;
   }
 }
 
@@ -3190,7 +4161,8 @@
   min-height: 520px;
   padding: 48px;
 }
-.cds-lightbox-page > .cds-video {
+.cds-lightbox-page > .cds-video,
+.cds-lightbox-page .cds-skel-context .cds-video {
   width: min(100%, 560px);
   aspect-ratio: 16 / 9;
 }
@@ -3241,8 +4213,11 @@
 }
 
 /* The demo cursor: a small arrow that tries a figure out by itself
-   (DemoCursor). It is moved from script; a click spreads a ring from its
-   tip. */
+   (DemoCursor). It is moved from script, a frame at a time, with no CSS or
+   Web animations (an animated element lifts the scaled figure around it onto
+   a layer in Safari, which moved the figure's text a fraction of a pixel);
+   a click spreads a ring from its tip, drawn from two properties the script
+   sets. */
 .cds-demo-cursor {
   position: absolute;
   z-index: 5;
@@ -3259,17 +4234,22 @@
   width: 0;
   height: 0;
   transform-origin: 2px 2px;
+  /* A pointer is one size whatever it is over: in a figure drawn at 80%
+     the pictures are scaled back up, about the cursor's point, so they are
+     drawn at exactly 32px. At 80% they were 25.6px, with every edge between
+     pixels, which is why they looked soft for vectors. */
+  scale: var(--cds-unscale, 1);
 }
-/* The pictures (public/cursors) are drawn on a 256-unit square and shown at
-   32px, an eighth. Each is moved so its hot spot, in the same units, lands on
-   the cursor's point: 2px less an eighth of the hot spot. They carry their
-   own colors and shadow, the same on every theme, as a real pointer's are. */
+/* The pictures (public/cursors) are vectors of the macOS cursors, each at
+   the size the system draws it, a pixel to a unit, so their straight edges
+   fall on whole pixels. Each is moved so its hot spot (the arrow's tip, the
+   fingertip, the middle of the other two) lands on the cursor's point, 2px
+   in from the corner, to a whole pixel. They are flat black and white on
+   every theme, with no shadow. */
 .cds-demo-cursor img {
   position: absolute;
   display: none;
-  width: 32px;
   max-width: none;
-  height: 32px;
   user-select: none;
 }
 .cds-demo-cursor:not([data-shape]) img[data-shape="arrow"],
@@ -3279,23 +4259,34 @@
 .cds-demo-cursor[data-shape="ew-resize"] img[data-shape="ew-resize"] {
   display: block;
 }
-/* Hot spots: arrow 80, 38 · pointer 92, 53 · text 129, 136 · ew-resize in
-   the middle. */
+/* Sizes, and hot spots: arrow 1, 1 · hand 5, 1 · text 5, 8 · resize 9, 8. */
 .cds-demo-cursor img[data-shape="arrow"] {
-  top: -2.75px;
-  left: -8px;
+  top: 1px;
+  left: 1px;
+  width: 12px;
+  height: 19px;
 }
 .cds-demo-cursor img[data-shape="pointer"] {
-  top: -4.6px;
-  left: -9.5px;
+  top: 1px;
+  left: -3px;
+  width: 16px;
+  height: 17px;
 }
+/* The I-beam is drawn in black alone, so on a dark figure it gets a white
+   edge: four hard shadows, one each way, with no blur. */
 .cds-demo-cursor img[data-shape="text"] {
-  top: -15px;
-  left: -14.1px;
+  top: -6px;
+  left: -3px;
+  width: 9px;
+  height: 16px;
+  filter: drop-shadow(1px 0 0 #fff) drop-shadow(-1px 0 0 #fff)
+    drop-shadow(0 1px 0 #fff) drop-shadow(0 -1px 0 #fff);
 }
 .cds-demo-cursor img[data-shape="ew-resize"] {
-  top: -14px;
-  left: -14px;
+  top: -6px;
+  left: -7px;
+  width: 18px;
+  height: 16px;
 }
 .cds-demo-cursor::after {
   position: absolute;
@@ -3305,21 +4296,9 @@
   height: 24px;
   border: 1.5px solid var(--cds-clay);
   border-radius: 50%;
-  opacity: 0;
+  opacity: var(--demo-ring-opacity, 0);
+  scale: var(--demo-ring-scale, 0.3);
   content: "";
-}
-.cds-demo-cursor[data-press]::after {
-  animation: cds-demo-ring 0.5s ease-out;
-}
-@keyframes cds-demo-ring {
-  from {
-    opacity: 0.9;
-    scale: 0.3;
-  }
-  to {
-    opacity: 0;
-    scale: 1.5;
-  }
 }
 
 /* A figure of the docs is drawn scaled down: a small copy of a page as

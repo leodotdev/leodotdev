@@ -1,0 +1,133 @@
+/* The Customer Story template (pages/templates/customer-story.tsx): what the
+   page adds around the organisms. Sizes follow the page's own width (`cqw`:
+   the template's window is the container), and it stacks at a phone's width. */
+
+/* The hero: the headline and its buttons, over the customer's logo on a tile
+   and the story's details. */
+.cds-story-hero {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 6cqw, 96px);
+  padding: clamp(64px, 11cqw, 200px) var(--tpl-side) clamp(56px, 9cqw, 128px);
+}
+.cds-story-lead {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 4cqw, 48px);
+}
+.cds-story-brand {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1194 / 545;
+  border: 1px solid var(--cds-border-3);
+  border-radius: 24px;
+  background: var(--cds-bg-3);
+}
+.cds-story-brand img {
+  display: block;
+  width: 34%;
+  height: auto;
+  filter: var(--cds-art-filter);
+}
+/* The story: a heading with its pictogram on the left, the text on the
+   right. */
+.cds-story-copy {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+.cds-story-copy > h4 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.cds-story-copy > h4 img {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  filter: var(--cds-art-filter);
+}
+.cds-story-text {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 5cqw, 64px);
+  padding-top: 12px;
+  color: var(--cds-fg-2);
+}
+.cds-story-text > div,
+.cds-story-text[data-close] {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 2.6cqw, 32px);
+}
+.cds-story-text h5 {
+  margin: 0;
+  color: var(--cds-fg);
+}
+.cds-story-text ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding-left: 1.2em;
+  color: var(--cds-fg-3);
+  font: 400 17px/28px var(--cds-sans);
+  list-style: disc;
+}
+/* Where the file has a photograph. */
+.cds-story-picture {
+  aspect-ratio: 1194 / 650;
+  border-radius: 24px;
+  background: var(--cds-bg-2);
+}
+/* The featured stories: three marginalia cards in one place, the current
+   one upright on top and the others turned a little behind it, showing only
+   their edges. */
+.cds-story-stack {
+  width: 248px;
+  max-width: 100%;
+}
+/* The related stories: four across, as the file has them, wider than the
+   page's text and in the middle. They fall to two across, then one. */
+.cds-story-related {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(12px, 1.6cqw, 24px);
+  width: min(1200px, 100cqw - 48px);
+  margin-inline: calc((100% - min(1200px, 100cqw - 48px)) / 2);
+}
+.cds-story-related .cds-card-link {
+  padding: 24px 24px 20px;
+  min-height: 150px;
+}
+@container (max-width: 900px) {
+  .cds-story-related {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@container (max-width: 560px) {
+  .cds-story-related {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.cds-story-related .cds-card-link {
+  width: 100%;
+}
+/* A phone: everything in one column, the headline set left and the logo's
+   tile square. */
+@container (max-width: 760px) {
+  .cds-story-copy {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cds-story-hero .cds-header-body {
+    align-items: flex-start;
+    padding-inline: 0;
+    text-align: left;
+  }
+  .cds-story-brand {
+    aspect-ratio: 1;
+  }
+  .cds-story-brand img {
+    width: 56%;
+  }
+}

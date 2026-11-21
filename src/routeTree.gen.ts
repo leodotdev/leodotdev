@@ -20,9 +20,12 @@ import { Route as AdminReferencesRouteImport } from './routes/admin/references'
 import { Route as SiteProjectsIndexRouteImport } from './routes/_site/projects.index'
 import { Route as SiteProjectsSlugRouteImport } from './routes/_site/projects.$slug'
 import { Route as SiteWorkIndexRouteImport } from './routes/_site/work.index'
+import { Route as SiteWorkAnthropicRouteImport } from './routes/_site/work.anthropic'
 import { Route as SiteWorkClaudeRouteImport } from './routes/_site/work.claude'
 import { Route as AdminProjectsIndexRouteImport } from './routes/admin/projects.index'
 import { Route as AdminProjectsIdRouteImport } from './routes/admin/projects.$id'
+import { Route as SiteWorkAnthropicIndexRouteImport } from './routes/_site/work.anthropic.index'
+import { Route as SiteWorkAnthropicDocRouteImport } from './routes/_site/work.anthropic.$doc'
 import { Route as SiteWorkClaudeIndexRouteImport } from './routes/_site/work.claude.index'
 import { Route as SiteWorkClaudeDocRouteImport } from './routes/_site/work.claude.$doc'
 
@@ -80,6 +83,11 @@ const SiteWorkIndexRoute = SiteWorkIndexRouteImport.update({
   path: '/work/',
   getParentRoute: () => SiteRoute,
 } as any)
+const SiteWorkAnthropicRoute = SiteWorkAnthropicRouteImport.update({
+  id: '/work/anthropic',
+  path: '/work/anthropic',
+  getParentRoute: () => SiteRoute,
+} as any)
 const SiteWorkClaudeRoute = SiteWorkClaudeRouteImport.update({
   id: '/work/claude',
   path: '/work/claude',
@@ -94,6 +102,16 @@ const AdminProjectsIdRoute = AdminProjectsIdRouteImport.update({
   id: '/projects/$id',
   path: '/projects/$id',
   getParentRoute: () => AdminRoute,
+} as any)
+const SiteWorkAnthropicIndexRoute = SiteWorkAnthropicIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SiteWorkAnthropicRoute,
+} as any)
+const SiteWorkAnthropicDocRoute = SiteWorkAnthropicDocRouteImport.update({
+  id: '/$doc',
+  path: '/$doc',
+  getParentRoute: () => SiteWorkAnthropicRoute,
 } as any)
 const SiteWorkClaudeIndexRoute = SiteWorkClaudeIndexRouteImport.update({
   id: '/',
@@ -115,12 +133,15 @@ export interface FileRoutesByFullPath {
   '/admin/references': typeof AdminReferencesRoute
   '/admin/': typeof AdminIndexRoute
   '/projects/$slug': typeof SiteProjectsSlugRoute
+  '/work/anthropic': typeof SiteWorkAnthropicRouteWithChildren
   '/work/claude': typeof SiteWorkClaudeRouteWithChildren
   '/admin/projects/$id': typeof AdminProjectsIdRoute
   '/projects/': typeof SiteProjectsIndexRoute
   '/work/': typeof SiteWorkIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
+  '/work/anthropic/$doc': typeof SiteWorkAnthropicDocRoute
   '/work/claude/$doc': typeof SiteWorkClaudeDocRoute
+  '/work/anthropic/': typeof SiteWorkAnthropicIndexRoute
   '/work/claude/': typeof SiteWorkClaudeIndexRoute
 }
 export interface FileRoutesByTo {
@@ -135,7 +156,9 @@ export interface FileRoutesByTo {
   '/projects': typeof SiteProjectsIndexRoute
   '/work': typeof SiteWorkIndexRoute
   '/admin/projects': typeof AdminProjectsIndexRoute
+  '/work/anthropic/$doc': typeof SiteWorkAnthropicDocRoute
   '/work/claude/$doc': typeof SiteWorkClaudeDocRoute
+  '/work/anthropic': typeof SiteWorkAnthropicIndexRoute
   '/work/claude': typeof SiteWorkClaudeIndexRoute
 }
 export interface FileRoutesById {
@@ -149,12 +172,15 @@ export interface FileRoutesById {
   '/_site/': typeof SiteIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/_site/projects/$slug': typeof SiteProjectsSlugRoute
+  '/_site/work/anthropic': typeof SiteWorkAnthropicRouteWithChildren
   '/_site/work/claude': typeof SiteWorkClaudeRouteWithChildren
   '/admin/projects/$id': typeof AdminProjectsIdRoute
   '/_site/projects/': typeof SiteProjectsIndexRoute
   '/_site/work/': typeof SiteWorkIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
+  '/_site/work/anthropic/$doc': typeof SiteWorkAnthropicDocRoute
   '/_site/work/claude/$doc': typeof SiteWorkClaudeDocRoute
+  '/_site/work/anthropic/': typeof SiteWorkAnthropicIndexRoute
   '/_site/work/claude/': typeof SiteWorkClaudeIndexRoute
 }
 export interface FileRouteTypes {
@@ -168,12 +194,15 @@ export interface FileRouteTypes {
     | '/admin/references'
     | '/admin/'
     | '/projects/$slug'
+    | '/work/anthropic'
     | '/work/claude'
     | '/admin/projects/$id'
     | '/projects/'
     | '/work/'
     | '/admin/projects/'
+    | '/work/anthropic/$doc'
     | '/work/claude/$doc'
+    | '/work/anthropic/'
     | '/work/claude/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -188,7 +217,9 @@ export interface FileRouteTypes {
     | '/projects'
     | '/work'
     | '/admin/projects'
+    | '/work/anthropic/$doc'
     | '/work/claude/$doc'
+    | '/work/anthropic'
     | '/work/claude'
   id:
     | '__root__'
@@ -201,12 +232,15 @@ export interface FileRouteTypes {
     | '/_site/'
     | '/admin/'
     | '/_site/projects/$slug'
+    | '/_site/work/anthropic'
     | '/_site/work/claude'
     | '/admin/projects/$id'
     | '/_site/projects/'
     | '/_site/work/'
     | '/admin/projects/'
+    | '/_site/work/anthropic/$doc'
     | '/_site/work/claude/$doc'
+    | '/_site/work/anthropic/'
     | '/_site/work/claude/'
   fileRoutesById: FileRoutesById
 }
@@ -294,6 +328,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteWorkIndexRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/_site/work/anthropic': {
+      id: '/_site/work/anthropic'
+      path: '/work/anthropic'
+      fullPath: '/work/anthropic'
+      preLoaderRoute: typeof SiteWorkAnthropicRouteImport
+      parentRoute: typeof SiteRoute
+    }
     '/_site/work/claude': {
       id: '/_site/work/claude'
       path: '/work/claude'
@@ -315,6 +356,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProjectsIdRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_site/work/anthropic/': {
+      id: '/_site/work/anthropic/'
+      path: '/'
+      fullPath: '/work/anthropic/'
+      preLoaderRoute: typeof SiteWorkAnthropicIndexRouteImport
+      parentRoute: typeof SiteWorkAnthropicRoute
+    }
+    '/_site/work/anthropic/$doc': {
+      id: '/_site/work/anthropic/$doc'
+      path: '/$doc'
+      fullPath: '/work/anthropic/$doc'
+      preLoaderRoute: typeof SiteWorkAnthropicDocRouteImport
+      parentRoute: typeof SiteWorkAnthropicRoute
+    }
     '/_site/work/claude/': {
       id: '/_site/work/claude/'
       path: '/'
@@ -331,6 +386,19 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface SiteWorkAnthropicRouteChildren {
+  SiteWorkAnthropicDocRoute: typeof SiteWorkAnthropicDocRoute
+  SiteWorkAnthropicIndexRoute: typeof SiteWorkAnthropicIndexRoute
+}
+
+const SiteWorkAnthropicRouteChildren: SiteWorkAnthropicRouteChildren = {
+  SiteWorkAnthropicDocRoute: SiteWorkAnthropicDocRoute,
+  SiteWorkAnthropicIndexRoute: SiteWorkAnthropicIndexRoute,
+}
+
+const SiteWorkAnthropicRouteWithChildren =
+  SiteWorkAnthropicRoute._addFileChildren(SiteWorkAnthropicRouteChildren)
 
 interface SiteWorkClaudeRouteChildren {
   SiteWorkClaudeDocRoute: typeof SiteWorkClaudeDocRoute
@@ -351,6 +419,7 @@ interface SiteRouteChildren {
   SiteSoonRoute: typeof SiteSoonRoute
   SiteIndexRoute: typeof SiteIndexRoute
   SiteProjectsSlugRoute: typeof SiteProjectsSlugRoute
+  SiteWorkAnthropicRoute: typeof SiteWorkAnthropicRouteWithChildren
   SiteWorkClaudeRoute: typeof SiteWorkClaudeRouteWithChildren
   SiteProjectsIndexRoute: typeof SiteProjectsIndexRoute
   SiteWorkIndexRoute: typeof SiteWorkIndexRoute
@@ -361,6 +430,7 @@ const SiteRouteChildren: SiteRouteChildren = {
   SiteSoonRoute: SiteSoonRoute,
   SiteIndexRoute: SiteIndexRoute,
   SiteProjectsSlugRoute: SiteProjectsSlugRoute,
+  SiteWorkAnthropicRoute: SiteWorkAnthropicRouteWithChildren,
   SiteWorkClaudeRoute: SiteWorkClaudeRouteWithChildren,
   SiteProjectsIndexRoute: SiteProjectsIndexRoute,
   SiteWorkIndexRoute: SiteWorkIndexRoute,

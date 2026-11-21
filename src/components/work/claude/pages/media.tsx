@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react"
 import { TbPlayerPlayFilled, TbX } from "react-icons/tb"
 import { DemoCursor } from "@/components/work/claude/demo-cursor"
+import {
+  SkeletonCarouselUi,
+  SkeletonContext,
+  SkeletonHeader,
+} from "@/components/work/claude/skeleton"
 import { Section, Specimen } from "@/components/work/claude/ui"
 import type { DemoStep } from "@/components/work/claude/demo-cursor"
 
@@ -19,7 +24,7 @@ const LOGOS = [
   ["asapp", "ASAPP"],
 ]
 
-function Playhead({ onClick }: { onClick?: () => void }) {
+export function Playhead({ onClick }: { onClick?: () => void }) {
   return (
     <button
       type="button"
@@ -34,7 +39,12 @@ function Playhead({ onClick }: { onClick?: () => void }) {
 }
 
 /** A video on a page, and the lightbox it opens in. It starts open. */
-function Lightbox() {
+export function Lightbox({
+  skeleton = false,
+}: {
+  /** Draw the page the video is on, as a skeleton, behind the lightbox. */
+  skeleton?: boolean
+} = {}) {
   const [open, setOpen] = useState(true)
   useEffect(() => {
     if (!open) return
@@ -47,9 +57,23 @@ function Lightbox() {
 
   return (
     <div className="cds-lightbox-page">
-      <div className="cds-video">
-        <Playhead onClick={() => setOpen(true)} />
-      </div>
+      {skeleton ? (
+        <SkeletonContext
+          // As on the home page: under the section's header, over a
+          // carousel's controls.
+          before={<SkeletonHeader line />}
+          after={<SkeletonCarouselUi />}
+          className="flex justify-center"
+        >
+          <div className="cds-video">
+            <Playhead onClick={() => setOpen(true)} />
+          </div>
+        </SkeletonContext>
+      ) : (
+        <div className="cds-video">
+          <Playhead onClick={() => setOpen(true)} />
+        </div>
+      )}
       {open && (
         <div className="cds-lightbox">
           <div>
@@ -87,11 +111,11 @@ const REEL_DEMO: Array<DemoStep> = [
 export function MediaDoc() {
   return (
     <>
-      <Section title="Logo Wall">
-        <Specimen
-          caption="More than 150 customer logos live in one component."
-          className="p-6 md:p-8"
-        >
+      <Section
+        title="Logo Wall"
+        caption="More than 150 customer logos live in one component."
+      >
+        <Specimen figure className="p-6 md:p-8">
           <div className="cds-logo-wall">
             <div>
               {LOGOS.map(([file, name]) => (
@@ -109,19 +133,22 @@ export function MediaDoc() {
         </Specimen>
       </Section>
 
-      <Section title="Video: Lightbox">
-        <Specimen
-          caption="We decided: “Mobile OS? Use OS lightbox. Desktop OS? Use Claude lightbox.”"
-          className="[container-type:inline-size]"
-        >
+      <Section
+        title="Video: Lightbox"
+        caption="We decided: “Mobile OS? Use OS lightbox. Desktop OS? Use Claude lightbox.”"
+      >
+        <Specimen figure className="[container-type:inline-size]">
           <DemoCursor steps={LIGHTBOX_DEMO}>
-            <Lightbox />
+            <Lightbox skeleton />
           </DemoCursor>
         </Specimen>
       </Section>
 
-      <Section title="Video: Reel">
-        <Specimen caption="Built “to drive traffic to Instagram.”">
+      <Section
+        title="Video: Reel"
+        caption="Built “to drive traffic to Instagram.”"
+      >
+        <Specimen figure>
           <DemoCursor
             steps={REEL_DEMO}
             className="flex justify-center p-6 md:p-8"

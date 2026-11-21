@@ -1,0 +1,312 @@
+/* The Pricing template (pages/templates/pricing.tsx): a headline over three
+   tabs, and under them the tab's own sections: rows of cards for plans or
+   models, a line of small print, and a wide card or two. The page is one
+   theme from the header to the footer. */
+.cds-pricing-hero,
+.cds-tpl-section.cds-pricing-section {
+  /* This page's margin is the site header's own: its rows of three and four
+     cards need the width. */
+  --tpl-side: max(clamp(24px, 3.5cqw, 48px), (100cqw - 1200px) / 2);
+}
+.cds-pricing-hero {
+  padding: clamp(48px, 6.7cqw, 128px) var(--tpl-side) clamp(40px, 5cqw, 96px);
+}
+.cds-pricing-hero .cds-header-actions {
+  margin-top: clamp(32px, 2.5cqw, 48px);
+}
+/* A section runs on from the one above with no line between them. */
+.cds-tpl-section.cds-pricing-section {
+  gap: clamp(24px, 3cqw, 56px);
+  padding-top: 0;
+  padding-bottom: clamp(56px, 6.7cqw, 128px);
+  border-top: 0;
+}
+/* Unless it is ruled: a line as wide as its content, over its heading. */
+.cds-pricing-ruled::before {
+  height: 1px;
+  background: var(--cds-border-3);
+  content: "";
+}
+.cds-pricing-section .cds-header-body {
+  padding-inline: 0;
+}
+/* A section's heading, with its buttons at the other end of the row. */
+.cds-pricing-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+}
+.cds-pricing-head > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+/* A row of cards: three, or the number it says. */
+.cds-pricing-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 1.7cqw, 32px);
+}
+.cds-pricing-cards[data-count="2"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: min(950px, 100%);
+  margin-inline: auto;
+}
+.cds-pricing-cards[data-count="4"] {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(12px, 1.7cqw, 32px);
+}
+.cds-pricing-card {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 2.2cqw, 32px);
+  min-width: 0;
+  padding: clamp(20px, 2.2cqw, 32px);
+  border: 1px solid var(--cds-border-3);
+  border-radius: 24px;
+  background: var(--cds-card-bg);
+}
+.cds-pricing-cards[data-count="4"] .cds-pricing-card {
+  padding: clamp(16px, 1.7cqw, 32px);
+}
+/* A plan's three parts share the row's lines, so the buttons of a row of
+   plans stand level whatever is written over them. */
+.cds-pricing-plan {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 3;
+}
+.cds-pricing-plan[data-accent] {
+  border-color: color-mix(in srgb, var(--cds-switch-blue) 36%, transparent);
+  box-shadow: var(--cds-shadow-md);
+}
+/* The top of a card: a pictogram, a name, and a line about it. */
+.cds-pricing-name {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cds-pricing-name img {
+  width: clamp(48px, 5cqw, 64px);
+  height: clamp(48px, 5cqw, 64px);
+  margin-bottom: clamp(8px, 1.7cqw, 24px);
+  object-fit: contain;
+  object-position: left center;
+  filter: var(--cds-art-filter);
+}
+.cds-pricing-name p {
+  color: var(--cds-fg-3);
+  font: 400 17px/1.5 var(--cds-sans);
+  font-size: clamp(15px, 1.55cqw, 17px);
+}
+.cds-pricing-plan .cds-pricing-name p {
+  color: var(--cds-fg-2);
+}
+.cds-pricing-price,
+.cds-pricing-cost {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cds-pricing-price {
+  margin-top: clamp(8px, 1.7cqw, 24px);
+}
+.cds-pricing-price b {
+  font: 600 25px/1.2 var(--cds-sans);
+  font-size: clamp(21px, 2.2cqw, 25px);
+}
+.cds-pricing-card small {
+  color: var(--cds-fg-3);
+  font: 400 15px/24px var(--cds-sans);
+}
+/* Under a plan's button: its seats, where it has them, and its features. */
+.cds-pricing-rest {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.cds-pricing-seat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font: 400 15px/24px var(--cds-sans);
+}
+.cds-pricing-seat small {
+  margin-top: 8px;
+}
+.cds-pricing-features {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 2cqw, 24px);
+  padding-top: clamp(16px, 2.2cqw, 24px);
+  border-top: 1px solid var(--cds-border-3);
+  font: 400 17px/1.6 var(--cds-sans);
+  font-size: clamp(15px, 1.55cqw, 17px);
+}
+.cds-pricing-features b {
+  font-weight: 600;
+}
+.cds-pricing-features ul,
+.cds-pricing-feature ul {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.2cqw, 16px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cds-pricing-features li,
+.cds-pricing-feature li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.cds-pricing-features svg,
+.cds-pricing-feature li svg {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  color: var(--cds-fg-2);
+  stroke-width: 1.25;
+}
+/* A price: what it is for on the left, the price on the right. */
+.cds-pricing-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+/* The price stays on one line; a label too long for the row wraps. */
+.cds-pricing-row b {
+  color: var(--cds-fg);
+  font: 600 20px/24px var(--cds-sans);
+  font-size: clamp(16px, 1.75cqw, 20px);
+  white-space: nowrap;
+}
+/* A model's prices: input, output, and prompt caching, a line over each. */
+.cds-pricing-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: clamp(16px, 2cqw, 24px) 0;
+  border-top: 1px solid var(--cds-border-3);
+  font: 400 17px/24px var(--cds-sans);
+  font-size: clamp(15px, 1.55cqw, 17px);
+}
+.cds-pricing-block:last-child {
+  padding-bottom: 0;
+}
+/* A price for each size of prompt, and the two prices of prompt caching,
+   are set smaller. */
+.cds-pricing-sizes,
+.cds-pricing-cache {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--cds-fg-2);
+  font-size: 15px;
+}
+.cds-pricing-cache .cds-pricing-row span {
+  color: var(--cds-fg-3);
+}
+.cds-pricing-cache .cds-pricing-row b {
+  font-size: clamp(15px, 1.55cqw, 17px);
+}
+/* What a tool costs, at the foot of its card. */
+.cds-pricing-cost {
+  margin-top: auto;
+}
+.cds-pricing-cost small {
+  font-size: clamp(15px, 1.55cqw, 17px);
+}
+.cds-pricing-cost b {
+  font: 600 20px/24px var(--cds-sans);
+  font-size: clamp(17px, 1.85cqw, 20px);
+}
+/* The batch discount: a bar with a switch at its end, the switch's label
+   before it. */
+.cds-pricing-promo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 32px;
+  padding: 16px clamp(16px, 2.2cqw, 32px);
+  border: 1px solid var(--cds-border-3);
+  border-radius: 16px;
+  background: var(--cds-bg-3);
+  font: 400 17px/24px var(--cds-sans);
+  font-size: clamp(15px, 1.55cqw, 17px);
+}
+.cds-pricing-promo .cds-switch {
+  flex-direction: row-reverse;
+  color: var(--cds-fg-2);
+}
+.cds-pricing-promo a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline transparent;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.15s ease;
+}
+.cds-pricing-promo a:hover,
+.cds-pricing-promo a[data-state="hover"] {
+  text-decoration-color: currentColor;
+}
+/* Small print, centered under what it is about. */
+.cds-pricing-note {
+  color: var(--cds-fg-3);
+  font: 400 15px/24px var(--cds-sans);
+  text-align: center;
+}
+.cds-pricing-note a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+.cds-pricing-note a:hover,
+.cds-pricing-note a[data-state="hover"] {
+  color: var(--cds-fg);
+}
+/* A wide card on the third background: a section header beside a list. */
+.cds-pricing-feature {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: clamp(24px, 3cqw, 32px);
+  padding: clamp(24px, 3.4cqw, 64px);
+  border: 1px solid var(--cds-border-3);
+  border-radius: 24px;
+  background: var(--cds-bg-3);
+}
+.cds-pricing-feature .cds-header-body > img {
+  width: 64px;
+  height: 64px;
+}
+.cds-pricing-feature ul {
+  gap: clamp(20px, 2.5cqw, 48px);
+}
+.cds-pricing-feature li p {
+  margin-top: 4px;
+  color: var(--cds-fg-3);
+  font: 400 15px/24px var(--cds-sans);
+}
+/* A phone: every row of cards is a column, and the tabs fill the width. */
+@container (max-width: 760px) {
+  .cds-pricing-cards,
+  .cds-pricing-cards[data-count],
+  .cds-pricing-feature {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cds-pricing-hero .cds-tabs[data-size] .cds-tab {
+    flex: 1;
+    justify-content: center;
+    height: 36px;
+    padding-inline: 8px;
+    font-size: 0.75rem;
+    letter-spacing: 0.01em;
+  }
+}

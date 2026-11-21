@@ -49,27 +49,104 @@ export function linger(): DistortionWaveOptions {
 }
 
 /**
- * The wave's colors are the site's own: Clay and its lighter peach,
- * then the three saturated secondary colors of the Claude palette
- * (src/claude-ds.css), in hue order so the band runs from clay through
- * purple, blue and green and back. The pale secondaries (heather, cactus) are
- * left out: in a band of light they wash the others to grey. The colors are
- * read from the page once; the library wants plain hex colors, which is
- * what those tokens hold.
+ * The wave's colors are the site's own: the eight deeper secondary colors of
+ * the Anthropic palette (src/anthropic-ds.css; Leo, 2026-11-20), in hue order
+ * so the band runs from poppy through clay, pencil, olive, mineral, sky and
+ * plum to fig, and round to poppy again (the library takes eight, and loops
+ * them). Their pale partners (coral, peach, oat, matcha, cactus, cloud,
+ * heather, orchid) are left out: in a band of light they wash the others to
+ * grey. The colors are read from the page once; the library wants plain hex
+ * colors, which is what those tokens hold.
  */
-const PALETTE_TOKENS = ["clay", "peach", "plum", "sky", "mineral"]
+const PALETTE_TOKENS = [
+  "poppy",
+  "clay",
+  "pencil",
+  "olive",
+  "mineral",
+  "sky",
+  "plum",
+  "fig",
+]
 let palette: Array<string> | null = null
 function sitePalette() {
   if (palette) return palette
   const root = getComputedStyle(document.documentElement)
   const colors = PALETTE_TOKENS.map((name) =>
-    root.getPropertyValue(`--cds-${name}`).trim()
+    root.getPropertyValue(`--ads-${name}`).trim()
   )
   // Anything else (a token that became a mix, say) leaves the library's own palette.
   if (!colors.every((c) => /^#[0-9a-f]{6}$/i.test(c))) return null
   palette = colors
   return palette
 }
+
+/**
+ * The waves switch (WaveSwitcher, beside the light switch): the distortion
+ * wave plays sitewide unless a visitor turns it off. With nothing stored it
+ * is on, except for anyone whose system asks for reduced motion, for whom it
+ * starts off; either can switch it. Off, no wave plays at all: a change a
+ * wave would carry (the light switch, a docs tab) simply happens. The pick is
+ * kept in the browser, and in memory where storage is unavailable.
+ */
+const WAVES_KEY = "waves"
+const WAVES_CHANGE = "waves-change"
+let wavesPick: "on" | "off" | null = null
+const stillByDefault = () =>
+  matchMedia("(prefers-reduced-motion: reduce)").matches
+
+function storedWaves() {
+  try {
+    const stored = localStorage.getItem(WAVES_KEY)
+    if (stored === "on" || stored === "off") return stored
+  } catch {
+    // Storage unavailable: the pick made on this page, if any.
+  }
+  return wavesPick
+}
+
+/** Whether waves play: the visitor's pick, else on unless motion is reduced. */
+export function wavesOn() {
+  if (typeof window === "undefined") return true
+  const pick = storedWaves()
+  return pick ? pick === "on" : !stillByDefault()
+}
+
+/** Calls `notify` whenever `wavesOn()` may have changed, here or in another tab. */
+export function subscribeWaves(notify: () => void) {
+  const motion = matchMedia("(prefers-reduced-motion: reduce)")
+  window.addEventListener(WAVES_CHANGE, notify)
+  window.addEventListener("storage", notify)
+  motion.addEventListener("change", notify)
+  return () => {
+    window.removeEventListener(WAVES_CHANGE, notify)
+    window.removeEventListener("storage", notify)
+    motion.removeEventListener("change", notify)
+  }
+}
+
+/** Turns waves on or off sitewide; off ends any wave playing. */
+export function setWaves(on: boolean) {
+  wavesPick = on ? "on" : "off"
+  try {
+    localStorage.setItem(WAVES_KEY, wavesPick)
+  } catch {
+    // Kept in memory for this page view.
+  }
+  if (!on) endEveryWave()
+  window.dispatchEvent(new Event(WAVES_CHANGE))
+}
+
+/** Ends every wave playing, those carrying a change too (their change still happens). */
+function endEveryWave() {
+  for (const t of [...active.values()]) t.skip()
+}
+
+// Waves switched off in another tab end here at once as well.
+if (typeof window !== "undefined")
+  window.addEventListener("storage", (e) => {
+    if (e.key === WAVES_KEY && !wavesOn()) endEveryWave()
+  })
 
 /** Loads the WebGL wave in the browser and compiles its shaders ahead of the first use. */
 export function loadWave() {
@@ -141,12 +218,18 @@ export const isWaving = (el: Element) => active.has(el)
  * around the new target is ended first; otherwise the new capture would show
  * a hole where that element is. The exception is a wave carrying a change,
  * which is never ended by a hover inside it.
+ *
+ * With waves switched off (`wavesOn()`), the change is applied plainly.
  */
 export function wave(
   target: Element | null,
   update?: () => void | Promise<void>,
   options?: DistortionWaveOptions
 ): Promise<void> {
+  if (!wavesOn()) {
+    void update?.()
+    return Promise.resolve()
+  }
   const w = lib
   if (!w || !target) {
     // Not loaded (yet): apply the change plainly, and make sure the next one waves.
@@ -155,6 +238,11 @@ export function wave(
     return Promise.resolve()
   }
   const start = () => {
+    // Waves were switched off while this one waited for another to end.
+    if (!wavesOn()) {
+      void update?.()
+      return Promise.resolve()
+    }
     // No CSS transitions inside the target while its wave plays (see styles.css):
     // the "after" snapshot is taken a frame after the update, and anything still
     // easing toward its new color would be captured half-way, then snap.
@@ -162,6 +250,10 @@ export function wave(
     const colors = sitePalette()
     const t = w.distortionWave(target, update, {
       ...DEFAULTS,
+      // Waves are on, so the visitor wants them, whatever the system says
+      // about motion (they start off where it asks for less): the library
+      // would otherwise play a quieter version for reduced motion.
+      reducedMotion: false,
       ...(colors && { palette: colors }),
       ...options,
     })

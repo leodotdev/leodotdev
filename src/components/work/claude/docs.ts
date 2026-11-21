@@ -61,7 +61,7 @@ function frames(
     group,
     summary,
     kind: "frames",
-    ratio: labels ? 16 / 9 : source.ratio,
+    ratio: source.ratio,
     frames: labels
       ? labels.flatMap((label) =>
           source.frames.filter((f) => f.label === label)
@@ -69,6 +69,93 @@ function frames(
       : source.frames,
   }
 }
+
+// The templates still shown as frames: a chapter's slug, its title, its
+// line, and the label its frames carry in claude-work.json.
+const TEMPLATES = [
+  [
+    "claude-code",
+    "Claude Code",
+    "The Claude Code product page, on desktop and mobile.",
+    "Claude Code",
+  ],
+  [
+    "customer-story",
+    "Customer Story",
+    "One customer's story, on desktop and mobile.",
+    "Customer story",
+  ],
+  [
+    "customer-story-index",
+    "Customer Story Index",
+    "Every customer story, as a grid or a list.",
+    "Customer stories",
+  ],
+  [
+    "contact-sales",
+    "Contact Sales",
+    "The contact forms, for sales and for the Education team.",
+    "Contact sales",
+  ],
+  [
+    "pricing",
+    "Pricing",
+    "Plans and prices: individual, Team & Enterprise, and API.",
+    "Pricing",
+  ],
+  ["api", "API", "The API's page, on desktop and mobile.", "API"],
+  [
+    "plans-max",
+    "Plans: Max",
+    "The Max plan's page, on desktop and mobile.",
+    "Plans: Max",
+  ],
+  [
+    "plans-team",
+    "Plans: Team",
+    "The Team plan's page, on desktop and mobile.",
+    "Plans: Team",
+  ],
+  [
+    "plans-enterprise",
+    "Plans: Enterprise",
+    "The Enterprise plan's page, on desktop and mobile.",
+    "Plans: Enterprise",
+  ],
+  ...[
+    "AI Agents",
+    "Coding",
+    "Customer Support",
+    "Education",
+    "Financial Services",
+    "Government",
+  ].map((name) => [
+    `solutions-${name.toLowerCase().replaceAll(" ", "-")}`,
+    `Solutions: ${name}`,
+    `The ${name} solution's page, on desktop and mobile.`,
+    `Solutions: ${name}`,
+  ]),
+] as Array<[slug: string, title: string, summary: string, label: string]>
+
+// The templates built live so far (pages/templates/<slug>.tsx); the others
+// show their frames.
+const BUILT = new Set([
+  "api",
+  "customer-story",
+  "customer-story-index",
+  "contact-sales",
+  "pricing",
+  "solutions-ai-agents",
+  "solutions-coding",
+  "solutions-customer-support",
+  "plans-max",
+  "plans-team",
+  "plans-enterprise",
+  "claude-code",
+  "solutions-education",
+  "solutions-financial-services",
+  "solutions-government",
+])
 
 export const DOCS: Array<Doc> = [
   live(
@@ -112,7 +199,7 @@ export const DOCS: Array<Doc> = [
     "Molecules",
     "menu",
     "Menus",
-    "Navigation menus, prompt suggestions and page actions."
+    "One menu working three ways: navigation, prompt suggestions, and lists."
   ),
   live(
     "Molecules",
@@ -164,7 +251,7 @@ export const DOCS: Array<Doc> = [
     "Organisms",
     "carousel",
     "Carousel",
-    "Bullets between a previous and a next button."
+    "A deck of cards over its arrows and bullets."
   ),
   live(
     "Organisms",
@@ -179,19 +266,13 @@ export const DOCS: Array<Doc> = [
     "The logo wall, the video lightbox and the video reel."
   ),
 
-  frames(
-    "Templates",
-    "templates",
-    "Templates",
-    "The site's pages, on desktop and mobile.",
-    "Templates"
-  ),
-  frames(
-    "Templates",
-    "b2b-pages",
-    "Templates: B2B Pages",
-    "Partner, startup, campus, contact and newsletter pages.",
-    "Partner and program pages"
+  // The templates, a chapter each. Home is built live, from the organisms;
+  // the rest are still frames from the file, to be built in turn.
+  live("Templates", "home", "Home", "The home page, built from the organisms."),
+  ...TEMPLATES.map(([slug, title, summary, label]) =>
+    BUILT.has(slug)
+      ? live("Templates", slug, title, summary)
+      : frames("Templates", slug, title, summary, "Templates", [label])
   ),
 ]
 

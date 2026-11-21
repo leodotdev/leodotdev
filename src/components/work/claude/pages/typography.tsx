@@ -50,11 +50,11 @@ const STYLES: Array<[string, string, string, string]> = [
 export function TypographyDoc() {
   return (
     <>
-      <Section title="Families">
-        <Specimen
-          caption="Body is set in the sans and Body Large in the serif; each also comes in the other."
-          className="grid sm:grid-cols-3"
-        >
+      <Section
+        title="Families"
+        caption="Body is set in the sans and Body Large in the serif; each also comes in the other."
+      >
+        <Specimen figure className="grid sm:grid-cols-3">
           {FAMILIES.map((family, i) => (
             <div
               key={family.name}

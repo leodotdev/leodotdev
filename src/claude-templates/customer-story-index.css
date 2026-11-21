@@ -1,0 +1,317 @@
+/* The Customer Story Index template
+   (pages/templates/customer-story-index.tsx): what the page adds around the
+   organisms. Sizes follow the page's own width (`cqw`: the template's window
+   is the container), and it stacks at a phone's width. */
+
+/* The hero and the stories share two columns: the filters' on the left, and
+   the one the headline and the stories keep to. */
+.cds-stories-hero,
+.cds-stories-body {
+  --stories-side: clamp(180px, 19cqw, 216px);
+  --stories-gap: clamp(24px, 3.7cqw, 48px);
+}
+/* The hero: the headline over the stories' column, and a stack of stories at
+   its right. */
+.cds-stories-hero {
+  display: grid;
+  grid-template-columns: var(--stories-side) minmax(0, 1fr) 213px;
+  column-gap: var(--stories-gap);
+  align-items: center;
+  padding: clamp(48px, 9cqw, 128px) var(--tpl-side);
+}
+.cds-stories-hero > .cds-header {
+  grid-column: 2;
+}
+.cds-stories-hero .cds-header-body {
+  padding-inline: 0;
+}
+/* The header is in a narrow column here, not on a phone: its button keeps
+   its own width. (A phone stretches it, below.) */
+.cds-stories-hero .cds-header-actions {
+  flex-direction: row;
+  align-self: flex-start;
+}
+/* The header is a container itself, so this asks the page by name. */
+@container tpl (max-width: 760px) {
+  .cds-stories-hero .cds-header-actions {
+    flex-direction: column;
+    align-self: stretch;
+  }
+}
+/* The stack: three marginalia cards in one place, the current one upright on
+   top and the others turned a little behind it, showing only their edges. */
+.cds-stories-stack {
+  grid-column: 3;
+  min-width: 0;
+}
+/* The stories follow the hero on the same Ivory, with no rule between. */
+.cds-tpl-section.cds-stories-section {
+  padding-top: 0;
+  border-top: 0;
+}
+.cds-stories-body {
+  display: grid;
+  grid-template-columns: var(--stories-side) minmax(0, 1fr);
+  gap: 32px var(--stories-gap);
+  align-items: start;
+}
+/* Above the stories: the search field, and the switch between grid and
+   list. */
+.cds-stories-head {
+  display: flex;
+  grid-column: 2;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.cds-stories-head .cds-input {
+  flex: 0 1 300px;
+  min-width: 0;
+  border-radius: 16px;
+  font-size: 15px;
+  line-height: 24px;
+}
+.cds-stories-head .cds-tabs {
+  flex: none;
+}
+/* The filters, level with the stories: a heading over blocks that fold. */
+.cds-stories-filters {
+  display: flex;
+  grid-row: 2 / span 2;
+  grid-column: 1;
+  flex-direction: column;
+}
+.cds-stories-filters h4 {
+  margin-bottom: 12px;
+  font: 400 15px/24px var(--cds-sans);
+}
+.cds-stories-filter {
+  border-top: 1px solid var(--cds-border-3);
+}
+.cds-stories-filter > button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 16px 0;
+  border: 0;
+  background: none;
+  color: var(--cds-fg-3);
+  font: 400 12px/20px var(--cds-sans);
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.cds-stories-filter > button:hover,
+.cds-stories-filter > button[data-state="hover"] {
+  color: var(--cds-fg);
+}
+.cds-stories-filter > button svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  transition: rotate 0.2s ease;
+}
+.cds-stories-filter > button[aria-expanded="true"] svg {
+  rotate: 180deg;
+}
+.cds-stories-filter > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding-bottom: 24px;
+}
+.cds-stories-filter > div[hidden] {
+  display: none;
+}
+/* The select, at the file's large size. */
+.cds-stories-filter .cds-select {
+  height: 44px;
+  padding-inline: 16px;
+  font-size: 15px;
+  line-height: 24px;
+}
+/* The grid: a card is the customer's logo on a tile over the story's title.
+   The one under the pointer keeps its color, on a darker tile, and the
+   others step back. */
+.cds-stories-grid {
+  display: grid;
+  grid-row: 2;
+  grid-column: 2;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: clamp(32px, 4cqw, 48px) 24px;
+}
+.cds-stories-card {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: var(--cds-fg);
+  font: 400 17px/26px var(--cds-sans);
+  text-decoration: none;
+  text-wrap: pretty;
+  transition: opacity 0.2s ease;
+}
+.cds-stories-card > span {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 340 / 192;
+  border: 1px solid var(--cds-border-3);
+  border-radius: 12px;
+  background: var(--cds-bg-2);
+  transition: background-color 0.2s ease;
+}
+/* A logo keeps the share of the tile it has in the file, where the tile is
+   340 wide. */
+.cds-stories-card img {
+  display: block;
+  width: calc(var(--w) / 340 * 100%);
+  height: auto;
+  filter: var(--cds-art-filter);
+}
+.cds-stories-card:hover > span,
+.cds-stories-card[data-state="hover"] > span {
+  background: var(--cds-bg-3);
+}
+.cds-stories-grid:has(.cds-stories-card:is(:hover, [data-state="hover"]))
+  .cds-stories-card:not(:hover, [data-state="hover"]),
+.cds-stories-list:has(a.cds-stories-row:is(:hover, [data-state="hover"]))
+  a.cds-stories-row:not(:hover, [data-state="hover"]) {
+  opacity: 0.32;
+}
+/* The list: a row for each customer under the columns' names. The row under
+   the pointer keeps its color and the others step back. */
+.cds-stories-list {
+  display: flex;
+  grid-row: 2;
+  grid-column: 2;
+  flex-direction: column;
+}
+.cds-stories-row {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 230fr) minmax(0, 170fr) minmax(0, 140fr)
+    minmax(0, 220fr) minmax(0, 160fr) minmax(0, 80fr);
+  column-gap: 12px;
+  align-items: baseline;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--cds-border-3);
+  color: var(--cds-fg);
+  white-space: nowrap;
+}
+a.cds-stories-row {
+  padding: 18px 0;
+  font: 400 12px/18px var(--cds-sans);
+  text-decoration: none;
+  white-space: normal;
+  transition: opacity 0.2s ease;
+}
+a.cds-stories-row > :first-child {
+  font-size: 17px;
+  line-height: 24px;
+}
+.cds-stories-more {
+  display: flex;
+  grid-row: 3;
+  grid-column: 2;
+  justify-content: center;
+  margin-top: 32px;
+}
+/* The testimonials: all in one place, as tall as the tallest, one showing. */
+.cds-stories-quotes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+  width: min(942px, 100%);
+  margin-inline: auto;
+}
+.cds-stories-quotes > div:first-child {
+  display: grid;
+  width: 100%;
+}
+.cds-stories-quotes .cds-testimonial {
+  grid-area: 1 / 1;
+  border-top: 0;
+}
+.cds-stories-quotes .cds-testimonial:not([data-current]) {
+  visibility: hidden;
+}
+/* The closing call, with more room around it than a section has. */
+.cds-tpl-section.cds-stories-close {
+  padding-block: clamp(72px, 11cqw, 200px);
+}
+/* A phone: everything in one column. The filters go, the switch is its two
+   icons, the hero's stories are a row that scrolls sideways off both edges
+   of the page, and a row of the list keeps the company and its industry. */
+@container (max-width: 760px) {
+  .cds-stories-hero,
+  .cds-stories-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cds-stories-hero {
+    row-gap: 48px;
+  }
+  .cds-stories-hero > .cds-header,
+  .cds-stories-hero > .cds-stories-stack,
+  .cds-stories-body > * {
+    grid-row: auto;
+    grid-column: 1;
+  }
+  /* A phone: the deck is a row of its cards, which scrolls sideways to the
+     page's edges. */
+  .cds-stories-stack {
+    margin-inline: calc(-1 * var(--tpl-side));
+    width: auto;
+  }
+  .cds-stories-stack .cds-deck-cards {
+    display: flex;
+    gap: 16px;
+    align-items: stretch;
+    box-sizing: border-box;
+    padding: 4px var(--tpl-side) 0;
+    overflow-x: auto;
+    perspective: none;
+    scroll-padding-inline: var(--tpl-side);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .cds-stories-stack .cds-deck-cards::-webkit-scrollbar {
+    display: none;
+  }
+  .cds-stories-stack .cds-deck-slide {
+    flex: none;
+    width: 256px;
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+    scroll-snap-align: start;
+  }
+  .cds-stories-stack > .cds-carousel-ui {
+    box-sizing: border-box;
+    padding-inline: var(--tpl-side);
+  }
+  .cds-stories-filters {
+    display: none;
+  }
+  .cds-stories-head .cds-input {
+    flex: 1;
+  }
+  .cds-stories-head .cds-tab {
+    padding-inline: 12px;
+  }
+  .cds-stories-head .cds-tab span {
+    display: none;
+  }
+  .cds-stories-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+  .cds-stories-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .cds-stories-row > :nth-child(n + 3) {
+    display: none;
+  }
+}

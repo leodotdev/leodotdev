@@ -8,6 +8,11 @@ import {
 } from "react-icons/tb"
 import { DemoCursor } from "@/components/work/claude/demo-cursor"
 import { Resizable } from "@/components/work/claude/resizable"
+import {
+  SkeletonFeatures,
+  SkeletonHeader,
+  SkeletonHero,
+} from "@/components/work/claude/skeleton"
 import { ClaudeLogo } from "@/components/work/claude/logo"
 import type { DemoStep } from "@/components/work/claude/demo-cursor"
 import { Button } from "@/components/work/claude/specimens"
@@ -130,7 +135,21 @@ function Links({ groups }: { groups: Array<Group> }) {
   ])
 }
 
-function SiteNavigation() {
+export function SiteNavigation({
+  crumbs = ["Solutions", "For individuals"],
+  more = "Explore here",
+  children,
+}: {
+  /**
+   * The breadcrumb bar's words for the page the header is on: the section,
+   * and perhaps the page under it.
+   */
+  crumbs?: [section: string, page?: string]
+  /** The label of the menu at the bar's right. */
+  more?: string
+  /** The page under the header, where a figure shows one. */
+  children?: React.ReactNode
+} = {}) {
   // Which menu is open: a menu's label, "explore", or the folded "panel".
   const [open, setOpen] = useState<string | null>(null)
   const [group, setGroup] = useState<string | null>(null)
@@ -276,9 +295,14 @@ function SiteNavigation() {
               onClick={(e) => e.preventDefault()}
               {...quiet}
             >
-              Solutions
+              {crumbs[0]}
             </a>
-            <i>/</i>For individuals
+            {crumbs[1] && (
+              <>
+                <i>/</i>
+                {crumbs[1]}
+              </>
+            )}
           </span>
           <div className="cds-nav-item" data-align="end" {...hover("explore")}>
             <button
@@ -288,7 +312,7 @@ function SiteNavigation() {
               onClick={(e) => press(e, "explore")}
               {...quiet}
             >
-              Explore here
+              {more}
               <TbChevronDown aria-hidden />
             </button>
             {open === "explore" && (
@@ -309,6 +333,7 @@ function SiteNavigation() {
             )}
           </div>
         </div>
+        {children}
       </div>
     </div>
   )
@@ -317,21 +342,36 @@ function SiteNavigation() {
 export function NavigationDoc() {
   return (
     <>
-      <Section title="Header & Sub-navigation">
-        <Specimen caption="19 variants, across its open menus, on desktop and mobile.">
-          {/* The header sits at the top of its page, so there is no padding
-              above it; below, the figure's usual padding, which puts the
-              size label where every resizable figure has it. */}
-          <DemoCursor steps={DEMO} className="px-6 pb-6 md:px-8 md:pb-8">
+      <Section
+        title="Header & Sub-navigation"
+        caption="19 variants, across its open menus, on desktop and mobile."
+      >
+        <Specimen figure>
+          {/* The header sits at the top of its page, and the page fills the
+              figure, so there is no padding round it. */}
+          <DemoCursor steps={DEMO}>
             {/* As tall as the phone the folded menu was drawn for. */}
             <Resizable
               label="Header width"
               min={360}
+              bleed
               // One button goes first; then the header folds.
               sizes={[["Desktop"], ["Tablet", 1000], ["Mobile", 760]]}
-              className="flex min-h-[812px] flex-col"
+              className="flex min-h-[812px] flex-col sm:h-[812px]"
             >
-              <SiteNavigation />
+              {/* The page under the header, as a skeleton: its menus open
+                  over it, and the folded menu's sheet covers it. */}
+              <SiteNavigation>
+                <div className="cds-skel-under">
+                  {/* The home page: its hero, then its first section's
+                      header and download buttons, and what is under them. */}
+                  <SkeletonHero />
+                  <div className="cds-skel-rest">
+                    <SkeletonHeader buttons={3} />
+                    <SkeletonFeatures />
+                  </div>
+                </div>
+              </SiteNavigation>
             </Resizable>
           </DemoCursor>
         </Specimen>

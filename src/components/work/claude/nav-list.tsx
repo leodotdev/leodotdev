@@ -3,12 +3,11 @@ import { TbChevronLeft, TbChevronRight } from "react-icons/tb"
 import { cn } from "@/lib/utils"
 
 /**
- * The docs' one kind of navigation, used twice, one row under the other
- * (`NavRow`). The first is the tabs: each name swaps the whole page under
- * it. The second is that page's chapters: each name scrolls to its chapter,
- * and the one in view is marked. Both are the same row of names, muted
- * except the current one, which is heavier and in the text color
- * (`aria-current`). The styles are `.nav-list` in src/styles.css.
+ * The docs' row of tabs (`NavRow`): each name swaps the whole page under
+ * it. The names are muted except the current one, which is heavier, in the
+ * text color, and underlined (`aria-current`). The styles are `.nav-list`
+ * in src/styles.css. (The chapters under the tabs are an index of their
+ * own, `ChapterNav`, whose sheet uses the same `nav-link` and `NavLabel`.)
  *
  * The entries are whatever links the caller needs (a router link, a plain
  * anchor) with the class `nav-link`, each wrapping its name in a `NavLabel`.
@@ -16,6 +15,7 @@ import { cn } from "@/lib/utils"
 export function NavList({
   label,
   orientation,
+  underline,
   className,
   ref,
   children,
@@ -27,6 +27,8 @@ export function NavList({
    * one is a column from 1024px and a wrapping row below that.
    */
   orientation: "horizontal" | "vertical"
+  /** Underlines the current entry as well (the tabs). */
+  underline?: boolean
   className?: string
   ref?: React.Ref<HTMLElement>
   children: React.ReactNode
@@ -36,6 +38,7 @@ export function NavList({
       ref={ref}
       aria-label={label}
       data-orientation={orientation}
+      data-underline={underline || undefined}
       className={cn(
         "nav-list",
         orientation === "horizontal" && "scrollbar-hide",
@@ -48,21 +51,22 @@ export function NavList({
 }
 
 /**
- * A horizontal `NavList` that never wraps: when it runs out of room it
- * scrolls sideways, with an arrow button over whichever end has entries out
- * of sight, and the current entry is kept in view, clear of those buttons.
- * The docs' tabs are one, and the row of a page's chapters under them is
- * another.
+ * A horizontal `NavList` that scrolls sideways when it runs out of room,
+ * with an arrow button over whichever end has entries out of sight, and the
+ * current entry kept in view, clear of those buttons: the docs' tabs
+ * (`underline`).
  */
 export function NavRow({
   label,
   current,
+  underline,
   className,
   children,
 }: {
   label: string
   /** Changes when the current entry does, to bring the new one into view. */
   current: string
+  underline?: boolean
   className?: string
   children: React.ReactNode
 }) {
@@ -94,15 +98,19 @@ export function NavRow({
     // The observer also reports once when it starts watching.
     const observer = new ResizeObserver(measure)
     observer.observe(el)
+    // The entries themselves can change (another page's chapters) without
+    // the row changing size. Watched for, not re-measured after every
+    // render: that ran into React's limit on updates from effects on a long
+    // row of names.
+    const entries = new MutationObserver(measure)
+    entries.observe(el, { childList: true, subtree: true, characterData: true })
     el.addEventListener("scroll", measure, { passive: true })
     return () => {
       observer.disconnect()
+      entries.disconnect()
       el.removeEventListener("scroll", measure)
     }
   }, [])
-  // The entries themselves can change (another page's chapters) without the
-  // row changing size.
-  useEffect(measure)
 
   const page = (direction: 1 | -1) => {
     const el = row.current
@@ -116,7 +124,12 @@ export function NavRow({
 
   return (
     <div className={cn("relative flex min-w-0", className)}>
-      <NavList ref={row} label={label} orientation="horizontal">
+      <NavList
+        ref={row}
+        label={label}
+        orientation="horizontal"
+        underline={underline}
+      >
         {children}
       </NavList>
       {/* For the mouse and touch only: the keyboard reaches every entry by

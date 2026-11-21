@@ -1,0 +1,231 @@
+/* The about template (src/components/work/anthropic/pages/templates/
+   about.tsx). The `.ads-company-*` parts are shared with the careers
+   template, which the file draws from the same sections (about/parts.tsx).
+
+   Both pages lay out on the file's grid: twelve columns with 16px gutters
+   inside the page's margin. A row's heading takes the first three columns
+   and what it introduces the last seven; the headline five, and the text
+   beside it the last six. They fold at the header's widths: Tablet below
+   1020px, where a heading goes over its row, and Mobile below 600px. */
+
+.ads-company-mission,
+.ads-company-band,
+.ads-company-row,
+.ads-careers-more {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 16px;
+}
+
+/* The top of the page: the headline, and a paragraph and a button. */
+.ads-company-mission {
+  align-items: end;
+  padding-block: 32px;
+}
+.ads-company-mission h1 {
+  grid-column: 1 / 6;
+  text-wrap: balance;
+}
+.ads-company-mission-side {
+  display: flex;
+  flex-direction: column;
+  grid-column: 7 / 13;
+  gap: 24px;
+}
+/* Careers: the paragraph at the top, the headline in the middle of it. */
+.ads-company-mission[data-align="start"] {
+  align-items: start;
+}
+.ads-company-mission[data-align="start"] h1 {
+  align-self: center;
+}
+
+/* A ruled row: its heading and text, then what it introduces. */
+.ads-company-row {
+  row-gap: 32px;
+  padding-top: 32px;
+  border-top: 1px solid var(--ads-border-2);
+}
+.ads-company-row-head {
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / 4;
+  gap: 12px;
+}
+.ads-company-row-body {
+  grid-column: 6 / 13;
+  min-width: 0;
+}
+:is(.ads-company-row-head, .ads-company-band-head, .ads-company-cell) p {
+  color: var(--ads-fg-2);
+  text-wrap: pretty;
+}
+
+/* Two columns of short pieces, each a heading over its text. */
+.ads-company-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 48px 16px;
+}
+.ads-company-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 64px;
+}
+
+/* The hero carousel: a band in the second background, its heading on the
+   left and the slide over the last eight columns, a square picture and,
+   at its foot, the slide's title, text, and pagination. */
+.ads-company-band {
+  align-items: start;
+  row-gap: 32px;
+}
+.ads-company-band-head {
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / 4;
+  gap: 12px;
+}
+.ads-company-band-head p + p {
+  margin-top: 12px;
+}
+.ads-company-slide {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-column: 5 / 13;
+  column-gap: 16px;
+  row-gap: 24px;
+  align-items: end;
+}
+.ads-company-slide img {
+  display: block;
+  grid-column: 1 / 5;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: var(--ads-radius-tinier);
+  background: var(--ads-bg-3);
+  object-fit: cover;
+}
+.ads-company-slide-text {
+  display: flex;
+  flex-direction: column;
+  grid-column: 5 / 8;
+  gap: 24px;
+  margin-left: 8px;
+}
+.ads-company-slide-text > div {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ads-company-slide-text p {
+  color: var(--ads-fg-2);
+  text-wrap: pretty;
+}
+/* A step of the pagination brings the slide in again (they are keyed). */
+.ads-company-slide img,
+.ads-company-slide-text > div {
+  animation: ads-company-in 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+}
+@keyframes ads-company-in {
+  from {
+    opacity: 0;
+    translate: 16px 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ads-company-slide img,
+  .ads-company-slide-text > div {
+    animation: none;
+  }
+}
+
+/* A link in running text. */
+.ads-company-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+.ads-company-link:is(:hover, [data-state="hover"]) {
+  color: var(--ads-fg);
+}
+
+/* About: the four parts of the purpose, each under a rule. */
+.ads-about-purpose {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ads-about-purpose-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px 16px;
+}
+.ads-about-purpose-item {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid var(--ads-border-2);
+}
+.ads-about-purpose-item p {
+  color: var(--ads-fg-3);
+  text-wrap: pretty;
+}
+.ads-about-names {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: var(--ads-fg-2);
+}
+
+/* Tablet: a heading goes over its row, the headline over its paragraph,
+   and the slide takes the band's width. */
+@container tpl (max-width: 1019px) {
+  .ads-company-mission {
+    row-gap: 32px;
+  }
+  .ads-company-mission h1,
+  .ads-company-mission-side,
+  .ads-company-row-head,
+  .ads-company-row-body,
+  .ads-company-band-head,
+  .ads-company-slide {
+    grid-column: 1 / -1;
+  }
+  .ads-company-mission-side {
+    max-width: 640px;
+  }
+  .ads-company-row-head,
+  .ads-company-band-head {
+    max-width: 560px;
+  }
+  .ads-about-purpose-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Mobile: one column throughout; the slide's text goes under its picture. */
+@container tpl (max-width: 599px) {
+  .ads-company-mission {
+    padding-block: 0;
+  }
+  .ads-company-grid,
+  .ads-about-purpose-grid {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 32px;
+  }
+  .ads-company-cell {
+    padding-right: 0;
+  }
+  .ads-company-slide img,
+  .ads-company-slide-text {
+    grid-column: 1 / -1;
+  }
+  .ads-company-slide-text {
+    margin-left: 0;
+  }
+}

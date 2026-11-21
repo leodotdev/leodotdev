@@ -1,0 +1,555 @@
+/* The API template (pages/templates/api.tsx): the page's own styles, over
+   the shared `.cds-tpl*` ones in claude-ds.css. Every size follows the
+   page's width (the template's window is the container), and the page
+   stacks at a phone's width. */
+
+/* The hero: the headline, a line under it, and two buttons, beside the
+   illustration. */
+.cds-api-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 704fr) minmax(0, 581fr);
+  gap: clamp(24px, 5cqw, 64px);
+  align-items: center;
+  padding: clamp(40px, 7cqw, 96px) var(--tpl-side);
+}
+.cds-api-hero > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+/* As large as leaves "Developer Platform" on one line of its column. */
+.cds-api-hero h3 {
+  font: 500 46px/1 var(--cds-serif);
+  font-size: clamp(34px, 4.1cqw, 46px);
+  line-height: 0.96;
+  text-wrap: balance;
+}
+.cds-api-hero p {
+  color: var(--cds-fg-3);
+  font: 400 23px/1.5 var(--cds-sans);
+  font-size: clamp(17px, 1.9cqw, 23px);
+}
+.cds-api-hero > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: var(--cds-art-filter);
+}
+.cds-api-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.cds-api-hero .cds-api-actions {
+  padding-top: 8px;
+}
+/* The customers' quotes, on the hero's own background. On a phone the row
+   of cards runs off the page's right edge: the page's margin, measured
+   from the carousel's width (it is a container, 84% of the page). */
+.cds-api-proofs {
+  --cds-figure-pad: 9.524cqw;
+  padding: 0 var(--tpl-side) clamp(56px, 9cqw, 128px);
+}
+
+/* The two ways to start: a card each, its list over its button. */
+.cds-api-plans {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(16px, 3cqw, 32px);
+  width: min(950px, 100%);
+  margin-inline: auto;
+}
+.cds-api-plan {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3cqw, 32px);
+  padding: clamp(28px, 4.4cqw, 48px) clamp(20px, 3cqw, 32px)
+    clamp(20px, 3cqw, 32px);
+  border: 1px solid var(--cds-border-3);
+  border-radius: 24px;
+  background: var(--cds-bg-2);
+}
+.cds-api-plan h4,
+.cds-api-model h4 {
+  font: 500 32px/1.1 var(--cds-serif);
+  font-size: clamp(25px, 3cqw, 32px);
+}
+.cds-api-plan p {
+  color: var(--cds-fg-2);
+  font: 400 17px/28px var(--cds-sans);
+}
+.cds-api-plan ul {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  padding: 24px 0;
+  border-top: 1px solid var(--cds-border-3);
+  color: var(--cds-fg-2);
+  font: 400 17px/24px var(--cds-sans);
+  list-style: none;
+}
+.cds-api-plan li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.cds-api-plan li svg {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  color: var(--cds-fg-3);
+  stroke-width: 1.25;
+}
+.cds-api-plan .cds-btn {
+  width: 100%;
+}
+
+/* The models: a card each, its prices in ruled blocks, over the note about
+   batch processing and the footnote. */
+.cds-api-pricing {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 4.4cqw, 48px);
+}
+.cds-api-models {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 2cqw, 32px);
+}
+.cds-api-model {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(20px, 2.4cqw, 32px);
+  border: 1px solid var(--cds-border-3);
+  border-radius: 24px;
+  background: var(--cds-card-bg);
+}
+.cds-api-model header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 8px 0 clamp(20px, 3cqw, 32px);
+}
+.cds-api-model header p {
+  color: var(--cds-fg-3);
+  font: 400 17px/24px var(--cds-sans);
+  font-size: clamp(15px, 1.6cqw, 17px);
+}
+.cds-api-rates {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px 0;
+  border-top: 1px solid var(--cds-border-3);
+  font: 400 17px/24px var(--cds-sans);
+}
+.cds-api-rates:last-child {
+  padding-bottom: 0;
+}
+.cds-api-rates small {
+  color: var(--cds-fg-2);
+  font-size: 15px;
+  line-height: 20px;
+}
+/* A name and its price at the two ends of a line; where the card is too
+   narrow for both, the price goes under the name. */
+.cds-api-rate {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 12px;
+}
+.cds-api-rate b {
+  flex: none;
+  margin-left: auto;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.cds-api-rate[data-size="large"] b {
+  font-size: clamp(17px, 1.75cqw, 20px);
+}
+.cds-api-cache {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cds-api-cache .cds-api-rate small {
+  color: var(--cds-fg-3);
+}
+.cds-api-promo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 32px;
+  padding: 16px clamp(20px, 3cqw, 32px);
+  border: 1px solid var(--cds-border-3);
+  border-radius: 16px;
+  background: var(--cds-bg-3);
+  font: 400 17px/28px var(--cds-sans);
+  /* The switch's track is the card's own color otherwise. */
+  --cds-switch-bg: var(--cds-border-3);
+}
+/* The switch's label goes before it here. */
+.cds-api-promo .cds-switch {
+  flex-direction: row-reverse;
+  color: var(--cds-fg-2);
+}
+.cds-api-more {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.15s ease;
+}
+.cds-api-more:hover,
+.cds-api-more[data-state="hover"] {
+  text-decoration-color: currentColor;
+}
+.cds-api-footnote {
+  color: var(--cds-fg-3);
+  font: 400 15px/24px var(--cds-sans);
+  text-align: center;
+}
+
+/* The built-in tools: the header's two lines, then a narrow list in two
+   columns, each tool under a rule. */
+.cds-api-tools-header .cds-header-body > h3 {
+  max-width: 11.2em;
+}
+.cds-api-tools {
+  position: relative;
+  width: min(704px, 100%);
+  margin-inline: auto;
+}
+.cds-api-tools ul {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(8px, 2cqw, 32px) 32px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cds-api-tools li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 24px 0;
+  border-top: 1px solid var(--cds-border-3);
+}
+.cds-api-tools li svg {
+  flex: none;
+  width: 28px;
+  height: 28px;
+}
+.cds-api-tools li > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 2px;
+}
+.cds-api-tools h4 {
+  font: 500 19px/24px var(--cds-serif);
+}
+.cds-api-tools li p {
+  color: var(--cds-fg-3);
+  font: 400 17px/28px var(--cds-sans);
+}
+/* The marginalia card, under the list until the page has a margin for it. */
+.cds-margin.cds-api-doc {
+  margin: 32px 0 0;
+}
+
+/* The Console: a note, the prompt improver on its tile, and what the
+   Console is for under it. */
+.cds-api-console {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 4.4cqw, 48px);
+}
+/* The note: an arrow to the tile, and a line. Over the tile, the arrow
+   turned to point down at it. */
+.cds-api-note {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: calc(-1 * clamp(8px, 2cqw, 24px));
+  color: var(--cds-fg-3);
+  font: 400 12px/18px var(--cds-sans);
+  letter-spacing: 0.15px;
+}
+.cds-api-note > svg {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  stroke: var(--cds-border);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  rotate: -90deg;
+}
+.cds-api-note > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 4px;
+}
+.cds-api-note small {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  line-height: 17px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.cds-api-note small svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.25;
+}
+/* The tile: two small panels beside a long one that runs off its bottom.
+   The panels are the Console's own dark ones, whatever the page's theme. */
+.cds-api-screen {
+  display: grid;
+  grid-template-columns: minmax(0, 336fr) minmax(0, 650fr);
+  align-items: start;
+  gap: clamp(12px, 3.4cqw, 49px);
+  aspect-ratio: 1189 / 567;
+  padding: clamp(20px, 4.2cqw, 61px) clamp(16px, 5.3cqw, 78px) 0;
+  overflow: hidden;
+  border-radius: 24px;
+  background: var(--cds-sky);
+}
+.cds-api-view {
+  display: none;
+  justify-content: center;
+}
+.cds-api-prompts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: clamp(8px, 2cqw, 30px);
+}
+.cds-api-panel {
+  margin: 0;
+  padding: 12px 16px 16px;
+  border: 1px solid var(--cds-gray-850);
+  border-radius: 12px;
+  background: var(--cds-gray-950);
+  color: var(--cds-gray-050);
+  font: 400 12px/1.65 var(--cds-sans);
+  font-size: clamp(9px, 1.05cqw, 12px);
+}
+.cds-api-panel b {
+  display: block;
+  padding-bottom: 8px;
+  font-weight: 600;
+}
+.cds-api-panel pre,
+.cds-api-panel p {
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--cds-gray-550);
+  border-radius: 8px;
+}
+.cds-api-panel pre,
+pre.cds-api-panel {
+  font-family: var(--cds-mono);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.cds-api-panel pre {
+  font-size: 0.85em;
+}
+pre.cds-api-panel {
+  padding: clamp(16px, 2.2cqw, 24px);
+  border-bottom: 0;
+  border-radius: 12px 12px 0 0;
+}
+.cds-api-about {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px;
+  padding-inline: clamp(0px, 6cqw, 136px);
+}
+.cds-api-about h4 {
+  font: 500 25px/32px var(--cds-serif);
+}
+.cds-api-about p,
+.cds-api-about ul {
+  color: var(--cds-fg-3);
+  font: 400 17px/28px var(--cds-sans);
+}
+.cds-api-about ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0 0 0 1.4em;
+  list-style: disc;
+}
+
+/* The use cases: the system's feature highlights, four to a row where
+   there is room. */
+.cds-api-uses {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 32px 0;
+}
+.cds-api-uses .cds-feature {
+  padding-inline: clamp(16px, 2.2cqw, 32px);
+}
+
+/* The call to start: the headline and two buttons beside the newsletter's
+   card. */
+.cds-api-start {
+  display: grid;
+  grid-template-columns: minmax(0, 704fr) minmax(0, 581fr);
+  gap: clamp(32px, 8cqw, 155px);
+  align-items: center;
+  padding-block: clamp(0px, 4cqw, 96px);
+}
+.cds-api-start > div:first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(24px, 4cqw, 48px);
+}
+.cds-api-start h3 {
+  font: 500 52px/1.2 var(--cds-serif);
+  font-size: clamp(34px, 4cqw, 52px);
+}
+.cds-api-news {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  padding: clamp(24px, 3cqw, 32px);
+  border-radius: 16px;
+  background: var(--cds-card-bg);
+}
+.cds-api-news > img {
+  display: block;
+  width: 64px;
+  height: 64px;
+  filter: var(--cds-art-filter);
+}
+.cds-api-news h4 {
+  font: 500 25px/1.2 var(--cds-serif);
+}
+.cds-api-news p {
+  max-width: 445px;
+  color: var(--cds-fg-2);
+  font: 400 17px/28px var(--cds-sans);
+}
+.cds-api-news .cds-input {
+  align-self: stretch;
+}
+.cds-api-news small {
+  max-width: 397px;
+  color: var(--cds-fg-3);
+  font: 400 12px/18px var(--cds-sans);
+  letter-spacing: 0.15px;
+}
+/* The rule over the footer, between the page's margins. */
+.cds-api-rule {
+  margin-inline: var(--tpl-side);
+  border-top: 1px solid var(--cds-border-3);
+}
+
+/* A page wide enough to have margins: the marginalia card goes beside the
+   list's last row, and the note beside the tile's top corner, its arrow
+   pointing back at it. */
+@container (min-width: 1340px) {
+  .cds-margin.cds-api-doc {
+    position: absolute;
+    right: calc(100% + 32px);
+    bottom: 0;
+    margin: 0;
+  }
+  .cds-api-note {
+    position: absolute;
+    top: -23px;
+    left: calc(100% + 35px);
+    flex-direction: column;
+    gap: 15px;
+    width: 170px;
+    margin: 0;
+  }
+  .cds-api-note > svg {
+    rotate: none;
+  }
+  .cds-api-note > div {
+    padding: 0 0 0 17px;
+  }
+}
+
+/* A phone: everything in one column. */
+@container (max-width: 760px) {
+  .cds-api-hero,
+  .cds-api-plans,
+  .cds-api-models,
+  .cds-api-tools ul,
+  .cds-api-screen,
+  .cds-api-about,
+  .cds-api-uses,
+  .cds-api-start {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cds-api-hero > img {
+    width: 80%;
+    margin-inline: auto;
+  }
+  .cds-api-hero .cds-api-actions {
+    flex-direction: column;
+    align-self: stretch;
+  }
+  /* The note about batch processing goes above the cards. */
+  .cds-api-promo {
+    flex-direction: column;
+    align-items: flex-start;
+    order: -1;
+    padding: 24px;
+  }
+  .cds-api-tools ul {
+    gap: 2px;
+  }
+  /* Only the long panel, under a button for the prompt it came from. */
+  .cds-api-screen {
+    gap: 16px;
+    aspect-ratio: 1;
+    padding: 16px 26px 0;
+  }
+  .cds-api-view {
+    display: flex;
+  }
+  .cds-api-prompts {
+    display: none;
+  }
+  .cds-api-panel {
+    font-size: 10px;
+  }
+  .cds-api-about {
+    gap: 16px;
+    padding-inline: 0;
+  }
+  .cds-api-uses {
+    gap: 0;
+  }
+  .cds-api-uses .cds-feature {
+    gap: 32px;
+    padding: 24px 0;
+    border-top: 1px solid var(--cds-border-3);
+    border-left: 0;
+  }
+  .cds-api-start {
+    padding-block: 0;
+  }
+}

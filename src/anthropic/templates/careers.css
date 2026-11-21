@@ -1,0 +1,109 @@
+/* The careers template (src/components/work/anthropic/pages/templates/
+   careers.tsx). Its grid, rows, and carousel band are the `.ads-company-*`
+   parts in about.css; these are what only this page has. */
+
+/* The hero: the mission, the film, then links and two pieces under it, a
+   little closer together than a section's parts. */
+.ads-page-section.ads-careers-hero {
+  gap: clamp(32px, calc(32px + (100cqw - 390px) * 0.0105), 48px);
+}
+.ads-careers-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--ads-radius-tinier);
+  background: var(--ads-bg-3);
+}
+.ads-careers-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ads-careers-media .ads-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+}
+
+/* The links take the first two columns, the pieces the last eight. */
+.ads-careers-more {
+  align-items: start;
+  row-gap: 32px;
+}
+.ads-careers-links {
+  grid-column: 1 / 3;
+}
+.ads-careers-links .ads-meta-value {
+  justify-content: flex-end;
+}
+.ads-careers-pieces {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-column: 5 / 13;
+  gap: 32px 16px;
+}
+
+/* The page's accordions: the file's Accordion Item without its count, its
+   title in bold, and the first under the row's own rule. */
+.ads-careers-accordion .ads-accordion-item:first-child {
+  border-top: 0;
+}
+.ads-careers-accordion .ads-accordion-title {
+  font-weight: 700;
+}
+.ads-careers-accordion .ads-accordion-row[aria-disabled] {
+  cursor: default;
+}
+.ads-careers-accordion .ads-accordion-body {
+  padding: 0 32px 24px 0;
+}
+.ads-careers-perks {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ads-careers-perks li {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--ads-fg);
+}
+.ads-careers-perk-mark {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  color: var(--ads-fg-3);
+}
+.ads-careers-perk-mark svg {
+  width: 16px;
+  height: 16px;
+}
+.ads-careers-guidance {
+  margin-top: 20px;
+}
+
+@container tpl (max-width: 1019px) {
+  .ads-careers-links,
+  .ads-careers-pieces {
+    grid-column: 1 / -1;
+  }
+  .ads-careers-links {
+    max-width: 360px;
+  }
+}
+
+@container tpl (max-width: 599px) {
+  .ads-careers-pieces {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ads-careers-accordion .ads-accordion-body {
+    padding-right: 0;
+  }
+  .ads-careers-perks li {
+    align-items: flex-start;
+  }
+}

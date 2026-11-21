@@ -3,6 +3,17 @@
 @import "@fontsource-variable/inter";
 @import "@fontsource-variable/playfair-display";
 @import "./claude-ds.css";
+@import "./claude-templates/api.css";
+@import "./claude-templates/customer-story.css";
+@import "./claude-templates/customer-story-index.css";
+@import "./claude-templates/contact-sales.css";
+@import "./claude-templates/pricing.css";
+@import "./claude-templates/plans.css";
+@import "./claude-templates/claude-code.css";
+@import "./claude-templates/solutions-a.css";
+@import "./claude-templates/solutions-b.css";
+@import "./anthropic-ds.css";
+@import "./anthropic/index.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -30,18 +41,22 @@
   font-display: swap;
 }
 
+/* Its lines are 17px, a whole number of pixels (1.4 gave 16.8px): a line of
+   small text must not leave what follows it part-way between pixels, where
+   every border and rule under it would be drawn soft. */
 @utility text-xs {
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  line-height: 1.4;
+  line-height: 1.0625rem;
 }
 
-/* The color system is the Claude.com design system's (src/claude-ds.css):
-   its warm neutrals in the White theme for light mode and Dark 3 for dark
-   mode, its switch's blue as the accent, Clay and six secondary colors, and
-   one for errors. The tokens are set on :root below, each pointing at one of
-   that system's; the names here are what Tailwind classes use (bg-card,
-   text-tint, border-border, bg-gray-5 ...). */
+/* The color system is the Anthropic.com design system's
+   (src/anthropic-ds.css; Leo, 2026-11-20): its warm neutrals in the White
+   theme for light mode and Slate for dark mode, its focus blue as the
+   accent, Clay and the fifteen other secondary colors, and one for errors.
+   The tokens are set on :root below, each pointing at one of that system's;
+   the names here are what Tailwind classes use (bg-card, text-tint,
+   border-border, bg-gray-5, bg-olive/40 ...). */
 @theme inline {
   --font-sans:
     "Inter Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
@@ -50,16 +65,27 @@
   --font-mono: "Paper Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
   /* The accent (links on hover, marks, the focus outline) is `tint`: blue on
-     the site, Clay on /work/claude. The others color and label things. */
+     the site, Clay on /work/claude. The others color and label things: the
+     system's sixteen secondary colors, in its order, the deeper of each pair
+     first. */
   --color-tint: var(--tint);
   --color-clay: var(--clay);
-  --color-heather: var(--cds-heather);
-  --color-cactus: var(--cds-cactus);
-  --color-peach: var(--cds-peach);
-  --color-plum: var(--cds-plum);
-  --color-mineral: var(--cds-mineral);
-  --color-sky: var(--cds-sky);
-  --color-error: var(--cds-error);
+  --color-fig: var(--ads-fig);
+  --color-orchid: var(--ads-orchid);
+  --color-poppy: var(--ads-poppy);
+  --color-coral: var(--ads-coral);
+  --color-peach: var(--ads-peach);
+  --color-pencil: var(--ads-pencil);
+  --color-oat: var(--ads-oat);
+  --color-olive: var(--ads-olive);
+  --color-matcha: var(--ads-matcha);
+  --color-mineral: var(--ads-mineral);
+  --color-cactus: var(--ads-cactus);
+  --color-sky: var(--ads-sky);
+  --color-cloud: var(--ads-cloud);
+  --color-plum: var(--ads-plum);
+  --color-heather: var(--ads-heather);
+  --color-error: var(--ads-error-fg);
 
   /* Greys */
   --color-black: #000000;
@@ -99,13 +125,13 @@
   --color-muted-foreground: var(--label-secondary);
   --color-accent: var(--gray-5);
   --color-accent-foreground: var(--label);
-  --color-destructive: var(--cds-error);
+  --color-destructive: var(--ads-error-fg);
   --color-destructive-foreground: #ffffff;
   --color-border: var(--separator-opaque);
   --color-ring: var(--tint);
   /* The layout overlay and the docs' spacing view: the palette's switch
      blue, whatever the theme (and on /work/claude, where the accent is Clay). */
-  --color-grid: var(--cds-switch-blue);
+  --color-grid: var(--ads-focus);
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
@@ -132,41 +158,42 @@
   }
 }
 
-/* The site's tokens. Each follows the theme the page is wearing (the --cds-
+/* The site's tokens. Each follows the theme the page is wearing (the --ads-
    values change with it), so only Clay and the overlay need a dark value of
    their own. */
 :root {
-  --tint: var(--cds-switch-blue);
-  --clay: var(--cds-clay-interactive);
+  --tint: var(--ads-focus);
+  --clay: var(--ads-clay-interactive);
 
   /* Greys, from the quietest text down to the faintest surface. */
-  --gray: var(--cds-fg-3);
-  --gray-2: var(--cds-border);
-  --gray-3: var(--cds-border-2);
-  --gray-4: var(--cds-border-3);
-  --gray-5: var(--cds-bg-3);
-  --gray-6: var(--cds-bg-2);
+  --gray: var(--ads-fg-3);
+  --gray-2: var(--ads-border);
+  --gray-3: var(--ads-border-2);
+  --gray-4: var(--ads-border-3);
+  --gray-5: var(--ads-bg-3);
+  --gray-6: var(--ads-bg-2);
 
   /* Backgrounds: plain, elevated (menus, popovers) and grouped (the page is
      the grouped background, panels and rows sit on it one step up). */
-  --bg: var(--cds-bg);
-  --bg-elevated: var(--cds-card-bg);
-  --bg-grouped: var(--cds-bg);
-  --bg-grouped-secondary: var(--cds-bg-3);
-  --bg-grouped-tertiary: var(--cds-bg-2);
+  --bg: var(--ads-bg);
+  --bg-elevated: var(--ads-off-bg);
+  --bg-grouped: var(--ads-bg);
+  --bg-grouped-secondary: var(--ads-bg-3);
+  --bg-grouped-tertiary: var(--ads-bg-2);
 
-  --label: var(--cds-fg);
-  --label-secondary: var(--cds-fg-3);
-  --label-tertiary: color-mix(in srgb, var(--cds-fg) 30%, transparent);
-  --label-quaternary: color-mix(in srgb, var(--cds-fg) 18%, transparent);
+  --label: var(--ads-fg);
+  --label-secondary: var(--ads-fg-3);
+  --label-tertiary: color-mix(in srgb, var(--ads-fg) 30%, transparent);
+  --label-quaternary: color-mix(in srgb, var(--ads-fg) 18%, transparent);
 
-  --fill: color-mix(in srgb, var(--cds-fg) 20%, transparent);
-  --fill-secondary: color-mix(in srgb, var(--cds-fg) 16%, transparent);
-  --fill-tertiary: color-mix(in srgb, var(--cds-fg) 12%, transparent);
-  --fill-quaternary: color-mix(in srgb, var(--cds-fg) 8%, transparent);
+  --fill: color-mix(in srgb, var(--ads-fg) 20%, transparent);
+  --fill-secondary: color-mix(in srgb, var(--ads-fg) 16%, transparent);
+  --fill-tertiary: color-mix(in srgb, var(--ads-fg) 12%, transparent);
+  --fill-quaternary: color-mix(in srgb, var(--ads-fg) 8%, transparent);
 
-  --separator: color-mix(in srgb, var(--cds-fg) 12%, transparent);
-  --separator-opaque: var(--cds-border-2);
+  --separator: color-mix(in srgb, var(--ads-fg) 12%, transparent);
+  /* Slate's second border is its card's color, so lines are its first. */
+  --separator-opaque: var(--ads-border);
   --overlay: rgb(0 0 0 / 0.2);
 
   --radius: 0.5rem;
@@ -175,9 +202,9 @@
   --radius-menu-item: 16px;
 }
 
-/* Dark themes use the darker Clay, as the system does. */
+/* On the dark theme Clay is the system's own, not its pressed shade. */
 .dark {
-  --clay: var(--cds-clay-dark);
+  --clay: var(--ads-clay);
   --overlay: rgb(0 0 0 / 0.48);
 }
 
@@ -233,7 +260,8 @@ html:has([data-claude-page]) {
  *
  * Horizontal, the list scrolls sideways when it runs out of room. It clips,
  * so it keeps 4px of padding (and the same negative margin) for a focus
- * outline. Vertical, it is a column from 1024px and a wrapping row below.
+ * outline. Vertical, it is a column from 1024px and a wrapping row below. In a list
+ * marked `data-underline` (the tabs) the current name is underlined too.
  */
 .nav-list {
   display: flex;
@@ -269,6 +297,11 @@ html:has([data-claude-page]) {
 .nav-link[aria-current] {
   color: var(--color-foreground);
   font-weight: 600;
+}
+.nav-list[data-underline] .nav-link[aria-current] .nav-label {
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
 }
 /* A name holds the width of its heavier, current form, so the list does not
    shift when the current entry changes. */
@@ -312,6 +345,145 @@ html:has([data-claude-page]) {
 }
 
 /*
+ * The docs' chapter minimap (ChapterNav): a mark per chapter down the
+ * window's right edge, each a short line in the muted color placed by where
+ * its chapter falls on the page; the chapter being read has a longer one in
+ * the text color. A mark's name sits to its left, in a chip of the page's
+ * color so it reads over whatever is under it: it shows under the pointer,
+ * on focus, for the current mark while the page scrolls, and for the current
+ * mark always from 1280px, where the window's margin has room for it. The
+ * whole map fades in once the bar is held at the top of the window.
+ *
+ * The map is a strip down the edge, 40px wide (24px on a phone, its
+ * margin), that opens under the pointer or with a mark focused from the
+ * keyboard: it widens to take in the names, every name shows, and the marks
+ * slide to their open places (`--y-open`, further apart than `--y`), so the
+ * names have room; the pointer can then move along the names and press one.
+ */
+.chapter-map {
+  position: fixed;
+  z-index: 20;
+  right: 0;
+  width: 40px;
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+.chapter-map[data-shown] {
+  opacity: 1;
+}
+.chapter-mark {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 40px;
+  height: 14px;
+  padding-right: 16px;
+  translate: 0 calc(var(--y) - 50%);
+  color: var(--color-muted-foreground);
+  transition: translate 0.25s cubic-bezier(0.2, 0, 0, 1);
+}
+.chapter-mark:hover,
+.chapter-mark[aria-current] {
+  color: var(--color-foreground);
+}
+.chapter-tick {
+  width: 10px;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+  transition: width 0.2s ease-out;
+}
+.chapter-mark:hover .chapter-tick,
+.chapter-mark[aria-current] .chapter-tick {
+  width: 18px;
+}
+.chapter-mark-name {
+  position: absolute;
+  right: 100%;
+  max-width: min(240px, calc(100vw - 64px));
+  overflow: hidden;
+  padding: 0 6px;
+  border-radius: 4px;
+  background: var(--color-background);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 17px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0;
+  translate: 4px 0;
+  pointer-events: none;
+  transition:
+    opacity 0.15s ease-out,
+    translate 0.15s ease-out;
+}
+.chapter-mark:is(:hover, :focus-visible) .chapter-mark-name,
+.chapter-map[data-scrolling] .chapter-mark[aria-current] .chapter-mark-name {
+  opacity: 1;
+  translate: none;
+}
+.chapter-map:has(:focus-visible) {
+  width: min(300px, calc(100vw - 32px));
+}
+.chapter-map:has(:focus-visible) .chapter-mark {
+  translate: 0 calc(var(--y-open) - 50%);
+}
+.chapter-map:has(:focus-visible) .chapter-mark-name {
+  opacity: 1;
+  translate: none;
+  pointer-events: auto;
+}
+/* (Only where there is a pointer that hovers: a tap leaves a phone's map
+   "hovered" until the next tap elsewhere.) */
+@media (hover: hover) {
+  .chapter-map:hover {
+    width: min(300px, calc(100vw - 32px));
+  }
+  .chapter-map:hover .chapter-mark {
+    translate: 0 calc(var(--y-open) - 50%);
+  }
+  .chapter-map:hover .chapter-mark-name {
+    opacity: 1;
+    translate: none;
+    pointer-events: auto;
+  }
+}
+/* On a phone the margin is 24px: the marks keep to it, clear of the
+   figures. */
+@media (max-width: 767px) {
+  .chapter-map {
+    width: 24px;
+  }
+  .chapter-mark {
+    padding-right: 6px;
+  }
+  .chapter-tick {
+    width: 8px;
+  }
+  .chapter-mark:hover .chapter-tick,
+  .chapter-mark[aria-current] .chapter-tick {
+    width: 14px;
+  }
+}
+@media (min-width: 1280px) {
+  .chapter-mark[aria-current] .chapter-mark-name {
+    opacity: 1;
+    translate: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chapter-mark {
+    transition: none;
+  }
+  .chapter-mark-name {
+    translate: none;
+  }
+}
+
+/*
  * While a distortion wave plays on an element (src/lib/wave.ts), nothing in it
  * transitions: the wave captures the element right after it changes, and a
  * color still easing to its new value would be captured mid-way.
@@ -321,6 +493,72 @@ html:has([data-claude-page]) {
 [data-waving] *::before,
 [data-waving] *::after {
   transition: none !important;
+}
+
+/*
+ * The waves switch (src/components/WaveSwitcher.tsx): a 20px ball of the
+ * wave's own eight colors swept round in hue order, softened so they melt
+ * into one another like the macOS beachball, under a gloss. Switching waves
+ * on turns it once; off, it turns back and goes gray.
+ */
+.wave-ball {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 9999px;
+  corner-shape: round;
+  /* A plain circle like the light switch's dot: the clip also holds in
+     Safari, where a rounded overflow can let a blurred, turning layer (the
+     colors below) out square. */
+  clip-path: circle(50%);
+  transition: filter 0.3s ease;
+}
+.wave-ball::before {
+  position: absolute;
+  inset: -4px;
+  background: conic-gradient(
+    from 200deg,
+    var(--ads-poppy),
+    var(--ads-clay),
+    var(--ads-pencil),
+    var(--ads-olive),
+    var(--ads-mineral),
+    var(--ads-sky),
+    var(--ads-plum),
+    var(--ads-fig),
+    var(--ads-poppy)
+  );
+  filter: blur(1.4px) saturate(1.35);
+  content: "";
+  transition: transform 0.9s cubic-bezier(0.2, 0, 0, 1);
+}
+.wave-ball[data-on]::before {
+  transform: rotate(1turn);
+}
+.wave-ball::after {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  corner-shape: round;
+  background:
+    radial-gradient(
+      circle at 32% 26%,
+      rgb(255 255 255 / 0.5),
+      rgb(255 255 255 / 0) 38%
+    ),
+    radial-gradient(circle, rgb(0 0 0 / 0) 62%, rgb(0 0 0 / 0.2));
+  content: "";
+}
+.wave-ball:not([data-on]) {
+  filter: grayscale(1);
+  opacity: 0.7;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wave-ball::before {
+    transition: none;
+  }
 }
 
 /*
@@ -354,6 +592,16 @@ html:has([data-claude-page]) {
 @utility max-w-cols-9 {
   @media (min-width: 768px) {
     max-width: calc((100% + 24px) * 0.75 - 24px);
+  }
+}
+/* The same, one column short of the full width: 11 of 12 columns, and 7 of
+   the 8 between 768px and 960px. The docs' captions under titles. */
+@utility max-w-cols-11 {
+  @media (min-width: 768px) {
+    max-width: calc((100% + 24px) * 0.875 - 24px);
+  }
+  @media (min-width: 961px) {
+    max-width: calc((100% + 24px) * 11 / 12 - 24px);
   }
 }
 

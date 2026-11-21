@@ -1,0 +1,29 @@
+/* The Anthropic.com page templates (src/components/work/anthropic/pages/
+   templates.tsx and its folder). A page sits in the Claude docs' template
+   window (`.cds-tpl`, which makes the window the container its sizes follow);
+   these are this system's own page rules. Each template's own styles follow
+   in the files imported at the end. */
+
+/* The page's margin, as the file's grid has it: 80px from a laptop up, 48 on
+   a tablet, 32 on a phone, and on a page dragged wider than the file's
+   1920px, whatever keeps the content to 1760px in the middle. */
+.cds-tpl .ads {
+  --ads-side: max(
+    clamp(32px, calc(32px + (100cqw - 390px) * 0.0539), 80px),
+    (100cqw - 1760px) / 2
+  );
+  --ads-vw: 100cqw;
+}
+.ads-page-section {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, calc(32px + (100cqw - 390px) * 0.036), 64px);
+  padding: clamp(48px, calc(48px + (100cqw - 390px) * 0.054), 96px)
+    var(--ads-side);
+}
+.ads-page-section[data-tone="2"] {
+  background: var(--ads-bg-2);
+}
+.ads-page-section[data-rule] {
+  border-top: 1px solid var(--ads-border-3);
+}

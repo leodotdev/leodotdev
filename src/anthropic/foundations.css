@@ -1,0 +1,313 @@
+/* The foundations of the Anthropic.com docs (pages/foundations/): the type
+   scale's figure, the editorial styles, the grid, the color swatches, and
+   the effects. */
+
+/* A switch above a figure: a row of the system's small buttons. */
+.ads-type-switch {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* A page of type whose fluid sizes follow its own width (the figure's,
+   as it is resized), as they would a window's. */
+.ads-type-scale,
+.ads-type-page {
+  container-type: inline-size;
+  --ads-vw: 100cqw;
+}
+.ads-type-scale {
+  display: flex;
+  flex-direction: column;
+}
+.ads-type-row {
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: 16px;
+  padding-block: 8px;
+  border-top: 1px solid var(--ads-border-3);
+}
+.ads-type-row:first-child {
+  border-top: 0;
+}
+.ads-type-row > [data-sample] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ads-type-name {
+  display: flex;
+  flex-direction: column;
+  font: 400 11px/16.5px var(--ads-mono);
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+}
+.ads-type-name > :last-child {
+  color: var(--ads-fg-3);
+}
+@container (max-width: 520px) {
+  .ads-type-row {
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+  }
+}
+
+/* Drop caps (Editorial/Drop Cap 1 to 3): Anthropic Serif Display Light
+   (light, its optical sizing picking the display cut at this size), about
+   78, 73 and 63px at 1920, each set with its body size
+   (Body 1, 2 and 3) and scaling with it. The cap sinks into the paragraph's
+   first lines. */
+.ads-drop-cap-1,
+.ads-drop-cap-2,
+.ads-drop-cap-3 {
+  float: left;
+  margin: 0.02em 0.2em 0 0;
+  font-family: var(--ads-serif);
+  font-weight: 300;
+  line-height: 1;
+}
+.ads-drop-cap-1 {
+  font-size: calc(
+    3.55 * clamp(20px, calc(20px + (var(--ads-vw) - 390px) * 0.00131), 22px)
+  );
+}
+.ads-drop-cap-2 {
+  font-size: calc(
+    3.65 * clamp(18px, calc(18px + (var(--ads-vw) - 390px) * 0.00131), 20px)
+  );
+}
+.ads-drop-cap-3 {
+  font-size: calc(
+    3.7 * clamp(16px, calc(16px + (var(--ads-vw) - 390px) * 0.00065), 17px)
+  );
+}
+.ads-drop-para {
+  max-width: 36rem;
+  margin-inline: auto;
+}
+
+/* Small caps (Editorial/Small Caps 1 to 3): the serif, bold, uppercase,
+   with 0.75px of tracking, about three quarters of the body size they open
+   (16.31, 14.89 and 12.73px with Body 1, 2 and 3 at 1920). */
+.ads-small-caps-1,
+.ads-small-caps-2,
+.ads-small-caps-3 {
+  font-family: var(--ads-serif);
+  font-weight: 700;
+  letter-spacing: 0.75px;
+  text-transform: uppercase;
+}
+.ads-small-caps-1 {
+  font-size: 0.741em;
+}
+.ads-small-caps-2 {
+  font-size: 0.745em;
+}
+.ads-small-caps-3 {
+  font-size: 0.749em;
+}
+
+/* The grid: 12 columns from Tablet MD up, 4 on Mobile SM, with 16px
+   gutters and margins of 80px from Laptop LG up, 48 on a tablet and 32 on a
+   phone, in a page at most 1920px wide. */
+.ads-grid-page {
+  container-type: inline-size;
+  height: 100%;
+  background: var(--ads-bg);
+}
+.ads-grid {
+  --cols: 4;
+  --margin: 32px;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: 16px;
+  max-width: 1920px;
+  height: 100%;
+  margin-inline: auto;
+  padding-inline: var(--margin);
+}
+.ads-grid > i {
+  background: var(--ads-bg-3);
+}
+.ads-grid > i:nth-child(n + 5) {
+  display: none;
+}
+.ads-grid-specs {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  gap: 16px;
+  padding: 4px 8px;
+  background: var(--ads-bg);
+  border-radius: var(--ads-radius-tinier);
+  translate: -50% -50%;
+  white-space: nowrap;
+}
+.ads-grid-specs b {
+  font-weight: 400;
+  color: var(--ads-fg-3);
+}
+.ads-grid-specs [data-at] {
+  display: none;
+}
+.ads-grid-specs [data-at="sm"] {
+  display: inline;
+}
+@container (min-width: 768px) {
+  .ads-grid {
+    --cols: 12;
+    --margin: 48px;
+  }
+  .ads-grid > i:nth-child(n + 5) {
+    display: block;
+  }
+  .ads-grid-specs [data-at] {
+    display: none;
+  }
+  .ads-grid-specs [data-at="md"] {
+    display: inline;
+  }
+}
+@container (min-width: 1280px) {
+  .ads-grid {
+    --margin: 80px;
+  }
+  .ads-grid-specs [data-at] {
+    display: none;
+  }
+  .ads-grid-specs [data-at="lg"] {
+    display: inline;
+  }
+}
+
+/* The breakpoints: the file's five frames side by side at one scale, each
+   with its name above and a few tiles laid out as at that size. */
+.ads-breakpoints {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2%;
+}
+.ads-breakpoint {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ads-fg-3);
+  text-align: left;
+  cursor: pointer;
+}
+.ads-breakpoint > span {
+  overflow-wrap: anywhere;
+  transition: color 0.15s ease;
+}
+.ads-breakpoint > div {
+  display: grid;
+  align-content: center;
+  padding: 0 5%;
+  border-radius: var(--ads-radius-tiniest);
+  background: var(--ads-bg-2);
+  box-shadow: inset 0 0 0 1px var(--ads-border-3);
+  transition: box-shadow 0.15s ease;
+}
+.ads-breakpoint > div > span {
+  display: grid;
+  gap: 3px;
+}
+.ads-breakpoint i {
+  aspect-ratio: 1;
+  background: var(--ads-bg-4);
+}
+.ads-breakpoint:is(:hover, [data-state="hover"]) > div {
+  box-shadow: inset 0 0 0 1px var(--ads-border);
+}
+.ads-breakpoint[aria-pressed="true"] {
+  color: var(--ads-fg);
+}
+.ads-breakpoint[aria-pressed="true"] > div {
+  box-shadow: inset 0 0 0 2px var(--ads-fg);
+}
+
+/* Space: a bar as thick as each unit. */
+.ads-space-bar {
+  display: block;
+  width: 100%;
+  background: var(--ads-fg-2);
+}
+
+/* Effects: a card lifted off the page, and the corner of each radius. */
+.ads-lift {
+  box-shadow: var(--ads-shadow-lift);
+}
+.ads-radius {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ads-radius > div {
+  border-top: 2px solid var(--ads-fg-2);
+  border-left: 2px solid var(--ads-fg-2);
+  background: var(--ads-bg-2);
+}
+
+/* The effect styles, each on a sample shaped like a medium button:
+   Secondary and Tertiary Hover are 2px rings of the button's own border
+   color; Focus Outline Ring is a 2px ring of the focus color 4px out, and
+   its Alt 2px out, each with the page's color in the gap. */
+.ads-effect {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 24px;
+  border: 1px solid var(--ads-secondary-border);
+  border-radius: 10px;
+  background: var(--ads-secondary-bg);
+  color: var(--ads-secondary-fg);
+  font: var(--ads-secondary-weight) 17px/26px var(--ads-sans);
+  white-space: nowrap;
+  transition: box-shadow 0.15s ease;
+}
+.ads-effect[data-variant="tertiary"] {
+  border-color: var(--ads-tertiary-border);
+  background: var(--ads-tertiary-bg);
+  color: var(--ads-tertiary-fg);
+  font-weight: var(--ads-tertiary-weight);
+}
+.ads-effect[data-variant="primary"] {
+  border-color: transparent;
+  background: var(--ads-primary-bg);
+  color: var(--ads-primary-fg);
+  font-weight: var(--ads-primary-weight);
+}
+.ads-effect[data-effect="secondary-hover"]:is(
+    :hover,
+    [data-state="hover"],
+    [data-on]
+  ) {
+  box-shadow: 0 0 0 2px var(--ads-secondary-border);
+}
+.ads-effect[data-effect="tertiary-hover"]:is(
+    :hover,
+    [data-state="hover"],
+    [data-on]
+  ) {
+  box-shadow: 0 0 0 2px var(--ads-tertiary-border);
+}
+.ads-effect[data-effect="focus"]:is(:focus-visible, [data-on]) {
+  outline: none;
+  box-shadow:
+    0 0 0 4px var(--ads-bg),
+    0 0 0 6px var(--ads-focus);
+}
+.ads-effect[data-effect="focus-alt"]:is(:focus-visible, [data-on]) {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--ads-bg),
+    0 0 0 4px var(--ads-focus);
+}

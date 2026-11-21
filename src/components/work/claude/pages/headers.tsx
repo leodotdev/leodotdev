@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { Fragment, useContext, useRef, useState } from "react"
 import {
   TbArrowUp,
   TbBrandInstagram,
@@ -11,6 +11,8 @@ import {
   TbPencil,
   TbX,
 } from "react-icons/tb"
+import { cn } from "@/lib/utils"
+import { RevealContext } from "@/components/work/claude/reveal"
 import { DemoCursor } from "@/components/work/claude/demo-cursor"
 import { ClaudeLogo } from "@/components/work/claude/logo"
 import { Resizable } from "@/components/work/claude/resizable"
@@ -34,31 +36,73 @@ const SIZES = [
 
 type Size = (typeof SIZES)[number][0]
 
-function Header({
+export function Header({
   size,
   align = "center",
   bare = false,
+  title = HEADLINE,
+  subtitle = SUBTITLE,
+  pictogram = PICTOGRAM,
+  actions,
 }: {
   size: Size
   align?: "center" | "left"
   /** The headline and subtitle alone, without the pictogram and buttons. */
   bare?: boolean
+  /** A page's own words and picture (the docs' figures use the file's). */
+  title?: string
+  subtitle?: string | null
+  pictogram?: string | null
+  /** A page's own buttons; null for none. The file's two by default. */
+  actions?: React.ReactNode
 }) {
-  const [, headline, subtitle] = SIZES.find(([id]) => id === size) ?? SIZES[0]
+  const [, headline, body] = SIZES.find(([id]) => id === size) ?? SIZES[0]
+  // On a template page the headline is written a word at a time, so it can
+  // come in by its words as the site's do (reveal.ts).
+  const words = useContext(RevealContext) ? title.split(/\s+/) : null
   return (
     <div className="cds-header" data-size={size} data-align={align}>
       <div className="cds-header-body">
-        {!bare && <img src={PICTOGRAM} alt="" />}
-        <h3 className={headline}>{HEADLINE}</h3>
-        <p className={subtitle}>{SUBTITLE}</p>
-        {!bare && (
+        {!bare && pictogram && <img src={pictogram} alt="" />}
+        {words ? (
+          <h3
+            className={cn(headline, "cds-words")}
+            aria-label={title}
+            style={
+              {
+                // The words are spread over a fifth of a second.
+                "--word-stagger": `${words.length > 1 ? 0.2 / (words.length - 1) : 0}s`,
+              } as React.CSSProperties
+            }
+          >
+            {words.map((word, i) => (
+              <Fragment key={i}>
+                {i > 0 && " "}
+                <span
+                  aria-hidden
+                  style={{ "--word-index": i } as React.CSSProperties}
+                >
+                  {word}
+                </span>
+              </Fragment>
+            ))}
+          </h3>
+        ) : (
+          <h3 className={headline}>{title}</h3>
+        )}
+        {subtitle && <p className={body}>{subtitle}</p>}
+        {!bare && actions !== null && (
           <div className="cds-header-actions">
-            <Button size="large" icon="none">
-              Primary CTA
-            </Button>
-            <Button size="large" variant="secondary" icon="none">
-              Secondary CTA
-            </Button>
+            {actions ?? (
+              <>
+                <Button size="large" icon="none">
+                  Primary CTA
+                </Button>
+                <Button size="large" variant="secondary" icon="none">
+                  Secondary CTA
+                </Button>
+              </>
+            )}
           </div>
         )}
       </div>
@@ -213,7 +257,7 @@ const EXAMPLES = [
  * one writes it in the field, ready to send. Here sending only clears the
  * field: the figure goes nowhere.
  */
-function FooterPrompt({ overlay = false }: { overlay?: boolean }) {
+export function FooterPrompt({ overlay = false }: { overlay?: boolean }) {
   const [open, setOpen] = useState<number | null>(null)
   // The field keeps its own text, so the demo cursor can type in it too.
   const field = useRef<HTMLInputElement>(null)
@@ -330,7 +374,7 @@ function Examples({
   )
 }
 
-function Footer({ minimal = false }: { minimal?: boolean }) {
+export function Footer({ minimal = false }: { minimal?: boolean }) {
   return (
     // The links are for show: none of them goes anywhere.
     <div
@@ -408,7 +452,8 @@ const PROMPT_DEMO: Array<DemoStep> = [
 // On the footer it writes in the field and sends it, then looks over a link
 // in each column (the others dim) and the social icons. Then it narrows the
 // footer until its links fold into two columns under the logo, looks at one
-// there, and lets it out again.
+// there, scrolls down the footer and back (narrow, it is longer than its
+// figure), and lets it out again.
 const FOOTER_DEMO: Array<DemoStep> = [
   { on: ".cds-input", type: "What can Claude do?" },
   { on: ".cds-input .cds-btn", click: true },
@@ -418,7 +463,12 @@ const FOOTER_DEMO: Array<DemoStep> = [
   { on: ".cds-footer-social a", nth: 1, rest: 800 },
   { on: ".cds-resize-grip", nth: 1, drag: 600 },
   { on: ".cds-resize-grip", nth: 1, drag: 390 },
-  { on: link, text: "Claude Code", rest: 700 },
+  // Narrow, the footer is longer than its figure: down it, and back up.
+  { on: ".cds-footer-window", scroll: 60 },
+  { on: link, rest: 700 },
+  { on: ".cds-footer-window", scroll: 100 },
+  { on: ".cds-footer-social a", nth: 1, rest: 700 },
+  { on: ".cds-footer-window", scroll: 0 },
   { on: ".cds-chip", text: "Write", click: true },
   { on: ".cds-menu-header .cds-btn", click: true, rest: 400 },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
@@ -435,24 +485,30 @@ const MINIMAL_DEMO: Array<DemoStep> = [
 export function HeadersDoc() {
   return (
     <>
-      <Section title="Headers">
-        <Specimen caption="One header in five sizes; this is the largest, P1, centered.">
+      <Section
+        title="Headers"
+        caption="One header in five sizes; these are the largest, P1, centered, and P3, aligned left. The buttons and the pictogram can be turned off."
+      >
+        <Specimen figure>
           <DemoCursor steps={HEADER_DEMO}>
             <Header size="p1" />
           </DemoCursor>
         </Specimen>
-        <Specimen caption="P3, aligned left. The buttons and the pictogram can be turned off.">
+        <Specimen figure>
           <DemoCursor steps={HEADER_DEMO}>
             <Header size="p3" align="left" />
           </DemoCursor>
         </Specimen>
       </Section>
 
-      <Section title="Header Sizes">
+      <Section
+        title="Header Sizes"
+        caption="Five sizes, two alignments, and two devices: 20 variants."
+      >
         {/* The rules take the figure's own border color, not the page's:
             the two differ once a theme is picked for the figures. */}
         <Specimen
-          caption="Five sizes, two alignments, and two devices: 20 variants."
+          figure
           className="divide-y divide-[color:var(--cds-border-3)] [--cds-header-pad:32px]"
         >
           {SIZES.map(([size]) => (
@@ -461,11 +517,11 @@ export function HeadersDoc() {
         </Specimen>
       </Section>
 
-      <Section title="Footer Prompt Input">
-        <Specimen
-          theme="dark-3"
-          caption="A glimpse of Claude from any page: example prompts guide people into other ways to start."
-        >
+      <Section
+        title="Footer Prompt Input"
+        caption="A glimpse of Claude from any page: example prompts guide people into other ways to start."
+      >
+        <Specimen theme="dark-3" figure>
           {/* Room under the field for the open list, so the figure keeps
               its height. */}
           <DemoCursor
@@ -477,11 +533,11 @@ export function HeadersDoc() {
         </Specimen>
       </Section>
 
-      <Section title="Footer">
-        <Specimen
-          theme="dark-3"
-          caption="Prompt input sends text to Claude, starting a session in the web app."
-        >
+      <Section
+        title="Footer"
+        caption="Prompt input sends text to Claude, starting a session in the web app."
+      >
+        <Specimen theme="dark-3" figure>
           {/* Room all round, as on the other resizable figures: at the
               sides for the grips, and above and below so the footer's own
               background does not cover the figure's border. */}
@@ -497,7 +553,7 @@ export function HeadersDoc() {
               sizes={[["Desktop"], ["Mobile", 759]]}
               className="h-[744px]"
             >
-              <div className="h-full [scrollbar-width:none] overflow-y-auto">
+              <div className="cds-footer-window h-full [scrollbar-width:none] overflow-y-auto">
                 <Footer />
               </div>
             </Resizable>
@@ -505,11 +561,11 @@ export function HeadersDoc() {
         </Specimen>
       </Section>
 
-      <Section title="Minimal Footer">
-        <Specimen
-          caption="A second footer, Minimal, for desktop and mobile."
-          theme="dark-3"
-        >
+      <Section
+        title="Minimal Footer"
+        caption="A second footer, Minimal, for desktop and mobile."
+      >
+        <Specimen figure theme="dark-3">
           <DemoCursor steps={MINIMAL_DEMO} className="p-6 md:p-8">
             <Footer minimal />
           </DemoCursor>

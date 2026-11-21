@@ -75,7 +75,9 @@ type Box = {
 // padding, and Clay for the gaps and margins between things.
 const TOKEN = { pad: "--cds-switch-blue", gap: "--cds-clay" } as const
 // Text styles and the docs' own helpers: `cds-` classes that are not components.
-const NOT_A_COMPONENT = /^cds-(display|headline|body|caption|micro|art|demo)/
+// The Anthropic.com docs' figures use `ads-` classes the same way.
+const NOT_A_COMPONENT =
+  /^[ac]ds-(display|headline|heading|body|caption|micro|art|demo|small-caps|drop-cap)/
 const px = (value: string) => parseFloat(value) || 0
 
 /**
@@ -137,7 +139,7 @@ function measure(): { boxes: Array<Box>; edges: Array<Edge> } {
       if (known !== undefined) return known
       const part =
         [...el.classList].some(
-          (name) => name.startsWith("cds-") && !NOT_A_COMPONENT.test(name)
+          (name) => /^[ac]ds-/.test(name) && !NOT_A_COMPONENT.test(name)
         ) || inComponent(el.parentElement ?? figure)
       parts.set(el, part)
       return part

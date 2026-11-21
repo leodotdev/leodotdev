@@ -3,6 +3,7 @@ import { flushSync } from "react-dom"
 import { TbArrowUpRight, TbCheck, TbCopy, TbChevronDown } from "react-icons/tb"
 import { BackButtonExit } from "@/components/BackButton"
 import { ThemeSwitcher } from "@/components/ThemeSwitcher"
+import { WaveSwitcher } from "@/components/WaveSwitcher"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { wave } from "@/lib/wave"
@@ -149,6 +150,7 @@ export function Navigation({ children, className }: NavigationProps) {
         */}
         <ContactMenu />
         <ThemeSwitcher />
+        <WaveSwitcher />
         {/* The grid and columns switch is hidden for now. To show it again,
             put this back and import GridSwitcher from
             "@/components/GridSwitcher":

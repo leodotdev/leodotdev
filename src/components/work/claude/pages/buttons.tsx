@@ -35,11 +35,8 @@ const LINKS_DEMO: Array<DemoStep> = [
 export function ButtonsDoc() {
   return (
     <>
-      <Section title="Buttons">
-        <Specimen
-          caption="One button, 48 variants."
-          className="overflow-x-auto"
-        >
+      <Section title="Buttons" caption="One button, 48 variants.">
+        <Specimen figure className="max-lg:overflow-x-auto">
           <DemoCursor
             steps={GRID_DEMO}
             className="grid w-max min-w-full grid-cols-[repeat(6,auto)] items-center justify-center gap-x-4 gap-y-5 p-6"
@@ -67,8 +64,11 @@ export function ButtonsDoc() {
         </Specimen>
       </Section>
 
-      <Section title="States & Themes">
-        <Specimen caption="We wanted a button at rest to hold “a calm, consistent tone.”">
+      <Section
+        title="States & Themes"
+        caption="We wanted a button at rest to hold “a calm, consistent tone.” Labels run thinner on dark backgrounds."
+      >
+        <Specimen figure>
           <div className="grid justify-center gap-x-16 gap-y-6 p-6 sm:grid-cols-[repeat(3,auto)] md:p-8">
             {(
               [
@@ -91,7 +91,7 @@ export function ButtonsDoc() {
             ))}
           </div>
         </Specimen>
-        <ThemeStrip caption="Labels run thinner on dark backgrounds.">
+        <ThemeStrip figure>
           {VARIANTS.map((name) => (
             <Button key={name} variant={name} size="small" />
           ))}

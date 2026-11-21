@@ -1,4 +1,6 @@
 import { useEffect, useRef } from "react"
+import { createPortal } from "react-dom"
+import { useFrame } from "@/components/work/claude/frame"
 import { cn } from "@/lib/utils"
 
 /**
@@ -6,7 +8,11 @@ import { cn } from "@/lib/utils"
  * on it as if hovering, and perhaps click it.
  */
 export type DemoStep = {
-  /** A selector inside the figure. A step whose element is missing or hidden is skipped. */
+  /**
+   * A selector inside the figure. A step whose element is missing, hidden,
+   * disabled (`aria-disabled`), or out of the figure's sight (scrolled out of a page that scrolls
+   * inside it) is skipped; of several matches, the first in sight is used.
+   */
   on: string
   /** Narrows `on` to the element whose text starts with this. */
   text?: string
@@ -20,9 +26,16 @@ export type DemoStep = {
   /**
    * Drag it to this value. For a slider-like control (the grips of a
    * `Resizable`): the value moves there from the control's `aria-valuenow`,
-   * sent to it as `demo-drag` events, and the cursor rides along.
+   * sent to it as `demo-drag` events, and the cursor rides along. A drag
+   * to where the control already is is skipped.
    */
   drag?: number
+  /**
+   * Scroll it, as a wheel would, to this far down what it holds, from 0 to
+   * 100, with the cursor resting on it. Skipped where it has nothing to
+   * scroll.
+   */
+  scroll?: number
   /**
    * Type this into it: a text field, or a box with one inside. The field is
    * not really focused (that would take the visitor's focus); its box is
@@ -33,7 +46,9 @@ export type DemoStep = {
   type?: string
   /**
    * Where on it to rest, as fractions of its width and height. Without this
-   * the cursor picks a spot a little off its middle.
+   * the cursor picks a spot a little off its middle. With `click`, the click
+   * carries that spot (`clientX`, `clientY`), as a real one does, for a
+   * control that acts on where it is pressed, like an audio player's bar.
    */
   at?: [x: number, y: number]
   /**
@@ -48,14 +63,62 @@ export type DemoStep = {
 
 // The cursor's shapes: the system's arrow, and what a real pointer turns into
 // over something to press, a text field and a control dragged sideways. The
-// pictures are macOS-style cursors from the apple_cursor project (GPL-3.0;
-// public/cursors, with their license). Their size and hot spots are set in
-// src/claude-ds.css.
+// pictures are vectors of the macOS cursors from the Figma Community file
+// "Vector macOS cursors" (Leo, 2026-11-19: "lets use the cursors from
+// here"), kept as files in public/cursors with a note of their source. Their
+// sizes and hot spots are set in src/claude-ds.css. (Two sets came before
+// them that day: macOS-style pictures with a soft shadow from the
+// apple_cursor project, and a flat set from the site's icons.)
 const SHAPES = ["arrow", "pointer", "text", "ew-resize"] as const
 type Shape = (typeof SHAPES)[number]
 
 const sleep = (ms: number) => new Promise((done) => setTimeout(done, ms))
-const ease = "cubic-bezier(0.45, 0, 0.2, 1)"
+
+/** A CSS `cubic-bezier()` easing as a function of time (0 to 1). */
+const bezier = (x1: number, y1: number, x2: number, y2: number) => {
+  const at = (s: number, a: number, b: number) =>
+    3 * (1 - s) ** 2 * s * a + 3 * (1 - s) * s ** 2 * b + s ** 3
+  return (t: number) => {
+    let lo = 0
+    let hi = 1
+    let s = t
+    for (let i = 0; i < 24; i++) {
+      const x = at(s, x1, x2)
+      if (Math.abs(x - t) < 1e-5) break
+      if (x < t) lo = s
+      else hi = s
+      s = (lo + hi) / 2
+    }
+    return at(s, y1, y2)
+  }
+}
+const ease = bezier(0.45, 0, 0.2, 1)
+const easeOut = bezier(0, 0, 0.58, 1)
+
+/**
+ * Calls `draw` once a frame for `ms`, with the time as a fraction (0 to 1),
+ * until it is done or `live` says to stop. The cursor is moved this way, from
+ * script, not with animations: an element being animated is drawn on a layer
+ * of its own, and in Safari that lifts the scaled figure around it onto one
+ * too, so the figure's text was drawn a fraction of a pixel off while the
+ * cursor moved, and came back when it stopped.
+ */
+const everyFrame = (
+  ms: number,
+  draw: (t: number) => void,
+  live: () => boolean
+) =>
+  new Promise<void>((done) => {
+    const t0 = performance.now()
+    const tick = (now: number) => {
+      if (!live()) return done()
+      const t = Math.min(1, (now - t0) / ms)
+      draw(t)
+      if (t < 1) requestAnimationFrame(tick)
+      else done()
+    }
+    requestAnimationFrame(tick)
+  })
 
 /**
  * A small cursor that tries a figure out by itself: it travels between the
@@ -75,6 +138,12 @@ const ease = "cubic-bezier(0.45, 0, 0.2, 1)"
  * opens on hover opens. Its clicks are real ones. It changes shape as a real
  * pointer does: a hand over a button or a link, an I-beam in a text field,
  * sideways arrows on a grip.
+ *
+ * In a figure with a frame (a `figure` `Specimen`: `FrameContext`) the
+ * cursor is drawn in the frame and not in the figure's box, which clips: so
+ * it can go to the grips on the figure's border, which are in the frame
+ * too, and ride one as the figure narrows. The frame is then also where the
+ * visitor is watched for, so a pointer on a grip counts as in the figure.
  */
 export function DemoCursor({
   steps,
@@ -87,19 +156,25 @@ export function DemoCursor({
 }) {
   const figure = useRef<HTMLDivElement>(null)
   const cursor = useRef<HTMLSpanElement>(null)
+  const frame = useFrame().el
 
   useEffect(() => {
     const root = figure.current
     const tip = cursor.current
     if (!root || !tip) return
+    // The cursor's ground: where it is drawn and measured from, and where
+    // the visitor is watched for.
+    const stage = frame ?? root
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
     const arrow = tip.firstElementChild
     if (!arrow) return
 
-    // Where the cursor is, in the figure's own (unscaled) pixels.
+    // Where the cursor is, in the stage's own (unscaled) pixels.
     let at = { x: 0, y: 0 }
     let shown = false
-    let motion: Animation | null = null
+    // Each trip holds the number it started with; a newer number (another
+    // trip, or the cursor put at rest) ends it.
+    let trip = 0
     let hovered: Element | null = null
     // Each run holds the number it started with; a newer number ends it.
     let run = 0
@@ -111,7 +186,7 @@ export function DemoCursor({
     let comeback = 0
 
     const scale = () =>
-      root.getBoundingClientRect().width / (root.offsetWidth || 1)
+      stage.getBoundingClientRect().width / (stage.offsetWidth || 1)
 
     // The shape a real pointer would have over an element: a hand where its
     // style asks for one or it is a link, the sideways arrows on something
@@ -158,24 +233,81 @@ export function DemoCursor({
 
     /** A press: the arrow dips, and a ring spreads from its tip. */
     const press = async () => {
-      arrow.animate([{ scale: 1 }, { scale: 0.8, offset: 0.4 }, { scale: 1 }], {
-        duration: 260,
-        easing: ease,
-      })
-      tip.toggleAttribute("data-press", true)
-      await sleep(520)
-      tip.toggleAttribute("data-press", false)
+      // The dip is a transform: the `scale` property is the styles', which
+      // use it to draw the pictures at their true size in a scaled figure.
+      // The ring is the cursor's ::after, drawn from two properties.
+      const el = arrow as HTMLElement
+      void everyFrame(
+        260,
+        (t) => {
+          const k = ease(t)
+          const s =
+            k < 0.4 ? 1 - 0.2 * (k / 0.4) : 0.8 + 0.2 * ((k - 0.4) / 0.6)
+          el.style.transform = t < 1 ? `scale(${s})` : ""
+        },
+        () => true
+      )
+      await everyFrame(
+        500,
+        (t) => {
+          const k = easeOut(t)
+          tip.style.setProperty("--demo-ring-opacity", String(0.9 * (1 - k)))
+          tip.style.setProperty("--demo-ring-scale", String(0.3 + 1.2 * k))
+        },
+        () => true
+      )
+      tip.style.removeProperty("--demo-ring-opacity")
+      tip.style.removeProperty("--demo-ring-scale")
+      await sleep(20)
     }
 
+    // A step's element is looked for in the figure and, failing that, among
+    // what sits on the frame itself (the grips of a resizable figure).
     const find = (step: DemoStep) => {
       let skip = step.nth ?? 0
-      for (const el of root.querySelectorAll<HTMLElement>(step.on)) {
+      let found = root.querySelectorAll<HTMLElement>(step.on)
+      if (found.length === 0 && stage !== root)
+        found = stage.querySelectorAll<HTMLElement>(`:scope > ${step.on}`)
+      // What the figure shows: an element whose middle is outside it has
+      // been scrolled out of sight (a page scrolling inside the figure), and
+      // the cursor does not follow it out. The grips sit on the edge itself.
+      const sight = stage.getBoundingClientRect()
+      const slack = 16
+      for (const el of found) {
         if (step.text && !el.textContent.trim().startsWith(step.text)) continue
         const box = el.getBoundingClientRect()
         if (box.width === 0 || box.height === 0) continue
+        // A control with nowhere to go (a carousel's arrow at its end).
+        if (el.getAttribute("aria-disabled") === "true") continue
+        const x = box.left + box.width / 2
+        const y = box.top + box.height / 2
+        if (
+          x < sight.left - slack ||
+          x > sight.right + slack ||
+          y < sight.top - slack ||
+          y > sight.bottom + slack
+        )
+          continue
         if (skip-- === 0) return el
       }
       return null
+    }
+
+    /**
+     * Puts the cursor at a point to stay, on a whole pixel of the screen,
+     * ending any trip under way. (On its way it is between pixels, which is
+     * no matter while it moves; at rest the SVG pictures are drawn crisp.)
+     */
+    const rest = (x: number, y: number, opacity = 1) => {
+      trip++
+      const ground = stage.getBoundingClientRect()
+      const kx = ground.width / (stage.offsetWidth || 1) || 1
+      const ky = ground.height / (stage.offsetHeight || 1) || 1
+      const fine = window.devicePixelRatio || 1
+      const px = Math.round(x * kx * fine) / (kx * fine)
+      const py = Math.round(y * ky * fine) / (ky * fine)
+      tip.style.transform = `translate(${px}px, ${py}px)`
+      tip.style.opacity = String(opacity)
     }
 
     /**
@@ -191,31 +323,28 @@ export function DemoCursor({
       const bend = (Math.random() - 0.5) * 0.35 * length
       const mx = from.x + dx / 2 - (dy / (length || 1)) * bend
       const my = from.y + dy / 2 + (dx / (length || 1)) * bend
-      const frames: Array<Keyframe> = []
-      for (let i = 0; i <= 12; i++) {
-        const t = i / 12
-        const px = (1 - t) ** 2 * from.x + 2 * (1 - t) * t * mx + t ** 2 * x
-        const py = (1 - t) ** 2 * from.y + 2 * (1 - t) * t * my + t ** 2 * y
-        const lean = Math.sin(t * Math.PI) * Math.sign(dx || 1) * 8
-        frames.push({
-          transform: `translate(${px}px, ${py}px) rotate(${lean}deg)`,
-          opacity: shown ? opacity : t * opacity,
-        })
-      }
+      const wasShown = shown
       // On its way it is over nothing in particular: an arrow again.
       wear("arrow")
-      const next = tip.animate(frames, {
-        duration: brisk
-          ? Math.min(420, Math.max(220, length * 1.2))
-          : Math.min(900, Math.max(320, length * 2.2)),
-        easing: ease,
-        fill: "forwards",
-      })
-      motion?.cancel()
-      motion = next
+      const mine = ++trip
       at = { x, y }
       shown = opacity > 0
-      await next.finished.catch(() => {})
+      await everyFrame(
+        brisk
+          ? Math.min(420, Math.max(220, length * 1.2))
+          : Math.min(900, Math.max(320, length * 2.2)),
+        (time) => {
+          const t = ease(time)
+          const px = (1 - t) ** 2 * from.x + 2 * (1 - t) * t * mx + t ** 2 * x
+          const py = (1 - t) ** 2 * from.y + 2 * (1 - t) * t * my + t ** 2 * y
+          const lean = Math.sin(t * Math.PI) * Math.sign(dx || 1) * 8
+          tip.style.transform = `translate(${px}px, ${py}px) rotate(${lean}deg)`
+          tip.style.opacity = String(wasShown ? opacity : t * opacity)
+        },
+        () => trip === mine
+      )
+      // Arrived, and nothing newer has taken over: it rests.
+      if (trip === mine) rest(x, y, opacity)
     }
 
     /**
@@ -223,14 +352,14 @@ export function DemoCursor({
      * else one a little off its middle.
      */
     const pointOn = (el: Element, spot?: [number, number]) => {
-      const frame = root.getBoundingClientRect()
+      const ground = stage.getBoundingClientRect()
       const box = el.getBoundingClientRect()
       const k = scale()
       const fx = spot ? spot[0] : 0.4 + Math.random() * 0.25
       const fy = spot ? spot[1] : 0.5 + Math.random() * 0.2
       return {
-        x: (box.left - frame.left + box.width * fx) / k,
-        y: (box.top - frame.top + box.height * fy) / k,
+        x: (box.left - ground.left + box.width * fx) / k,
+        y: (box.top - ground.top + box.height * fy) / k,
       }
     }
 
@@ -250,13 +379,13 @@ export function DemoCursor({
       const live = () => mine === run
       // Comes in from somewhere in the left half of the figure, within the
       // part of the figure that is in the window.
-      const bounds = root.getBoundingClientRect()
+      const bounds = stage.getBoundingClientRect()
       const zoom = scale()
       const top = Math.max(0, -bounds.top) / zoom
       const bottom =
         Math.min(bounds.height, window.innerHeight - bounds.top) / zoom
       at = {
-        x: Math.random() * root.offsetWidth * 0.5,
+        x: Math.random() * stage.offsetWidth * 0.5,
         y: top + Math.random() * Math.max(0, bottom - top),
       }
       shown = false
@@ -267,6 +396,23 @@ export function DemoCursor({
           const open = el.getAttribute("aria-expanded") === "true"
           if (step.click === "open" && open) continue
           if (step.click === "close" && !open) continue
+          // Nothing to do: the control is where the drag would leave it,
+          // or the box has nothing to scroll, or is there already.
+          if (
+            step.drag !== undefined &&
+            Math.abs(
+              (Number(el.getAttribute("aria-valuenow")) || 0) - step.drag
+            ) < 1
+          )
+            continue
+          if (step.scroll !== undefined) {
+            const most = el.scrollHeight - el.clientHeight
+            if (
+              most <= 1 ||
+              Math.abs(el.scrollTop - (step.scroll / 100) * most) < 2
+            )
+              continue
+          }
           // Something to be gripped is taken by its exact middle.
           const point = pointOn(
             el,
@@ -286,10 +432,10 @@ export function DemoCursor({
             const from = Number(el.getAttribute("aria-valuenow")) || 0
             const to = step.drag
             const box = el.getBoundingClientRect()
-            const frame = root.getBoundingClientRect()
+            const ground = stage.getBoundingClientRect()
             const k = scale()
-            const fx = (at.x * k - (box.left - frame.left)) / (box.width || 1)
-            const fy = (at.y * k - (box.top - frame.top)) / (box.height || 1)
+            const fx = (at.x * k - (box.left - ground.left)) / (box.width || 1)
+            const fy = (at.y * k - (box.top - ground.top)) / (box.height || 1)
             el.setAttribute("data-dragging", "")
             const duration = Math.min(
               1600,
@@ -308,23 +454,13 @@ export function DemoCursor({
                   })
                 )
                 const b = el.getBoundingClientRect()
-                const f = root.getBoundingClientRect()
+                const f = stage.getBoundingClientRect()
                 const kk = scale()
                 at = {
                   x: (b.left - f.left + b.width * fx) / kk,
                   y: (b.top - f.top + b.height * fy) / kk,
                 }
-                const held = tip.animate(
-                  [
-                    {
-                      transform: `translate(${at.x}px, ${at.y}px)`,
-                      opacity: 1,
-                    },
-                  ],
-                  { duration: 0, fill: "forwards" }
-                )
-                motion?.cancel()
-                motion = held
+                rest(at.x, at.y)
                 if (t < 1) requestAnimationFrame(tick)
                 else done()
               }
@@ -333,6 +469,32 @@ export function DemoCursor({
             el.removeAttribute("data-dragging")
             if (!live()) return
             await sleep(700)
+            if (!live()) return
+          }
+          if (step.scroll !== undefined && el.isConnected) {
+            // A wheel's scroll: the cursor stays where it is, and what is
+            // under it moves.
+            const from = el.scrollTop
+            const to = (step.scroll / 100) * (el.scrollHeight - el.clientHeight)
+            const duration = Math.min(
+              1600,
+              Math.max(600, Math.abs(to - from) * 1.5)
+            )
+            hover(null)
+            await new Promise<void>((done) => {
+              const t0 = performance.now()
+              const tick = (time: number) => {
+                if (!live()) return done()
+                const t = Math.min(1, (time - t0) / duration)
+                const eased = t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2
+                el.scrollTop = from + (to - from) * eased
+                if (t < 1) requestAnimationFrame(tick)
+                else done()
+              }
+              requestAnimationFrame(tick)
+            })
+            if (!live()) return
+            await sleep(500)
             if (!live()) return
           }
           if (step.type !== undefined && el.isConnected) {
@@ -363,7 +525,23 @@ export function DemoCursor({
           }
           if (step.click && el.isConnected) {
             const pressed = press()
-            el.click()
+            if (step.at) {
+              // A click at the cursor's spot, where the step names one: a
+              // plain click() reports none (0, 0).
+              const ground = stage.getBoundingClientRect()
+              const k = scale()
+              el.dispatchEvent(
+                new MouseEvent("click", {
+                  bubbles: true,
+                  cancelable: true,
+                  composed: true,
+                  view: window,
+                  detail: 1,
+                  clientX: ground.left + at.x * k,
+                  clientY: ground.top + at.y * k,
+                })
+              )
+            } else el.click()
             await pressed
             if (!live()) return
           }
@@ -420,7 +598,7 @@ export function DemoCursor({
       decide()
     }
     const onFocusOut = (e: FocusEvent) => {
-      if (e.relatedTarget instanceof Node && root.contains(e.relatedTarget))
+      if (e.relatedTarget instanceof Node && stage.contains(e.relatedTarget))
         return
       visitor = false
       away = true
@@ -444,47 +622,52 @@ export function DemoCursor({
       { threshold: Array.from({ length: 21 }, (_, i) => i / 20) }
     )
     watcher.observe(root)
-    root.addEventListener("pointerenter", onEnter)
-    root.addEventListener("pointerleave", onLeave)
-    root.addEventListener("focusin", onFocusIn)
-    root.addEventListener("focusout", onFocusOut)
-    root.addEventListener("pointerdown", onDown, { passive: true })
-    root.addEventListener("click", onTap)
+    stage.addEventListener("pointerenter", onEnter)
+    stage.addEventListener("pointerleave", onLeave)
+    stage.addEventListener("focusin", onFocusIn)
+    stage.addEventListener("focusout", onFocusOut)
+    stage.addEventListener("pointerdown", onDown, { passive: true })
+    stage.addEventListener("click", onTap)
     return () => {
       run++
       window.clearTimeout(comeback)
       window.clearTimeout(turn)
-      root.removeEventListener("pointerdown", onDown)
-      root.removeEventListener("click", onTap)
+      stage.removeEventListener("pointerdown", onDown)
+      stage.removeEventListener("click", onTap)
       watcher.disconnect()
-      root.removeEventListener("pointerenter", onEnter)
-      root.removeEventListener("pointerleave", onLeave)
-      root.removeEventListener("focusin", onFocusIn)
-      root.removeEventListener("focusout", onFocusOut)
+      stage.removeEventListener("pointerenter", onEnter)
+      stage.removeEventListener("pointerleave", onLeave)
+      stage.removeEventListener("focusin", onFocusIn)
+      stage.removeEventListener("focusout", onFocusOut)
       hover(null)
       restore()
-      motion?.cancel()
+      trip++
+      tip.style.transform = ""
+      tip.style.opacity = ""
     }
-  }, [steps])
+  }, [steps, frame])
 
+  const tip = (
+    <span ref={cursor} aria-hidden className="cds-demo-cursor">
+      {/* Its shapes, one showing at a time, each placed so its hot spot
+          (the arrow's tip, the fingertip) is the cursor's point. */}
+      <span>
+        {SHAPES.map((shape) => (
+          <img
+            key={shape}
+            data-shape={shape}
+            src={`/cursors/${shape}.svg`}
+            alt=""
+            draggable={false}
+          />
+        ))}
+      </span>
+    </span>
+  )
   return (
     <div ref={figure} className={cn("relative", className)}>
       {children}
-      <span ref={cursor} aria-hidden className="cds-demo-cursor">
-        {/* Its shapes, one showing at a time, each placed so its hot spot
-            (the arrow's tip, the fingertip) is the cursor's point. */}
-        <span>
-          {SHAPES.map((shape) => (
-            <img
-              key={shape}
-              data-shape={shape}
-              src={`/cursors/${shape}.svg`}
-              alt=""
-              draggable={false}
-            />
-          ))}
-        </span>
-      </span>
+      {frame ? createPortal(tip, frame) : tip}
     </div>
   )
 }

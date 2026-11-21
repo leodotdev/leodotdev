@@ -4,6 +4,7 @@ import { TbPlayerPauseFilled, TbPlayerPlayFilled } from "react-icons/tb"
 // The film strip at the top of the Overview tab: short clips of the finished
 // site, streamed from Mux (HLS only: there are no MP4 files). Chrome and Safari
 // play HLS natively; a browser that cannot gets Mux's animated WebP instead.
+// A strip can hold still pictures too (the Anthropic overview's), from a URL.
 
 type Clip = {
   /** Mux playback id. */
@@ -12,6 +13,17 @@ type Clip = {
   ratio: number
   label: string
 }
+
+type Still = {
+  /** The picture's URL, on an image host that takes a `w` width parameter. */
+  src: string
+  /** Width over height. */
+  ratio: number
+  label: string
+}
+
+/** One tile of a strip: a clip or a still picture. */
+export type StripItem = Clip | Still
 
 const CLIPS: Array<Clip> = [
   {
@@ -58,6 +70,30 @@ const still = (id: string) =>
 const animated = (id: string) =>
   `https://image.mux.com/${id}/animated.webp?width=640&fps=15`
 
+// The tile's own box, as tall as the strip, as wide as its ratio makes it.
+const TILE =
+  "relative h-64 shrink-0 overflow-hidden rounded-[20px] bg-card outline outline-1 -outline-offset-1 outline-border md:h-96"
+
+/** A still picture, at the widths its tile can be drawn at. */
+function StillTile({ picture }: { picture: Still }) {
+  const sized = (w: number) => `${picture.src}?w=${w}&auto=format`
+  return (
+    <li className={TILE} style={{ aspectRatio: picture.ratio }}>
+      <img
+        src={sized(1280)}
+        srcSet={[640, 1280, 1920].map((w) => `${sized(w)} ${w}w`).join(", ")}
+        // As wide as the tile: 384px tall from 768px, 256px below.
+        sizes={`(min-width: 768px) ${Math.round(picture.ratio * 384)}px, ${Math.round(picture.ratio * 256)}px`}
+        alt={picture.label}
+        loading="lazy"
+        decoding="async"
+        draggable={false}
+        className="size-full object-cover"
+      />
+    </li>
+  )
+}
+
 // The site's hover wave is for its own chrome, not for a button on a video.
 const quiet = { "data-wave-hover": "off", "data-wave-manual": true } as const
 
@@ -102,10 +138,7 @@ function ClipTile({ clip }: { clip: Clip }) {
   }
 
   return (
-    <li
-      className="relative h-64 shrink-0 overflow-hidden rounded-[20px] bg-card outline outline-1 -outline-offset-1 outline-border md:h-96"
-      style={{ aspectRatio: clip.ratio }}
-    >
+    <li className={TILE} style={{ aspectRatio: clip.ratio }}>
       {mode === "video" ? (
         <>
           <video
@@ -171,9 +204,14 @@ const HOLD = 4000
  * the keyboard is inside the row and for a while after any touch, wheel or
  * drag, and never runs for a visitor who asked for reduced motion.
  */
-export function MediaStrip() {
+export function MediaStrip({
+  items = CLIPS,
+}: {
+  /** The strip's clips and pictures; the Claude docs' own by default. */
+  items?: Array<StripItem>
+} = {}) {
   const strip = useRef<HTMLUListElement>(null)
-  const [clips, setClips] = useState(CLIPS)
+  const [clips, setClips] = useState(items)
   // Where the drift has got to. Kept here, not read back each frame: a browser
   // may round scrollLeft, and a fraction of a pixel a frame would round away.
   const position = useRef(0)
@@ -198,16 +236,16 @@ export function MediaStrip() {
     // Keeps clips waiting on both sides: one move per call, and only of a
     // clip that is out of sight.
     const balance = () => {
-      const items = row.children
+      const tiles = row.children
       const max = row.scrollWidth - row.clientWidth
-      if (owed.current || max <= 0 || items.length < 2) return
+      if (owed.current || max <= 0 || tiles.length < 2) return
       const view = row.getBoundingClientRect()
-      const first = items[0].getBoundingClientRect()
-      const last = items[items.length - 1].getBoundingClientRect()
+      const first = tiles[0].getBoundingClientRect()
+      const last = tiles[tiles.length - 1].getBoundingClientRect()
       // A clip's width plus the gap after (or before) it.
-      const head = items[1].getBoundingClientRect().left - first.left
+      const head = tiles[1].getBoundingClientRect().left - first.left
       const tail =
-        last.right - items[items.length - 2].getBoundingClientRect().right
+        last.right - tiles[tiles.length - 2].getBoundingClientRect().right
       if (row.scrollLeft > (max + head) / 2 && first.right < view.left - 1) {
         owed.current = head
         setClips(([clip, ...rest]) => [...rest, clip])
@@ -393,9 +431,13 @@ export function MediaStrip() {
         aria-label="Clips of the finished site"
         className="bleed scrollbar-hide flex cursor-grab gap-3 overflow-x-auto select-none data-[dragging]:cursor-grabbing"
       >
-        {clips.map((clip) => (
-          <ClipTile key={clip.id} clip={clip} />
-        ))}
+        {clips.map((item) =>
+          "id" in item ? (
+            <ClipTile key={item.id} clip={item} />
+          ) : (
+            <StillTile key={item.src} picture={item} />
+          )
+        )}
       </ul>
       <figcaption className="text-xs text-muted-foreground">
         Videos from{" "}

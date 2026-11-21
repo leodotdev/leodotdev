@@ -1,0 +1,769 @@
+/*
+ * The Anthropic.com design system, as documented at /work/anthropic. These
+ * are the system's own tokens, read from its Figma file (dZm6io2r5P76ME9UMu5ddo:
+ * the "Primitives", "Themes", "Responsive", and "Effects" variable
+ * collections, and its text and effect styles), so the docs can show real
+ * colors and type. Its components apply inside an `.ads` box (a figure of
+ * the docs). Its palette is also the whole site's (Leo, 2026-11-20: "use the
+ * anthropic color system for our entire global site's palette"): the
+ * primitives sit on the root, and the site wears the White theme in light
+ * mode and Slate in dark mode (in :where(), so a box's own theme overrides
+ * them); styles.css builds the site's tokens on these.
+ *
+ * The typefaces are the same three as Claude.com's (Anthropic Sans, Serif,
+ * and Mono), declared once in claude-ds.css. Each area of the docs has a file
+ * of its own in src/anthropic/, imported from styles.css after this one.
+ */
+
+/* The primitives: the grays and the sixteen secondary colors, on the root
+   too, for the site. */
+:root,
+.ads {
+  --ads-gray-000: #ffffff;
+  --ads-gray-050: #faf9f5;
+  --ads-gray-100: #f5f4ed;
+  --ads-gray-150: #f0eee6;
+  --ads-gray-200: #e8e6dc;
+  --ads-gray-250: #dedcd1;
+  --ads-gray-300: #d1cfc5;
+  --ads-gray-350: #c2c0b6;
+  --ads-gray-400: #b0aea5;
+  --ads-gray-450: #9c9a92;
+  --ads-gray-500: #87867f;
+  --ads-gray-550: #73726c;
+  --ads-gray-600: #5e5d59;
+  --ads-gray-650: #4d4c48;
+  --ads-gray-700: #3d3d3a;
+  --ads-gray-750: #30302e;
+  --ads-gray-800: #262624;
+  --ads-gray-850: #1f1e1d;
+  --ads-gray-900: #1a1918;
+  --ads-gray-950: #141413;
+  --ads-gray-1000: #000000;
+  --ads-fig: #c46686;
+  --ads-orchid: #e5cada;
+  --ads-poppy: #de6262;
+  --ads-coral: #ebcece;
+  --ads-clay: #d97757;
+  --ads-clay-interactive: #c6613f;
+  --ads-peach: #ebc9b7;
+  --ads-pencil: #f0ac54;
+  --ads-oat: #e3dacc;
+  --ads-olive: #788c5d;
+  --ads-matcha: #ced6bf;
+  --ads-mineral: #629987;
+  --ads-cactus: #bcd1ca;
+  --ads-sky: #6a9bcc;
+  --ads-cloud: #c5d3e0;
+  --ads-plum: #827dbd;
+  --ads-heather: #cbcadb;
+
+  /* The fonts. The fallbacks only show while the files load. */
+  --ads-sans:
+    "Anthropic Sans", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --ads-serif:
+    "Anthropic Serif", ui-serif, "New York", "Iowan Old Style", Georgia, serif;
+  --ads-mono: "Anthropic Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Spacing and radii (the "Primitives" and "Effects" collections). */
+  --ads-radius-tiniest: 2px;
+  --ads-radius-tinier: 4px;
+  --ads-radius-tiny: 8px;
+  --ads-radius-smallest: 12px;
+  --ads-radius-smaller: 16px;
+  --ads-radius-small: 24px;
+  --ads-radius-big: 32px;
+  --ads-radius-bigger: 48px;
+  --ads-radius-biggest: 64px;
+  --ads-radius-huge: 96px;
+  --ads-radius-huger: 128px;
+  --ads-radius-hugest: 200px;
+  --ads-shadow-lift: 0 4px 24px rgb(0 0 0 / 0.05);
+
+  /* The grid: 12 columns (4 on a phone), 16px gutters, 80px margins (48 on
+     a tablet, 32 on a phone). */
+  --ads-gutter: 16px;
+  --ads-margin: 80px;
+
+  background: var(--ads-bg);
+  color: var(--ads-fg);
+  font-family: var(--ads-sans);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+
+  /* The shared figure chrome (the ring round a figure, the resize grips,
+     the skeleton bars, the spacing view) reads Claude's token names; here
+     they are this system's. */
+  --cds-ring: var(--ads-border-2);
+  --cds-border: var(--ads-border);
+  --cds-border-2: var(--ads-border-2);
+  --cds-border-3: var(--ads-border-3);
+  --cds-fg: var(--ads-fg);
+  --cds-fg-3: var(--ads-fg-3);
+  --cds-bg: var(--ads-bg);
+  --cds-focus: var(--ads-focus);
+}
+
+/* The width the fluid type sizes follow: the window's, on the outermost
+   `.ads` box only, so a themed box nested inside a figure keeps the width
+   its figure set (a scaled figure's own, below; a template page's window,
+   in src/anthropic/templates.css). No specificity, so either wins. */
+:where(.ads):not(:where(.ads .ads)) {
+  --ads-vw: 100vw;
+}
+
+/* The five themes (the "Themes" collection): Ivory, the default; Slate, the
+   dark one; Ivory Medium; White; and Image, for text over a dark picture.
+   The secondary and tertiary buttons' label colors are anthropic.com's
+   (read from the site on 2026-11-20), a step darker than the file's on the
+   light themes and the lightest gray on Slate; Image, which the site does
+   not have, keeps the file's. */
+.ads,
+.ads[data-theme="ivory"] {
+  --ads-bg: var(--ads-gray-050);
+  --ads-bg-2: var(--ads-gray-100);
+  --ads-bg-3: var(--ads-gray-200);
+  --ads-bg-4: var(--ads-gray-300);
+  --ads-border: var(--ads-gray-350);
+  --ads-border-2: var(--ads-gray-250);
+  --ads-border-3: var(--ads-gray-150);
+  --ads-border-image: rgb(20 20 19 / 0.05);
+  --ads-fg: var(--ads-gray-950);
+  --ads-fg-2: var(--ads-gray-750);
+  --ads-fg-3: var(--ads-gray-600);
+  --ads-fg-4: var(--ads-gray-500);
+  --ads-primary-bg: var(--ads-gray-950);
+  --ads-primary-fg: var(--ads-gray-050);
+  --ads-primary-weight: 480;
+  --ads-secondary-bg: var(--ads-gray-200);
+  --ads-secondary-fg: var(--ads-gray-750);
+  --ads-secondary-border: var(--ads-gray-250);
+  --ads-secondary-weight: 500;
+  --ads-tertiary-bg: var(--ads-gray-100);
+  --ads-tertiary-fg: var(--ads-gray-700);
+  --ads-tertiary-border: var(--ads-gray-200);
+  --ads-tertiary-weight: 500;
+  --ads-nav-fg: var(--ads-gray-700);
+  --ads-off-bg: var(--ads-gray-000);
+  --ads-off-border: var(--ads-gray-250);
+  --ads-off-hover: var(--ads-gray-600);
+  --ads-on-bg: var(--ads-gray-950);
+  --ads-on-hover: var(--ads-gray-600);
+  --ads-on-fg: var(--ads-gray-050);
+  --ads-focus: #154c92;
+  --ads-error: #e04343;
+  --ads-error-fg: #b53333;
+  --ads-art-filter: none;
+  color-scheme: light;
+}
+/* Slate: also the site in dark mode. */
+:where(html.dark),
+.ads[data-theme="slate"] {
+  --ads-bg: var(--ads-gray-950);
+  --ads-bg-2: var(--ads-gray-850);
+  --ads-bg-3: var(--ads-gray-750);
+  --ads-bg-4: var(--ads-gray-650);
+  --ads-border: var(--ads-gray-700);
+  --ads-border-2: var(--ads-gray-750);
+  --ads-border-3: var(--ads-gray-850);
+  --ads-border-image: rgb(250 249 245 / 0.05);
+  --ads-fg: var(--ads-gray-050);
+  --ads-fg-2: var(--ads-gray-400);
+  --ads-fg-3: var(--ads-gray-500);
+  --ads-fg-4: var(--ads-gray-600);
+  --ads-primary-bg: var(--ads-gray-050);
+  --ads-primary-fg: var(--ads-gray-950);
+  --ads-primary-weight: 500;
+  --ads-secondary-bg: var(--ads-gray-750);
+  --ads-secondary-fg: var(--ads-gray-050);
+  --ads-secondary-border: var(--ads-gray-650);
+  --ads-secondary-weight: 480;
+  --ads-tertiary-bg: var(--ads-gray-800);
+  --ads-tertiary-fg: var(--ads-gray-050);
+  --ads-tertiary-border: var(--ads-gray-700);
+  --ads-tertiary-weight: 480;
+  --ads-nav-fg: var(--ads-gray-050);
+  --ads-off-bg: var(--ads-gray-1000);
+  --ads-off-border: var(--ads-gray-650);
+  --ads-off-hover: var(--ads-gray-300);
+  --ads-on-bg: var(--ads-gray-050);
+  --ads-on-hover: var(--ads-gray-400);
+  --ads-on-fg: var(--ads-gray-950);
+  --ads-focus: #90c3f6;
+  --ads-error: #e04343;
+  --ads-error-fg: #e86b6b;
+  --ads-art-filter: invert(1) hue-rotate(180deg);
+  color-scheme: dark;
+}
+.ads[data-theme="ivory-medium"] {
+  --ads-bg: var(--ads-gray-150);
+  --ads-bg-2: var(--ads-gray-200);
+  --ads-bg-3: var(--ads-gray-250);
+  --ads-bg-4: var(--ads-gray-300);
+  --ads-border: var(--ads-gray-300);
+  --ads-border-2: var(--ads-gray-300);
+  --ads-border-3: var(--ads-gray-300);
+  --ads-border-image: rgb(20 20 19 / 0.05);
+  --ads-fg: var(--ads-gray-950);
+  --ads-fg-2: var(--ads-gray-700);
+  --ads-fg-3: var(--ads-gray-600);
+  --ads-fg-4: var(--ads-gray-500);
+  --ads-primary-bg: var(--ads-gray-950);
+  --ads-primary-fg: var(--ads-gray-050);
+  --ads-primary-weight: 480;
+  --ads-secondary-bg: var(--ads-gray-250);
+  --ads-secondary-fg: var(--ads-gray-750);
+  --ads-secondary-border: var(--ads-gray-300);
+  --ads-secondary-weight: 500;
+  --ads-tertiary-bg: var(--ads-gray-100);
+  --ads-tertiary-fg: var(--ads-gray-700);
+  --ads-tertiary-border: var(--ads-gray-300);
+  --ads-tertiary-weight: 500;
+  --ads-nav-fg: var(--ads-gray-700);
+  --ads-off-bg: var(--ads-gray-050);
+  --ads-off-border: var(--ads-gray-300);
+  --ads-off-hover: var(--ads-gray-650);
+  --ads-on-bg: var(--ads-gray-950);
+  --ads-on-hover: var(--ads-gray-600);
+  --ads-on-fg: var(--ads-gray-050);
+  --ads-focus: #154c92;
+  --ads-error: #e04343;
+  --ads-error-fg: #b53333;
+  --ads-art-filter: none;
+  color-scheme: light;
+}
+/* White: also the site in light mode. */
+:where(html:not(.dark)),
+.ads[data-theme="white"] {
+  --ads-bg: var(--ads-gray-000);
+  --ads-bg-2: var(--ads-gray-050);
+  --ads-bg-3: var(--ads-gray-150);
+  --ads-bg-4: var(--ads-gray-250);
+  --ads-border: var(--ads-gray-200);
+  --ads-border-2: var(--ads-gray-200);
+  --ads-border-3: var(--ads-gray-250);
+  --ads-border-image: rgb(20 20 19 / 0.05);
+  --ads-fg: var(--ads-gray-950);
+  --ads-fg-2: var(--ads-gray-750);
+  --ads-fg-3: var(--ads-gray-600);
+  --ads-fg-4: var(--ads-gray-500);
+  --ads-primary-bg: var(--ads-gray-950);
+  --ads-primary-fg: var(--ads-gray-050);
+  --ads-primary-weight: 480;
+  --ads-secondary-bg: var(--ads-gray-150);
+  --ads-secondary-fg: var(--ads-gray-700);
+  --ads-secondary-border: var(--ads-gray-250);
+  --ads-secondary-weight: 500;
+  --ads-tertiary-bg: var(--ads-gray-000);
+  --ads-tertiary-fg: var(--ads-gray-650);
+  --ads-tertiary-border: var(--ads-gray-200);
+  --ads-tertiary-weight: 500;
+  --ads-nav-fg: var(--ads-gray-650);
+  --ads-off-bg: var(--ads-gray-050);
+  --ads-off-border: var(--ads-gray-250);
+  --ads-off-hover: var(--ads-gray-600);
+  --ads-on-bg: var(--ads-gray-950);
+  --ads-on-hover: var(--ads-gray-600);
+  --ads-on-fg: var(--ads-gray-050);
+  --ads-focus: #154c92;
+  --ads-error: #e04343;
+  --ads-error-fg: #b53333;
+  --ads-art-filter: none;
+  color-scheme: light;
+}
+.ads[data-theme="image"] {
+  --ads-bg: var(--ads-gray-950);
+  --ads-bg-2: var(--ads-gray-850);
+  --ads-bg-3: var(--ads-gray-750);
+  --ads-bg-4: var(--ads-gray-650);
+  --ads-border: var(--ads-gray-050);
+  --ads-border-2: var(--ads-gray-100);
+  --ads-border-3: var(--ads-gray-150);
+  --ads-border-image: rgb(250 249 245 / 0.05);
+  --ads-fg: var(--ads-gray-050);
+  --ads-fg-2: var(--ads-gray-150);
+  --ads-fg-3: var(--ads-gray-200);
+  --ads-fg-4: var(--ads-gray-300);
+  --ads-primary-bg: var(--ads-gray-050);
+  --ads-primary-fg: var(--ads-gray-950);
+  --ads-primary-weight: 500;
+  --ads-secondary-bg: var(--ads-gray-150);
+  --ads-secondary-fg: var(--ads-gray-650);
+  --ads-secondary-border: var(--ads-gray-250);
+  --ads-secondary-weight: 480;
+  --ads-tertiary-bg: var(--ads-gray-950);
+  --ads-tertiary-fg: var(--ads-gray-050);
+  --ads-tertiary-border: var(--ads-gray-800);
+  --ads-tertiary-weight: 480;
+  --ads-nav-fg: var(--ads-gray-050);
+  --ads-off-bg: var(--ads-gray-950);
+  --ads-off-border: var(--ads-gray-650);
+  --ads-off-hover: var(--ads-gray-500);
+  --ads-on-bg: var(--ads-gray-050);
+  --ads-on-hover: var(--ads-gray-400);
+  --ads-on-fg: var(--ads-gray-950);
+  --ads-focus: #90c3f6;
+  --ads-error: #e04343;
+  --ads-error-fg: #e86b6b;
+  --ads-art-filter: invert(1) hue-rotate(180deg);
+  color-scheme: dark;
+}
+
+/* Type styles (the file's text styles, sans and serif), fluid between a
+   phone's width and 1920px as its "Responsive" collection gives them. */
+.ads-display-1 {
+  font-family: var(--ads-sans);
+  font-weight: 600;
+  font-size: clamp(48px, calc(48px + (var(--ads-vw) - 390px) * 0.02092), 80px);
+  line-height: clamp(
+    53.75px,
+    calc(53.75px + (var(--ads-vw) - 390px) * 0.01716),
+    80px
+  );
+}
+.ads-display-1-serif {
+  font-family: var(--ads-serif);
+  font-weight: 400;
+  font-size: clamp(48px, calc(48px + (var(--ads-vw) - 390px) * 0.02092), 80px);
+  line-height: clamp(
+    53.75px,
+    calc(53.75px + (var(--ads-vw) - 390px) * 0.01716),
+    80px
+  );
+}
+.ads-display-2 {
+  font-family: var(--ads-sans);
+  font-weight: 600;
+  font-size: clamp(40px, calc(40px + (var(--ads-vw) - 390px) * 0.02026), 71px);
+  line-height: clamp(
+    45.6px,
+    calc(45.6px + (var(--ads-vw) - 390px) * 0.01843),
+    73.8px
+  );
+}
+.ads-display-2-serif {
+  font-family: var(--ads-serif);
+  font-weight: 400;
+  font-size: clamp(40px, calc(40px + (var(--ads-vw) - 390px) * 0.02026), 71px);
+  line-height: clamp(
+    45.6px,
+    calc(45.6px + (var(--ads-vw) - 390px) * 0.01843),
+    73.8px
+  );
+}
+.ads-heading-1 {
+  font-family: var(--ads-sans);
+  font-weight: 600;
+  font-size: clamp(32px, calc(32px + (var(--ads-vw) - 390px) * 0.01895), 61px);
+  line-height: clamp(
+    37.1px,
+    calc(37.1px + (var(--ads-vw) - 390px) * 0.01882),
+    65.9px
+  );
+}
+.ads-heading-1-serif {
+  font-family: var(--ads-serif);
+  font-weight: 400;
+  font-size: clamp(32px, calc(32px + (var(--ads-vw) - 390px) * 0.01895), 61px);
+  line-height: clamp(
+    37.1px,
+    calc(37.1px + (var(--ads-vw) - 390px) * 0.01882),
+    65.9px
+  );
+}
+.ads-heading-2 {
+  font-family: var(--ads-sans);
+  font-weight: 600;
+  font-size: clamp(30px, calc(30px + (var(--ads-vw) - 390px) * 0.01176), 48px);
+  line-height: clamp(
+    36px,
+    calc(36px + (var(--ads-vw) - 390px) * 0.01163),
+    53.8px
+  );
+}
+.ads-heading-2-serif {
+  font-family: var(--ads-serif);
+  font-weight: 400;
+  font-size: clamp(30px, calc(30px + (var(--ads-vw) - 390px) * 0.01176), 48px);
+  line-height: clamp(
+    36px,
+    calc(36px + (var(--ads-vw) - 390px) * 0.01163),
+    53.8px
+  );
+}
+.ads-heading-3 {
+  font-family: var(--ads-sans);
+  font-weight: 700;
+  font-size: clamp(25px, calc(25px + (var(--ads-vw) - 390px) * 0.00719), 36px);
+  line-height: clamp(
+    30px,
+    calc(30px + (var(--ads-vw) - 390px) * 0.00719),
+    41px
+  );
+}
+.ads-heading-3-serif {
+  font-family: var(--ads-serif);
+  font-weight: 400;
+  font-size: clamp(25px, calc(25px + (var(--ads-vw) - 390px) * 0.00719), 36px);
+  line-height: clamp(
+    30px,
+    calc(30px + (var(--ads-vw) - 390px) * 0.00719),
+    41px
+  );
+}
+.ads-heading-4 {
+  font-family: var(--ads-sans);
+  font-weight: 700;
+  font-size: clamp(22px, calc(22px + (var(--ads-vw) - 390px) * 0.00392), 28px);
+  line-height: clamp(
+    27.5px,
+    calc(27.5px + (var(--ads-vw) - 390px) * 0.00399),
+    33.6px
+  );
+}
+.ads-heading-4-serif {
+  font-family: var(--ads-serif);
+  font-weight: 400;
+  font-size: clamp(22px, calc(22px + (var(--ads-vw) - 390px) * 0.00392), 28px);
+  line-height: clamp(
+    27.5px,
+    calc(27.5px + (var(--ads-vw) - 390px) * 0.00399),
+    33.6px
+  );
+}
+.ads-heading-5 {
+  font-family: var(--ads-sans);
+  font-weight: 700;
+  font-size: clamp(20px, calc(20px + (var(--ads-vw) - 390px) * 0.00131), 22px);
+  line-height: clamp(
+    25px,
+    calc(25px + (var(--ads-vw) - 390px) * 0.00163),
+    27.5px
+  );
+}
+.ads-heading-5-serif {
+  font-family: var(--ads-serif);
+  font-weight: 600;
+  font-size: clamp(20px, calc(20px + (var(--ads-vw) - 390px) * 0.00131), 22px);
+  line-height: clamp(
+    25px,
+    calc(25px + (var(--ads-vw) - 390px) * 0.00163),
+    27.5px
+  );
+}
+.ads-heading-6 {
+  font-family: var(--ads-sans);
+  font-weight: 700;
+  font-size: clamp(15px, calc(15px + (var(--ads-vw) - 390px) * 0.00131), 17px);
+  line-height: clamp(
+    19.5px,
+    calc(19.5px + (var(--ads-vw) - 390px) * 0.00163),
+    22px
+  );
+}
+.ads-heading-6-serif {
+  font-family: var(--ads-serif);
+  font-weight: 600;
+  font-size: clamp(15px, calc(15px + (var(--ads-vw) - 390px) * 0.00131), 17px);
+  line-height: clamp(
+    19.5px,
+    calc(19.5px + (var(--ads-vw) - 390px) * 0.00163),
+    22px
+  );
+}
+.ads-body-1 {
+  font-family: var(--ads-sans);
+  font-weight: 400;
+  font-size: clamp(20px, calc(20px + (var(--ads-vw) - 390px) * 0.00131), 22px);
+  line-height: clamp(
+    29px,
+    calc(29px + (var(--ads-vw) - 390px) * 0.00196),
+    32px
+  );
+}
+.ads-body-1-serif {
+  font-family: var(--ads-serif);
+  font-weight: 400;
+  font-size: clamp(20px, calc(20px + (var(--ads-vw) - 390px) * 0.00131), 22px);
+  line-height: clamp(
+    29px,
+    calc(29px + (var(--ads-vw) - 390px) * 0.00196),
+    32px
+  );
+}
+.ads-body-2 {
+  font-family: var(--ads-sans);
+  font-weight: 400;
+  font-size: clamp(18px, calc(18px + (var(--ads-vw) - 390px) * 0.00131), 20px);
+  line-height: clamp(
+    27px,
+    calc(27px + (var(--ads-vw) - 390px) * 0.00196),
+    30px
+  );
+}
+.ads-body-2-serif {
+  font-family: var(--ads-serif);
+  font-weight: 400;
+  font-size: clamp(18px, calc(18px + (var(--ads-vw) - 390px) * 0.00131), 20px);
+  line-height: clamp(
+    27px,
+    calc(27px + (var(--ads-vw) - 390px) * 0.00196),
+    30px
+  );
+}
+.ads-body-3 {
+  font-family: var(--ads-sans);
+  font-weight: 400;
+  font-size: clamp(16px, calc(16px + (var(--ads-vw) - 390px) * 0.00065), 17px);
+  line-height: clamp(
+    24.5px,
+    calc(24.5px + (var(--ads-vw) - 390px) * 0.00098),
+    26px
+  );
+}
+.ads-body-3-serif {
+  font-family: var(--ads-serif);
+  font-weight: 400;
+  font-size: clamp(16px, calc(16px + (var(--ads-vw) - 390px) * 0.00065), 17px);
+  line-height: clamp(
+    24.5px,
+    calc(24.5px + (var(--ads-vw) - 390px) * 0.00098),
+    26px
+  );
+}
+.ads-caption-1 {
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+}
+.ads-caption-2 {
+  font: 400 11px/16.5px var(--ads-sans);
+  letter-spacing: 0.2px;
+}
+.ads-caption-1-mono {
+  font: 400 13px/20px var(--ads-mono);
+  letter-spacing: 0.13px;
+  text-transform: uppercase;
+}
+.ads-caption-2-mono {
+  font: 400 11px/16.5px var(--ads-mono);
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+}
+/* The docs' own labels in a figure (`Cell`, `ThemeStrip`). */
+.ads-caption {
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+}
+.ads-micro {
+  font: 400 11px/16.5px var(--ads-mono);
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+}
+
+/* Button: three variants (Primary, Secondary, Tertiary), four formats (no
+   icon, an icon before or after the label, or the icon alone), two corners
+   (Squircle and Rounded-full), and four sizes (Tiny, Small, Medium,
+   Large): the file's 96 variants. The sizes, from its component set, with
+   the icons and gaps as anthropic.com ships them (read from the site on
+   2026-11-20): an icon alone, and one beside the label, 4px from it.
+
+               height  padding  radius  alone  beside  label
+     Tiny        18      12        6     16     14    11/16.5
+     Small       28      16        8     20     16    13/20
+     Medium      36      24       10     20     16    17/26
+     Large       44      32       12     24     20    20/30
+
+   An icon takes 4px off the padding on its side (a Tiny's trailing one
+   leaves 4px). Alone in a squircle the icon sits in a square (a Tiny's is
+   4px either side of it); alone in a rounded-full button, in a wider pill. */
+.ads-btn {
+  --btn-h: 36px;
+  --btn-pad: 24px;
+  --btn-r: 10px;
+  --btn-icon: 20px;
+  --btn-mark: 16px;
+  --btn-pill: 60px;
+  --btn-ring: var(--ads-primary-bg);
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: var(--btn-h);
+  padding: 0 var(--btn-pad);
+  border: 1px solid transparent;
+  border-radius: var(--btn-r);
+  background: var(--ads-primary-bg);
+  color: var(--ads-primary-fg);
+  font: var(--ads-primary-weight) 17px/26px var(--ads-sans);
+  letter-spacing: 0;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: 0 solid transparent;
+  outline-offset: 0;
+  transition-duration: 0.2s;
+  transition-property:
+    background-color, color, outline-width, outline-offset, outline-color;
+  transition-timing-function: ease-in-out;
+}
+.ads-btn svg {
+  width: var(--btn-icon);
+  height: var(--btn-icon);
+  flex: none;
+}
+.ads-btn[data-size="tiny"] {
+  --btn-h: 18px;
+  --btn-pad: 12px;
+  --btn-r: 6px;
+  --btn-icon: 16px;
+  --btn-mark: 14px;
+  --btn-pill: 28px;
+  gap: 8px;
+  font-size: 11px;
+  line-height: 16.5px;
+  letter-spacing: 0.2px;
+}
+.ads-btn[data-size="small"] {
+  --btn-h: 28px;
+  --btn-pad: 16px;
+  --btn-r: 8px;
+  --btn-icon: 20px;
+  --btn-pill: 40px;
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.13px;
+}
+.ads-btn[data-size="large"] {
+  --btn-h: 44px;
+  --btn-pad: 32px;
+  --btn-r: 12px;
+  --btn-icon: 24px;
+  --btn-mark: 20px;
+  --btn-pill: 84px;
+  font-size: 20px;
+  line-height: 30px;
+}
+/* The file's squircle is a corner with 60% smoothing, which reaches further
+   along each side than a plain arc of its radius. CSS's squircle at the same
+   radius reads tighter, so where it is drawn the radius is a quarter more. */
+.ads-btn,
+.ads-btn[data-corner="squircle"] {
+  corner-shape: round;
+}
+@supports (corner-shape: squircle) {
+  .ads-btn:not([data-corner="round"]) {
+    border-radius: calc(var(--btn-r) * 1.25);
+    corner-shape: squircle;
+  }
+}
+.ads-btn[data-corner="round"] {
+  border-radius: 999px;
+  corner-shape: round;
+}
+.ads-btn[data-icon="leading"] {
+  padding-left: calc(var(--btn-pad) - 4px);
+}
+.ads-btn[data-icon="trailing"] {
+  padding-right: calc(var(--btn-pad) - 4px);
+}
+.ads-btn[data-icon="trailing"][data-size="tiny"] {
+  padding-right: 4px;
+}
+.ads-btn:is([data-icon="leading"], [data-icon="trailing"]) {
+  gap: 4px;
+}
+.ads-btn:is([data-icon="leading"], [data-icon="trailing"]) svg {
+  width: var(--btn-mark);
+  height: var(--btn-mark);
+}
+.ads-btn[data-icon="only"] {
+  width: var(--btn-h);
+  padding: 0;
+}
+.ads-btn[data-icon="only"][data-size="tiny"]:not([data-corner="round"]) {
+  width: auto;
+  padding: 0 4px;
+}
+.ads-btn[data-icon="only"][data-corner="round"] {
+  width: var(--btn-pill);
+}
+.ads-btn[data-variant="secondary"] {
+  --btn-ring: var(--ads-secondary-border);
+  border-color: var(--ads-secondary-border);
+  background: var(--ads-secondary-bg);
+  color: var(--ads-secondary-fg);
+  font-weight: var(--ads-secondary-weight);
+}
+.ads-btn[data-variant="tertiary"] {
+  --btn-ring: var(--ads-tertiary-border);
+  border-color: var(--ads-tertiary-border);
+  background: var(--ads-tertiary-bg);
+  color: var(--ads-tertiary-fg);
+  font-weight: var(--ads-tertiary-weight);
+}
+/* Hover, as anthropic.com ships it (read from the site on 2026-11-20; the
+   file's hover effect style is a 2px ring): a 1px ring past the button's
+   edge in its border color (the primary's is its fill), animating in over
+   0.2s; the secondary and tertiary also fill with their border's color and
+   their label turns primary. So the button grows by a pixel all round, in
+   one color. Not under keyboard focus, whose ring replaces it. The ring is
+   an outline, not the site's spread shadow: Safari draws a spread shadow in
+   the wrong place in the wave's picture of a scaled figure (see the Claude
+   buttons in claude-ds.css). It is 2px wide and starts 1px inside the
+   button's edge, over its border: an outline that only met the edge left a
+   faint light seam between the two, both edges being smoothed, plainest in
+   a figure drawn smaller. */
+.ads-btn:is(:hover, [data-state="hover"]):not(:focus-visible) {
+  outline: 2px solid var(--btn-ring);
+  outline-offset: -1px;
+}
+.ads-btn[data-variant="secondary"]:is(:hover, [data-state="hover"]):not(
+    :focus-visible
+  ) {
+  background: var(--ads-secondary-border);
+  color: var(--ads-fg);
+}
+.ads-btn[data-variant="tertiary"]:is(:hover, [data-state="hover"]):not(
+    :focus-visible
+  ) {
+  background: var(--ads-tertiary-border);
+  color: var(--ads-fg);
+}
+/* Focus, the file's "Focus Outline Ring": a 2px ring 4px out. The file's
+   states board draws it in the theme's focus color on the primary and in
+   Sky on the other two, whose labels turn primary. */
+.ads-btn:is(:focus-visible, [data-state="focus"]) {
+  outline: 2px solid var(--ads-focus);
+  outline-offset: 4px;
+}
+.ads-btn:not([data-variant="primary"]):is(
+    :focus-visible,
+    [data-state="focus"]
+  ) {
+  outline-color: var(--ads-sky);
+}
+.ads-btn:not([data-variant="primary"]):is(
+    :focus-visible,
+    [data-state="focus"]
+  ) {
+  color: var(--ads-fg);
+}
+/* The file draws no disabled button; the docs dim one that cannot be used. */
+.ads-btn:disabled,
+.ads-btn[aria-disabled="true"] {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Pictures drawn dark on light turn over on the dark themes. */
+.ads .ads-art {
+  filter: var(--ads-art-filter);
+}
+
+/* A figure of the docs is drawn scaled down: a small copy of a page as wide
+   as the figure is laid out, so the fluid type sizes measure that width,
+   not the window's. */
+[data-scaled] .ads[data-figure] {
+  container-type: inline-size;
+  --ads-vw: 100cqw;
+}

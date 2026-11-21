@@ -1,0 +1,582 @@
+/* The Solutions templates for Education, Financial Services, and Government
+   (pages/templates/solutions-b.tsx and the three pages beside it). They are
+   built from the system's own heroes, headers, features, marginalia, and
+   cards; what is here is how a page lays them out, and the few pieces the
+   pages add. Sizes follow the page's own width (the window is the
+   container), and everything stacks at a phone's width. */
+
+/* The hero, in the page's margins. Both layouts are the system's (the
+   staggered headline and the two columns); the two-column one gives the
+   words more of the row than the illustration, as the file does. */
+.cds-hero.cds-solb-hero {
+  max-width: none;
+  padding: clamp(48px, 9cqw, 128px) var(--tpl-side) clamp(48px, 6cqw, 96px);
+}
+.cds-solb-hero .cds-hero-columns {
+  grid-template-columns: minmax(0, 13fr) minmax(0, 7fr);
+  gap: clamp(24px, 5cqw, 64px);
+}
+.cds-solb-hero .cds-hero-columns h3 {
+  font-size: clamp(36px, 6cqw, 64px);
+  line-height: 1.1;
+}
+.cds-solb-hero .cds-hero-columns .cds-hero-lead {
+  max-width: 704px;
+  font-size: clamp(17px, 2.2cqw, 20px);
+  line-height: 1.6;
+}
+.cds-solb-hero .cds-hero-columns img {
+  width: 100%;
+}
+/* What a hero ends on: the customers' logos, in the same block. */
+.cds-solb-under-hero {
+  padding: 0 var(--tpl-side) clamp(48px, 6.7cqw, 128px);
+}
+
+/* The logo wall as a page uses it: under one rule, with an optional title,
+   and nothing below it. Six to a row where the file has six. */
+.cds-logo-wall.cds-solb-wall {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 4cqw, 48px);
+  padding-top: clamp(32px, 5cqw, 64px);
+  border-top: 1px solid var(--cds-border-3);
+}
+.cds-logo-wall.cds-solb-wall[data-rule="none"] {
+  padding-top: 0;
+  border-top: 0;
+}
+.cds-logo-wall.cds-solb-wall > div {
+  padding: 0;
+  border: 0;
+}
+.cds-solb-wall h4 {
+  font: 500 19px/24px var(--cds-serif);
+  text-align: center;
+}
+@container (min-width: 701px) {
+  .cds-logo-wall.cds-solb-wall[data-per="6"] img {
+    width: 14.5%;
+  }
+}
+
+/* A section's opening in two columns: a pictogram beside the headline, and
+   a paragraph. */
+.cds-solb-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: center;
+}
+.cds-solb-split > div {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.cds-solb-split img {
+  flex: none;
+  width: clamp(64px, 7.5cqw, 96px);
+  height: clamp(64px, 7.5cqw, 96px);
+  filter: var(--cds-art-filter);
+}
+.cds-solb-split p {
+  padding-right: clamp(0px, 6cqw, 128px);
+  color: var(--cds-fg-3);
+}
+
+/* Feature highlights: three across, or four; four go two by two where
+   there is no room for four, by the row's own width. */
+.cds-features.cds-solb-features {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.cds-features.cds-solb-features[data-count="4"] {
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(clamp(24.9%, (800px - 100%) * 999, 49.9%), 1fr)
+  );
+}
+.cds-solb-features .cds-feature {
+  padding-inline: clamp(16px, 2.6cqw, 32px);
+}
+
+/* The list of features with marginalia in the gutters. It reaches half-way
+   into the page's margins, so the list between the cards keeps room for a
+   title beside its text. */
+.cds-gutters.cds-solb-gutters {
+  --cds-figure-pad: var(--tpl-side);
+  margin-inline: calc(var(--tpl-side) / -2);
+}
+.cds-solb-list {
+  display: flex;
+  grid-row: 1 / span 2;
+  grid-column: 2;
+  flex-direction: column;
+  min-width: 0;
+}
+/* A row is two columns from 440px of its own width (the system's folds at
+   560px, which the list between the cards never reaches). */
+@container (min-width: 440px) {
+  .cds-solb-list .cds-feature-inline > div {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 32px;
+  }
+}
+.cds-solb-list .cds-feature-inline h4 {
+  align-items: flex-start;
+  font-size: clamp(19px, 4.2cqw, 25px);
+}
+.cds-solb-list[data-size="p2"] .cds-feature-inline h4 {
+  font-size: 19px;
+  line-height: 24px;
+}
+.cds-solb-list[data-size="p2"] .cds-feature-inline svg {
+  width: 24px;
+  height: 24px;
+}
+.cds-solb-list[data-ink] .cds-feature-inline p {
+  color: var(--cds-fg);
+}
+/* Beside a long list the left-hand card, or the deck there, sits lower. */
+.cds-gutters.cds-solb-gutters[data-low] [data-gutter="left"],
+.cds-gutters.cds-solb-gutters[data-low] .cds-gutters-deck {
+  margin-top: 360px;
+}
+/* A pictogram's tile in the file's Sky. Its color is fixed, so the
+   illustration on it is not turned over on dark themes. */
+.cds-margin .cds-margin-media.cds-solb-sky {
+  background: var(--cds-sky);
+}
+
+/* A list of links, each on a card: the one under the pointer lifts onto the
+   card color. Plain, a row has no box until the pointer is on it, and then
+   an arrow after its title. */
+.cds-solb-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cds-solb-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: clamp(20px, 3cqw, 32px);
+  border: 1px solid var(--cds-border-3);
+  border-radius: 16px;
+  background: var(--cds-bg);
+  color: var(--cds-fg-2);
+  font: 500 19px/24px var(--cds-serif);
+  text-decoration: none;
+  text-wrap: pretty;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.2s ease;
+}
+.cds-solb-row:hover,
+.cds-solb-row[data-state="hover"] {
+  border-color: var(--cds-card-border);
+  background: var(--cds-card-bg);
+  box-shadow: var(--cds-shadow-md);
+  color: var(--cds-fg);
+}
+.cds-solb-row:hover .cds-meta-link {
+  color: var(--cds-fg);
+}
+.cds-solb-rows[data-plain] {
+  gap: 12px;
+}
+.cds-solb-rows[data-plain] .cds-solb-row {
+  gap: 24px;
+  padding: 32px 24px 24px;
+  border-color: transparent;
+  background: transparent;
+  color: var(--cds-fg-3);
+  font: 400 17px/28px var(--cds-serif);
+}
+.cds-solb-rows[data-plain] .cds-solb-row > :first-child::after {
+  content: "  →";
+  opacity: 0;
+  white-space: pre;
+  transition: opacity 0.15s ease;
+}
+.cds-solb-rows[data-plain] .cds-solb-row:hover,
+.cds-solb-rows[data-plain] .cds-solb-row[data-state="hover"] {
+  border-color: var(--cds-card-border);
+  background: var(--cds-card-bg);
+  color: var(--cds-fg);
+}
+.cds-solb-rows[data-plain] .cds-solb-row:hover > :first-child::after,
+.cds-solb-rows[data-plain]
+  .cds-solb-row[data-state="hover"]
+  > :first-child::after {
+  opacity: 1;
+}
+
+/* Education. The resources: a large card, what it holds on the left and
+   its links on the right. */
+.cds-solb-resources {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: clamp(24px, 6cqw, 96px);
+  padding: clamp(24px, 4.4cqw, 64px);
+  border: 1px solid var(--cds-card-border);
+  border-radius: clamp(24px, 4cqw, 48px);
+  background: var(--cds-card-bg);
+}
+.cds-solb-resources > div:first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+.cds-solb-resources img {
+  width: 64px;
+  height: 64px;
+  filter: var(--cds-art-filter);
+}
+.cds-solb-resources > div:first-child > p {
+  max-width: 24em;
+  margin-top: 24px;
+  color: var(--cds-fg-3);
+  font: 400 17px/28px var(--cds-sans);
+}
+/* How Claude works: three columns, each a picture over a title, its text,
+   and perhaps a list or a button. */
+.cds-solb-ways {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 3cqw, 32px);
+  align-items: start;
+}
+.cds-solb-way {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+.cds-solb-tile {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 1;
+  margin-bottom: 8px;
+  border: 1px solid var(--cds-border-3);
+  border-radius: clamp(16px, 3cqw, 32px);
+  background: var(--cds-bg-2);
+}
+/* The tile with an illustration is the file's Sky on every theme, so its
+   illustration keeps its own colors. */
+.cds-solb-tile[data-art] {
+  border-color: transparent;
+  background: var(--cds-sky);
+}
+.cds-solb-tile img {
+  width: 66%;
+  height: auto;
+}
+.cds-solb-way h4 {
+  font: 500 19px/24px var(--cds-serif);
+}
+.cds-solb-way p,
+.cds-solb-way ul {
+  color: var(--cds-fg-3);
+  font: 400 15px/24px var(--cds-sans);
+}
+.cds-solb-way ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 1.25em;
+  list-style: disc;
+}
+/* The banner: a pictogram, one line, and a button. */
+.cds-solb-banner {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: clamp(24px, 4.4cqw, 64px);
+  border: 1px solid var(--cds-border-3);
+  border-radius: clamp(24px, 4cqw, 48px);
+  background: var(--cds-bg-2);
+}
+.cds-solb-banner img {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  filter: var(--cds-art-filter);
+}
+.cds-solb-banner h4 {
+  flex: 1;
+}
+/* Try Claude: the tabs over three prompts. */
+.cds-solb-try {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(24px, 4cqw, 48px);
+  width: min(950px, 100%);
+  margin-inline: auto;
+}
+.cds-solb-try .cds-prompts {
+  width: 100%;
+}
+
+/* Financial Services. The partners: a smaller header over their logos,
+   ruled off from the list above. */
+.cds-solb-ecosystem {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 5cqw, 64px);
+  padding-top: clamp(40px, 6.7cqw, 96px);
+  border-top: 1px solid var(--cds-border-3);
+}
+/* The artifact, narrower than the page, with the designers' note under it;
+   where the margin has room, the note stands in the margin beside it. */
+.cds-solb-solutions {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 83%;
+  margin-inline: auto;
+}
+.cds-solb-artifact .cds-artifact-stage {
+  background-color: var(--cds-heather);
+}
+.cds-solb-artifact .cds-artifact-card > p:last-child {
+  margin-bottom: 0;
+}
+.cds-solb-note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  color: var(--cds-fg-3);
+  font: 400 12px/18px var(--cds-sans);
+}
+.cds-solb-note img {
+  display: none;
+  width: 28px;
+  height: auto;
+  filter: var(--cds-art-filter);
+}
+.cds-solb-note small {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 400 10px/16px var(--cds-sans);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.cds-solb-note svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.25;
+}
+@container (min-width: 1060px) {
+  .cds-solb-note {
+    position: absolute;
+    top: 14%;
+    left: calc(100% + 12px);
+    flex-direction: column;
+    align-items: flex-start;
+    width: 140px;
+  }
+  .cds-solb-note img {
+    display: block;
+    margin-bottom: 8px;
+  }
+}
+/* What the artifact's tab is about: a name beside a paragraph. */
+.cds-solb-about {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px;
+  width: min(950px, 75%);
+  margin-inline: auto;
+}
+.cds-solb-about h4 {
+  font: 500 25px/32px var(--cds-serif);
+}
+.cds-solb-about p {
+  color: var(--cds-fg-3);
+  font: 400 17px/28px var(--cds-sans);
+}
+/* Two long quotes side by side, each a proof card. */
+.cds-solb-proofs {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px;
+}
+.cds-solb-proofs .cds-proof {
+  min-width: 0;
+}
+.cds-solb-proofs .cds-proof-body {
+  font-size: 17px;
+  line-height: 28px;
+}
+/* The webinar's card, in the middle of the page. */
+.cds-card-video-wrap.cds-solb-video {
+  margin-inline: auto;
+}
+.cds-solb-video .cds-card-video-media {
+  min-height: clamp(210px, 33cqw, 305px);
+}
+
+/* Government. The table of where each product is authorized: a mark, or a
+   word on a pill, under each level. */
+.cds-solb-table {
+  width: min(950px, 100%);
+  margin-inline: auto;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.cds-solb-table thead td {
+  width: 30%;
+}
+.cds-solb-table th,
+.cds-solb-table td {
+  padding: 24px 16px;
+  color: var(--cds-fg-3);
+  font: 400 15px/24px var(--cds-sans);
+  text-align: center;
+  vertical-align: middle;
+}
+.cds-solb-table tbody tr {
+  border-top: 1px solid var(--cds-border-3);
+}
+.cds-solb-table tbody th {
+  padding-left: 0;
+  color: var(--cds-fg-2);
+  font: 400 17px/28px var(--cds-serif);
+  text-align: left;
+}
+.cds-solb-table svg {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  color: var(--cds-fg);
+}
+.cds-solb-table svg[data-off] {
+  width: 20px;
+  height: 20px;
+  color: var(--cds-fg-3);
+  stroke-width: 1.5;
+}
+.cds-solb-table td span {
+  display: inline-block;
+  padding: 2px 12px;
+  border: 1px solid var(--cds-border-2);
+  border-radius: 8px;
+  background: var(--cds-card-bg);
+  white-space: nowrap;
+}
+/* Three link cards across, whatever the page's width. */
+.cds-card-links.cds-solb-links {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: min(950px, 100%);
+  margin-inline: auto;
+}
+/* See what's new: a pictogram and a title beside the announcements. */
+.cds-solb-news {
+  display: grid;
+  grid-template-columns: minmax(0, 491fr) minmax(0, 459fr);
+  gap: 32px;
+  align-items: start;
+  width: min(950px, 100%);
+  margin-inline: auto;
+}
+.cds-solb-news h4 {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font: 500 25px/1.2 var(--cds-serif);
+}
+.cds-solb-news h4 img {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  filter: var(--cds-art-filter);
+}
+
+/* A phone, for what sits in a box of its own in the page's margins (the
+   hero, the gutters): 640px of the box is 760px of the page. The two-column
+   hero is its words alone, as in the file's mobile frames, and the cards
+   are in their row, so none is set lower. */
+@container (max-width: 640px) {
+  .cds-solb-hero .cds-hero-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cds-solb-hero .cds-hero-columns img {
+    display: none;
+  }
+  .cds-gutters.cds-solb-gutters[data-low] [data-gutter="left"] {
+    margin-top: 0;
+  }
+}
+/* A phone: everything in one column. */
+@container (max-width: 760px) {
+  .cds-solb-split,
+  .cds-solb-resources,
+  .cds-solb-ways,
+  .cds-solb-about,
+  .cds-solb-proofs,
+  .cds-solb-news,
+  .cds-card-links.cds-solb-links,
+  .cds-features.cds-solb-features,
+  .cds-features.cds-solb-features[data-count="4"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cds-solb-split p {
+    padding-right: 0;
+  }
+  /* The features are ruled above, not at the left. */
+  .cds-features.cds-solb-features {
+    gap: 0;
+  }
+  .cds-solb-features .cds-feature {
+    gap: 24px;
+    padding: 24px 0;
+    border-top: 1px solid var(--cds-border-3);
+    border-left: 0;
+  }
+  /* The list is the page's width, and the cards' row runs to its edges. */
+  .cds-gutters.cds-solb-gutters {
+    margin-inline: 0;
+  }
+  .cds-solb-ways {
+    gap: 48px;
+  }
+  .cds-solb-tile {
+    aspect-ratio: 4 / 3;
+  }
+  .cds-solb-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .cds-solb-tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .cds-solb-solutions,
+  .cds-solb-about {
+    width: 100%;
+  }
+  .cds-solb-about {
+    gap: 16px;
+  }
+  .cds-solb-table th,
+  .cds-solb-table td {
+    padding: 16px 4px;
+    font-size: 12px;
+    line-height: 18px;
+  }
+  .cds-solb-table tbody th {
+    font-size: 15px;
+    line-height: 24px;
+  }
+  .cds-solb-table td span {
+    padding-inline: 6px;
+  }
+}

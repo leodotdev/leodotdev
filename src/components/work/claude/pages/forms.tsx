@@ -55,8 +55,11 @@ const CHECK_THEMES_DEMO: Array<DemoStep> = [
 export function FormsDoc() {
   return (
     <>
-      <Section title="Text Input">
-        <Specimen caption="Five icon arrangements in two sizes: ten variants.">
+      <Section
+        title="Text Input"
+        caption="Five icon arrangements in two sizes: ten variants. The input on each theme."
+      >
+        <Specimen figure>
           <DemoCursor
             steps={INPUT_DEMO}
             className="grid justify-center gap-x-8 gap-y-6 p-6 sm:grid-cols-[repeat(2,minmax(0,20rem))] md:p-8 xl:grid-cols-[repeat(3,minmax(0,20rem))]"
@@ -84,7 +87,7 @@ export function FormsDoc() {
             </Cell>
           </DemoCursor>
         </Specimen>
-        <Figure caption="The input on each theme.">
+        <Figure>
           <DemoCursor steps={INPUT_THEMES_DEMO}>
             <ThemeStrip>
               <TextInput leading />
@@ -93,7 +96,10 @@ export function FormsDoc() {
         </Figure>
       </Section>
 
-      <Section title="Checkbox, Radio & Switch">
+      <Section
+        title="Checkbox, Radio & Switch"
+        caption="The form controls on each theme."
+      >
         <Figure>
           <Specimen>
             <DemoCursor
@@ -134,7 +140,7 @@ export function FormsDoc() {
             </DemoCursor>
           </Specimen>
         </Figure>
-        <Figure caption="The form controls on each theme.">
+        <Figure>
           <DemoCursor steps={CHECK_THEMES_DEMO}>
             <ThemeStrip>
               <div className="flex flex-wrap justify-center gap-3">

@@ -1,0 +1,221 @@
+/* The research team's page that the Threat Intelligence and Economic
+   Futures templates share (src/components/work/anthropic/pages/templates/
+   threat-intelligence/research-page.tsx). Its table is the Table
+   organism's (`.ads-table`, `.ads-filters`, `.ads-row`, in
+   organisms-content.css) with two columns fewer. Every size follows the
+   page's width: the template window is the container. */
+
+/* The page's own headings and lists start bare; with no weight of their
+   own, so the organisms' rules inside the page still win. */
+:where(.ads-rp-hero, .ads-rp-feature) :where(h1, h2, h3, p, ul) {
+  margin: 0;
+}
+:where(.ads-rp-columns) :where(ul) {
+  padding: 0;
+  list-style: none;
+}
+.ads-rp-link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* The team's name beside what it does, then the columns. */
+.ads-rp-mission {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 32px 0;
+}
+.ads-rp-mission h1 {
+  flex: 0 1 41%;
+  color: var(--ads-fg);
+}
+.ads-rp-mission p {
+  flex: 0 1 49.5%;
+  color: var(--ads-fg);
+}
+.ads-rp-columns {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ads-rp-columns h2 {
+  color: var(--ads-fg);
+}
+.ads-rp-columns ul {
+  display: grid;
+  grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+  gap: 16px;
+}
+.ads-rp-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px 24px 0 0;
+  border-top: 1px solid var(--ads-border-2);
+}
+.ads-rp-column h3 {
+  color: var(--ads-fg);
+}
+.ads-rp-column p {
+  color: var(--ads-fg-2);
+}
+
+/* The featured post: a column of text under a rule, beside its picture. */
+.ads-page-section.ads-rp-feature {
+  padding-top: 0;
+}
+.ads-rp-featured {
+  display: grid;
+  grid-template-columns: minmax(0, 576fr) minmax(0, 1168fr);
+  gap: 16px;
+}
+.ads-rp-featured-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 48px;
+  padding: 24px 0;
+  border-top: 1px solid var(--ads-border-2);
+}
+.ads-rp-featured-slides {
+  display: grid;
+  max-width: 364px;
+}
+.ads-rp-featured-post {
+  display: flex;
+  flex-direction: column;
+  grid-area: 1 / 1;
+  gap: 16px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.ads-rp-featured-post[data-current] {
+  opacity: 1;
+}
+.ads-rp-featured-post .ads-topic-date {
+  margin-bottom: -12px;
+}
+.ads-rp-featured-post h2 a {
+  color: var(--ads-fg);
+  text-decoration: none;
+}
+.ads-rp-featured-post h2 a:is(:hover, [data-state="hover"]) {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.ads-rp-featured-post p {
+  color: var(--ads-fg-2);
+}
+.ads-rp-featured-media {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--ads-radius-tinier);
+  background: var(--ads-bg-3);
+}
+.ads-rp-featured-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The posts: Title, Description, Date, and the more button. */
+.ads-page-section.ads-rp-index {
+  padding-top: clamp(40px, calc(40px + (100cqw - 390px) * 0.0157), 64px);
+}
+.ads-rp-table .ads-row-top {
+  grid-template-columns:
+    minmax(0, 687fr) minmax(0, 687fr) minmax(0, 206fr)
+    116px;
+}
+.ads-rp-table .ads-row-more {
+  padding-right: 16px;
+}
+.ads-rp-table .ads-row-bottom {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+}
+.ads-rp-rows {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 64px;
+}
+.ads-rp-rows > .ads-rows {
+  align-self: stretch;
+}
+
+/* A laptop: the columns three to a row. */
+@container (max-width: 1279px) {
+  .ads-rp-columns ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 32px;
+  }
+}
+
+/* A tablet: the name over what it does, and the picture over the post's
+   text; the table drops its Description. */
+@container (max-width: 959px) {
+  .ads-rp-mission {
+    flex-direction: column;
+    gap: 24px;
+    padding: 16px 0;
+  }
+  .ads-rp-mission :is(h1, p) {
+    flex: none;
+  }
+  .ads-rp-mission p {
+    max-width: 720px;
+  }
+  .ads-rp-columns ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ads-rp-featured {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .ads-rp-featured-media {
+    order: -1;
+  }
+  .ads-rp-featured-text {
+    gap: 32px;
+  }
+  .ads-rp-featured-slides {
+    max-width: 560px;
+  }
+  .ads-rp-table .ads-row-top {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr) 68px;
+  }
+  .ads-rp-table .ads-row-bottom {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ads-rp-table .ads-row-diagram {
+    display: none;
+  }
+}
+
+/* A phone: one column, and each row a date over its title. */
+@container (max-width: 559px) {
+  .ads-rp-columns ul {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 24px;
+  }
+  .ads-rp-column {
+    padding-right: 0;
+  }
+  .ads-rp-table .ads-row-top {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "date more"
+      "title title";
+  }
+  .ads-rp-table .ads-row-more {
+    padding-right: 0;
+  }
+  .ads-rp-rows {
+    gap: 40px;
+  }
+}

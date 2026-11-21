@@ -1,0 +1,481 @@
+/* The Solutions templates: AI Agents, Coding, and Customer Support
+   (pages/templates/solutions-a.tsx holds what they share, and each page has
+   a file of its own beside it). They are built from the system's heroes,
+   feature highlights, artifact, proof cards, testimonial, marginalia, and
+   link cards; what is here is how a page sets those out. Every size follows
+   the page's own width, as on the Home template. */
+
+/* The hero and what stands under it, down to the logo wall. The hero itself
+   is the system's (`.cds-hero`), here in the page's own margins. On its own
+   it measures itself; on a page it follows the page's width like everything
+   else, so it is not a container here and its type is sized again. */
+.cds-sola-hero {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 6cqw, 72px);
+  padding: clamp(40px, 7cqw, 88px) var(--tpl-side) clamp(56px, 9cqw, 104px);
+}
+.cds-sola-hero .cds-hero {
+  container-type: normal;
+  max-width: none;
+  padding: 0;
+}
+.cds-sola-hero .cds-hero-stagger h3 {
+  font-size: clamp(40px, 7cqw, 112px);
+}
+.cds-sola-hero .cds-hero-center h3 {
+  font-size: clamp(36px, 4.2cqw, 72px);
+}
+.cds-sola-hero .cds-hero-lead {
+  font-size: clamp(17px, 1.9cqw, 23px);
+  line-height: 1.5;
+}
+/* Centered, the hero's picture is a pictogram above the headline. */
+.cds-sola-hero .cds-hero-center > img {
+  width: clamp(64px, 9cqw, 96px);
+}
+.cds-sola-hero .cds-hero-center .cds-hero-copy {
+  align-items: center;
+}
+.cds-sola-hero .cds-hero-center .cds-hero-lead {
+  max-width: 704px;
+}
+.cds-sola-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.cds-sola-hero .cds-hero-center .cds-sola-actions {
+  justify-content: center;
+}
+/* The logo wall: each logo at its own size in the middle of a cell, five
+   cells to a row or four. Under a hero it has a rule above it, or none.
+   Like the hero, it follows the page's width here, not its own. */
+.cds-logo-wall.cds-sola-wall {
+  container-type: normal;
+}
+.cds-sola-hero .cds-sola-wall > div {
+  row-gap: clamp(16px, 3cqw, 48px);
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+.cds-sola-hero .cds-sola-wall[data-rule="none"] > div {
+  padding-top: 0;
+  border-top: 0;
+}
+.cds-sola-wall span {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 20%;
+  aspect-ratio: 279 / 64;
+}
+.cds-sola-wall[data-per="4"] span {
+  width: 25%;
+}
+/* A cell is the file's 279 wide box for a logo, whatever its width here. */
+.cds-sola-wall span img {
+  width: calc(var(--cds-sola-w) / 279 * 100%);
+}
+.cds-sola-wall[data-per="4"] span img {
+  width: calc(var(--cds-sola-w) / 349 * 100%);
+}
+/* Under the Coding hero: a film, and three figures ruled on the left. */
+.cds-sola-content {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 4cqw, 48px);
+}
+.cds-sola-content .cds-sola-film {
+  aspect-ratio: 1194 / 672;
+  border-radius: clamp(16px, 3cqw, 32px);
+}
+.cds-sola-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2.4cqw, 32px);
+  width: min(950px, 100%);
+  margin-inline: auto;
+}
+.cds-sola-stats > div {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 24px;
+  border-left: 1px solid var(--cds-border-3);
+}
+.cds-sola-stats b {
+  font: 500 32px/36px var(--cds-serif);
+  font-size: clamp(23px, 3cqw, 32px);
+}
+.cds-sola-stats small {
+  color: var(--cds-fg-3);
+  font: 400 12px/20px var(--cds-sans);
+  letter-spacing: 0.01em;
+}
+/* Features with marginalia: the list keeps the middle of the page and a
+   card stands at each side of it, the right one level with the list's top
+   and the left one further down. The cards are as wide as they always are,
+   so the row reaches out into the page's margins to make room for them. */
+.cds-sola-gutters {
+  display: grid;
+  grid-template-columns: 213px minmax(0, 1fr) 213px;
+  column-gap: 16px;
+  align-self: center;
+  width: min(100cqw - 32px, 1194px);
+}
+.cds-sola-list {
+  display: flex;
+  grid-row: 1;
+  grid-column: 2;
+  flex-direction: column;
+  width: min(780px, 100%);
+  margin-inline: auto;
+}
+/* The features at the file's smaller size. */
+.cds-sola-list .cds-feature-inline h4 {
+  font-size: 19px;
+  line-height: 24px;
+}
+.cds-sola-list .cds-feature-inline svg {
+  width: 24px;
+  height: 24px;
+}
+/* Wide, the cards' row and its wrapper are not boxes: the cards are placed
+   on the grid, and the row's controls are not needed. */
+.cds-sola-gutter-cards,
+.cds-sola-gutter-cards > div:first-child {
+  display: contents;
+}
+.cds-sola-gutter-cards .cds-carousel-ui {
+  display: none;
+}
+.cds-sola-gutters .cds-margin,
+.cds-sola-aside .cds-margin {
+  margin-bottom: 0;
+}
+.cds-sola-gutters [data-side="left"] {
+  grid-row: 1;
+  grid-column: 1;
+  align-self: end;
+  margin-bottom: 24px;
+}
+.cds-sola-gutters [data-side="right"] {
+  grid-row: 1;
+  grid-column: 3;
+  align-self: start;
+  margin-top: 24px;
+}
+/* A header the file sets to the left on a phone follows the page's width,
+   not its own, so the phone's rules below reach it. */
+.cds-sola-phone-left .cds-header {
+  container-type: normal;
+}
+/* A customer's logo on a marginalia card, at its own size in the card's
+   40px box. */
+.cds-margin .cds-sola-mlogo {
+  display: flex;
+  align-items: center;
+}
+/* The artifact, and under it what it is about. The stage is the system's
+   artifact stage, on the color the page gives it; like the stage's cards
+   and sheet, the colors are the file's own on every theme. */
+.cds-sola-artifact {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 4cqw, 48px);
+}
+.cds-sola-stage {
+  --cds-sola-tone: var(--cds-plum);
+}
+.cds-sola-stage[data-tone="olive"] {
+  --cds-sola-tone: #788c5d;
+}
+.cds-sola-stage[data-tone="oat"] {
+  --cds-sola-tone: #e3dacc;
+}
+.cds-sola-stage .cds-artifact-stage {
+  background-color: var(--cds-sola-tone);
+}
+/* The prompt's card ends on its words here. */
+.cds-sola-stage .cds-artifact-card > p {
+  margin-bottom: 0;
+}
+/* On the pale stage the button that switches sides is dark. */
+.cds-sola-stage[data-tone="oat"][data-view="result"] .cds-artifact-toggle {
+  border-color: #141413;
+  color: #141413;
+}
+/* A note about the artifact, above its right corner. */
+.cds-sola-note {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-end;
+  gap: 4px;
+  width: min(184px, 100%);
+  margin-bottom: calc(-1 * clamp(8px, 2cqw, 24px));
+  color: var(--cds-fg-3);
+  font: 400 12px/18px var(--cds-sans);
+}
+.cds-sola-note small {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 400 10px/16px var(--cds-sans);
+}
+.cds-sola-note svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+}
+.cds-sola-about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  width: min(950px, 100%);
+  margin-inline: auto;
+}
+.cds-sola-about h4 {
+  font: 500 25px/32px var(--cds-serif);
+}
+.cds-sola-about ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding-left: 1.25em;
+  color: var(--cds-fg-3);
+  font: 400 17px/28px var(--cds-sans);
+  list-style: disc;
+}
+.cds-sola-about[data-small] ul {
+  font-size: 15px;
+  line-height: 24px;
+}
+/* A plain tile where the file has a picture. */
+.cds-sola-tile {
+  border-radius: 24px;
+  background: var(--cds-bg-2);
+}
+/* A card in two halves: a picture, and what it is of beside it. */
+.cds-sola-promo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  border: 1px solid var(--cds-card-border);
+  border-radius: 24px;
+  background: var(--cds-card-bg);
+}
+.cds-sola-promo .cds-sola-tile {
+  aspect-ratio: 596 / 447;
+  border-radius: 0;
+}
+.cds-sola-promo > div:last-child {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 24px;
+  padding: clamp(24px, 4.4cqw, 48px) clamp(24px, 7cqw, 96px);
+}
+.cds-sola-promo h4 {
+  font: 500 32px/1.15 var(--cds-serif);
+  font-size: clamp(23px, 3cqw, 32px);
+}
+.cds-sola-promo p,
+.cds-sola-copy p {
+  color: var(--cds-fg-3);
+  font: 400 15px/24px var(--cds-sans);
+}
+/* Testimonials, one under another in a narrow column. */
+.cds-sola-quotes {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: min(950px, 100%);
+  margin-inline: auto;
+}
+/* Two things side by side, each a square picture over a few words. The
+   artifact's stage is one of them: in so narrow a box it is square too. */
+.cds-sola-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(16px, 2.4cqw, 32px);
+}
+.cds-sola-pair > div {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-width: 0;
+}
+.cds-sola-pair .cds-sola-tile {
+  aspect-ratio: 1;
+}
+.cds-sola-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: 431px;
+}
+.cds-sola-copy h4 {
+  font: 500 19px/24px var(--cds-serif);
+}
+/* A second header and what is under it, inside a section. */
+.cds-sola-sub {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 5cqw, 64px);
+  padding-top: clamp(16px, 3cqw, 32px);
+}
+/* The proof cards. On a phone their row runs off the page's right edge. */
+.cds-sola-proofs {
+  --cds-figure-pad: var(--tpl-side);
+}
+/* A card with no logo starts nearer its top. */
+.cds-sola-proofs .cds-proof[data-bare] .cds-proof-body {
+  padding-top: 4px;
+}
+/* A testimonial over a carousel's controls, with a marginalia card in the
+   margin beside it; like the features' cards, it reaches into the page's
+   margins. */
+.cds-sola-aside {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 213px;
+  gap: clamp(16px, 2.4cqw, 32px);
+  align-items: start;
+  align-self: center;
+  width: min(100cqw - 32px, 1194px);
+}
+.cds-sola-aside > div:first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(24px, 4cqw, 48px);
+  min-width: 0;
+}
+.cds-sola-aside .cds-testimonial {
+  border-top: 0;
+}
+/* The link cards a page ends on: three to a row, sharing its width. */
+.cds-tpl .cds-sola-cards {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: min(950px, 100%);
+  margin-inline: auto;
+}
+.cds-sola-cards .cds-card-link {
+  max-width: none;
+  padding-right: clamp(24px, 4.4cqw, 48px);
+}
+/* A phone: everything in one column. */
+@container (max-width: 760px) {
+  .cds-sola-stats,
+  .cds-sola-about,
+  .cds-sola-promo,
+  .cds-sola-pair,
+  .cds-sola-aside,
+  .cds-tpl .cds-sola-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  /* The staggered hero stacks, its headline in one block. */
+  .cds-sola-hero .cds-hero-stagger h3 span + span {
+    text-align: left;
+  }
+  .cds-sola-hero .cds-hero-stagger > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .cds-sola-hero .cds-hero-stagger > div > .cds-hero-copy {
+    grid-column: 1;
+  }
+  .cds-sola-hero .cds-hero-stagger img {
+    width: 60%;
+    margin-inline: 0;
+  }
+  /* The centered hero the file sets to the left on a phone. */
+  .cds-sola-hero[data-phone="left"] .cds-hero-center,
+  .cds-sola-hero[data-phone="left"] .cds-hero-center .cds-hero-copy {
+    align-items: flex-start;
+    text-align: left;
+  }
+  .cds-sola-hero[data-phone="left"] .cds-hero-center .cds-sola-actions {
+    justify-content: flex-start;
+  }
+  /* And a section's header it sets to the left there. */
+  .cds-sola-phone-left .cds-header-body {
+    align-items: flex-start;
+    padding-inline: 0;
+    text-align: left;
+  }
+  /* Two logos to a row. */
+  .cds-sola-wall span,
+  .cds-sola-wall[data-per="4"] span {
+    width: 50%;
+  }
+  .cds-sola-wall[data-per="4"] span img {
+    width: calc(var(--cds-sola-w) / 279 * 100%);
+  }
+  .cds-sola-stats > div {
+    padding: 24px 0 16px;
+    border-top: 1px solid var(--cds-border-3);
+    border-left: 0;
+  }
+  /* The cards leave the margins for a row under the features, which
+     scrolls sideways to the page's edges over the carousel's controls. */
+  .cds-sola-gutters {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    align-self: stretch;
+    width: auto;
+  }
+  .cds-sola-gutter-cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+  .cds-sola-gutter-cards > div:first-child {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    align-self: stretch;
+    margin-inline: calc(-1 * var(--tpl-side));
+    /* Room for the cards' shadows inside the scrolling box. */
+    padding: 8px var(--tpl-side) 24px;
+    overflow-x: auto;
+    scroll-padding-inline: var(--tpl-side);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .cds-sola-gutter-cards > div:first-child::-webkit-scrollbar {
+    display: none;
+  }
+  .cds-sola-gutters .cds-margin {
+    flex: none;
+    align-self: flex-start;
+    margin: 0;
+    scroll-snap-align: start;
+  }
+  .cds-sola-gutter-cards .cds-carousel-ui {
+    display: inline-flex;
+  }
+  .cds-sola-note {
+    align-self: flex-start;
+    margin-bottom: 0;
+  }
+  .cds-sola-about {
+    gap: 24px;
+  }
+  .cds-sola-promo .cds-sola-tile {
+    aspect-ratio: 358 / 269;
+  }
+  .cds-sola-pair {
+    gap: 48px;
+  }
+  .cds-sola-aside {
+    align-self: stretch;
+    width: auto;
+  }
+}

@@ -12,9 +12,11 @@ import {
   TbPrompt,
   TbSparkles,
 } from "react-icons/tb"
+import { Deck } from "@/components/work/claude/deck"
 import { DemoCursor } from "@/components/work/claude/demo-cursor"
 import { Resizable } from "@/components/work/claude/resizable"
 import { useDismiss } from "@/components/work/claude/use-dismiss"
+import { Bar, Lines } from "@/components/work/claude/skeleton"
 import { Button, CarouselUi } from "@/components/work/claude/specimens"
 import { Section, Specimen } from "@/components/work/claude/ui"
 import type { DemoStep } from "@/components/work/claude/demo-cursor"
@@ -43,7 +45,7 @@ const PROMPT =
  * from the tabs' own widths, measured once with all of them laid out (and
  * again when the fonts have loaded), each time the viewer changes width.
  */
-function Artifact() {
+export function Artifact() {
   const [role, setRole] = useState(0)
   // Narrow, the stage shows one side at a time.
   const [view, setView] = useState<"result" | "prompt">("result")
@@ -261,7 +263,7 @@ const PICTOGRAM = "/work/claude/illustrations/hand-link.svg"
 const SESSIONS = "Increase in complex problem-solving sessions for Max users"
 
 /** A customer's logo, as the file's cards carry one (its Proof: Logo atom). */
-function Logo({ name }: { name: "asana" | "google-cloud" | "humach" }) {
+export function Logo({ name }: { name: "asana" | "google-cloud" | "humach" }) {
   return name === "humach" ? (
     <img
       className="cds-margin-logo"
@@ -279,7 +281,7 @@ function Logo({ name }: { name: "asana" | "google-cloud" | "humach" }) {
 }
 
 /** The card for a prompt to try: a question, the prompt, and a way to send it. */
-function PromptCard({
+export function PromptCard({
   children,
   ...rest
 }: { children: React.ReactNode } & React.ComponentProps<"div">) {
@@ -299,7 +301,7 @@ function PromptCard({
 }
 
 /** The card for something to read, under a pictogram. */
-function ReadCard({
+export function ReadCard({
   label,
   children,
   ...rest
@@ -327,7 +329,7 @@ function ReadCard({
 
 // The file's thirteen types, each once, with the sample content its own
 // variants carry.
-function Marginalia() {
+export function Marginalia() {
   return (
     <div className="cds-marginalia">
       {/* Menu list */}
@@ -572,86 +574,92 @@ function Headings() {
   )
 }
 
+/**
+ * The cards of a page with marginalia in its gutters (`.cds-gutters*` in
+ * src/claude-ds.css). `children` are the gutters' own cards, `.cds-margin`
+ * boxes marked `data-gutter`, left or right. `batch` is several cards for
+ * the left gutter, and is drawn twice, for the styles to pick one: wide, a
+ * deck in the gutter (`Deck`); narrow, where the cards leave the gutters for
+ * one row that scrolls sideways, its cards at the head of that row, with the
+ * carousel's controls under the row to step along them.
+ */
+export function GutterCards({
+  batch,
+  children,
+}: {
+  batch?: Array<React.ReactNode>
+  children: React.ReactNode
+}) {
+  const count = batch?.length ?? 0
+  const [current, setCurrent] = useState(0)
+  const row = useRef<HTMLDivElement>(null)
+  // The row's controls come round again, and bring the card into view.
+  const step = (by: number) => {
+    const next = (current + by + count) % count
+    setCurrent(next)
+    const el = row.current
+    const card = el?.querySelector(".cds-gutters-batch")?.children[next]
+    if (el && card instanceof HTMLElement && el.scrollWidth > el.clientWidth)
+      el.scrollTo({ left: card.offsetLeft, behavior: "smooth" })
+  }
+  return (
+    <div className="cds-gutters-cards">
+      {batch && <Deck className="cds-gutters-deck" cards={batch} />}
+      <div ref={row} className="cds-gutters-row">
+        {batch && <div className="cds-gutters-batch">{batch}</div>}
+        {children}
+      </div>
+      {count > 1 && (
+        <CarouselUi
+          count={count}
+          current={current}
+          onStep={step}
+          size="small"
+        />
+      )}
+    </div>
+  )
+}
+
 // A page with marginalia in its gutters: a section of the file's education
 // template. Wide, the page's text keeps to the middle and the cards take the
 // columns at either side, the right one set higher than the left; the left
-// gutter holds a batch of prompts, one showing at a time, with the carousel's
-// controls under it. Narrow, the cards leave the gutters for one row under
-// the text that scrolls sideways.
-const AUDIENCES = [
-  [
-    "For students",
-    "Claude’s learning mode works like a tutor—it asks the questions that help you find the answers yourself.",
-  ],
-  [
-    "For educators",
-    "Anthropic provides training resources and ongoing support for practical implementation.",
-  ],
-  [
-    "For administrators",
-    "Claude helps you scale personalized support across thousands of students.",
-  ],
-]
-
+// gutter holds a batch of prompts as a deck, the current one on top, over
+// the carousel's controls. Narrow, the cards leave the gutters for one row
+// under the text that scrolls sideways.
 const BATCH = [
   "Hey Claude, help me forecast the upcoming year so I can make some informed plans.",
   "I’m writing an essay. After each paragraph I write, analyze it for 1) clarity, 2) evidence quality, 3) logic.",
   "Review this grant proposal draft and suggest stronger evidence for the methodology section.",
 ]
 
-function Gutters() {
-  const [current, setCurrent] = useState(0)
-  const row = useRef<HTMLDivElement>(null)
-  const step = (by: number) => {
-    const next = (current + by + BATCH.length) % BATCH.length
-    setCurrent(next)
-    // Narrow, the batch is laid out in a row: bring its card into view.
-    const el = row.current
-    const card = el?.children[next]
-    if (el && card instanceof HTMLElement && el.scrollWidth > el.clientWidth)
-      el.scrollTo({ left: card.offsetLeft, behavior: "smooth" })
-  }
+export function Gutters() {
   return (
     <div className="cds-gutters">
-      <div className="cds-gutters-head">
-        <h3 className="cds-headline-1">Claude for education</h3>
-        <p className="cds-body-1">
-          A comprehensive university-wide plan for institutions, including its
-          students, faculty, and staff.
-        </p>
-        <Button icon="none">Contact our Education team</Button>
+      {/* The page itself is a skeleton: only the marginalia is real. */}
+      <div className="cds-gutters-head" aria-hidden>
+        <Bar w="min(440px, 82%)" h={44} />
+        <Lines count={2} last="58%" className="cds-gutters-lead" />
+        <Bar w={196} h={36} r={8} />
       </div>
       <div className="cds-gutters-body">
         <div className="cds-gutters-main">
-          {AUDIENCES.map(([title, text]) => (
-            <div key={title}>
-              <h4 className="cds-headline-5">{title}</h4>
-              <p className="cds-body-2">{text}</p>
+          {["38%", "44%", "52%"].map((title) => (
+            <div key={title} aria-hidden>
+              <Bar w={title} h={20} />
+              <Lines />
             </div>
           ))}
         </div>
-        <div className="cds-gutters-cards">
-          <div ref={row} className="cds-gutters-row">
-            {BATCH.map((prompt, i) => (
-              <PromptCard
-                key={prompt}
-                data-gutter="left"
-                data-current={i === current ? "" : undefined}
-              >
-                {prompt}
-              </PromptCard>
-            ))}
-            <ReadCard label="Report" data-gutter="right">
-              How university students use Claude
-            </ReadCard>
-          </div>
-          <CarouselUi
-            count={BATCH.length}
-            current={current}
-            onStep={step}
-            size="small"
-          />
-        </div>
+        <GutterCards
+          batch={BATCH.map((prompt) => (
+            <PromptCard key={prompt}>{prompt}</PromptCard>
+          ))}
+        >
+          <ReadCard label="Report" data-gutter="right">
+            How university students use Claude
+          </ReadCard>
+        </GutterCards>
       </div>
     </div>
   )
@@ -693,26 +701,34 @@ const MARGINALIA_DEMO: Array<DemoStep> = [
   { on: ".cds-margin .cds-btn", text: "Ask Claude", click: true, rest: 700 },
 ]
 
-// On the page it steps through the batch of prompts in the left gutter and
+// On the page it goes through the deck of prompts in the left gutter and
 // looks at the card in the right one, then narrows the page until the cards
-// leave the gutters for a row, steps along the row, and lets the page out
-// again. It ends on the first prompt, where it began.
+// leave the gutters for a row, steps along the row's prompts and round to
+// the first again, and lets the page out. There it goes back through the
+// deck, so it ends on the first prompt, where it began.
+const DECK = ".cds-gutters-deck"
+const ROW = ".cds-gutters-cards > .cds-carousel-ui"
 const GUTTERS_DEMO: Array<DemoStep> = [
-  { on: '.cds-gutters [aria-label="Next"]', click: true },
-  { on: '.cds-gutters [aria-label="Next"]', click: true, rest: 500 },
+  { on: `${DECK} [aria-label="Next"]`, click: true },
+  { on: `${DECK} [aria-label="Next"]`, click: true, rest: 500 },
   { on: ".cds-gutters .cds-btn", text: "Read more", rest: 700 },
   { on: ".cds-resize-grip", nth: 1, drag: 390 },
-  { on: '.cds-gutters [aria-label="Next"]', click: true },
-  { on: '.cds-gutters [aria-label="Next"]', click: true, rest: 600 },
+  { on: `${ROW} [aria-label="Next"]`, click: true },
+  { on: `${ROW} [aria-label="Next"]`, click: true, rest: 600 },
+  { on: `${ROW} [aria-label="Next"]`, click: true, rest: 400 },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
-  { on: '.cds-gutters [aria-label="Previous"]', click: true, rest: 700 },
+  { on: `${DECK} [aria-label="Previous"]`, click: true },
+  { on: `${DECK} [aria-label="Previous"]`, click: true, rest: 700 },
 ]
 
 export function ArtifactsDoc() {
   return (
     <>
-      <Section title="Artifacts">
-        <Specimen caption="Drawn seven times, for device sizes from Desktop to Mobile.">
+      <Section
+        title="Artifacts"
+        caption="Drawn seven times, for device sizes from Desktop to Mobile."
+      >
+        <Specimen figure>
           <DemoCursor steps={ARTIFACT_DEMO} className="p-6 md:p-8">
             {/* As tall as its tallest size (the square phablet stage), so
                 the figure keeps one height while it is resized and nothing
@@ -726,7 +742,7 @@ export function ArtifactsDoc() {
                 ["Phablet", 540],
                 ["Mobile", 400],
               ]}
-              className="flex min-h-[640px] flex-col justify-center"
+              className="flex min-h-[640px] flex-col justify-center sm:h-[640px]"
             >
               <Artifact />
             </Resizable>
@@ -734,9 +750,15 @@ export function ArtifactsDoc() {
         </Specimen>
       </Section>
 
-      <Section title="Marginalia">
-        <Specimen caption="Marginalia sits two columns wide in each gutter, and in one row on mobile.">
-          <DemoCursor steps={GUTTERS_DEMO} className="p-6 md:p-8">
+      <Section
+        title="Marginalia"
+        caption="Marginalia sits two columns wide in each gutter, and in one row on mobile. Thirteen types of card, from a menu to a prompt. Support for headings outside cards, inside, or not at all."
+      >
+        <Specimen figure>
+          <DemoCursor
+            steps={GUTTERS_DEMO}
+            className="p-6 [--cds-figure-pad:24px] md:p-8 md:[--cds-figure-pad:32px]"
+          >
             {/* As tall as the page is at its narrowest, so the figure keeps
                 one height while it is resized; the wide page, which is
                 shorter, sits in the middle of it. */}
@@ -744,21 +766,18 @@ export function ArtifactsDoc() {
               label="Page width"
               min={390}
               sizes={[["Desktop"], ["Mobile", 640]]}
-              className="flex min-h-[992px] flex-col justify-center"
+              className="flex min-h-[976px] flex-col justify-center sm:h-[976px]"
             >
               <Gutters />
             </Resizable>
           </DemoCursor>
         </Specimen>
-        <Specimen caption="Thirteen types of card, from a menu to a prompt.">
+        <Specimen figure>
           <DemoCursor steps={MARGINALIA_DEMO} className="p-6 md:p-8">
             <Marginalia />
           </DemoCursor>
         </Specimen>
-        <Specimen
-          caption="Support for headings outside cards, inside, or not at all."
-          className="p-6 md:p-8"
-        >
+        <Specimen figure className="p-6 md:p-8">
           <Headings />
         </Specimen>
       </Section>

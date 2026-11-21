@@ -4,11 +4,16 @@ import {
   TbCheck,
   TbCopy,
   TbPaperclip,
-  TbPlayerPlayFilled,
   TbVideo,
 } from "react-icons/tb"
 import { DemoCursor } from "@/components/work/claude/demo-cursor"
 import { Resizable } from "@/components/work/claude/resizable"
+import {
+  SkeletonContext,
+  SkeletonFooter,
+  SkeletonHeader,
+  SkeletonTabs,
+} from "@/components/work/claude/skeleton"
 import { Button } from "@/components/work/claude/specimens"
 import { Section, Specimen } from "@/components/work/claude/ui"
 import type { DemoStep } from "@/components/work/claude/demo-cursor"
@@ -32,7 +37,7 @@ const STORY = [
  * also carries an illustration on a tile, above the text or, where the card
  * has the width for it, beside it.
  */
-function LinkCard({
+export function LinkCard({
   title,
   kind,
   image = false,
@@ -69,7 +74,7 @@ const PROMPT =
   "Create discussion questions that build on yesterday's lecture about supply chain disruption."
 
 /** A command that copies itself: the field says "Copied!" for three seconds. */
-function ClipboardCopy({ command }: { command: string }) {
+export function ClipboardCopy({ command }: { command: string }) {
   const [copied, setCopied] = useState(false)
   useEffect(() => {
     if (!copied) return
@@ -107,15 +112,21 @@ const LINKS_DEMO: Array<DemoStep> = [
   { on: ".cds-card-link", nth: 2, rest: 1000 },
 ]
 
-// It looks at the card with an image and presses the video card's two
-// buttons, then narrows the pair: the video goes above its text, then the
-// image above its title, down to a phone's width, and it lets them out again.
+// It narrows the card with an image: a row down to its least width, then a
+// column, down to a phone's width, and lets it out again.
 const ADAPT_DEMO: Array<DemoStep> = [
   { on: ".cds-card-link", rest: 700 },
+  { on: ".cds-resize-grip", nth: 1, drag: 460 },
+  { on: ".cds-resize-grip", nth: 1, drag: 400 },
+  { on: ".cds-resize-grip", nth: 1, drag: 326 },
+  { on: ".cds-resize-grip", nth: 1, drag: 4000 },
+]
+
+// And presses the video card's two buttons, narrows it until the video goes
+// above the text, as on a phone, and lets it out again.
+const VIDEO_DEMO: Array<DemoStep> = [
   { on: ".cds-play", click: true },
   { on: ".cds-card-video .cds-btn", click: true, rest: 700 },
-  { on: ".cds-resize-grip", nth: 1, drag: 520 },
-  { on: ".cds-resize-grip", nth: 1, drag: 400 },
   { on: ".cds-resize-grip", nth: 1, drag: 326 },
   { on: ".cds-play", click: true, rest: 700 },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
@@ -141,92 +152,137 @@ const PROMPTS_DEMO: Array<DemoStep> = [
 export function CardsDoc() {
   return (
     <>
-      <Section title="Link & Video Cards">
-        <Specimen caption="Hovering one card lifts it and dims its siblings.">
+      <Section
+        title="Link & Video Cards"
+        caption="Hovering one card lifts it and dims its siblings. With an image or a video, the card is a row where it has room and a column where it does not."
+      >
+        <Specimen figure>
           <DemoCursor steps={LINKS_DEMO} className="p-6 md:p-8">
-            <div className="cds-card-links">
-              {LINKS.map(([title, kind]) => (
-                <LinkCard key={title} title={title} kind={kind} />
-              ))}
-            </div>
+            <SkeletonContext>
+              <div className="cds-card-links">
+                {LINKS.map(([title, kind]) => (
+                  <LinkCard key={title} title={title} kind={kind} />
+                ))}
+              </div>
+            </SkeletonContext>
           </DemoCursor>
         </Specimen>
-        <Specimen caption="With an image or a video, the card is a row where it has room and a column where it does not.">
+        <Specimen figure>
           <DemoCursor steps={ADAPT_DEMO} className="p-6 md:p-8">
-            {/* As tall as the two cards at their narrowest, so the figure
-                keeps one height while it is resized. */}
+            {/* Each card in a figure of its own, on its own skeleton, as
+                tall as the card at its narrowest, so the figure keeps one
+                height while it is resized. */}
             <Resizable
               label="Card width"
-              // The video goes above its text first, then the image above
-              // its title.
-              sizes={[["Desktop"], ["Tablet", 560], ["Mobile", 459]]}
-              className="flex min-h-[800px] flex-col items-center justify-center gap-8"
+              sizes={[["Desktop"], ["Mobile", 459]]}
+              className="flex min-h-[744px] flex-col justify-center sm:h-[744px]"
             >
-              <div className="cds-card-link-fit">
-                <LinkCard image title={STORY[0]} kind={STORY[1]} />
-              </div>
-              <div className="cds-card-video-wrap">
-                <div className="cds-card-video">
-                  <div className="cds-card-video-media">
-                    <button
-                      type="button"
-                      className="cds-play"
-                      aria-label="Play"
-                      {...quiet}
-                    >
-                      <TbPlayerPlayFilled aria-hidden />
-                    </button>
-                  </div>
-                  <div className="cds-card-video-body">
-                    <span className="cds-meta-link">
-                      <TbVideo aria-hidden />
-                      Webinar
-                    </span>
-                    <div className="cds-card-title">
-                      How NBIM transformed the world&rsquo;s largest sovereign
-                      wealth fund with agentic AI
+              <SkeletonContext className="flex justify-center">
+                <div className="cds-card-link-fit">
+                  <LinkCard image title={STORY[0]} kind={STORY[1]} />
+                </div>
+              </SkeletonContext>
+            </Resizable>
+          </DemoCursor>
+        </Specimen>
+        <Specimen figure>
+          <DemoCursor steps={VIDEO_DEMO} className="p-6 md:p-8">
+            <Resizable
+              label="Card width"
+              sizes={[["Desktop"], ["Mobile", 560]]}
+              className="flex min-h-[960px] flex-col justify-center sm:h-[960px]"
+            >
+              <SkeletonContext className="flex justify-center">
+                <div className="cds-card-video-wrap">
+                  <div className="cds-card-video">
+                    <div className="cds-card-video-media">
+                      <button
+                        type="button"
+                        className="cds-play"
+                        aria-label="Play"
+                        {...quiet}
+                      >
+                        {/* The file's own triangle: an outline with rounded
+                          corners, not a filled one. */}
+                        <svg
+                          viewBox="0 0 17.2816 20.2652"
+                          fill="none"
+                          aria-hidden
+                        >
+                          <path
+                            d="M0.363636 17.57V2.69521C0.363636 0.867287 2.37429 -0.247109 3.92437 0.721689L15.8242 8.15909C17.2826 9.0706 17.2826 11.1946 15.8242 12.1061L3.92436 19.5435C2.37428 20.5123 0.363636 19.3979 0.363636 17.57Z"
+                            stroke="currentColor"
+                            strokeWidth="0.727273"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </button>
                     </div>
-                    <Button variant="tertiary" icon="none">
-                      Register and watch
-                    </Button>
+                    <div className="cds-card-video-body">
+                      <span className="cds-meta-link">
+                        <TbVideo aria-hidden />
+                        Webinar
+                      </span>
+                      <div className="cds-card-title">
+                        How NBIM transformed the world&rsquo;s largest sovereign
+                        wealth fund with agentic AI
+                      </div>
+                      <Button variant="tertiary" icon="none">
+                        Register and watch
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </SkeletonContext>
             </Resizable>
           </DemoCursor>
         </Specimen>
       </Section>
 
-      <Section title="Prompt Box & Clipboard Copy">
-        <Specimen caption="Prompts are editable, and a copy holds “Copied!” for three seconds.">
-          <DemoCursor
-            steps={PROMPTS_DEMO}
-            className="flex flex-col items-center gap-8 p-6 md:p-8"
-          >
-            <div className="cds-prompts w-full">
-              {[0, 1, 2].map((i) => (
-                <label key={i} className="cds-prompt">
-                  <textarea
-                    defaultValue={PROMPT}
-                    aria-label="Prompt"
-                    spellCheck={false}
-                  />
-                  <span className="cds-prompt-controls">
-                    <button
-                      type="button"
-                      className="cds-btn"
-                      data-variant="clay"
-                      data-icon="only"
-                      {...quiet}
-                    >
-                      <span>Ask Claude</span>
-                      <TbArrowUp aria-hidden />
-                    </button>
-                  </span>
-                </label>
-              ))}
-            </div>
-            <ClipboardCopy command="npm install -g @anthropic-ai/claude-code" />
+      <Section
+        title="Prompt Box & Clipboard Copy"
+        caption="Prompts are editable, and a copy holds “Copied!” for three seconds."
+      >
+        <Specimen figure>
+          <DemoCursor steps={PROMPTS_DEMO} className="p-6 md:p-8">
+            {/* As on the Education page: under the section's header and
+                its tabs, and last on the page, over the footer. */}
+            <SkeletonContext
+              before={
+                <>
+                  <SkeletonHeader line />
+                  <SkeletonTabs />
+                </>
+              }
+              after={<SkeletonFooter />}
+              className="flex flex-col items-center gap-8"
+            >
+              <div className="cds-prompts w-full">
+                {[0, 1, 2].map((i) => (
+                  <label key={i} className="cds-prompt">
+                    <textarea
+                      defaultValue={PROMPT}
+                      aria-label="Prompt"
+                      spellCheck={false}
+                    />
+                    <span className="cds-prompt-controls">
+                      <button
+                        type="button"
+                        className="cds-btn"
+                        data-variant="clay"
+                        data-icon="only"
+                        {...quiet}
+                      >
+                        <span>Ask Claude</span>
+                        <TbArrowUp aria-hidden />
+                      </button>
+                    </span>
+                  </label>
+                ))}
+              </div>
+              <ClipboardCopy command="npm install -g @anthropic-ai/claude-code" />
+            </SkeletonContext>
           </DemoCursor>
         </Specimen>
       </Section>

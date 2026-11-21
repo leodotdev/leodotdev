@@ -1,0 +1,150 @@
+/* The Contact Sales template (pages/templates/contact-sales.tsx): a section
+   header over the form, which sits on a card in the middle of the page with
+   a help card in the margin beside it, then a dark call to action over the
+   footer. */
+.cds-contact-main {
+  /* This page's margin is the site header's own, so the help card stands
+     under the logo and the form keeps the middle of the page. */
+  --tpl-side: max(clamp(24px, 3.5cqw, 48px), (100cqw - 1200px) / 2);
+  display: grid;
+  grid-template-columns: minmax(0, 180px) minmax(0, 704px) minmax(0, 180px);
+  grid-template-areas:
+    ". head ."
+    "help form .";
+  justify-content: space-between;
+  align-items: start;
+  column-gap: clamp(16px, 3cqw, 32px);
+  row-gap: clamp(40px, 5cqw, 96px);
+  padding: clamp(48px, 6.7cqw, 128px) var(--tpl-side);
+}
+.cds-contact-main .cds-header {
+  grid-area: head;
+}
+.cds-contact-main .cds-header-body {
+  padding-inline: 0;
+}
+/* The form: a card on the theme's second background, two fields to a row
+   where there is room for two. */
+.cds-contact-form {
+  /* Its fields are the system's secondary ones: filled, not white. */
+  --cds-field-bg: var(--cds-control-bg);
+  grid-area: form;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  align-items: end;
+  gap: 24px;
+  padding: clamp(24px, 3.7cqw, 48px);
+  border: 1px solid var(--cds-border-3);
+  border-radius: 24px;
+  background: var(--cds-bg-2);
+}
+.cds-contact-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  color: var(--cds-fg);
+  font: var(--cds-weight) 15px/24px var(--cds-sans);
+}
+.cds-contact-field[data-wide],
+.cds-contact-submit {
+  grid-column: 1 / -1;
+}
+/* The star of a required field. */
+.cds-contact-field i {
+  color: var(--cds-error);
+  font-style: normal;
+}
+.cds-contact-field small {
+  margin-top: -8px;
+  color: var(--cds-fg-3);
+  font: 400 15px/24px var(--cds-sans);
+}
+.cds-contact-form .cds-input,
+.cds-contact-form .cds-select {
+  border-color: var(--cds-border-2);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+/* A field under the pointer, or being filled in, lightens. */
+.cds-contact-form
+  :is(.cds-input, .cds-select):is(
+    :hover,
+    :focus-within,
+    [data-state="hover"],
+    [data-state="focus"],
+    [aria-expanded="true"]
+  ) {
+  border-color: var(--cds-border);
+  background: var(--cds-bg-3);
+}
+/* A field of a few lines. */
+.cds-contact-form .cds-input[data-area] {
+  align-items: stretch;
+  height: auto;
+  padding-block: 12px;
+}
+.cds-contact-form textarea {
+  flex: 1;
+  min-width: 0;
+  height: 86px;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-variation-settings: inherit;
+  resize: none;
+}
+/* A select, at the fields' size and in their colors. */
+.cds-contact-form .cds-select-wrap {
+  width: 100%;
+}
+.cds-contact-form .cds-select {
+  height: 50px;
+  padding: 0 16px 0 24px;
+  border-radius: 16px;
+  background: var(--cds-field-bg);
+  font-size: 15px;
+  line-height: 24px;
+}
+.cds-contact-form .cds-select[data-filled] {
+  color: var(--cds-fg);
+}
+/* The help card: one of the system's marginalia, in the left margin. */
+.cds-margin.cds-contact-help {
+  grid-area: help;
+  width: auto;
+  margin-bottom: 0;
+}
+.cds-contact-help .cds-margin-card .cds-btn {
+  --btn-fill: var(--cds-card-bg);
+}
+/* The call to action: a headline of three lines, a rule under it where the
+   footer begins. */
+.cds-tpl-section.cds-contact-prefooter {
+  padding-block: clamp(72px, 10.4cqw, 200px);
+  border-bottom: 1px solid var(--cds-border-3);
+}
+.cds-contact-prefooter .cds-header-body > h3 {
+  white-space: pre-line;
+}
+/* A phone: the header, the form, and the help card under it. */
+@container (max-width: 760px) {
+  .cds-contact-main {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "head"
+      "form"
+      "help";
+  }
+  .cds-contact-help .cds-margin-card .cds-btn {
+    width: 100%;
+  }
+  /* The call to action's button keeps its own width. */
+  .cds-contact-prefooter .cds-header-actions {
+    align-self: center;
+  }
+}

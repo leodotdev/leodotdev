@@ -1,0 +1,17 @@
+/* The Anthropic.com docs' own styles, one file per area (see
+   src/anthropic-ds.css for the tokens they build on). Each file belongs to
+   one page file in src/components/work/anthropic/pages. */
+@import "./foundations.css";
+@import "./atoms.css";
+@import "./molecules.css";
+@import "./organisms-site.css";
+@import "./organisms-content.css";
+@import "./organisms-article.css";
+@import "./organisms-media.css";
+@import "./templates.css";
+@import "./templates/about.css";
+@import "./templates/careers.css";
+@import "./templates/news.css";
+@import "./templates/model.css";
+@import "./templates/threat-intelligence.css";
+@import "./templates/economic-futures.css";

@@ -1,0 +1,458 @@
+/* The plan pages (pages/templates/plans.tsx and plans-max, -team and
+   -enterprise beside it): the Max, Team, and Enterprise templates. They are
+   built in a template page's window (`.cds-tpl*` in src/claude-ds.css), so
+   every size follows the page's own width, and they stack at a phone's. */
+
+/* The hero: the plan's name, a line about it, and its buttons, beside the
+   illustration. */
+.cds-plan-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: clamp(24px, 6cqw, 96px);
+  align-items: center;
+  padding: clamp(40px, 7cqw, 128px) var(--tpl-side);
+}
+.cds-plan-hero > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+.cds-plan-hero h3 {
+  font: 500 72px/1.1 var(--cds-serif);
+  font-size: clamp(40px, 5.6cqw, 72px);
+  text-wrap: balance;
+}
+.cds-plan-hero p {
+  max-width: 32em;
+  color: var(--cds-fg-3);
+  font: 400 23px/1.6 var(--cds-sans);
+  font-size: clamp(17px, 1.9cqw, 23px);
+}
+.cds-plan-hero > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: var(--cds-art-filter);
+}
+.cds-plan-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+/* What a hero ends on: Max's banner, Enterprise's figures. */
+.cds-plan-hero-more {
+  padding: 0 var(--tpl-side) clamp(40px, 7cqw, 128px);
+}
+/* The banner: what people are using Claude for, over the apps to download. */
+.cds-plan-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: clamp(32px, 4.4cqw, 64px) clamp(24px, 3.3cqw, 48px);
+  border: 1px solid var(--cds-card-border);
+  border-radius: 32px;
+  background: var(--cds-card-bg);
+  text-align: center;
+}
+.cds-plan-banner h4 {
+  font: 500 32px/1.125 var(--cds-serif);
+  font-size: clamp(23px, 2.9cqw, 32px);
+}
+.cds-plan-banner h4 span {
+  display: block;
+  color: var(--cds-fg-3);
+}
+.cds-plan-downloads {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font: 400 15px/24px var(--cds-sans);
+}
+
+/* Max's three features: the system's feature highlights, across the page. */
+.cds-plan-features {
+  width: min(1194px, 100%);
+  margin-inline: auto;
+}
+.cds-plan-features .cds-feature {
+  gap: 24px;
+}
+
+/* A list with marginalia in its gutters. Wide, the list keeps to the middle
+   and a card stands at either side, the left one lower than the right; the
+   row reaches a little past the section's margins, to give the list room. */
+.cds-plan-margins {
+  display: grid;
+  grid-template-columns: 213px minmax(0, 1fr) 213px;
+  column-gap: clamp(24px, 3.4cqw, 48px);
+  align-items: start;
+  align-self: center;
+  width: min(1100px, 100cqw - 2 * clamp(24px, 4.5cqw, 48px));
+}
+.cds-plan-margins .cds-margin {
+  margin-bottom: 0;
+}
+.cds-plan-margin[data-side="left"] {
+  margin-top: clamp(48px, 11cqw, 150px);
+}
+/* The logos the cards carry, at the size the file draws them. */
+.cds-margin-logo.cds-plan-logo-cloudflare {
+  height: 31px;
+  margin-block: 4.5px;
+}
+.cds-margin-logo.cds-plan-logo-intercom {
+  height: 23px;
+  margin-block: 8.5px;
+}
+/* The list: an icon and a title beside a few lines, each under a rule. Where
+   the list is too narrow for both they stack. */
+.cds-plan-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.5cqw, 48px);
+}
+.cds-plan-item {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+  gap: 16px 32px;
+  padding: 32px 0;
+  border-top: 1px solid var(--cds-border-3);
+}
+.cds-plan-item h4,
+.cds-plan-checks > div {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font: 500 19px/24px var(--cds-serif);
+}
+.cds-plan-item h4 svg {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  stroke-width: 1.25;
+}
+.cds-plan-item p {
+  color: var(--cds-fg-3);
+  font: 400 17px/1.65 var(--cds-sans);
+  font-size: clamp(15px, 1.5cqw, 17px);
+}
+/* Enterprise's controls: a checklist, two to a row. */
+.cds-plan-checks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+  gap: clamp(8px, 2.5cqw, 48px) 32px;
+}
+.cds-plan-checks > div {
+  padding: 24px 0;
+  border-top: 1px solid var(--cds-border-3);
+}
+.cds-plan-checks svg {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  margin-top: -2px;
+}
+
+/* A row of cards over the carousel's controls (PlanCarousel). With every
+   card in view there is nothing to step through. */
+.cds-plan-carousel {
+  /* How far a row of proof cards runs off the page's right edge on a phone. */
+  --cds-figure-pad: var(--tpl-side);
+}
+.cds-plan-carousel[data-still] .cds-carousel-ui {
+  display: none;
+}
+/* The marginalia as a row: a phone's layout, so not shown until then. */
+.cds-plan-cards {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+}
+.cds-plan-cards > div:first-child {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-inline: calc(-1 * var(--tpl-side));
+  /* Room for the cards' shadows inside the scrolling box. */
+  padding: 8px var(--tpl-side) 24px;
+  overflow-x: auto;
+  scroll-padding-inline: var(--tpl-side);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.cds-plan-cards > div:first-child::-webkit-scrollbar {
+  display: none;
+}
+.cds-plan-cards .cds-margin {
+  flex: none;
+  scroll-snap-align: start;
+}
+.cds-plan-cards .cds-carousel-ui {
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 32px;
+}
+/* Enterprise's figures: four proof cards across, each a quarter of the row. */
+.cds-plan-stats .cds-proof {
+  flex: 1 1 0;
+  min-width: 0;
+  padding-inline: clamp(16px, 2.7cqw, 32px);
+}
+.cds-plan-stats .cds-proof-logo img {
+  max-width: 100%;
+  height: auto;
+}
+.cds-plan-stats .cds-proof-stat {
+  font-size: clamp(44px, 5.4cqw, 72px);
+  line-height: 1.11;
+}
+
+/* The artifact, and under it what its tab is about. The stage wears the
+   page's color; the note sits at the end of the tabs' row and points at it. */
+.cds-plan-showcase {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 4.4cqw, 48px);
+}
+.cds-plan-artifact {
+  --plan-tone: var(--cds-sky);
+}
+.cds-plan-artifact[data-tone="plum"] {
+  --plan-tone: var(--cds-plum);
+}
+.cds-plan-artifact[data-tone="clay"] {
+  --plan-tone: var(--cds-clay);
+}
+.cds-plan-artifact[data-tone="cactus"] {
+  --plan-tone: var(--cds-cactus);
+}
+.cds-plan-artifact[data-tone="rose"] {
+  /* The file's own fill: the system has no token for it. */
+  --plan-tone: #c46686;
+}
+.cds-plan-artifact .cds-artifact-stage {
+  background-color: var(--plan-tone);
+}
+.cds-plan-artifact .cds-artifact-card > p {
+  margin-bottom: 0;
+}
+.cds-plan-artifact-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px 24px;
+  align-items: end;
+  align-self: stretch;
+}
+.cds-plan-note {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  max-width: 232px;
+  color: var(--cds-fg-3);
+  font: 400 12px/18px var(--cds-sans);
+}
+/* The file's arrow points left; here it is turned to point down. */
+.cds-plan-note img {
+  flex: none;
+  width: 28px;
+  height: auto;
+  filter: var(--cds-art-filter);
+  rotate: -90deg;
+}
+.cds-plan-note .cds-micro {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.cds-plan-note svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.25;
+}
+.cds-plan-about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  width: min(950px, 100%);
+  margin-inline: auto;
+}
+.cds-plan-about h4 {
+  font: 500 25px/32px var(--cds-serif);
+  text-wrap: balance;
+}
+.cds-plan-about > div {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: var(--cds-fg-3);
+  font: 400 17px/28px var(--cds-sans);
+}
+.cds-plan-about ul {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding-left: 1.25em;
+  list-style: disc;
+}
+
+/* Team's banner: a question, and a field to answer it in. */
+.cds-plan-ask {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: clamp(32px, 4.4cqw, 64px);
+  border: 1px solid var(--cds-card-border);
+  border-radius: 32px;
+  background: var(--cds-card-bg);
+}
+.cds-plan-ask img {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  filter: var(--cds-art-filter);
+}
+.cds-plan-ask h4 {
+  flex: 1 1 200px;
+  font: 500 32px/1.125 var(--cds-serif);
+  font-size: clamp(23px, 2.6cqw, 32px);
+  text-wrap: balance;
+}
+.cds-plan-ask .cds-input {
+  flex: 1.2 1 320px;
+  max-width: 512px;
+}
+
+/* Max's plans: a card each, and a line about limits and tax under them. */
+.cds-plan-prices {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 4.4cqw, 48px);
+  width: min(950px, 100%);
+  margin-inline: auto;
+}
+.cds-plan-prices > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(16px, 3cqw, 32px);
+}
+.cds-plan-price {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: clamp(24px, 3cqw, 32px);
+  border: 1px solid var(--cds-card-border);
+  border-radius: 24px;
+  background: var(--cds-card-bg);
+}
+.cds-plan-price img {
+  width: 64px;
+  height: 64px;
+  filter: var(--cds-art-filter);
+}
+.cds-plan-price h4 {
+  font: 500 32px/36px var(--cds-serif);
+}
+.cds-plan-price strong {
+  display: block;
+  font: 600 25px/40px var(--cds-sans);
+}
+.cds-plan-price small {
+  display: block;
+  color: var(--cds-fg-3);
+  font: 400 15px/24px var(--cds-sans);
+}
+.cds-plan-price p {
+  flex: 1;
+  color: var(--cds-fg-2);
+  font: 400 17px/28px var(--cds-sans);
+}
+.cds-plan-price .cds-btn {
+  align-self: stretch;
+}
+.cds-plan-prices > p {
+  color: var(--cds-fg-3);
+  font: 400 15px/24px var(--cds-sans);
+  text-align: center;
+}
+
+/* Enterprise's FAQ: its headline over the accordion, in a narrow column. */
+.cds-plan-faq {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 5cqw, 64px);
+  width: min(704px, 100%);
+  margin-inline: auto;
+}
+.cds-plan-faq .cds-accordion {
+  max-width: none;
+}
+.cds-plan-faq .cds-skel-lines {
+  padding-block: 8px;
+}
+
+/* A phone: everything in one column. Inside the artifact and the row of
+   proof cards, which measure their own width, this is as wide as they are. */
+@container (max-width: 760px) {
+  .cds-plan-hero,
+  .cds-plan-about,
+  .cds-plan-prices > div,
+  .cds-plan-artifact-top {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  /* The illustration is small, above the plan's name. */
+  .cds-plan-hero > img {
+    order: -1;
+    justify-self: start;
+    width: clamp(96px, 34cqw, 160px);
+  }
+  .cds-plan-hero > div,
+  .cds-plan-actions {
+    align-self: stretch;
+    align-items: stretch;
+  }
+  .cds-plan-actions {
+    flex-direction: column;
+  }
+  /* The cards leave the gutters for a row under the list. */
+  .cds-plan-margins {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-self: stretch;
+    width: auto;
+  }
+  .cds-plan-margin {
+    display: none;
+  }
+  /* No wider than the page's column: the row inside it scrolls, and would
+     otherwise push its column, and the page, as wide as all its cards. */
+  .cds-plan-cards {
+    display: flex;
+    min-width: 0;
+    max-width: calc(100cqw - 2 * var(--tpl-side));
+  }
+  .cds-plan-note {
+    justify-self: center;
+  }
+  .cds-plan-ask {
+    flex-direction: column;
+    text-align: center;
+  }
+  .cds-plan-ask .cds-input {
+    flex: none;
+    align-self: stretch;
+    max-width: none;
+  }
+  /* The figures become a row that scrolls, a card at a time. */
+  .cds-plan-stats .cds-proof {
+    flex: 0 0 256px;
+  }
+}

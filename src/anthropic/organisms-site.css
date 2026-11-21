@@ -1,0 +1,1586 @@
+/* The site-wide organisms of the Anthropic.com docs: the header and its
+   expanded menu, the footer and prefooter, the hero carousel, and the
+   tooltip (src/components/work/anthropic/pages/organisms-site/). Measures
+   are the Figma file's. */
+
+/* A part drawn in a theme of its own (the footer, the expanded menu) is an
+   `.ads` box inside the figure's; it keeps measuring the fluid type by the
+   figure's width, not the window's. */
+.ads :is(.ads-xnav, .ads-footer, .ads-prefooter, .ads-hero-carousel) {
+  --ads-vw: inherit;
+}
+
+/* The wordmark, the "A" mark, and the social icons: the exported outlines
+   as masks, filled with the text color. */
+.ads-logo {
+  display: inline-block;
+  flex: none;
+  background: currentColor;
+  -webkit-mask: var(--logo) center / contain no-repeat;
+  mask: var(--logo) center / contain no-repeat;
+}
+.ads-logo-word {
+  width: 166px;
+  height: 19px;
+}
+.ads-logo-mark {
+  width: 35px;
+  height: 24px;
+}
+.ads-social-icon {
+  width: 24px;
+  height: 24px;
+}
+.ads-socials {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ads-socials a {
+  display: flex;
+  color: var(--ads-fg-3);
+  transition: color 0.15s ease;
+}
+.ads-socials a:is(:hover, [data-state="hover"]) {
+  color: var(--ads-fg);
+}
+
+/* ---- Header -------------------------------------------------------- */
+
+/* The header and the page under it, which the expanded menu covers. The
+   header follows anthropic.com as it shipped (read from the site on
+   2026-11-19), not the file's frames where the two differ. It measures its
+   own width, and its layout changes by it at the widths the site's changes
+   at by the window's. */
+.ads-nav {
+  container: ads-nav / inline-size;
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--ads-bg);
+}
+/* The bar is 84px tall with the page's side margin, 32px, 48px from 768px,
+   and 80px from 1280px; its contents keep to 1920px. Narrow, it is the
+   wordmark at the left and the rest at the right. */
+.ads-nav-bar {
+  --side: 32px;
+  position: relative;
+  z-index: 3;
+  container-type: inline-size;
+  display: grid;
+  flex: none;
+  grid-template-columns: auto 1fr;
+  grid-template-areas: "logo end";
+  align-items: center;
+  column-gap: 16px;
+  width: 100%;
+  max-width: 1920px;
+  height: 84px;
+  margin-inline: auto;
+  padding-inline: var(--side);
+}
+@container ads-nav (width >= 768px) {
+  .ads-nav-bar {
+    --side: 48px;
+  }
+}
+@container ads-nav (width >= 1280px) {
+  .ads-nav-bar {
+    --side: 80px;
+  }
+}
+/* From 1100px the left-hand pills come in, beside the right-hand ones;
+   search, open, takes their place. From 1400px the wordmark sits in the
+   middle, between the two sets. */
+@container ads-nav (1100px <= width < 1400px) {
+  .ads-nav-bar {
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: "logo start end";
+    column-gap: 8px;
+  }
+  .ads-nav-start {
+    justify-content: flex-end;
+  }
+  .ads-nav[data-search] .ads-nav-start {
+    display: none;
+  }
+}
+@container ads-nav (width >= 1400px) {
+  .ads-nav-bar {
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-areas: "start logo end";
+  }
+  .ads-nav-logo {
+    justify-content: center;
+    width: 170px;
+  }
+}
+.ads-nav-start {
+  display: none;
+  grid-area: start;
+  align-items: center;
+  gap: 8px;
+}
+@container ads-nav (width >= 1100px) {
+  .ads-nav-start {
+    display: flex;
+  }
+}
+.ads-nav-logo {
+  display: flex;
+  grid-area: logo;
+  align-items: center;
+  color: var(--ads-fg);
+}
+.ads-nav-logo .ads-logo-word {
+  width: 170px;
+  height: 24px;
+}
+.ads-nav-logo .ads-logo-mark {
+  display: none;
+}
+@container ads-nav (width < 640px) {
+  .ads-nav-logo .ads-logo-word {
+    display: none;
+  }
+  .ads-nav-logo .ads-logo-mark {
+    display: inline-block;
+  }
+}
+.ads-nav-end {
+  display: flex;
+  grid-area: end;
+  justify-content: flex-end;
+  align-items: center;
+  min-width: 0;
+}
+/* The right-hand pills or the search field, then the two icon buttons. From
+   768px the pair is at least as wide as the grid's last columns (four of
+   twelve, three from 1024px, two from 1400px), which is how wide the field
+   opens; between 1100px and 1400px, at rest, it is only as wide as it has
+   to be. On a phone the field fills the room up to the wordmark. */
+.ads-nav-actions {
+  --col: 8;
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+@container ads-nav (width >= 768px) {
+  .ads-nav-actions {
+    flex: none;
+    min-width: calc(
+      (13 - var(--col)) * (100cqi - 11 * 16px) / 12 + (12 - var(--col)) * 16px
+    );
+  }
+}
+@container ads-nav (width > 1024px) {
+  .ads-nav-actions {
+    --col: 9;
+  }
+}
+@container ads-nav (width > 1400px) {
+  .ads-nav-actions {
+    --col: 10;
+  }
+}
+@container ads-nav (1100px <= width < 1400px) {
+  .ads-nav:not([data-search]) .ads-nav-actions {
+    min-width: 0;
+  }
+}
+.ads-nav-swap {
+  --swap: 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  display: grid;
+  flex-grow: 1;
+  grid-template-areas: "layer";
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center end;
+  min-width: 0;
+}
+.ads-nav-swap > * {
+  grid-area: layer;
+}
+.ads-nav-idle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity var(--swap);
+}
+.ads-nav-find {
+  width: 100%;
+  clip-path: inset(0 0 0 100%);
+  transition: clip-path var(--swap);
+}
+.ads-nav[data-search] .ads-nav-idle {
+  opacity: 0;
+}
+.ads-nav[data-search] .ads-nav-find {
+  clip-path: inset(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ads-nav-idle,
+  .ads-nav-find {
+    transition: none;
+  }
+}
+/* Company shows with the left-hand pills. */
+.ads-nav-company {
+  display: none;
+}
+@container ads-nav (width >= 1100px) {
+  .ads-nav-company {
+    display: block;
+  }
+}
+.ads-nav-utilities {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+}
+
+/* The pills and icon buttons are the system's small tertiary buttons as the
+   site draws them: labels in Caption 1's regular weight, in the theme's
+   darker label color, a 1px ring under the pointer, plain 8px corners on
+   the icon buttons, and 4px between a pill's label and its chevron. */
+.ads-nav .ads-btn {
+  font-weight: 400;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+}
+.ads-nav .ads-btn[data-variant="tertiary"] {
+  color: var(--ads-nav-fg);
+}
+.ads-nav .ads-btn[data-variant="tertiary"]:is(:hover, [data-state="hover"]) {
+  color: var(--ads-fg);
+}
+.ads-nav .ads-btn.ads-nav-icon {
+  border-radius: 8px;
+  corner-shape: round;
+}
+.ads-nav .ads-btn.ads-nav-icon svg {
+  width: 20px;
+  height: 20px;
+}
+.ads-nav .ads-btn.ads-nav-search-close svg {
+  width: 16px;
+  height: 16px;
+}
+.ads-nav .ads-btn[data-icon="trailing"] {
+  gap: 4px;
+}
+.ads-xnav .ads-btn svg {
+  width: 16px;
+  height: 16px;
+}
+.ads-nav-pill svg {
+  transition: transform 0.15s ease-out;
+}
+.ads-nav-pill[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ads-nav-pill svg {
+    transition: none;
+  }
+}
+
+/* A dropdown, 8px under its pill and reaching 8px past its outer side:
+   white, with columns of links of one width, a heading over some. It grows
+   in from its pill. */
+.ads-nav-item {
+  position: relative;
+}
+.ads-nav-menu {
+  --cols: 1;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: -8px;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: 8px;
+  min-width: calc(var(--cols) * 140px + (var(--cols) - 1) * 8px + 22px);
+  padding: 10px;
+  border: 1px solid var(--ads-border-2);
+  border-radius: 16px;
+  background: var(--ads-off-bg);
+  box-shadow: 0 4px 24px rgb(0 0 0 / 0.05);
+  transform-origin: 56px -8px;
+  animation: ads-nav-pop 0.15s ease;
+}
+/* The dark themes' "off" color is black; their dropdowns are a step up
+   from the page instead. */
+.ads:is([data-theme="slate"], [data-theme="image"]) .ads-nav-menu {
+  background: var(--ads-bg-2);
+}
+/* Across the gap to the pill, so the pointer can travel into the menu. */
+.ads-nav-menu::before {
+  content: "";
+  position: absolute;
+  inset: -10px 0 auto;
+  height: 10px;
+}
+.ads-nav-item[data-align="end"] .ads-nav-menu {
+  right: -8px;
+  left: auto;
+  transform-origin: calc(100% - 56px) -8px;
+}
+.ads-nav-item[data-up] .ads-nav-menu {
+  top: auto;
+  bottom: calc(100% + 8px);
+  transform-origin: 56px calc(100% + 8px);
+}
+.ads-nav-item[data-up] .ads-nav-menu::before {
+  inset: auto 0 -10px;
+}
+@keyframes ads-nav-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+@keyframes ads-nav-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ads-nav-menu {
+    animation: none;
+  }
+}
+.ads-nav-menu-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.ads-nav-menu-label,
+.ads-nav-menu-item {
+  display: flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 4px 16px;
+  font: 400 13px/1.54 var(--ads-sans);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+.ads-nav-menu-label {
+  color: var(--ads-gray-450);
+  user-select: none;
+}
+.ads-nav-menu-item {
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ads-nav-fg);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.ads-nav-menu-item:is(:hover, [data-state="hover"]) {
+  background: var(--ads-bg-3);
+}
+
+/* Search: a field with the icon inside it. */
+.ads-nav-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 30px;
+  padding: 0 16px 0 12px;
+  border: 1px solid var(--ads-tertiary-border);
+  border-radius: 8px;
+  background: var(--ads-tertiary-bg);
+  color: var(--ads-fg-3);
+}
+/* The demo cursor's typing; a visitor's focus takes the site's own ring. */
+.ads-nav-field[data-state="focus"] {
+  outline: 2px solid var(--ads-focus);
+  outline-offset: -2px;
+}
+.ads-nav-field svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+.ads-nav-field input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ads-fg);
+  font: 400 13px/1.54 var(--ads-sans);
+  letter-spacing: 0.01em;
+  text-overflow: ellipsis;
+}
+.ads-nav-field input::placeholder {
+  color: var(--ads-fg-4);
+}
+.ads-nav-field input::-webkit-search-cancel-button {
+  display: none;
+}
+
+/* ---- Expanded navigation ------------------------------------------- */
+
+/* A sheet from the right, over the page (as wide as the header on a
+   phone). It is in the Slate theme (set on it), as every frame of it in
+   the file is. */
+.ads-xnav {
+  position: absolute;
+  inset-block: 0;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  width: max(560px, 41.7%);
+  max-width: 100%;
+  visibility: hidden;
+  transform: translateX(100%);
+  transition:
+    transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+    visibility 0s 0.45s;
+}
+.ads-xnav[data-open] {
+  visibility: visible;
+  transform: none;
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@container ads-nav (max-width: 639px) {
+  .ads-xnav {
+    width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ads-xnav,
+  .ads-xnav[data-open] {
+    transition: none;
+  }
+}
+/* Its button sits exactly where the header's menu button is: the bar's
+   height and side margins. */
+.ads-xnav-bar {
+  display: flex;
+  flex: none;
+  justify-content: flex-end;
+  align-items: center;
+  height: 84px;
+  padding-inline: 32px;
+}
+@container ads-nav (width >= 768px) {
+  .ads-xnav-bar {
+    padding-inline: 48px;
+  }
+}
+@container ads-nav (width >= 1280px) {
+  .ads-xnav-bar {
+    padding-inline: 80px;
+  }
+}
+.ads-xnav-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  padding: 16px clamp(24px, 10%, 80px) 48px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.ads-xnav-sections,
+.ads-xnav-rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ads-xnav-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.ads-xnav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ads-fg-3);
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.ads-xnav-link:is(
+  :hover,
+  [data-state="hover"],
+  [aria-expanded="true"],
+  [aria-current="page"]
+) {
+  color: var(--ads-fg);
+}
+.ads-xnav-link svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.2s ease;
+}
+.ads-xnav-link[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+.ads-xnav-sub {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 16px;
+  animation: ads-nav-drop 0.2s ease-out;
+}
+.ads-xnav-sub-links,
+.ads-xnav-row-links {
+  columns: 2;
+  column-gap: 16px;
+}
+.ads-xnav-row-links {
+  padding-bottom: 16px;
+}
+.ads-xnav-sub-link {
+  display: block;
+  width: 100%;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  color: var(--ads-fg-3);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+  text-align: left;
+  break-inside: avoid;
+  cursor: pointer;
+}
+.ads-xnav-sub-link:is(:hover, [data-state="hover"]) {
+  color: var(--ads-fg);
+}
+.ads-xnav-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+@container ads-nav (max-width: 479px) {
+  .ads-xnav-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.ads-xnav-rows {
+  padding: 64px 0 24px;
+}
+.ads-xnav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  min-height: 58px;
+  padding: 16px 0;
+  border: 0;
+  border-top: 1px solid var(--ads-border-2);
+  background: none;
+  color: var(--ads-fg-2);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+  text-align: left;
+  cursor: pointer;
+}
+.ads-xnav-row:is(:hover, [data-state="hover"], [aria-expanded="true"]) {
+  color: var(--ads-fg);
+}
+.ads-xnav-row svg {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  color: var(--ads-fg-3);
+  transition: transform 0.2s ease;
+}
+.ads-xnav-row[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+.ads-xnav-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: auto;
+}
+.ads-xnav-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.ads-xnav .ads-socials {
+  gap: 24px;
+}
+.ads-xnav .ads-social-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* A contact card: the press, support, and media assets (in the expanded
+   menu, and in the prefooter). */
+.ads-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 12px 16px;
+  border: 1px solid transparent;
+  border-radius: var(--ads-radius-smallest);
+  background: var(--ads-bg-2);
+  color: var(--ads-fg-3);
+  font: 400 11px/16.5px var(--ads-sans);
+  letter-spacing: 0.2px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.ads-contact > span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ads-fg);
+}
+.ads-contact svg {
+  width: 20px;
+  height: 20px;
+  flex: none;
+}
+.ads-contact:is(:hover, [data-state="hover"]) {
+  border-color: var(--ads-border);
+}
+
+/* ---- Footer -------------------------------------------------------- */
+
+.ads-footer {
+  container: ads-footer / inline-size;
+  background: var(--ads-bg);
+  color: var(--ads-fg);
+}
+/* Desktop (from the file's XL up): the logo, then the directory, then the
+   mission and log-in links, with the copyright and socials under the logo
+   at the foot. */
+.ads-footer-grid {
+  display: grid;
+  grid-template-areas:
+    "brand groups colophon"
+    "end groups colophon";
+  grid-template-rows: auto 1fr;
+  grid-template-columns: minmax(0, 280px) minmax(0, 872px) minmax(0, 280px);
+  justify-content: space-between;
+  column-gap: 4px;
+  row-gap: 80px;
+  /* The content keeps to the middle of a footer dragged wide. */
+  padding: 80px max(clamp(32px, 5cqw, 80px), (100cqw - 1760px) / 2);
+}
+.ads-footer-brand {
+  grid-area: brand;
+  color: var(--ads-fg);
+}
+.ads-footer-brand .ads-logo-mark {
+  display: none;
+}
+.ads-footer-end {
+  display: flex;
+  flex-direction: column;
+  grid-area: end;
+  align-self: end;
+  gap: 16px;
+  color: var(--ads-fg-2);
+}
+.ads-footer-groups {
+  grid-area: groups;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ads-footer-colophon {
+  display: flex;
+  flex-direction: column;
+  grid-area: colophon;
+  gap: 32px;
+}
+.ads-footer-colophon p {
+  margin: 0;
+}
+.ads-footer-colophon > div > p:first-child {
+  color: var(--ads-fg);
+}
+.ads-footer-colophon > div:first-child > p + p {
+  color: var(--ads-fg-3);
+}
+.ads-footer-colophon > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ads-footer-colophon a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ads-fg-2);
+  text-decoration: none;
+}
+.ads-footer-colophon a:is(:hover, [data-state="hover"]) {
+  color: var(--ads-fg);
+}
+.ads-footer-colophon a svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* A group: its title, a line about it, and a caret; open, its links, in
+   rows lined up under the line. The title column narrows with the
+   directory. */
+.ads-footer-group {
+  --title: clamp(112px, 32cqw, 280px);
+  border-top: 1px solid var(--ads-border-2);
+}
+.ads-footer-group-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 16px 0;
+  border: 0;
+  background: none;
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+  text-align: left;
+  cursor: pointer;
+}
+.ads-footer-group-title {
+  flex: none;
+  width: var(--title);
+  color: var(--ads-fg-3);
+  transition: color 0.15s ease;
+}
+.ads-footer-group-excerpt {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--ads-fg-4);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+.ads-footer-group-head svg {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  margin-left: auto;
+  color: var(--ads-fg-3);
+  transition:
+    transform 0.2s ease,
+    color 0.15s ease;
+}
+/* "Hover": the group's title and line brighten; "Hover Sibling": the
+   other groups' titles dim. */
+.ads-footer-group-head:is(:hover, [data-state="hover"]) :is(span, svg) {
+  color: var(--ads-fg);
+}
+.ads-footer-groups:has(.ads-footer-group-head:is(:hover, [data-state="hover"]))
+  .ads-footer-group-head:not(:hover, [data-state="hover"])
+  .ads-footer-group-title {
+  color: var(--ads-fg-4);
+}
+/* "Open": the title in full, the caret turned up. */
+.ads-footer-group[data-open] .ads-footer-group-title,
+.ads-footer-group[data-open] .ads-footer-group-head svg {
+  color: var(--ads-fg);
+}
+.ads-footer-group[data-open] .ads-footer-group-head svg {
+  transform: rotate(180deg);
+}
+.ads-footer-links {
+  display: flex;
+  flex-direction: column;
+  padding-left: calc(var(--title) + 16px);
+  animation: ads-nav-drop 0.2s ease-out;
+}
+.ads-footer-link {
+  padding: 16px 0;
+  border-top: 1px solid var(--ads-border-2);
+  color: var(--ads-fg-2);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.ads-footer-link:is(:hover, [data-state="hover"]) {
+  color: var(--ads-fg);
+}
+.ads-footer-links:has(.ads-footer-link:is(:hover, [data-state="hover"]))
+  .ads-footer-link:not(:hover, [data-state="hover"]) {
+  color: var(--ads-fg-4);
+}
+
+/* The file's "Laptop LG": the logo beside the directory, the mission and
+   log-in links side by side under it, the copyright at the foot. */
+@container ads-footer (max-width: 1279px) {
+  .ads-footer-grid {
+    grid-template-areas:
+      "brand groups"
+      "end colophon";
+    grid-template-rows: auto auto;
+    /* The logo's column is never narrower than the wordmark: on a laptop
+       the directory gives way to it, rather than run under it. */
+    grid-template-columns: minmax(max-content, 1fr) minmax(0, 872px);
+    column-gap: 48px;
+  }
+  .ads-footer-colophon {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+}
+/* "Tablet MD": the "A" mark, and the colophon's two parts one over the
+   other. */
+@container ads-footer (max-width: 899px) {
+  .ads-footer-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+  }
+  .ads-footer-brand .ads-logo-word {
+    display: none;
+  }
+  .ads-footer-brand .ads-logo-mark {
+    display: inline-block;
+  }
+  .ads-footer-colophon {
+    display: flex;
+  }
+  .ads-footer-group {
+    --title: clamp(112px, 24cqw, 200px);
+  }
+}
+/* "Mobile XS": one column, the copyright last; the groups' lines go. */
+@container ads-footer (max-width: 599px) {
+  .ads-footer-grid {
+    grid-template-areas: "brand" "groups" "colophon" "end";
+    grid-template-columns: minmax(0, 1fr);
+    padding: 80px 32px;
+  }
+  .ads-footer-group-excerpt {
+    visibility: hidden;
+  }
+  .ads-footer-group {
+    --title: auto;
+  }
+  .ads-footer-group-title {
+    flex: 1;
+  }
+  .ads-footer-links {
+    padding-left: 16px;
+  }
+}
+
+/* ---- Prefooter ----------------------------------------------------- */
+
+.ads-prefooter {
+  container: ads-prefooter / inline-size;
+  background: var(--ads-bg-2);
+  color: var(--ads-fg);
+}
+/* Stacked in a scaled figure, two dark parts meet between pixels, where the
+   light figure under them showed through as a line that came and went with
+   every change of the layout. Each overlaps the one above by a pixel. */
+.ads-prefooter + :is(.ads-prefooter, .ads-footer) {
+  margin-top: -1px;
+}
+.ads-prefooter h2 {
+  margin: 0;
+  text-wrap: balance;
+}
+/* "Media": the headline at the left, the three cards at the right. */
+.ads-prefooter-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 1168px;
+  margin: 0 auto;
+  padding: 96px clamp(32px, 5cqw, 80px);
+  box-sizing: content-box;
+}
+.ads-prefooter[data-variant="media"] h2 {
+  max-width: 372px;
+}
+.ads-prefooter-cards {
+  display: grid;
+  flex: 0 1 576px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.ads-prefooter .ads-contact {
+  border-color: var(--ads-border-2);
+  background: var(--ads-bg);
+}
+.ads-prefooter .ads-contact:is(:hover, [data-state="hover"]) {
+  border-color: var(--ads-border);
+}
+/* "Signoff": a centered headline over two large buttons. */
+.ads-prefooter[data-variant="signoff"] .ads-prefooter-wrap {
+  flex-direction: column;
+  justify-content: center;
+  gap: 32px;
+  text-align: center;
+}
+.ads-prefooter-actions {
+  display: flex;
+  gap: 12px;
+}
+/* Tablet: the headline over the cards. */
+@container ads-prefooter (max-width: 959px) {
+  .ads-prefooter-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    padding-block: 64px;
+  }
+  .ads-prefooter[data-variant="media"] h2 {
+    max-width: 480px;
+  }
+  .ads-prefooter-cards {
+    flex: none;
+    width: 100%;
+  }
+  .ads-prefooter[data-variant="signoff"] .ads-prefooter-wrap {
+    align-items: center;
+  }
+}
+/* Mobile: one card a row, its label at the left and its value at the
+   right; the buttons stacked, full width. */
+@container ads-prefooter (max-width: 599px) {
+  .ads-prefooter-wrap {
+    padding-inline: 32px;
+  }
+  .ads-prefooter-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ads-prefooter .ads-contact {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .ads-prefooter-actions {
+    flex-direction: column;
+    align-self: stretch;
+  }
+}
+
+/* ---- Hero carousel ------------------------------------------------- */
+
+/* Desktop: the post's panel at the left, its picture at the right. */
+.ads-hero-carousel {
+  container: ads-carousel / inline-size;
+  display: flex;
+  flex-direction: row-reverse;
+  background: var(--ads-bg);
+  color: var(--ads-fg);
+}
+.ads-hero-carousel-media {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  aspect-ratio: 433 / 244;
+  overflow: hidden;
+  background: var(--ads-bg-2);
+}
+.ads-hero-carousel-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.ads-hero-carousel-media img[data-current] {
+  opacity: 1;
+}
+.ads-hero-carousel-panel {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 48px;
+  width: clamp(360px, 35cqw, 524px);
+  padding: 48px clamp(32px, 5cqw, 80px);
+  box-sizing: border-box;
+}
+/* Every post's text in the one cell, the current one showing. */
+.ads-hero-carousel-slides {
+  display: grid;
+}
+.ads-hero-carousel-text {
+  display: flex;
+  flex-direction: column;
+  grid-area: 1 / 1;
+  align-items: flex-start;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.ads-hero-carousel-text[data-current] {
+  opacity: 1;
+}
+.ads-hero-carousel-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  color: var(--ads-fg-3);
+}
+.ads-hero-carousel-text h2 {
+  margin: 0;
+}
+.ads-hero-carousel-text p {
+  margin: 16px 0;
+  color: var(--ads-fg-2);
+}
+.ads-hero-carousel .ads-btn[data-size="small"] {
+  font-weight: 400;
+}
+.ads-hero-carousel .ads-btn[data-size="small"] svg {
+  width: 16px;
+  height: 16px;
+}
+.ads-hero-carousel-pages {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  color: var(--ads-fg-4);
+}
+/* Laptop and down: the picture on top, the panel under it, the arrows at
+   its right. */
+@container ads-carousel (max-width: 1019px) {
+  .ads-hero-carousel {
+    flex-direction: column;
+  }
+  .ads-hero-carousel-media {
+    flex: none;
+    aspect-ratio: 16 / 9;
+  }
+  .ads-hero-carousel-panel {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: auto;
+    padding: 64px clamp(32px, 6cqw, 80px) 80px;
+  }
+  .ads-hero-carousel-slides {
+    max-width: 680px;
+  }
+}
+/* Mobile: a shorter picture, and the arrows under the text, apart. */
+@container ads-carousel (max-width: 599px) {
+  .ads-hero-carousel-media {
+    aspect-ratio: 390 / 220;
+  }
+  .ads-hero-carousel-panel {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 48px 32px;
+  }
+  .ads-hero-carousel-pages {
+    justify-content: space-between;
+  }
+}
+
+/* ---- Tooltip ------------------------------------------------------- */
+
+.ads-tip-anchor {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+}
+.ads-tip-term,
+.ads-tip-mark {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ads-fg);
+  font: 400 17px/26px var(--ads-sans);
+  cursor: pointer;
+}
+/* A word with a tooltip: underlined with dots. */
+.ads-tip-term {
+  text-decoration: underline dotted;
+  text-decoration-color: var(--ads-fg-4);
+  text-underline-offset: 4px;
+}
+.ads-tip-term:is(:hover, [data-state="hover"], [aria-expanded="true"]) {
+  text-decoration-color: var(--ads-fg);
+}
+/* A citation or footnote mark: a small number in a pill. */
+.ads-tip-mark {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 6px;
+  border: 1px solid var(--ads-border-2);
+  border-radius: 999px;
+  background: var(--ads-bg-2);
+  color: var(--ads-fg-3);
+  font: 400 11px/16.5px var(--ads-mono);
+}
+.ads-tip-mark:is(:hover, [data-state="hover"], [aria-expanded="true"]) {
+  border-color: var(--ads-border);
+  color: var(--ads-fg);
+}
+.ads-tip-anchor .ads-btn svg {
+  width: 16px;
+  height: 16px;
+}
+/* The card, under its trigger. */
+.ads-tip-pop {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 3;
+  animation: ads-nav-drop 0.16s ease-out;
+}
+.ads-tip-anchor[data-align="end"] .ads-tip-pop {
+  right: 0;
+  left: auto;
+}
+.ads-tip-anchor[data-type="label"] .ads-tip-pop {
+  top: calc(100% + 6px);
+  right: 50%;
+  transform: translateX(50%);
+  animation: none;
+}
+.ads-tip-pop::before {
+  content: "";
+  position: absolute;
+  inset: -10px 0 auto;
+  height: 10px;
+}
+.ads-tip {
+  display: flex;
+  box-sizing: border-box;
+  border: 1px solid var(--ads-border-2);
+  border-radius: var(--ads-radius-smaller);
+  background: var(--ads-off-bg);
+  box-shadow: 0 4px 5px rgb(0 0 0 / 0.07);
+  color: var(--ads-fg-2);
+}
+.ads:is([data-theme="slate"], [data-theme="image"]) .ads-tip {
+  background: var(--ads-bg-2);
+}
+.ads-tip-card {
+  flex-direction: column;
+  gap: 12px;
+  width: 312px;
+  padding: 16px;
+}
+.ads-tip-card[data-type="min"],
+.ads-tip-card[data-type="citation"] {
+  gap: 8px;
+}
+.ads-tip-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ads-tip-head h3 {
+  flex: 1;
+  margin: 0;
+  color: var(--ads-fg-2);
+}
+.ads-tip-head > svg {
+  width: 20px;
+  height: 20px;
+  flex: none;
+}
+.ads-tip-close {
+  margin-left: auto;
+}
+.ads-tip-body {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.ads-tip-card[data-type="min"] .ads-tip-body {
+  gap: 0;
+}
+.ads-tip-body > p {
+  margin: 0;
+  padding-right: 16px;
+  color: var(--ads-fg-3);
+}
+.ads-tip-card[data-type="min"] .ads-tip-body > p {
+  padding-right: 32px;
+}
+/* The diagram of connections: four articles on a line. */
+.ads-tip-diagram {
+  position: relative;
+  height: 105px;
+  color: var(--ads-fg);
+}
+.ads-tip-diagram svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.ads-tip-diagram img {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border: 4.5px solid var(--ads-off-bg);
+  border-radius: 99px;
+  box-sizing: border-box;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+}
+/* The related article. Its height is fixed to fit the longest title, the
+   file's note says, so the tooltip does not jump between articles. */
+.ads-tip-article {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 97px;
+  padding: 16px 32px 16px 16px;
+  border: 1px solid var(--ads-border-3);
+  border-radius: var(--ads-radius-smallest);
+  background: var(--ads-bg);
+  box-sizing: border-box;
+}
+.ads-tip-article .ads-caption-2 {
+  color: var(--ads-fg-3);
+}
+.ads-tip-foot {
+  display: flex;
+  padding-top: 8px;
+}
+.ads-tip-card[data-type="max"] .ads-tip-foot {
+  margin-top: -16px;
+}
+.ads-tip-card[data-type="max"] .ads-tip-more {
+  flex: 1;
+}
+.ads-tip .ads-btn[data-size="small"] {
+  font-weight: 400;
+}
+.ads-tip .ads-btn svg {
+  width: 16px;
+  height: 16px;
+}
+/* The citations: each a passage; the one under the pointer is filled in
+   ("Citation Inner Hover"). */
+.ads-tip-citations {
+  display: flex;
+  flex-direction: column;
+}
+.ads-tip-citation {
+  padding: 12px 32px 12px 28px;
+  border: 0;
+  border-bottom: 1px solid var(--ads-border-3);
+  border-radius: 0;
+  background: none;
+  color: var(--ads-fg-3);
+  text-align: left;
+  cursor: pointer;
+}
+.ads-tip-citation:last-child {
+  border-bottom: 0;
+}
+.ads-tip-citation:is(:hover, [data-state="hover"]) {
+  border-color: transparent;
+  border-radius: var(--ads-radius-smallest);
+  background: var(--ads-bg);
+  box-shadow: inset 0 0 0 1px var(--ads-border-2);
+  color: var(--ads-fg);
+}
+/* The footnote: its number beside its text, and the close button. */
+.ads-tip-footnote {
+  align-items: flex-start;
+  gap: 16px;
+  width: 335px;
+  padding: 16px;
+}
+.ads-tip-footnote .ads-caption-2-mono {
+  flex: none;
+  padding-top: 2px;
+  color: var(--ads-fg-3);
+}
+.ads-tip-footnote p {
+  flex: 1;
+  margin: 0 8px 0 0;
+}
+/* Type3: a small dark label. */
+.ads-tip-label {
+  padding: 4px 8px;
+  border-color: var(--ads-gray-700);
+  border-radius: var(--ads-radius-tinier);
+  background: var(--ads-gray-950);
+  color: var(--ads-gray-050);
+  font: 400 13px/20px var(--ads-sans);
+  letter-spacing: 0.13px;
+  white-space: nowrap;
+}
+.ads:is([data-theme="slate"], [data-theme="image"]) .ads-tip-label {
+  background: var(--ads-gray-950);
+}
+
+/* ---- The figures' pages, as skeletons ------------------------------ */
+
+/* A page's margins, kept to the middle of a figure dragged wide. */
+.ads-demo-skel-under,
+.ads-demo-skel-after,
+.ads-demo-skel-nav {
+  --page-side: max(clamp(24px, 5cqw, 80px), (100cqw - 1280px) / 2);
+}
+.ads-demo-skel-under {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 64px;
+  min-height: 0;
+  padding: 32px var(--page-side);
+  overflow: hidden;
+}
+.ads-demo-skel-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px var(--page-side);
+  background: var(--ads-bg);
+}
+.ads-demo-skel-nav > span {
+  display: flex;
+  gap: 8px;
+}
+@container (max-width: 1019px) {
+  .ads-demo-skel-nav > span:first-child,
+  .ads-demo-skel-nav > span:last-child > .cds-skel:nth-child(-n + 1),
+  .ads-demo-skel-nav > span:last-child > .cds-skel:nth-child(3) {
+    display: none;
+  }
+}
+@container (max-width: 599px) {
+  .ads-demo-skel-nav > .cds-skel {
+    width: 35px !important;
+    height: 24px !important;
+  }
+}
+.ads-demo-skel-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 640px;
+}
+.ads-demo-skel-hero > span:last-child {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 48px;
+}
+.ads-demo-skel-rule {
+  height: 1px;
+  margin: 12px 0;
+  background: color-mix(in srgb, var(--ads-fg) 18%, transparent);
+}
+.ads-demo-skel-posts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.ads-demo-skel-posts > span {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ads-demo-skel-picture {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  margin: 4px 0;
+  border-radius: 4px;
+}
+@container (max-width: 599px) {
+  .ads-demo-skel-posts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.ads-demo-skel-after {
+  padding: 64px var(--page-side);
+}
+/* The hero carousel's figure: the page round it wears the picked theme,
+   the carousel is always Slate. The figure's ring, drawn over everything
+   in its box in the page's border color, would run as a light line down
+   the dark carousel's sides; the carousel rises over it instead and draws
+   the edge beside itself in its own theme's ring color, at the ring's
+   width (`.cds-ring` in src/claude-ds.css). */
+.ads-demo-carousel-figure > .ads-hero-carousel {
+  position: relative;
+  z-index: 11;
+}
+.ads-demo-carousel-figure > .ads-hero-carousel::after {
+  --hair: var(--cds-hair, 1px);
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  box-shadow:
+    inset var(--hair) 0 0 0 var(--cds-ring),
+    inset calc(-1 * var(--hair)) 0 0 0 var(--cds-ring);
+  content: "";
+  pointer-events: none;
+}
+/* The navigation figure: the expanded menu is always Slate, and lies
+   against the figure's edge at the right (on a phone, all round). It rises
+   over the figure's ring and draws the edge where it lies in its own ring
+   color: a copy of the ring the figure's size, anchored to the sheet's
+   right and cut at its left, so it slides in and out with the sheet. */
+.ads-demo-nav-figure .ads-xnav {
+  z-index: 11;
+  clip-path: inset(-2px -2px -2px 0);
+}
+.ads-demo-nav-figure .ads-xnav::after {
+  position: absolute;
+  z-index: 20;
+  top: -2px;
+  right: -2px;
+  bottom: -2px;
+  width: calc(100cqw + 4px);
+  border-radius: calc(var(--cds-figure-r, 20px) + 2px);
+  box-shadow: inset 0 0 0 calc(2px + var(--cds-hair, 1px)) var(--cds-ring);
+  content: "";
+  pointer-events: none;
+  transition: border-radius 0.4s cubic-bezier(0.2, 0, 0, 1);
+}
+/* The end of a list over the footer's figure (`SkeletonListEnd`): the
+   reverse of the carousel's. The figure is Slate and so is its ring; this
+   page end wears the picked theme, so it rises over the ring and edges its
+   top and sides in its own theme's ring color, drawn as the figure's ring
+   is (`.cds-ring::after` in src/claude-ds.css: a layer 2px larger than the
+   box and a ring that much thicker, so the rounded corner cuts its outer
+   edge once). Its layer reaches further under it than the ring is thick,
+   where it is clipped, so no line is drawn where it meets the prefooter. */
+.ads-demo-skel-end {
+  --page-side: max(clamp(24px, 5cqw, 80px), (100cqw - 1280px) / 2);
+  --hair: var(--cds-hair, 1px);
+  position: relative;
+  z-index: 11;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  /* The section's own bottom padding, rounded to 5px so the page end is a
+     whole number of drawn pixels tall at the figures' 80%: between pixels,
+     its edge with the dark prefooter was drawn as a gray line. */
+  padding: 16px var(--page-side)
+    round(clamp(48px, calc(48px + (100cqw - 390px) * 0.054), 96px), 5px);
+  overflow: hidden;
+}
+.ads-demo-skel-end::after {
+  --ring: calc(2px + var(--hair));
+  position: absolute;
+  inset: -2px -2px calc(-2px - var(--ring));
+  border-radius: calc(var(--cds-figure-r, 20px) + 2px)
+    calc(var(--cds-figure-r, 20px) + 2px) 0 0;
+  box-shadow: inset 0 0 0 var(--ring) var(--cds-ring);
+  content: "";
+  pointer-events: none;
+}
+/* The figure round it leaves its Slate ground and ring out above the line
+   the page end reaches down to (`--skel-end`, which `SkeletonListEnd` sets
+   as the window scrolls): drawn under the page end's rounded corners, both
+   showed through them as a dark fringe. The ring's layer starts 2px above
+   the figure. */
+[data-figure]:has(.ads-demo-skel-end) {
+  background: linear-gradient(
+    to bottom,
+    transparent var(--skel-end, 0px),
+    var(--ads-bg) var(--skel-end, 0px)
+  );
+}
+[data-figure]:has(.ads-demo-skel-end)::after {
+  --skel-cut: calc(var(--skel-end, 0px) + 2px);
+  -webkit-mask: linear-gradient(
+    to bottom,
+    transparent var(--skel-cut),
+    #000 var(--skel-cut)
+  );
+  mask: linear-gradient(
+    to bottom,
+    transparent var(--skel-cut),
+    #000 var(--skel-cut)
+  );
+}
+.ads-demo-skel-end-rows {
+  align-self: stretch;
+  border-bottom: 1px solid var(--ads-border-2);
+}
+/* A row in the research table's columns (`.ads-row-top`): title,
+   description, topic, and date. */
+.ads-demo-skel-end-row {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 449fr) minmax(0, 393fr) minmax(0, 321fr)
+    minmax(0, 166fr);
+  align-items: center;
+  column-gap: 16px;
+  min-height: 52px;
+  border-top: 1px solid var(--ads-border-2);
+}
+@container (max-width: 599px) {
+  .ads-demo-skel-end-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .ads-demo-skel-end-row > :nth-child(2),
+  .ads-demo-skel-end-row > :nth-child(3) {
+    display: none;
+  }
+}
+/* A box that scrolls inside a figure, as a page in a window does. */
+.ads-demo-window {
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+/* The tooltip figure: an article, its tools at the top, its words with
+   tooltips among its lines. */
+.ads-demo-tip-figure {
+  display: flex;
+  justify-content: center;
+  min-height: 720px;
+  padding: 48px 24px;
+}
+.ads-demo-tip-article {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(100%, 640px);
+}
+.ads-demo-tip-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.ads-demo-skel-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ads-demo-skel-line > .cds-skel:last-child {
+  flex: 1;
+}
