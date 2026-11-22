@@ -66,7 +66,8 @@ const str = (v: State[string], d = "") => (typeof v === "string" ? v : d)
 export function EditorCrumb({ s }: { s: State }) {
   const labeled = Boolean(s.labeled)
   const left = str(s.left, "tree")
-  const rec = str(s.rec)
+  const rec =
+    str(s.rec) || (comboOf(s).some(([, k]) => k !== "Global") ? "combo" : "")
   const logic = s.mode === "logic"
   const railW = labeled ? 72 : 48
   const view = {
@@ -163,8 +164,25 @@ function Crumb({
   )
 }
 
+/**
+ * The variants a recording combines (state key combo, a comma list): a
+ * variant, an element state (name:state), or a global variant (Dark…),
+ * which shows gray: it is applied, not recorded into.
+ */
+function comboOf(s: State): Array<[string, string]> {
+  return str(s.combo)
+    .split(",")
+    .filter(Boolean)
+    .map((c) => [
+      c,
+      c.includes(":") ? "State" : c.startsWith("Dark") ? "Global" : "Variant",
+    ])
+}
+
 function CrumbBar({ s }: { s: State }) {
-  const rec = str(s.rec)
+  const combo = comboOf(s)
+  const rec =
+    str(s.rec) || (combo.some(([, k]) => k !== "Global") ? "combo" : "")
   const logic = s.mode === "logic"
   return (
     <header
@@ -206,11 +224,11 @@ function CrumbBar({ s }: { s: State }) {
         label="Variant"
         pk="crumb:variant"
       />
-      {rec && (
+      {Boolean(s.rec) && (
         <>
           <Crumb
             icon={TbDeviceDesktop}
-            value={rec}
+            value={str(s.rec)}
             label="Screen"
             pk="crumb:rec"
             red
@@ -220,6 +238,19 @@ function CrumbBar({ s }: { s: State }) {
           </span>
         </>
       )}
+      {combo.map(([name, kind], i) => (
+        <span
+          key={name}
+          className="pk-btn"
+          data-kind={kind === "Global" ? "ghost" : "rec"}
+          style={{ height: 26, gap: 5, padding: "0 8px" }}
+          title={kind}
+          data-pk={`crumb:combo:${i}`}
+        >
+          {kind === "Global" ? <TbWorld /> : <TbTriangle />}
+          {name}
+        </span>
+      ))}
       <span className="flex flex-1 justify-center gap-1" data-pk="modes">
         {(s.labeled
           ? ["Build", "Preview"]
@@ -323,7 +354,7 @@ function FloatingChrome() {
 function RailCrumb({ s }: { s: State }) {
   const labeled = Boolean(s.labeled)
   const left = str(s.left, "tree")
-  const rec = Boolean(s.rec)
+  const rec = Boolean(s.rec) || comboOf(s).some(([, k]) => k !== "Global")
   const items: Array<
     [string, React.ComponentType<{ className?: string }>, string]
   > = labeled
@@ -560,7 +591,12 @@ function Boards({
         <span className="pk-board-label" style={{ fontSize: 22, height: 40 }}>
           Desktop <span className="pk-faint pk-mono">1440 × 1024</span>
         </span>
-        <div className="pk-board-body">
+        <div
+          className="pk-board-body"
+          style={
+            rec === "combo" ? { outline: "4px solid var(--pk-rec)" } : undefined
+          }
+        >
           <Landing s={s} />
         </div>
       </div>
@@ -577,7 +613,11 @@ function Boards({
         </span>
         <div
           className="pk-board-body"
-          style={rec ? { outline: "4px solid var(--pk-rec)" } : undefined}
+          style={
+            rec && rec !== "combo"
+              ? { outline: "4px solid var(--pk-rec)" }
+              : undefined
+          }
         >
           <Landing narrow s={s} />
         </div>
@@ -594,14 +634,26 @@ function Boards({
  */
 function Landing({ narrow, s }: { narrow?: boolean; s: State }) {
   const p = narrow ? "m:" : ""
+  // Under the DarkTheme global variant, the page wears its dark theme.
+  const dark = comboOf(s).some(([n]) => n === "DarkTheme")
   const features = ["Fast", "Flexible", "Yours"].concat(
     s.features ? [str(s.featureName, "")] : []
   )
   return (
-    <div className="pk-acme" style={{ fontSize: narrow ? 18 : 22 }}>
+    <div
+      className="pk-acme"
+      style={{
+        fontSize: narrow ? 18 : 22,
+        transition: "background 0.5s, color 0.5s",
+        ...(dark ? { background: "#0b0d10", color: "#f3f4f6" } : {}),
+      }}
+    >
       <div
         className="flex items-center justify-between px-10"
-        style={{ height: 88, borderBottom: "1px solid #eee" }}
+        style={{
+          height: 88,
+          borderBottom: `1px solid ${dark ? "#1f2329" : "#eee"}`,
+        }}
       >
         <b style={{ fontSize: 26 }}>Acme</b>
         {!narrow && (
@@ -638,6 +690,8 @@ function Landing({ narrow, s }: { narrow?: boolean; s: State }) {
             lineHeight: 1.05,
             fontWeight: 800,
             letterSpacing: "-0.03em",
+            color: str(s.h1color) || undefined,
+            transition: "color 0.5s",
           }}
           data-pk={`${p}land:headline`}
         >
@@ -671,7 +725,7 @@ function Landing({ narrow, s }: { narrow?: boolean; s: State }) {
             key={i}
             className="flex flex-col gap-2 rounded-2xl p-6"
             style={{
-              background: "#f3f4f6",
+              background: dark ? "#16191e" : "#f3f4f6",
               animation: i === 3 ? "pk-pop-in 0.3s ease-out both" : undefined,
             }}
             data-pk={`${p}land:feature-${i}`}
