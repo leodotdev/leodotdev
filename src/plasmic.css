@@ -90,6 +90,8 @@
   flex: 1;
   overflow: hidden;
   background: #f5f6f8;
+  /* The demo cursor's alone: a visitor's pointer changes nothing in it. */
+  pointer-events: none;
 }
 
 /* What is drawn over the browser at the page's own size. */
@@ -260,12 +262,26 @@
 .pl-note[data-kind="concept"] {
   border-left-color: var(--pl-concept);
 }
+/* A note's title is in Inter, its words in Paper Mono. */
 .pl-note-kind {
   display: block;
   color: var(--pl-decision);
+  font: 500 16px/24px var(--font-sans);
 }
 .pl-note[data-kind="concept"] .pl-note-kind {
   color: var(--pl-concept);
+}
+/* In the left gutter a card's colored edge is its near one, the right. */
+.pl-note[data-gutter="left"] {
+  border-right: 2px solid var(--pl-decision);
+  border-left: 0;
+  border-radius: 6px 0 0 6px;
+}
+.pl-note[data-gutter="left"][data-kind="concept"] {
+  border-right-color: var(--pl-concept);
+}
+.pl-note[data-gutter="left"][data-kind="discovery"] {
+  border-right-color: var(--pl-discovery);
 }
 @keyframes pl-note-in {
   from {

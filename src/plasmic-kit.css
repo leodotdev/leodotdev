@@ -177,11 +177,19 @@
   color: var(--pk-fg-3);
   font: 400 11px/16px var(--pk-mono);
 }
+/* The tools sit in the middle of the bar itself, whatever is either side
+   of them; what follows them is pushed to the right. */
 .pk-tools {
+  position: absolute;
+  top: 50%;
+  left: 50%;
   display: flex;
   align-items: center;
   gap: 2px;
-  margin: 0 auto;
+  translate: -50% -50%;
+}
+.pk-tools + * {
+  margin-left: auto;
 }
 .pk-tool {
   display: grid;

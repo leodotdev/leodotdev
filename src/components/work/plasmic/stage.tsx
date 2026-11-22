@@ -40,6 +40,8 @@ export const APP_W = 1440
 export const APP_H = 868
 /** The browser's own bar, as laid out. */
 export const CHROME = 52
+/** The room beside the browser the change card needs to sit there. */
+const CHANGE_ROOM = 276
 /** The scale the browser is drawn at, as the docs' figures are (80%). */
 const SCALE = 0.8
 
@@ -52,9 +54,10 @@ const SCALE = 0.8
  * studio rebuilt in HTML (the kit in ./kit/, styles in src/plasmic-kit.css),
  * drawn from a small state its script changes as the demo cursor points
  * at parts (bringing up their notes) and works through a workflow (each
- * step said as it happens). Moving into the browser takes over: the script
- * stops and its cursor leaves, the studio answers the visitor's pointer,
- * and a part's note shows while the pointer is on it. The browser is laid
+ * step said as it happens). The script is the presentation, so a visitor's
+ * pointer does not stop it and the studio does not answer it (Leo,
+ * 2026-11-22; before, moving into the browser took over); only the badges
+ * that open a part's versions are pressed. The browser is laid
  * out at the app's true size and drawn at 80%, whole, scaled further only
  * where the window is too small; the app does not reflow (it was a desktop
  * app). The browser and the studio wear the product theme picked in the
@@ -203,10 +206,6 @@ type Cursor = {
 const beatsOf = (n: Note) =>
   n.beat === undefined ? null : Array.isArray(n.beat) ? n.beat : [n.beat]
 
-/** Whether a point (in the app's pixels) is inside a box. */
-const inside = ([x, y]: [number, number], [l, t, w, h]: Rect) =>
-  x >= l && x <= l + w && y >= t && y <= t + h
-
 /**
  * One scene, played: the browser with the studio in it, the notes, the
  * cursor running the scene's script, and whatever else the scene has.
@@ -264,26 +263,6 @@ function Player({
     ]
   }, [])
 
-  // Taking over: in the browser, the script stops and the visitor's pointer
-  // brings up the note of the part it is on; it starts again a moment
-  // after the pointer goes. A tap holds it for a few seconds.
-  const [held, setHeld] = useState(false)
-  const [pointer, setPointer] = useState<[number, number] | null>(null)
-  const release = useRef(0)
-  const hold = (ms?: number) => {
-    clearTimeout(release.current)
-    setHeld(true)
-    if (ms) release.current = window.setTimeout(() => setHeld(false), ms)
-  }
-  const letGo = () => {
-    clearTimeout(release.current)
-    release.current = window.setTimeout(() => {
-      setHeld(false)
-      setPointer(null)
-    }, 700)
-  }
-  useEffect(() => () => clearTimeout(release.current), [])
-
   const [still] = useState(
     () =>
       typeof window !== "undefined" &&
@@ -291,7 +270,7 @@ function Player({
   )
   const { cursor, say, ghost } = useScript(
     scene.script,
-    !held && !before && !still,
+    !before && !still,
     initial,
     setState,
     measure
@@ -307,8 +286,7 @@ function Player({
   const peers = usePeers(scene.peers, !before && !still, setState, measure)
 
   // The notes showing: those for the whole scene, and those of the beat
-  // the cursor is on (or, taken over, of the part under the pointer; with
-  // reduced motion, all of them).
+  // the cursor is on (with reduced motion, all of them).
   const notes = scene.notes
   const [rects, setRects] = useState<Array<Rect | null>>([])
   const beatIndex = cursor?.index
@@ -328,9 +306,11 @@ function Player({
       if (!n.rect) return false
       const only = beatsOf(n.note)
       if (!only || still) return true
-      if (held) return pointer ? inside(pointer, n.rect) : false
       return beatIndex !== undefined && only.includes(beatIndex)
     })
+
+  // Where the change card ends, in the desk's pixels.
+  const [changeFoot, setChangeFoot] = useState(0)
 
   const [open, setOpen] = useState<Explore | null>(null)
   const [exploreRect, setExploreRect] = useState<Rect | null>(null)
@@ -346,10 +326,14 @@ function Player({
         typeof on === "string" ? root?.querySelector(`[data-pk="${on}"]`) : null
       if (root && el) {
         const r = el.getBoundingClientRect()
+        // The app takes no pointer (the script is the presentation), so
+        // it is let in for the length of this look.
+        root.style.pointerEvents = "auto"
         const over = document.elementFromPoint(
           r.left + r.width / 2,
           r.top + r.height / 2
         )
+        root.style.pointerEvents = ""
         if (over && root.contains(over) && !el.contains(over)) {
           setExploreRect(null)
           return
@@ -381,21 +365,6 @@ function Player({
             "--pl-s": s,
           } as React.CSSProperties
         }
-        onPointerEnter={(e) => {
-          if (e.pointerType === "mouse") hold()
-        }}
-        onPointerLeave={(e) => {
-          if (e.pointerType === "mouse") letGo()
-        }}
-        onPointerDown={(e) => {
-          if (e.pointerType !== "mouse") hold(4000)
-        }}
-        onPointerMove={(e) => {
-          const o = app.current?.getBoundingClientRect()
-          if (!o || !held) return
-          const k = o.width / APP_W
-          setPointer([(e.clientX - o.left) / k, (e.clientY - o.top) / k])
-        }}
       >
         <div
           className="pl-browser"
@@ -435,8 +404,8 @@ function Player({
           {peers.map((p) => (
             <PeerView key={p.name} peer={p} s={s} />
           ))}
-          <CursorView cursor={held ? null : cursor} s={s} />
-          {say && cursor && !held && (
+          <CursorView cursor={cursor} s={s} />
+          {say && cursor && (
             <span
               className="pl-say"
               data-slow={cursor.slow ? "" : undefined}
@@ -458,6 +427,15 @@ function Player({
         s={s}
         origin={[left, top + chrome]}
         desk={[box.w, box.h]}
+        browser={{ left, width: bw }}
+        taken={{ right: Boolean(scene.sheet) }}
+        // The change card is at the top of the left gutter: notes there
+        // start under it.
+        under={
+          scene.change && left >= CHANGE_ROOM && changeFoot
+            ? { left: changeFoot + 12 }
+            : undefined
+        }
       />
       {scene.sheet && (
         <SheetWindow
@@ -469,7 +447,13 @@ function Player({
         />
       )}
       {scene.change && (
-        <ChangeCard change={scene.change} room={left} top={top} height={bh} />
+        <ChangeCard
+          change={scene.change}
+          room={left}
+          top={top}
+          height={bh}
+          onFoot={setChangeFoot}
+        />
       )}
       {open && (
         <Lightbox explore={open} theme={theme} onClose={() => setOpen(null)} />
@@ -904,15 +888,29 @@ function ChangeCard({
   room,
   top,
   height,
+  onFoot,
 }: {
   change: NonNullable<Scene["change"]>
   room: number
   top: number
   height: number
+  /** Told where the card's foot is, as it is drawn. */
+  onFoot: (y: number) => void
 }) {
-  const fits = room >= 276
+  const fits = room >= CHANGE_ROOM
+  const card = useRef<HTMLElement>(null)
+  useLayoutEffect(() => {
+    const el = card.current
+    if (!el) return
+    const observer = new ResizeObserver(() =>
+      onFoot(el.offsetTop + el.offsetHeight)
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [onFoot, top])
   return (
     <aside
+      ref={card}
       className="pl-change"
       style={
         fits
