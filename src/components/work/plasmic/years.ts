@@ -14,7 +14,7 @@ export const YEARS: Array<Year> = [
     slug: "2020",
     name: "2020",
     summary:
-      "From the first dark comps to the light editor: the tree, arenas panned and zoomed, variants, layout, tokens, a team at once, and code.",
+      "From the first dark comps to the light editor: the tree, arenas panned and zoomed, variants, layout, tokens, a team at once, and code with its history.",
     dives: DIVES_2020,
   },
   {
@@ -28,7 +28,7 @@ export const YEARS: Array<Year> = [
     slug: "2022",
     name: "2022",
     summary:
-      "Panels as tabs; the ribbon, a concept car with every control over the canvas; A/B tests and a CMS; and the way back to a rail.",
+      "Panels as tabs; the ribbon, a concept car with every control over the canvas; A/B tests and a CMS; the way back to a rail; components that act; and a site’s settings.",
     dives: DIVES_2022,
   },
   {
