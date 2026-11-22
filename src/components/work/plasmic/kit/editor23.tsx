@@ -13,6 +13,7 @@ import {
   TbDots,
   TbDroplet,
   TbExternalLink,
+  TbEye,
   TbFileText,
   TbGitBranch,
   TbHelp,
@@ -111,7 +112,7 @@ export function EditorCrumb({ s }: { s: State }) {
         {s.newPage ? (
           <TemplatePick hover={str(s.tpl)} />
         ) : s.crm ? (
-          <Crm />
+          <Crm viewAs={str(s.viewAs)} />
         ) : (
           <Boards rec={rec} view={view} s={s} />
         )}
@@ -251,6 +252,18 @@ function CrumbBar({ s }: { s: State }) {
           {name}
         </span>
       ))}
+      {s.viewAs !== undefined && (
+        <span
+          className="pk-btn"
+          data-kind="ghost"
+          style={{ gap: 6 }}
+          data-pk="viewas"
+        >
+          <TbEye />
+          Viewing as <b className="font-semibold">{str(s.viewAs, "Admin")}</b>
+          <TbChevronDown className="h-3 w-3" />
+        </span>
+      )}
       <span className="flex flex-1 justify-center gap-1" data-pk="modes">
         {(s.labeled
           ? ["Build", "Preview"]
@@ -1221,7 +1234,12 @@ function Palette({ q }: { q: string }) {
 }
 
 /** The app builder's sample: a dark internal app, its list bound to data. */
-function Crm() {
+/**
+ * The sample CRM, as a role would see it (viewAs): Anonymous meets the
+ * login, Normal has no Staff page, and Admin sees everything.
+ */
+function Crm({ viewAs = "" }: { viewAs?: string }) {
+  const anon = viewAs === "Anonymous"
   const cos = [
     "Bluth Company",
     "Dunder Mifflin",
@@ -1246,53 +1264,92 @@ function Crm() {
         style={{ borderRight: "1px solid #1f2329" }}
       >
         <b className="mb-3 text-[14px]">Acme CRM</b>
-        {["Accounts", "Contacts", "Contracts", "Staff"].map((n, i) => (
-          <span
-            key={n}
-            className="rounded-md px-2 py-1.5"
-            style={i === 0 ? { background: "#1f2329" } : { color: "#9ca3af" }}
-          >
-            {n}
-          </span>
-        ))}
-      </div>
-      <div className="flex flex-1 flex-col gap-3 p-5">
-        <span className="text-[12px]" style={{ color: "#9ca3af" }}>
-          Home / Accounts
-        </span>
-        <span
-          className="rounded-lg px-3 py-2 text-[12px]"
-          style={{ background: "#14171c", color: "#6b7280" }}
-        >
-          Search…
-        </span>
-        <div
-          className="grid grid-cols-2 gap-2"
-          data-pk="crm:list"
-          style={{ outline: "1.5px dashed var(--pk-accent)", outlineOffset: 4 }}
-        >
-          {cos.map((c) => (
-            <div
-              key={c}
-              className="flex items-center gap-3 rounded-lg p-3"
-              style={{ background: "#14171c" }}
+        {["Accounts", "Contacts", "Contracts", "Staff"]
+          .filter((n) => !(n === "Staff" && (viewAs === "Normal" || anon)))
+          .map((n, i) => (
+            <span
+              key={n}
+              className="rounded-md px-2 py-1.5"
+              style={i === 0 ? { background: "#1f2329" } : { color: "#9ca3af" }}
+              data-pk={`crm:nav:${n.toLowerCase()}`}
             >
-              <span
-                className="h-8 w-8 rounded-md"
-                style={{
-                  background: "linear-gradient(135deg,#334155,#64748b)",
-                }}
-              />
-              <span className="flex flex-col">
-                <b className="text-[13px]">{c}</b>
-                <span className="text-[11px]" style={{ color: "#6b7280" }}>
-                  Collection · Companies
-                </span>
-              </span>
-            </div>
+              {n}
+            </span>
           ))}
-        </div>
       </div>
+      {anon ? (
+        <div className="grid flex-1 place-items-center" data-pk="crm:login">
+          <div
+            className="flex w-[300px] flex-col gap-3 rounded-xl p-6"
+            style={{
+              background: "#14171c",
+              animation: "pk-pop-in 0.3s ease-out both",
+            }}
+          >
+            <b className="text-[16px]">Log in to Acme CRM</b>
+            <span style={{ color: "#9ca3af" }}>This page needs a login.</span>
+            <span
+              className="rounded-lg px-3 py-2"
+              style={{ background: "#0b0d10", color: "#6b7280" }}
+            >
+              you@acme.com
+            </span>
+            <span
+              className="rounded-lg px-3 py-2 text-center text-white"
+              style={{ background: "#2563eb" }}
+            >
+              Continue with email
+            </span>
+            <span
+              className="rounded-lg px-3 py-2 text-center"
+              style={{ boxShadow: "inset 0 0 0 1px #2a2f37" }}
+            >
+              Continue with Google
+            </span>
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-1 flex-col gap-3 p-5">
+          <span className="text-[12px]" style={{ color: "#9ca3af" }}>
+            Home / Accounts
+          </span>
+          <span
+            className="rounded-lg px-3 py-2 text-[12px]"
+            style={{ background: "#14171c", color: "#6b7280" }}
+          >
+            Search…
+          </span>
+          <div
+            className="grid grid-cols-2 gap-2"
+            data-pk="crm:list"
+            style={{
+              outline: "1.5px dashed var(--pk-accent)",
+              outlineOffset: 4,
+            }}
+          >
+            {cos.map((c) => (
+              <div
+                key={c}
+                className="flex items-center gap-3 rounded-lg p-3"
+                style={{ background: "#14171c" }}
+              >
+                <span
+                  className="h-8 w-8 rounded-md"
+                  style={{
+                    background: "linear-gradient(135deg,#334155,#64748b)",
+                  }}
+                />
+                <span className="flex flex-col">
+                  <b className="text-[13px]">{c}</b>
+                  <span className="text-[11px]" style={{ color: "#6b7280" }}>
+                    Collection · Companies
+                  </span>
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -542,7 +542,7 @@ export const DIVES_2023: Array<Dive> = [
       {
         view: crumb,
         url: "studio.plasmic.app/projects/crm-app",
-        state: { ...APP, crm: true },
+        state: { ...APP, crm: true, viewAs: "Admin" },
         script: [
           {
             on: "rail:settings",
@@ -568,6 +568,27 @@ export const DIVES_2023: Array<Dive> = [
             say: "New pages need a login",
             click: true,
             set: { loginNeeded: true },
+            wait: 2000,
+          },
+          {
+            on: "viewas",
+            say: "View the app as Anonymous",
+            click: true,
+            set: { settings: false, viewAs: "Anonymous" },
+            wait: 2600,
+          },
+          {
+            on: "viewas",
+            say: "As a Normal user",
+            click: true,
+            set: { viewAs: "Normal" },
+            wait: 2400,
+          },
+          {
+            on: "viewas",
+            say: "As an Admin",
+            click: true,
+            set: { viewAs: "Admin" },
             wait: 2400,
           },
         ],
@@ -592,6 +613,13 @@ export const DIVES_2023: Array<Dive> = [
             side: "right",
             beat: 5,
             text: "Defaults for new pages: Login needed, Role needed.",
+          },
+          {
+            kind: "concept",
+            on: "crm:nav:contracts",
+            side: "right",
+            beat: [6, 7, 8],
+            text: "“Viewing as”: the app as each role meets it, from inside the editor. Anonymous gets the login; Normal has no Staff page.",
           },
         ],
       },
