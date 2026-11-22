@@ -412,7 +412,7 @@ export const DIVES_2020: Array<Dive> = [
             kind: "direction",
             on: "selection",
             beat: 1,
-            text: "“I’m recommending we get rid of Selection Labels (except on Frames), the Tree should be good enough.” The size stays; the label went.",
+            text: "“I’m recommending we get rid of Selection Labels (except on Frames), the Tree should be good enough.”",
           },
           {
             kind: "direction",
@@ -850,7 +850,7 @@ export const DIVES_2020: Array<Dive> = [
             kind: "direction",
             on: "sec:position",
             beat: [0, 1],
-            text: "“If Free-floating position is our default, this should be as straightforward as possible.” Free and Auto became one switch.",
+            text: "“If Free-floating position is our default, this should be as straightforward as possible.” Here, Auto and Free as one switch.",
           },
           {
             kind: "concept",
