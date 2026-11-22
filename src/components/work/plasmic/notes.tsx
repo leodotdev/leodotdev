@@ -11,13 +11,13 @@ const MIN = 140
 const EDGE = 12
 const MEET = 20
 /**
- * How a note is drawn. By hand (Leo, 2026-11-22, "curved lines and more
- * handwritten font being scribble animated written"): the note's words in
- * Playpen Sans, written on a letter at a time, on a card, with an arrow
- * curving from the card to its part. The part's outline and the arrow are
- * drawn clean, not wobbly (Leo, later that day), and a card that is right
+ * How a note is drawn. With this on (Leo, 2026-11-22, who first asked for
+ * "curved lines and more handwritten font being scribble animated
+ * written", then for clean lines, then for Inter alone): the note's words
+ * in Inter, written on a letter at a time, on a card, with a clean arrow
+ * curving from the card to its part's clean outline; a card that is right
  * beside its part is set against the outline with no arrow at all. Set to
- * false, a note is in Inter and Paper Mono on a straight line, as it was
+ * false, a note is a title over Paper Mono on a straight line, as it was
  * first.
  */
 const HAND = true as boolean
@@ -236,7 +236,7 @@ export function NoteLayer({
     }
   }
 
-  // Drawn by hand wherever there is room to draw (the phone's list is not).
+  // On a card with an arrow wherever there is room (the phone's list is not).
   const hand = (_: Placed) => HAND && !narrow
   return (
     <div ref={layer} className="pl-notes" data-narrow={narrow || undefined}>

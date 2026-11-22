@@ -337,8 +337,11 @@
   margin-left: 12px;
 }
 .pk-ribbon-tab {
+  display: inline-flex;
+  align-items: center;
   height: 26px;
   padding: 0 10px;
+  white-space: nowrap;
   border-radius: 6px;
   color: var(--pk-fg-2);
   font-weight: 500;

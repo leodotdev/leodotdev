@@ -370,13 +370,14 @@
 .pl-note[data-kind="concept"] .pl-note-kind {
   color: var(--pl-concept);
 }
-/* A note drawn by hand in a gutter: its words in Playpen Sans (the
-   /work/plasmic notes and steps only), each letter written on in turn. */
+/* A note's card: its words in Inter (Leo, 2026-11-22: "lets only use
+   inter for annotations", after a day in Playpen Sans), each letter
+   written on in turn. */
 .pl-note.pl-hand {
-  font: 400 14px/20px var(--font-hand);
+  font: 400 14px/20px var(--font-sans);
 }
 .pl-hand .pl-note-kind {
-  font: 600 17px/24px var(--font-hand);
+  font: 600 15px/22px var(--font-sans);
 }
 /* Where a press on the part goes for more of it. */
 .pl-note-more {
@@ -563,11 +564,11 @@
   transition: opacity 0.4s ease-out;
   animation: pl-note-in 0.3s ease-out both;
 }
-/* The change card is an annotation too, so it is handwritten as the notes
-   are (Leo, 2026-11-22). */
+/* The change card is an annotation too, so it is set as the notes are
+   (Leo, 2026-11-22). */
 .pl-change-title {
   margin: 0 0 8px;
-  font: 600 17px/24px var(--font-hand);
+  font: 600 15px/22px var(--font-sans);
 }
 .pl-change ol {
   display: flex;
@@ -575,7 +576,7 @@
   gap: 4px;
   margin: 0;
   padding-left: 22px;
-  font: 400 14px/20px var(--font-hand);
+  font: 400 14px/20px var(--font-sans);
   list-style: decimal;
 }
 .pl-change li[data-dim] {
@@ -587,7 +588,7 @@
   gap: 4px;
   margin: 0;
   padding-left: 16px;
-  font: 400 14px/20px var(--font-hand);
+  font: 400 14px/20px var(--font-sans);
   list-style: disc;
 }
 
@@ -672,7 +673,7 @@
   background: var(--pl-card);
   color: var(--pl-card-fg);
   box-shadow: var(--pl-card-shadow);
-  font: 400 14px/20px var(--font-hand);
+  font: 400 14px/20px var(--font-sans);
   white-space: nowrap;
   pointer-events: none;
   transition: translate 0.6s cubic-bezier(0.3, 0, 0.2, 1);
