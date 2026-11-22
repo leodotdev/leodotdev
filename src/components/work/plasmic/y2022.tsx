@@ -4,6 +4,7 @@ import { EditorCrumb } from "@/components/work/plasmic/kit/editor23"
 import { Cms } from "@/components/work/plasmic/kit/cms"
 import { EditorTabs } from "@/components/work/plasmic/kit/editortabs"
 import { Insights } from "@/components/work/plasmic/kit/insights"
+import { Slider22 } from "@/components/work/plasmic/kit/slider22"
 import type { Dive, Shot, State } from "@/components/work/plasmic/types"
 
 // 2022, from the "2021 – 2022 Product" file: the ribbon, a concept car
@@ -487,6 +488,77 @@ export const DIVES_2022: Array<Dive> = [
             on: "cms:locale",
             beat: [2, 3],
             text: "“multi-select locale at the top, not at each field”",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "slider",
+    title: "Components That Act",
+    summary:
+      "A slider, selected: props to set, and actions to take on it from the panel.",
+    scenes: [
+      {
+        view: (s: State) => <Slider22 s={s} />,
+        url: URL,
+        script: [
+          { on: "slider", wait: 2200 },
+          {
+            on: "act:next",
+            say: "Next slide",
+            click: true,
+            set: { slide: 1, press: "next" },
+            wait: 900,
+          },
+          { on: "act:next", click: true, set: { slide: 2 }, wait: 1400 },
+          {
+            on: "act:append",
+            say: "Append a new slide",
+            click: true,
+            set: { slides: 4, slide: 3, press: "append" },
+            wait: 2400,
+          },
+          { on: "act:tip", set: { press: "" }, wait: 2400 },
+          {
+            on: "prop:auto-play",
+            at: [0.92, 0.5],
+            say: "Turn on Auto-play",
+            click: true,
+            set: { auto: true, slide: 0 },
+            wait: 1600,
+          },
+          { on: "slider", set: { slide: 1 }, wait: 1600 },
+          { on: "slider", set: { slide: 2 }, wait: 1600 },
+          {
+            on: "prop:auto-play",
+            at: [0.92, 0.5],
+            click: true,
+            set: { auto: false, slides: 3, slide: 0 },
+            wait: 1400,
+          },
+        ],
+        notes: [
+          {
+            kind: "concept",
+            on: "props",
+            side: "left",
+            beat: [5, 6, 7],
+            text: "Its props, set in the panel: accessibility, arrows, auto-play, center mode, draggable, easing.",
+          },
+          {
+            kind: "direction",
+            on: "actions",
+            side: "left",
+            beat: [1, 2, 3],
+            text: "And Actions, a section of their own: Current slide, Prev and Next, Append new slide, Delete current slide.",
+          },
+          {
+            kind: "direction",
+            on: "act:tip",
+            side: "left",
+            beat: 4,
+            text: "“*To re-arrange slides, use the outline panel (alt+1).” The slides are its children, so they are also rows in the tree.",
           },
         ],
       },
