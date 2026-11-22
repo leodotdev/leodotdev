@@ -209,7 +209,11 @@ export function Editor({ s }: { s: State }) {
         tool={(str(s.tool, "select") || "select") as "select"}
         hover={str(s.topHover)}
         right={
-          <TopBarEnd hover={str(s.topHover)} publish={layout !== "classic"} />
+          <TopBarEnd
+            hover={str(s.topHover)}
+            publish={layout !== "classic"}
+            zoom={zz}
+          />
         }
       />
       {layout === "rail" && (
