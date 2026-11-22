@@ -582,6 +582,90 @@ export const DIVES_2020: Array<Dive> = [
     ],
   },
   {
+    slug: "arena",
+    title: "Pan & Zoom",
+    summary:
+      "An arena of artboards, zoomed to one, panned across, and fitted again.",
+    scenes: [
+      {
+        view: editor,
+        url: URL,
+        state: { boards: "arena", sel: "", zz: 0.42, zx: 16, zy: 210 },
+        script: [
+          { on: "board:login", at: [0.5, 0.3], wait: 2600 },
+          {
+            on: "board:btn-hover",
+            say: "Zoom to a variant",
+            click: true,
+            set: { zz: 1.6, zx: -608, zy: -230 },
+            wait: 2600,
+          },
+          {
+            on: "zoom-level",
+            say: "Back to 100%",
+            click: true,
+            set: { zoomMenu: true },
+            wait: 700,
+          },
+          {
+            on: "zoom:100",
+            click: true,
+            set: { zoomMenu: false, zz: 1, zx: -572, zy: 108 },
+            wait: 1800,
+          },
+          {
+            to: [1000, 470],
+            shape: "grab",
+            say: "Pan across",
+            wait: 400,
+          },
+          {
+            to: [420, 470],
+            shape: "grab",
+            set: { zx: -1152, zy: 121 },
+            wait: 2600,
+          },
+          {
+            on: "zoom-level",
+            say: "Zoom to fit",
+            click: true,
+            set: { zoomMenu: true },
+            wait: 700,
+          },
+          {
+            on: "zoom:fit",
+            click: true,
+            set: { zoomMenu: false, zz: 0.42, zx: 16, zy: 210 },
+            wait: 2600,
+          },
+        ],
+        notes: [
+          {
+            kind: "concept",
+            on: "board:login",
+            side: "bottom",
+            beat: 0,
+            text: "An arena: a canvas to lay artboards out on, a component’s variants beside the pages that use them.",
+          },
+          {
+            kind: "concept",
+            on: "board:btn-hover",
+            side: "bottom",
+            beat: 1,
+            text: "Zoomed in, a variant is still the real thing: HTML and CSS, not a picture of it.",
+          },
+          {
+            kind: "direction",
+            on: "zoom-level",
+            side: "right",
+            beat: 0,
+            text: "The zoom control, among what the research called “Studio View Controls.”",
+          },
+        ],
+      },
+    ],
+  },
+  {
     slug: "tree",
     title: "The Tree",
     summary: "Searching, reordering, and acting on what is on the page.",

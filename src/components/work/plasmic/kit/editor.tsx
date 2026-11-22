@@ -53,6 +53,7 @@ import type {
   RailItem,
   TreeNode,
 } from "@/components/work/plasmic/kit/studio"
+import { ProjectsPage } from "@/components/work/plasmic/kit/pages"
 import type { State } from "@/components/work/plasmic/types"
 
 // The editor, composed from the kit and drawn entirely from a scene's
@@ -269,6 +270,7 @@ export function Editor({ s }: { s: State }) {
             title={str(s.title, "Log in to Acme")}
           />
         </Board>
+        {s.boards === "arena" && <Arena accent={accent} />}
         {s.boards === "all" && (
           <>
             <Board
@@ -317,6 +319,23 @@ export function Editor({ s }: { s: State }) {
         )}
       </Canvas>
       {str(s.right, "design") === "design" && <RightDesign s={s} />}
+      {Boolean(s.zoomMenu) && (
+        <Menu
+          x={276}
+          y={664}
+          w={200}
+          pk="zoom-menu"
+          hover={str(s.menuHover)}
+          items={[
+            { label: "Zoom in", kbd: "⌘+", pk: "zoom:in" },
+            { label: "Zoom out", kbd: "⌘−", pk: "zoom:out" },
+            { label: "Zoom to 100%", kbd: "⌘0", pk: "zoom:100" },
+            "sep",
+            { label: "Zoom to fit", kbd: "⇧1", pk: "zoom:fit" },
+            { label: "Zoom to selection", kbd: "⇧2", pk: "zoom:sel" },
+          ]}
+        />
+      )}
       {s.menu === "context" && (
         <Menu
           x={num(s.menuX, 420)}
@@ -619,5 +638,65 @@ function Gallery() {
         )
       )}
     </div>
+  )
+}
+
+/**
+ * A fuller arena, for panning and zooming: the login page, the button's
+ * four variants in a column beside it, the home screen, and the projects
+ * page at desktop size (drawn at half size on its board).
+ */
+export const ARENA = {
+  login: BOARDS.login,
+  buttons: [0, 1, 2, 3].map((i) => ({
+    x: 520,
+    y: 72 + i * 136,
+    w: 280,
+    h: 112,
+  })),
+  home: { x: 860, y: 72, w: 320, h: 460 },
+  desktop: { x: 1240, y: 72, w: 720, h: 434 },
+}
+
+function Arena({ accent }: { accent: string }) {
+  const kinds = ["primary", "secondary", "hover", "disabled"] as const
+  return (
+    <>
+      {kinds.map((k, i) => (
+        <Board
+          key={k}
+          {...ARENA.buttons[i]}
+          label={`Button: ${k[0].toUpperCase()}${k.slice(1)}`}
+          kind="component"
+          pk={`board:btn-${k}`}
+        >
+          <AcmeButton accent={accent} kind={k} />
+        </Board>
+      ))}
+      <Board {...ARENA.home} label="Home" pk="board:home">
+        <AcmeHome accent={accent} />
+      </Board>
+      <Board
+        {...ARENA.desktop}
+        label="Projects"
+        size="1440 × 868"
+        pk="board:desktop"
+      >
+        <div
+          className="pk"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: 1440,
+            height: 868,
+            transform: "scale(0.5)",
+            transformOrigin: "0 0",
+          }}
+        >
+          <ProjectsPage s={{}} />
+        </div>
+      </Board>
+    </>
   )
 }
