@@ -41,6 +41,7 @@ import {
 } from "@/components/work/plasmic/kit/studio"
 import type { TreeNode } from "@/components/work/plasmic/kit/studio"
 import {
+  PageSettings,
   QueryDrawer,
   SettingsModal,
   TemplatePick,
@@ -131,6 +132,7 @@ export function EditorCrumb({ s }: { s: State }) {
       {s.merge && <MergeDialog />}
       {s.palette && <Palette q={str(s.q)} />}
       {Boolean(s.settings) && <SettingsModal s={s} />}
+      {Boolean(s.pageSet) && <PageSettings s={s} />}
     </div>
   )
 }

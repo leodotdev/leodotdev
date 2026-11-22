@@ -632,3 +632,180 @@ export function SettingsModal({ s }: { s: State }) {
     </>
   )
 }
+
+/* ------------------------------------------------------------------ */
+/* Page settings                                                        */
+
+/**
+ * A page's settings, from the P2023 H1 file's four frames: its path (with
+ * a parameter, previewed with a value), SEO, metadata and props, and who
+ * may edit it. State keys: pageSet: the section showing; month: the
+ * preview's value for [month]; desc: the SEO description, typed.
+ */
+export function PageSettings({ s }: { s: State }) {
+  const tab = str(s.pageSet, "Page path")
+  const month = str(s.month, "Jan")
+  const desc = str(s.desc)
+  return (
+    <section
+      className="pk-pop flex"
+      style={{ left: 330, top: 54, width: 600, height: 340 }}
+      data-pk="pageset"
+    >
+      <nav
+        className="flex w-[150px] flex-none flex-col gap-0.5 p-3"
+        style={{ borderRight: "1px solid var(--pk-line)" }}
+      >
+        <b className="px-2 pt-1 pb-3 text-[15px] font-semibold">Settings</b>
+        {["Page path", "SEO", "Metadata and props", "More…"].map((t) => (
+          <span
+            key={t}
+            className="pk-dash-nav"
+            aria-current={t === tab || undefined}
+            style={{ minHeight: 30 }}
+            data-pk={`pageset:${t.split(" ")[0].replace("…", "").toLowerCase()}`}
+          >
+            {t}
+          </span>
+        ))}
+      </nav>
+      <div className="flex min-w-0 flex-1 flex-col">
+        {tab === "Page path" && (
+          <>
+            <div
+              className="flex flex-col gap-3 p-4"
+              style={{ borderBottom: "1px solid var(--pk-line)" }}
+              data-pk="pageset:route"
+            >
+              <span className="pk-set-row">
+                <b className="font-medium">Path</b>
+                <span className="pk-input flex-1">
+                  /posts/
+                  <span className="pk-chip">[month]</span>
+                  <TbChevronDown className="ml-auto" />
+                </span>
+              </span>
+              <span className="pk-set-row">
+                <span className="pk-faint">Preview</span>
+                <span
+                  style={{ color: "var(--pk-accent)" }}
+                  data-pk="pageset:preview"
+                >
+                  /posts/{month}
+                </span>
+              </span>
+            </div>
+            <div className="flex flex-col gap-2 p-4" data-pk="pageset:params">
+              <span className="flex flex-col leading-4">
+                <b className="font-medium">Preview parameters</b>
+                <span className="pk-faint text-[11px]">
+                  Defined in path, e.g. [param]
+                </span>
+              </span>
+              <span className="pk-set-row">
+                <span>month</span>
+                <span
+                  className="pk-input flex-1"
+                  data-state={s.monthFocus ? "focus" : undefined}
+                  data-pk="pageset:month"
+                >
+                  {month}
+                  {Boolean(s.monthFocus) && <i className="pk-caret" />}
+                </span>
+              </span>
+            </div>
+            <div className="flex items-center justify-between p-4 pt-0">
+              <span className="flex flex-col leading-4">
+                <b className="font-medium">Preview query parameters</b>
+                <span className="pk-faint text-[11px]">e.g. ?key=value</span>
+              </span>
+              <TbPlus className="opacity-60" />
+            </div>
+          </>
+        )}
+        {tab === "SEO" && (
+          <div className="flex flex-col gap-3 p-4" data-pk="pageset:seo-body">
+            <b className="font-medium">Basic information</b>
+            <span className="pk-set-row">
+              <span>Title</span>
+              <span className="pk-input flex-1">Posts from {month}</span>
+            </span>
+            <span className="pk-set-row items-start!">
+              <span className="pt-1.5">Content</span>
+              <span className="flex flex-1 flex-col gap-1">
+                <span
+                  className="pk-input h-16! items-start! py-1.5 leading-4 whitespace-normal"
+                  data-state={s.descFocus ? "focus" : undefined}
+                  data-pk="pageset:desc"
+                >
+                  <span>
+                    {desc ||
+                      (!s.descFocus && (
+                        <span className="pk-faint">Enter…</span>
+                      ))}
+                    {Boolean(s.descFocus) && <i className="pk-caret" />}
+                  </span>
+                </span>
+                <span
+                  className="pk-faint flex justify-between text-[11px]"
+                  data-pk="pageset:count"
+                >
+                  <span>
+                    Count
+                    <br />
+                    Recommended
+                  </span>
+                  <span className="pk-mono text-right">
+                    {desc.length}
+                    <br />
+                    160
+                  </span>
+                </span>
+              </span>
+            </span>
+            <span className="pk-set-row">
+              <span>Image</span>
+              <span className="pk-input flex-1">
+                <span className="pk-faint">Upload…</span>
+                <TbChevronDown className="ml-auto" />
+              </span>
+            </span>
+          </div>
+        )}
+        {tab === "Metadata and props" && (
+          <div className="flex flex-col">
+            {[
+              ["Metadata", "Key-value pairs"],
+              ["Meta props", "Key-value pairs"],
+            ].map(([t, sub]) => (
+              <div
+                key={t}
+                className="flex items-center justify-between p-4"
+                style={{ borderBottom: "1px solid var(--pk-line)" }}
+              >
+                <span className="flex flex-col leading-4">
+                  <b className="font-medium">{t}</b>
+                  <span className="pk-faint text-[11px]">{sub}</span>
+                </span>
+                <TbPlus className="opacity-60" />
+              </div>
+            ))}
+          </div>
+        )}
+        {tab === "More…" && (
+          <div className="flex flex-col gap-3 p-4" data-pk="pageset:editable">
+            <b className="font-medium">Page editable by…</b>
+            <span className="flex items-center justify-between">
+              Content editors
+              <Switch on />
+            </span>
+            <span className="flex items-center justify-between">
+              Viewers
+              <Switch on={false} />
+            </span>
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
