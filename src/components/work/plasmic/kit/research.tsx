@@ -1,5 +1,10 @@
 import {
   TbBell,
+  TbBrandGatsby,
+  TbBrandGraphql,
+  TbBrandJavascript,
+  TbBrandNextjs,
+  TbBrandVue,
   TbBinoculars,
   TbBrandReact,
   TbCheck,
@@ -563,9 +568,11 @@ export function Homework({ s }: { s: State }) {
           data-pk="hw:address"
         >
           <TbFile />
-          {mode === "Design" && s.selPath
-            ? "Project/HomePage/Mobile/Root/Button"
-            : "todomvp://index.js"}
+          {s.screen2
+            ? "Project/HomePage/Mobile/Root/Button/Primary/Text"
+            : mode === "Design" && s.selPath
+              ? "Project/HomePage/Mobile/Root/Button"
+              : "todomvp://index.js"}
         </span>
         <span className="pk-seg" data-pk="hw:modes">
           {[
@@ -681,15 +688,42 @@ export function Homework({ s }: { s: State }) {
                 <span>Tree</span>
               </div>
               <div className="pk-mono flex flex-col" data-pk="hw:dom">
-                {[
-                  '<body class="custom-body">',
-                  "  <section>",
-                  "    <h2>",
-                  '    <ul class="todo-list">',
-                  "      <TodoItem>",
-                  "    <footer>",
-                ].map((l) => (
-                  <span key={l} className="pk-muted px-3 py-0.5 whitespace-pre">
+                {(s.screen2
+                  ? [
+                      '<body class="custom-body">',
+                      "  <section>",
+                      "    <h2>",
+                      '    <input type="text">',
+                      "    <list>",
+                      "      <list-item>",
+                      '        <input type="checkbox">',
+                      "        <small>",
+                      "  <footer>",
+                    ]
+                  : [
+                      '<body class="custom-body">',
+                      "  <section>",
+                      "    <h2>",
+                      '    <ul class="todo-list">',
+                      "      <TodoItem>",
+                      "    <footer>",
+                    ]
+                ).map((l) => (
+                  <span
+                    key={l}
+                    className="pk-muted px-3 py-0.5 whitespace-pre"
+                    style={
+                      l.includes("checkbox")
+                        ? {
+                            background: "var(--pk-accent-bg)",
+                            color: "var(--pk-accent)",
+                          }
+                        : undefined
+                    }
+                    data-pk={
+                      l.includes("checkbox") ? "hw:dom:checkbox" : undefined
+                    }
+                  >
                     {l}
                   </span>
                 ))}
@@ -698,55 +732,59 @@ export function Homework({ s }: { s: State }) {
           )}
         </div>
         <div className="relative min-w-0 flex-1" data-pk="hw:viewports">
-          <div className="absolute flex gap-6" style={{ left: 40, top: 40 }}>
-            {[
-              [375, 560, "Mobile · dark · rulers", true],
-              [400, 560, "Desktop · spacing", false],
-            ].map(([w, h, l, dark]) => (
-              <div key={l as string} className="flex flex-col gap-2">
-                <span className="pk-faint pk-mono">{l as string}</span>
-                <div
-                  className="overflow-hidden rounded-lg"
-                  style={{
-                    width: w as number,
-                    height: h as number,
-                    background: dark ? "#111827" : "#fff",
-                    color: dark ? "#f9fafb" : "#111827",
-                    boxShadow: "0 1px 3px rgb(0 0 0 / 0.3)",
-                  }}
-                >
+          {s.screen2 ? (
+            <Unstyled />
+          ) : (
+            <div className="absolute flex gap-6" style={{ left: 40, top: 40 }}>
+              {[
+                [375, 560, "Mobile · dark · rulers", true],
+                [400, 560, "Desktop · spacing", false],
+              ].map(([w, h, l, dark]) => (
+                <div key={l as string} className="flex flex-col gap-2">
+                  <span className="pk-faint pk-mono">{l as string}</span>
                   <div
-                    className="flex flex-col gap-3 p-5"
-                    style={{ fontSize: 14 }}
+                    className="overflow-hidden rounded-lg"
+                    style={{
+                      width: w as number,
+                      height: h as number,
+                      background: dark ? "#111827" : "#fff",
+                      color: dark ? "#f9fafb" : "#111827",
+                      boxShadow: "0 1px 3px rgb(0 0 0 / 0.3)",
+                    }}
                   >
-                    <b style={{ fontSize: 28 }}>todos</b>
-                    {["Design the studio", "Wire up data", "Ship it"].map(
-                      (t, i) => (
-                        <span
-                          key={t}
-                          className="flex items-center gap-2 rounded-md px-3 py-2.5"
-                          style={{ background: dark ? "#1f2937" : "#f3f4f6" }}
-                        >
+                    <div
+                      className="flex flex-col gap-3 p-5"
+                      style={{ fontSize: 14 }}
+                    >
+                      <b style={{ fontSize: 28 }}>todos</b>
+                      {["Design the studio", "Wire up data", "Ship it"].map(
+                        (t, i) => (
                           <span
-                            className="grid h-4 w-4 place-items-center rounded-full"
-                            style={{ border: "1.5px solid #10b981" }}
+                            key={t}
+                            className="flex items-center gap-2 rounded-md px-3 py-2.5"
+                            style={{ background: dark ? "#1f2937" : "#f3f4f6" }}
                           >
-                            {i === 0 && (
-                              <TbCheck
-                                className="h-3 w-3"
-                                style={{ color: "#10b981" }}
-                              />
-                            )}
+                            <span
+                              className="grid h-4 w-4 place-items-center rounded-full"
+                              style={{ border: "1.5px solid #10b981" }}
+                            >
+                              {i === 0 && (
+                                <TbCheck
+                                  className="h-3 w-3"
+                                  style={{ color: "#10b981" }}
+                                />
+                              )}
+                            </span>
+                            {t}
                           </span>
-                          {t}
-                        </span>
-                      )
-                    )}
+                        )
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
           <div
             className="absolute right-4 bottom-4 left-4 flex items-center gap-3 rounded-lg px-3 py-2"
             style={{
@@ -755,14 +793,34 @@ export function Homework({ s }: { s: State }) {
             }}
             data-pk="hw:state"
           >
-            <b className="text-[11px]">State</b>
-            <span className="pk-chip">todos: 3</span>
-            <span className="pk-chip">filter: “all”</span>
-            <span className="pk-chip">editing: null</span>
-            <span className="flex-1" />
-            <TbBinoculars className="h-4 w-4 opacity-60" />
-            <span className="pk-mono pk-faint">100%</span>
+            {s.screen2 ? (
+              <>
+                <b className="text-[11px]">State Management:</b>
+                {["Visual", "Local", "Global"].map((t) => (
+                  <span
+                    key={t}
+                    className="pk-tab"
+                    aria-selected={t === "Local"}
+                  >
+                    {t}
+                  </span>
+                ))}
+                <span className="flex-1" />
+                <span className="pk-faint">Show Initially Hidden</span>
+              </>
+            ) : (
+              <>
+                <b className="text-[11px]">State</b>
+                <span className="pk-chip">todos: 3</span>
+                <span className="pk-chip">filter: “all”</span>
+                <span className="pk-chip">editing: null</span>
+                <span className="flex-1" />
+                <TbBinoculars className="h-4 w-4 opacity-60" />
+                <span className="pk-mono pk-faint">100%</span>
+              </>
+            )}
           </div>
+          {Boolean(s.boiler) && <Boilerplates />}
         </div>
         <div
           className="w-[280px]"
@@ -797,6 +855,149 @@ export function Homework({ s }: { s: State }) {
             ))}
           </div>
         </div>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * The homework's second screen: one viewport of the to-do app in the
+ * browser's default styles, its checkbox selected, and the path to it
+ * under the viewport.
+ */
+function Unstyled() {
+  return (
+    <div className="absolute flex flex-col gap-2" style={{ left: 40, top: 40 }}>
+      <span className="pk-faint pk-mono">index.js</span>
+      <div
+        className="flex flex-col gap-2 rounded-lg p-5"
+        style={{
+          width: 560,
+          height: 400,
+          background: "#fff",
+          color: "#111",
+          fontFamily: "Times New Roman, serif",
+          colorScheme: "light",
+          fontSize: 16,
+          boxShadow: "0 1px 3px rgb(0 0 0 / 0.3)",
+        }}
+      >
+        <span style={{ fontSize: 32, fontWeight: 700 }}>todos</span>
+        <span
+          className="self-start px-1"
+          style={{
+            border: "1px solid #767676",
+            fontFamily: "Arial, sans-serif",
+            fontSize: 13,
+          }}
+        >
+          What needs to be done?
+        </span>
+        <span
+          className="flex items-center gap-1.5"
+          style={{ fontFamily: "Arial, sans-serif", fontSize: 13 }}
+        >
+          <span
+            className="relative inline-flex items-center gap-1.5"
+            style={{
+              outline: "1.5px dashed var(--pk-accent)",
+              outlineOffset: 2,
+              boxShadow:
+                "0 -4px 0 rgb(244 114 182 / 0.35), 0 4px 0 rgb(244 114 182 / 0.35)",
+            }}
+            data-pk="hw:checkbox"
+          >
+            <input type="checkbox" readOnly tabIndex={-1} />
+            Placeholder
+          </span>
+        </span>
+        <small style={{ fontFamily: "Arial, sans-serif" }}>
+          {"{#}"} item left
+        </small>
+        <span
+          className="flex gap-3"
+          style={{ fontFamily: "Arial, sans-serif", fontSize: 13 }}
+        >
+          {["All", "Active", "Completed"].map((r, i) => (
+            <label key={r} className="flex items-center gap-1">
+              <input type="radio" readOnly checked={i === 0} tabIndex={-1} />
+              {r}
+            </label>
+          ))}
+        </span>
+      </div>
+      <span
+        className="pk-mono pk-muted flex items-center gap-2"
+        data-pk="hw:crumbs"
+      >
+        {["custom-body", "section", "list", "list-item"].map((c) => (
+          <span key={c}>{c} ›</span>
+        ))}
+        <b className="text-[color:var(--pk-accent)]">checkbox</b>
+      </span>
+    </div>
+  )
+}
+
+/** The homework's boilerplate picker, to start a project from a stack. */
+function Boilerplates() {
+  return (
+    <div
+      className="pk-pop"
+      style={{ left: 40, top: 60, width: 420 }}
+      data-pk="hw:boiler"
+    >
+      <div className="pk-tabs" style={{ padding: "8px 8px 0" }}>
+        {["Popular Boilerplates", "Clients", "Containers"].map((t) => (
+          <span
+            key={t}
+            className="pk-tab"
+            aria-selected={t === "Popular Boilerplates"}
+          >
+            {t}
+          </span>
+        ))}
+      </div>
+      <p className="pk-muted m-0 px-4 pt-3 leading-4">
+        Select a library, framework, or neither (vanilla) to get started.{" "}
+        <span className="text-[color:var(--pk-accent)]">Learn more.</span>
+      </p>
+      <div className="grid grid-cols-3 gap-2 p-4">
+        {(
+          [
+            ["React", TbBrandReact],
+            ["Vue", TbBrandVue],
+            ["Vanilla", TbBrandJavascript],
+            ["Gatsby", TbBrandGatsby],
+            ["Next", TbBrandNextjs],
+            ["Apollo", TbBrandGraphql],
+          ] as const
+        ).map(([b, Icon]) => (
+          <span
+            key={b}
+            className="pk-tile"
+            style={
+              b === "React"
+                ? { boxShadow: "0 0 0 2px var(--pk-accent)" }
+                : undefined
+            }
+            data-pk={`hw:bp:${b.toLowerCase()}`}
+          >
+            <i>
+              <Icon className="h-5 w-5 opacity-60" />
+            </i>
+            <span>{b}</span>
+          </span>
+        ))}
+      </div>
+      <div className="flex justify-end px-4 pb-4">
+        <span
+          className="pk-btn"
+          style={{ background: "var(--pk-ok)", color: "#fff" }}
+          data-pk="hw:start"
+        >
+          Start
+        </span>
       </div>
     </div>
   )
