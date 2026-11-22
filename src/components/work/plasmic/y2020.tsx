@@ -990,12 +990,14 @@ export const DIVES_2020: Array<Dive> = [
           {
             kind: "concept",
             on: "avatars",
+            side: "bottom",
             beat: 0,
             text: "Plasmic is multiplayer: everyone in a project is here, with their cursor, their selection, and their edits as they make them.",
           },
           {
             kind: "concept",
             on: "share-pop",
+            side: "bottom",
             beat: [3, 4],
             text: "Roles decide who can edit, who can only view, and who can change content but not the design.",
           },
