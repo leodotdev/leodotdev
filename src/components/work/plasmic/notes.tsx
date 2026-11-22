@@ -48,11 +48,20 @@ export function NoteLayer({
     }
     const roomLeft = box.left
     const roomRight = dw - (box.left + box.width)
-    const side: Side =
+    const fits = CARD + LEAD + 8
+    const want: Side =
       note.side ??
       (roomRight >= CARD + LEAD + 16 || roomRight >= roomLeft
         ? "right"
         : "left")
+    // A side asked for that has no room (a narrower window) gives way to
+    // the other, where there is.
+    const side: Side =
+      want === "right" && roomRight < fits && roomLeft >= fits
+        ? "left"
+        : want === "left" && roomLeft < fits && roomRight >= fits
+          ? "right"
+          : want
     const lines = Math.ceil(note.text.length / 34) + 1
     const height = 16 + lines * 17
     return { note, box, side, height, y: 0, x: 0 }
