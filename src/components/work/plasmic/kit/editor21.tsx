@@ -146,6 +146,7 @@ export function Editor21({ s }: { s: State }) {
                 spot={Boolean(s.spot)}
                 navLink={str(s.navLink)}
                 heroMargin={num(s.heroMargin, 0)}
+                ink={s.multiColor ? "#2563eb" : undefined}
               />
             </div>
           </div>
@@ -1326,6 +1327,7 @@ function Site21({
   spot = false,
   navLink = "",
   heroMargin = 0,
+  ink,
 }: {
   grid: boolean
   dark: boolean
@@ -1336,6 +1338,8 @@ function Site21({
   navLink?: string
   /** The hero's bottom margin, dragged on the canvas. */
   heroMargin?: number
+  /** The hero heading's color, when an edit has changed it. */
+  ink?: string
 }) {
   const away: React.CSSProperties = spot
     ? {
@@ -1396,7 +1400,15 @@ function Site21({
         }}
         data-pk="site:hero"
       >
-        <span style={{ fontSize: 56, lineHeight: "64px", fontWeight: 700 }}>
+        <span
+          style={{
+            fontSize: 56,
+            lineHeight: "64px",
+            fontWeight: 700,
+            color: ink,
+            transition: "color 0.5s",
+          }}
+        >
           New collection
         </span>
         <span style={{ fontSize: 32, lineHeight: "48px", opacity: 0.7 }}>
