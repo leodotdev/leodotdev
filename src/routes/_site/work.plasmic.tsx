@@ -161,6 +161,13 @@ function PlasmicWork() {
       return
     e.preventDefault()
     if (e.currentTarget.hasAttribute("aria-current")) return
+    move(go, e.currentTarget, e.nativeEvent)
+  }
+  const move = (
+    go: () => Promise<void>,
+    source: Element,
+    focus?: MouseEvent | KeyboardEvent
+  ) => {
     // From one year to another, the page lands as far through the next
     // year as it was through this one, so time can be scrubbed from a tab
     // to the next (Leo, 2026-11-21: "bounce through time").
@@ -199,9 +206,49 @@ function PlasmicWork() {
         if (top < 0)
           window.scrollTo({ top: top + window.scrollY, behavior: "instant" })
       },
-      { source: e.currentTarget, focus: e.nativeEvent }
+      { source, focus }
     )
   }
+
+  // ← and → step from year to year as the tabs do, keeping the place
+  // through the year, so time can be scrubbed from the keyboard too.
+  const moveRef = useRef(move)
+  useEffect(() => {
+    moveRef.current = move
+  })
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return
+      if (
+        e.metaKey ||
+        e.ctrlKey ||
+        e.altKey ||
+        e.shiftKey ||
+        e.defaultPrevented
+      )
+        return
+      const t = e.target as HTMLElement | null
+      if (t?.closest("input, textarea, select, [contenteditable], dialog"))
+        return
+      const tabs = [
+        ...document.querySelectorAll<HTMLAnchorElement>(
+          "[data-docs-bar] .nav-link"
+        ),
+      ]
+      const at = tabs.findIndex((a) => a.hasAttribute("aria-current"))
+      const next = tabs.at(at + (e.key === "ArrowRight" ? 1 : -1))
+      if (at < 0 || !next || (at === 0 && e.key === "ArrowLeft")) return
+      e.preventDefault()
+      const href = next.getAttribute("href") ?? ""
+      moveRef.current(
+        () => router.navigate({ to: href, resetScroll: false }),
+        next,
+        e
+      )
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [router])
 
   return (
     <PkThemeContext.Provider value={{ theme, setTheme }}>
@@ -219,7 +266,8 @@ function PlasmicWork() {
                 the work, year by year, rebuilt from my design files: scroll
                 through the app as it was designed, with the directions taken,
                 how it works, and what was learned. Move into the app to try it
-                yourself, or follow one part of it across the years.
+                yourself, follow one part of it across the years, or step
+                through them with ← and →.
               </p>
             </div>
             <dl className="grid grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-4">
