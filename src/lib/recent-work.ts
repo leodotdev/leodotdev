@@ -31,7 +31,7 @@ export const recentWork: Array<RecentWork> = [
   {
     title: "Plasmic",
     summary:
-      "Every interface, component, and flow of a visual tool for building React apps.",
+      "A visual tool for building React apps, year by year, rebuilt from the design files.",
     logo: "/logo-pl.svg",
     client: "Plasmic",
     location: "Remote",
