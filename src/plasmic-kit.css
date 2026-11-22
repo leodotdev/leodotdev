@@ -2257,3 +2257,43 @@
   box-shadow: 0 0 0 1.5px var(--pk-accent);
   animation: pk-pop-in 0.3s ease-out both;
 }
+
+/* 2020's Inheritance popover (kit/editor.tsx). */
+.pk-inherit {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 10px;
+  left: 10px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: 9px;
+  background: var(--pk-pop);
+  box-shadow: var(--pk-shadow);
+  animation: pk-pop-in 0.2s ease-out both;
+}
+.pk-inherit-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 24px;
+  padding-left: 2px;
+}
+.pk-inherit-row + .pk-inherit-row::before {
+  position: absolute;
+  top: -8px;
+  left: 7px;
+  height: 10px;
+  border-left: 1px solid var(--pk-line-2);
+  content: "";
+}
+.pk-inherit-row[data-over] {
+  color: var(--pk-fg-3);
+  text-decoration: line-through;
+}
+.pk-inherit-row:not([data-over]) {
+  color: var(--pk-rec);
+}

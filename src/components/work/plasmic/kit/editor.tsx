@@ -10,8 +10,10 @@ import {
   TbPalette,
   TbPlus,
   TbPointer,
+  TbRotate,
   TbRectangle,
   TbTrash,
+  TbTriangle,
   TbTypography,
 } from "react-icons/tb"
 import {
@@ -513,12 +515,23 @@ function RightDesign({ s }: { s: State }) {
             </Field>
           </Section>
           <Section title="Background" pk="sec:fill">
-            <Field label="Fill" pk="fill">
-              <Input set={Boolean(s.fillToken)} rec={Boolean(rec)}>
-                <span className="pk-swatch" style={{ background: fill }} />
-                {s.fillToken ? str(s.fillToken) : fill.toUpperCase()}
-              </Input>
-            </Field>
+            <div className="relative">
+              <Field label="Fill" pk="fill">
+                <Input set={Boolean(s.fillToken)} rec={Boolean(rec)}>
+                  <span className="pk-swatch" style={{ background: fill }} />
+                  {s.fillToken ? str(s.fillToken) : fill.toUpperCase()}
+                </Input>
+              </Field>
+              {Boolean(s.inherit) && (
+                <Inheritance
+                  title="Fill"
+                  rows={[
+                    ["base", "Base", "#2563EB"],
+                    ["variant", "Type: Secondary", fill.toUpperCase()],
+                  ]}
+                />
+              )}
+            </div>
           </Section>
           <Section title="Text" pk="sec:text">
             <Field label="Font">
@@ -707,5 +720,44 @@ function Arena({ accent }: { accent: string }) {
         </div>
       </Board>
     </>
+  )
+}
+
+/**
+ * Where a value comes from, from the 2020 file's Inheritance popover: each
+ * source in order, those overridden struck through, the one in effect last.
+ */
+function Inheritance({
+  title,
+  rows,
+}: {
+  title: string
+  rows: Array<["base" | "variant", string, string]>
+}) {
+  return (
+    <div className="pk-inherit" data-pk="inherit">
+      <span className="flex items-center justify-between pb-1.5">
+        <b className="font-medium">{title}</b>
+        <TbRotate className="h-3.5 w-3.5 opacity-60" />
+      </span>
+      {rows.map(([kind, label, value], i) => {
+        const over = i < rows.length - 1
+        return (
+          <span
+            key={label}
+            className="pk-inherit-row"
+            data-over={over || undefined}
+          >
+            {kind === "base" ? (
+              <TbDiamond className="h-3 w-3" />
+            ) : (
+              <TbTriangle className="h-3 w-3" />
+            )}
+            <span className="flex-1">{label}</span>
+            <span className="pk-mono">{value}</span>
+          </span>
+        )
+      })}
+    </div>
   )
 }
