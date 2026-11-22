@@ -283,6 +283,81 @@
 .pl-note[data-gutter="left"][data-kind="discovery"] {
   border-right-color: var(--pl-discovery);
 }
+/* A note drawn by hand in a gutter: no card, its words in Playpen Sans
+   (the /work/plasmic notes only), each letter written on in turn. */
+.pl-note.pl-hand {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  font: 400 14px/20px var(--font-hand);
+  animation: none;
+}
+.pl-hand .pl-note-kind {
+  font: 600 17px/24px var(--font-hand);
+}
+.pl-hand i {
+  font-style: normal;
+  opacity: 0;
+  animation: pl-write 0.12s ease-out forwards;
+}
+@keyframes pl-write {
+  from {
+    opacity: 0;
+    translate: -1px 1px;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* Its ink: the loop round the part, then the arrow from the note to it,
+   each drawn along its length. */
+.pl-ink {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  fill: none;
+  stroke: var(--pl-decision);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.pl-ink [data-kind="concept"] {
+  stroke: var(--pl-concept);
+}
+.pl-ink [data-kind="discovery"] {
+  stroke: var(--pl-discovery);
+}
+.pl-ink path {
+  /* A dash as long as the path, started off its end. */
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 1.05;
+  animation: pl-draw 0.5s ease-in-out forwards;
+}
+.pl-ink .pl-ink-line {
+  animation-duration: 0.4s;
+  animation-delay: 0.35s;
+}
+.pl-ink .pl-ink-head {
+  animation-duration: 0.15s;
+  animation-delay: 0.72s;
+}
+@keyframes pl-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pl-hand i {
+    opacity: 1;
+    animation: none;
+  }
+  .pl-ink path {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+}
 @keyframes pl-note-in {
   from {
     opacity: 0;

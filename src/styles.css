@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import "@fontsource-variable/inter";
 @import "@fontsource-variable/playfair-display";
+@import "@fontsource-variable/playpen-sans";
 @import "./claude-ds.css";
 @import "./claude-templates/api.css";
 @import "./claude-templates/customer-story.css";
@@ -65,6 +66,7 @@
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-playfair: "Playfair Display Variable", "Playfair Display", serif;
   --font-mono: "Paper Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-hand: "Playpen Sans Variable", "Playpen Sans", "Bradley Hand", cursive;
 
   /* The accent (links on hover, marks, the focus outline) is `tint`: blue on
      the site, Clay on /work/claude. The others color and label things: the

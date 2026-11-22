@@ -15,9 +15,19 @@ const LEAD = 28
 /** In a gutter: the least a note can be wide, its gap from the browser, and
     from the window's edge; and how far down a card its line meets it. */
 const MIN = 140
-const GAP = 20
 const EDGE = 12
 const MEET = 20
+/**
+ * How a note in a gutter is drawn. By hand (Leo, 2026-11-22, "curved lines
+ * and more handwritten font being scribble animated written"): a loop drawn
+ * round the part, an arrow curving to it from the note, and the note's words
+ * in Playpen Sans, written on a letter at a time, with no card. Set to
+ * false, a gutter's note is a card on a straight line, as it was first.
+ */
+const HAND = true as boolean
+const GAP = HAND ? 44 : 20
+/** Between two notes in one gutter. */
+const APART = HAND ? 18 : 8
 
 type Box = { left: number; top: number; width: number; height: number }
 type Placed = {
@@ -39,9 +49,10 @@ type Placed = {
  * how Plasmic works in the accent blue, and discoveries in green.
  *
  * Where the window has room beside the browser, the notes are in its
- * gutters (Leo, 2026-11-22): a line runs out from a dot on the part's edge,
- * across whatever of the product lies between, to a card in the nearer
- * gutter, level with the part where it can be.
+ * gutters (Leo, 2026-11-22), level with their parts where they can be,
+ * and drawn by hand (`HAND`): a loop round the part, an arrow curving to
+ * it across whatever of the product lies between, and the words written
+ * on the desktop.
  * A gutter something else is in (`taken`: the states' window, the change
  * card) is left to it. Where neither gutter has room, a note is a card
  * beside its part, on the side asked for or the roomier one. Notes in one
@@ -164,12 +175,12 @@ export function NoteLayer({
         Math.max(under?.[side] ?? EDGE, p.box.top + p.box.height / 2 - MEET)
       )
       const prev = i > 0 ? column[i - 1] : null
-      if (prev) p.y = Math.max(p.y, prev.y + prev.height + 8)
+      if (prev) p.y = Math.max(p.y, prev.y + prev.height + APART)
     }
     let floor = dh - EDGE
     for (const p of column.reverse()) {
       p.y = Math.min(p.y, floor - p.height)
-      floor = p.y - 8
+      floor = p.y - APART
     }
   }
 
@@ -206,23 +217,42 @@ export function NoteLayer({
     }
   }
 
+  const hand = (p: Placed) => HAND && p.gutter !== null
   return (
     <div ref={layer} className="pl-notes" data-narrow={narrow || undefined}>
-      {placed.map(({ note, box }, i) => (
-        <div
-          key={i}
-          aria-hidden
-          className="pl-note-box"
-          data-kind={note.kind}
-          style={box}
-        >
-          {narrow && <span className="pl-note-num">{i + 1}</span>}
-        </div>
-      ))}
+      {placed.map((p, i) =>
+        hand(p) ? null : (
+          <div
+            key={i}
+            aria-hidden
+            className="pl-note-box"
+            data-kind={p.note.kind}
+            style={p.box}
+          >
+            {narrow && <span className="pl-note-num">{i + 1}</span>}
+          </div>
+        )
+      )}
+      {!narrow && placed.some(hand) && (
+        <svg aria-hidden className="pl-ink" width={dw} height={dh}>
+          {placed.filter(hand).map((p) => {
+            const ink = inkOf(p)
+            return (
+              <g key={p.note.text} data-kind={p.note.kind}>
+                <path className="pl-ink-loop" pathLength={1} d={ink.loop} />
+                <path className="pl-ink-line" pathLength={1} d={ink.line} />
+                <path className="pl-ink-head" pathLength={1} d={ink.head} />
+              </g>
+            )
+          })}
+        </svg>
+      )}
       {!narrow &&
-        placed.map((p, i) => (
-          <Leader key={i} kind={p.note.kind} points={path(p, edges)} />
-        ))}
+        placed.map((p, i) =>
+          hand(p) ? null : (
+            <Leader key={i} kind={p.note.kind} points={path(p, edges)} />
+          )
+        )}
       {narrow ? (
         <ol className="pl-note-list">
           {placed.map(({ note }, i) => (
@@ -235,22 +265,135 @@ export function NoteLayer({
           ))}
         </ol>
       ) : (
-        placed.map(({ note, gutter, x, y, width }, i) => (
-          <p
-            key={i}
-            className="pl-note"
-            data-kind={note.kind}
-            data-gutter={gutter ?? undefined}
-            data-note={keyOf(note, width)}
-            style={{ left: x, top: y, width }}
-          >
-            <span className="pl-note-kind">{KIND[note.kind]}</span>
-            {note.text}
-          </p>
-        ))
+        placed.map((p) => {
+          const { note, gutter, x, y, width } = p
+          return hand(p) ? (
+            <p
+              key={note.text}
+              className="pl-note pl-hand"
+              data-kind={note.kind}
+              data-note={keyOf(note, width)}
+              style={{ left: x, top: y, width }}
+            >
+              <Written title={KIND[note.kind]} text={note.text} />
+            </p>
+          ) : (
+            <p
+              key={note.text}
+              className="pl-note"
+              data-kind={note.kind}
+              data-gutter={gutter ?? undefined}
+              data-note={keyOf(note, width)}
+              style={{ left: x, top: y, width }}
+            >
+              <span className="pl-note-kind">{KIND[note.kind]}</span>
+              {note.text}
+            </p>
+          )
+        })
       )}
     </div>
   )
+}
+
+/**
+ * A note's words, written on: each letter comes in after the one before,
+ * the title first, the whole note in about a second and a half however
+ * long it is. Screen readers get the words whole.
+ */
+function Written({ title, text }: { title: string; text: string }) {
+  const step = Math.min(16, 1500 / (title.length + text.length))
+  const letters = (words: string, from: number) =>
+    Array.from(words, (c, i) => (
+      <i
+        key={i}
+        style={{ animationDelay: `${Math.round((from + i) * step)}ms` }}
+      >
+        {c}
+      </i>
+    ))
+  return (
+    <>
+      <span className="sr-only">
+        {title}: {text}
+      </span>
+      <span aria-hidden className="pl-note-kind">
+        {letters(title, 0)}
+      </span>
+      <span aria-hidden>{letters(text, title.length)}</span>
+    </>
+  )
+}
+
+/** A number from 0 to 1 that is always the same for the same words. */
+function dice(seed: string) {
+  let h = 2166136261
+  for (let i = 0; i < seed.length; i++) {
+    h = Math.imul(h ^ seed.charCodeAt(i), 16777619)
+  }
+  return () => {
+    h = Math.imul(h ^ (h >>> 15), 2246822507)
+    h = Math.imul(h ^ (h >>> 13), 3266489909)
+    h ^= h >>> 16
+    return (h >>> 0) / 4294967296
+  }
+}
+
+/**
+ * A note's ink, as paths in the desk's pixels: a loop round its part that
+ * runs a little past where it began, as one drawn in a hurry does; a line
+ * curving from the note's near edge to the part; and the arrow's head on
+ * the part's end of it. The wobble is from the note's own words, so it is
+ * the same each time the note is drawn.
+ */
+function inkOf(p: Placed) {
+  const roll = dice(p.note.text)
+  const j = (by: number) => (roll() - 0.5) * 2 * by
+  const n = (v: number) => v.toFixed(1)
+
+  const pad = 5
+  const l = p.box.left - pad
+  const t = p.box.top - pad
+  const r = p.box.left + p.box.width + pad
+  const b = p.box.top + p.box.height + pad
+  const mx = (l + r) / 2
+  const my = (t + b) / 2
+  const c = Math.min(9, (r - l) / 3, (b - t) / 3)
+  const bow = Math.min(3, (r - l) / 40 + 1, (b - t) / 40 + 1)
+  const loop = [
+    `M${n(l + c + j(2))},${n(t + j(1.5))}`,
+    `Q${n(mx)},${n(t - bow + j(1))} ${n(r - c)},${n(t + j(1.5))}`,
+    `Q${n(r + j(1))},${n(t + j(1))} ${n(r + j(1))},${n(t + c)}`,
+    `Q${n(r + bow + j(1))},${n(my)} ${n(r + j(1.5))},${n(b - c)}`,
+    `Q${n(r + j(1))},${n(b + j(1))} ${n(r - c)},${n(b + j(1))}`,
+    `Q${n(mx)},${n(b + bow + j(1))} ${n(l + c)},${n(b + j(1.5))}`,
+    `Q${n(l + j(1))},${n(b + j(1))} ${n(l + j(1))},${n(b - c)}`,
+    `Q${n(l - bow + j(1))},${n(my)} ${n(l + j(1.5))},${n(t + c)}`,
+    `Q${n(l + j(1))},${n(t - 1 + j(1))} ${n(l + c + 4)},${n(t - 1.5 + j(1))}`,
+    `T${n(l + c + Math.min(22, (r - l) / 3))},${n(t + 1 + j(1))}`,
+  ].join(" ")
+
+  // From beside the middle of the note's words to the part's near edge.
+  const right = p.gutter === "right"
+  const x0 = right ? p.x - 8 : p.x + p.width + 8
+  const y0 = p.y + Math.min(p.height / 2, 44)
+  const x3 = right ? r + 7 : l - 7
+  const y3 = Math.min(Math.max(y0, t + 6), b - 6) + j(3)
+  const dx = x3 - x0
+  const sag = (roll() < 0.5 ? -1 : 1) * Math.min(34, 12 + Math.abs(dx) * 0.12)
+  const c1x = x0 + dx * 0.35
+  const c1y = y0 + sag
+  const c2x = x0 + dx * 0.72
+  const c2y = y3 + sag * 0.9
+  const line = `M${n(x0)},${n(y0)} C${n(c1x)},${n(c1y)} ${n(c2x)},${n(c2y)} ${n(x3)},${n(y3)}`
+
+  // The head: two strokes back from the end, either side of the way in.
+  const way = Math.atan2(y3 - c2y, x3 - c2x)
+  const back = (turn: number, len: number) =>
+    `${n(x3 - Math.cos(way + turn) * len)},${n(y3 - Math.sin(way + turn) * len)}`
+  const head = `M${back(0.5 + j(0.08), 10)} L${n(x3)},${n(y3)} L${back(-0.5 + j(0.08), 9)}`
+
+  return { loop, line, head }
 }
 
 const keyOf = (note: Note, width: number) => `${width}:${note.text}`
