@@ -372,7 +372,15 @@ function Player({
     <>
       <div
         className="pl-browser-box"
-        style={{ left, top, width: bw, height: bh }}
+        style={
+          {
+            left,
+            top,
+            width: bw,
+            height: bh,
+            "--pl-s": s,
+          } as React.CSSProperties
+        }
         onPointerEnter={(e) => {
           if (e.pointerType === "mouse") hold()
         }}

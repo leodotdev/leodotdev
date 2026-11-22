@@ -49,11 +49,14 @@
 }
 
 /* The browser: laid out at the app's own size and scaled from its top left
-   corner; its box is the scaled size. */
+   corner; its box is the scaled size. Its corners are a macOS window's, in
+   the app's own pixels (--pl-round), so the box rounds them by its scale
+   (--pl-s, set where it is drawn). */
 .pl-browser-box {
+  --pl-round: 26px;
   position: absolute;
   transition: left 0.6s cubic-bezier(0.3, 0, 0.2, 1);
-  border-radius: 10px;
+  border-radius: calc(var(--pl-round) * var(--pl-s, 0.8));
   box-shadow:
     0 0 0 1px rgb(0 0 0 / 0.12),
     0 24px 60px -12px rgb(0 0 0 / 0.35);
@@ -65,7 +68,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: var(--pl-round);
   background: #fff;
   transform-origin: 0 0;
 }
@@ -314,7 +317,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 20px;
   background: var(--color-background);
   box-shadow:
     0 0 0 1px rgb(0 0 0 / 0.12),
