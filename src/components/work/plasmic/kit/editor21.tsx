@@ -138,7 +138,11 @@ export function Editor21({ s }: { s: State }) {
               <span className="pk-faint pk-mono">Desktop · 1180</span>
             </span>
             <div className="pk-board-body">
-              <Site21 grid={Boolean(s.grid)} dark={s.globalDark === true} />
+              <Site21
+                grid={Boolean(s.grid)}
+                dark={s.globalDark === true}
+                hide={str(s.visMode)}
+              />
             </div>
           </div>
           {s.sel === "nav" && (
@@ -202,6 +206,45 @@ export function Editor21({ s }: { s: State }) {
         <Right21 s={s} />
       </div>
       {s.data && <DataPanel />}
+      {Boolean(s.vis) && (
+        <Menu
+          x={1212}
+          y={226}
+          w={212}
+          pk="vis-menu"
+          hover={str(s.menuHover)}
+          items={[
+            { label: "Visible", icon: TbEye, pk: "vismenu:visible" },
+            {
+              label: "Render, but keep hidden",
+              icon: TbEyeClosed,
+              pk: "vismenu:keep",
+            },
+            { label: "Don’t render", icon: TbEyeOff, pk: "vismenu:none" },
+          ]}
+        />
+      )}
+      {Boolean(s.ctx) && (
+        <Menu
+          x={1196}
+          y={318}
+          w={220}
+          pk="ctx-menu"
+          hover={str(s.menuHover)}
+          items={[
+            { label: "Remove variant", pk: "ctx:remove-variant" },
+            { label: "Remove base", pk: "ctx:remove-base" },
+            { label: "Remove all", pk: "ctx:remove-all" },
+            "sep",
+            { label: "Extract to Mixin", pk: "ctx:mixin" },
+            { label: "Extract to Token", pk: "ctx:token" },
+            { label: "Extract to Variant", pk: "ctx:variant" },
+            "sep",
+            { label: "Link to prop", pk: "ctx:prop" },
+            { label: "Link to data", pk: "ctx:data" },
+          ]}
+        />
+      )}
       {s.pageMenu && (
         <Menu
           x={railless ? 150 : 200}
@@ -705,10 +748,11 @@ function Right21({ s }: { s: State }) {
             key={i}
             className="pk-icon-btn"
             style={
-              i === 0
+              i === ["", "keep", "none"].indexOf(str(s.visMode))
                 ? { background: "var(--pk-panel-3)", color: "var(--pk-fg)" }
                 : undefined
             }
+            data-pk={`vis:${["visible", "keep", "none"][i]}`}
           >
             <I />
           </span>
@@ -718,7 +762,7 @@ function Right21({ s }: { s: State }) {
         "Size",
         "sec:size",
         <>
-          <Field label="Width">
+          <Field label="Width" pk="f:width">
             <Input rec={rec}>Stretch</Input>
           </Field>
           <Field label="Height">
@@ -1224,7 +1268,19 @@ function TokenPop() {
 }
 
 /** The page on the artboard: a store's home page, with a navigation bar. */
-function Site21({ grid, dark }: { grid: boolean; dark: boolean }) {
+/**
+ * hide: the navigation's visibility, "keep" (rendered but hidden, its room
+ * kept) or "none" (not rendered, its room gone).
+ */
+function Site21({
+  grid,
+  dark,
+  hide = "",
+}: {
+  grid: boolean
+  dark: boolean
+  hide?: string
+}) {
   const fg = dark ? "#f8fafc" : "#111827"
   const bg = dark ? "#0f172a" : "#fff"
   return (
@@ -1237,6 +1293,8 @@ function Site21({ grid, dark }: { grid: boolean; dark: boolean }) {
         style={{
           height: 84,
           borderBottom: `1px solid ${dark ? "#1e293b" : "#eee"}`,
+          visibility: hide === "keep" ? "hidden" : undefined,
+          display: hide === "none" ? "none" : undefined,
         }}
         data-pk="site:nav"
       >

@@ -256,6 +256,98 @@ export const DIVES_2021: Array<Dive> = [
     ],
   },
   {
+    slug: "right-panel",
+    title: "Visibility & Values",
+    summary:
+      "Visible, rendered but hidden, or not rendered; and a value’s own menu.",
+    scenes: [
+      {
+        view: e21,
+        url: URL,
+        state: { sel: "nav", expand: "size" },
+        script: [
+          { on: "sec:visibility", wait: 2400 },
+          {
+            on: "vis:none",
+            say: "Open the visibility menu",
+            click: true,
+            set: { vis: true },
+            wait: 900,
+          },
+          {
+            on: "vismenu:keep",
+            say: "Render it, but keep it hidden",
+            set: { menuHover: "Render, but keep hidden" },
+            wait: 500,
+          },
+          {
+            on: "vismenu:keep",
+            click: true,
+            set: { vis: false, menuHover: "", visMode: "keep" },
+            wait: 2600,
+          },
+          {
+            on: "vis:none",
+            say: "Or don’t render it at all",
+            click: true,
+            set: { vis: true },
+            wait: 700,
+          },
+          {
+            on: "vismenu:none",
+            click: true,
+            set: { vis: false, visMode: "none" },
+            wait: 2600,
+          },
+          {
+            on: "f:width",
+            say: "Right-click a value",
+            click: true,
+            set: { ctx: true, visMode: "" },
+            wait: 900,
+          },
+          {
+            on: "ctx:token",
+            set: { menuHover: "Extract to Token" },
+            wait: 1400,
+          },
+          { on: "ctx:data", set: { menuHover: "Link to data" }, wait: 2400 },
+          { on: "f:width", set: { ctx: false, menuHover: "" }, wait: 1000 },
+        ],
+        notes: [
+          {
+            kind: "direction",
+            on: "top",
+            side: "bottom",
+            beat: 0,
+            text: "Q2 drew every screen twice, light and dark, on Apple’s system grays; by the file’s end, every new screen is dark.",
+          },
+          {
+            kind: "concept",
+            on: "site:nav",
+            side: "bottom",
+            beat: 3,
+            text: "“Render, but keep hidden”: the navigation is still there, holding its room.",
+          },
+          {
+            kind: "concept",
+            on: "canvas",
+            side: "left",
+            beat: 5,
+            text: "“Don’t render”: gone, and the page closes up behind it.",
+          },
+          {
+            kind: "concept",
+            on: "ctx-menu",
+            side: "bottom",
+            beat: [7, 8],
+            text: "A value’s own menu: take it out of a variant or the base, extract it to a mixin, token, or variant, or link it to a prop or data.",
+          },
+        ],
+      },
+    ],
+  },
+  {
     slug: "behavior",
     title: "Behavioral Components",
     summary:
