@@ -414,6 +414,9 @@ function Player({
             <span
               className="pl-say"
               data-slow={cursor.slow ? "" : undefined}
+              // Near the browser's right edge, the step is said to the
+              // cursor's left.
+              data-flip={cursor.x * s > bw - 240 ? "" : undefined}
               style={{ translate: at(cursor.x, cursor.y) }}
             >
               <b>{say.n}</b>
