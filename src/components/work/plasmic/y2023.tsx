@@ -1,5 +1,6 @@
 import { Dashboard23 } from "@/components/work/plasmic/kit/dash23"
 import { EditorCrumb } from "@/components/work/plasmic/kit/editor23"
+import { Interactions23 } from "@/components/work/plasmic/kit/interactions23"
 import { Dashboard21 } from "@/components/work/plasmic/kit/teams"
 import type { Dive, Peer, Shot, State } from "@/components/work/plasmic/types"
 
@@ -513,6 +514,58 @@ export const DIVES_2023: Array<Dive> = [
             on: "logic:node",
             beat: 3,
             text: "OnClick: set Count to Count + 1.",
+          },
+        ],
+      },
+      {
+        view: (s: State) => <Interactions23 s={s} />,
+        url: "studio.plasmic.app/projects/crm-app",
+        script: [
+          { on: "app:action", wait: 2200 },
+          {
+            on: "int:onclick",
+            say: "Open its onClick",
+            click: true,
+            set: { pop: true, open: "select" },
+            wait: 1600,
+          },
+          { on: "op:select", at: [0.5, 0.1], wait: 2400 },
+          { on: "op:value", wait: 2000 },
+          {
+            on: "op:new",
+            say: "Add an action",
+            click: true,
+            set: { added: true, open: "count" },
+            wait: 2800,
+          },
+          {
+            on: "op:close",
+            click: true,
+            set: { pop: false, added: false, open: "" },
+            wait: 1400,
+          },
+        ],
+        notes: [
+          {
+            kind: "concept",
+            on: "int:section",
+            side: "left",
+            beat: [0, 1],
+            text: "Interactions in the right panel, by event: onClick runs a Data operation.",
+          },
+          {
+            kind: "concept",
+            on: "op:list",
+            side: "left",
+            beat: [2, 3],
+            text: "The operation is a list of actions, each opened to set its fields: Action, Variable, Operation, Value, and, under Advanced, When.",
+          },
+          {
+            kind: "concept",
+            on: "op:count",
+            side: "left",
+            beat: 4,
+            text: "“Increment variable”: $state.count goes up by one.",
           },
         ],
       },

@@ -2182,3 +2182,43 @@
   margin-top: auto;
   background: #7c3aed;
 }
+
+/* 2023's interactions (kit/interactions23.tsx). The sample app is dark as
+   the file draws it, in either theme. */
+.pk-int-app {
+  position: absolute;
+  top: 44px;
+  left: 24px;
+  right: 24px;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 6px 6px 0 0;
+  background: #17191d;
+  color: #f3f4f6;
+  font: 400 13px/18px var(--pk-sans);
+}
+.pk-int-hero {
+  display: flex;
+  align-items: flex-end;
+  height: 140px;
+  padding: 16px 20px;
+  border-radius: 8px;
+  background:
+    linear-gradient(transparent 40%, rgb(0 0 0 / 0.55)),
+    linear-gradient(120deg, #334155, #64748b 45%, #1e293b);
+  font-size: 26px;
+  line-height: 30px;
+}
+.pk-op {
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px var(--pk-line-2);
+}
+.pk-op[data-open] {
+  box-shadow: 0 0 0 1.5px var(--pk-accent);
+}
+.pk-op + .pk-op,
+.pk-op + .pk-btn {
+  position: relative;
+}
