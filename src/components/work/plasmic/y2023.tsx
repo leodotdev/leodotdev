@@ -1,4 +1,5 @@
 import { Dashboard23 } from "@/components/work/plasmic/kit/dash23"
+import { Editor } from "@/components/work/plasmic/kit/editor"
 import { EditorCrumb } from "@/components/work/plasmic/kit/editor23"
 import { Interactions23 } from "@/components/work/plasmic/kit/interactions23"
 import { Dashboard21 } from "@/components/work/plasmic/kit/teams"
@@ -902,6 +903,14 @@ export const DIVES_2023: Array<Dive> = [
         view: crumb,
         url: URL,
         state: { labeled: true, palette: false },
+        change: {
+          from: () => <Editor s={{ omni: true }} />,
+          title: "Revisited: 2020’s Omnibar",
+          items: [
+            "2020: an “Insert…” search over the canvas, for a blank artboard or a component",
+            "2023: one search for every action, opened from the top bar",
+          ],
+        },
         script: [
           {
             on: "palette:open",

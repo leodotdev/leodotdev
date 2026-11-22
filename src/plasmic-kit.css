@@ -2297,3 +2297,45 @@
 .pk-inherit-row:not([data-over]) {
   color: var(--pk-rec);
 }
+
+/* 2020's Omnibar (kit/editor.tsx): dark in either theme, as drawn. */
+.pk-omni {
+  position: absolute;
+  top: 120px;
+  left: 50%;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #1c1d21;
+  box-shadow: 0 16px 40px -10px rgb(0 0 0 / 0.6);
+  color: #e5e7eb;
+  translate: -50% 0;
+  animation: pk-pop-in 0.2s ease-out both;
+}
+.pk-omni-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 14px;
+}
+.pk-omni-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 32px;
+  padding: 0 16px;
+}
+.pk-omni-row > svg {
+  opacity: 0.5;
+}
+.pk-omni-row[aria-selected="true"] {
+  background: #0b6bbd;
+  color: #fff;
+}
+.pk-omni-row[aria-selected="true"] > svg {
+  opacity: 1;
+}

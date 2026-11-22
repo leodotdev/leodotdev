@@ -347,6 +347,7 @@ export function Editor({ s }: { s: State }) {
           ]}
         />
       )}
+      {Boolean(s.omni) && <Omnibar q={str(s.omniQ)} />}
       {s.menu === "context" && (
         <Menu
           x={num(s.menuX, 420)}
@@ -758,6 +759,42 @@ function Inheritance({
           </span>
         )
       })}
+    </div>
+  )
+}
+
+/**
+ * The 2020 file's Omnibar: an “Insert…” search dropped over the canvas,
+ * a blank artboard first and the project's components under it.
+ */
+function Omnibar({ q }: { q: string }) {
+  const items: Array<[string, boolean]> = [
+    ["Insert Blank Artboard", false],
+    ["Button", true],
+    ["LoginPage", true],
+    ["PanelTabs", true],
+    ["PanelTab", true],
+  ]
+  const shown = items.filter(
+    ([label]) => !q || label.toLowerCase().includes(q.toLowerCase())
+  )
+  return (
+    <div className="pk-omni" data-pk="omnibar">
+      <span className="pk-omni-search">
+        <TbPlus className="h-3.5 w-3.5 opacity-50" />
+        {q || <span className="opacity-50">Insert…</span>}
+        <i className="pk-caret" />
+      </span>
+      {shown.map(([label, comp], i) => (
+        <span key={label} className="pk-omni-row" aria-selected={i === 0}>
+          {comp ? (
+            <TbComponents className="h-3.5 w-3.5" />
+          ) : (
+            <TbRectangle className="h-3.5 w-3.5" />
+          )}
+          {label}
+        </span>
+      ))}
     </div>
   )
 }
