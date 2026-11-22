@@ -2339,3 +2339,37 @@
 .pk-omni-row[aria-selected="true"] > svg {
   opacity: 1;
 }
+
+/* The visitor's own pointer, once the studio is taken over: the newer
+   parts answer it as their scripted hover does. */
+.pk-tpl:hover,
+.pk-source:hover,
+.pk-d23-tile:hover {
+  box-shadow: 0 0 0 2px var(--pk-accent);
+}
+.pk-team-row:hover,
+.pk-choice:hover {
+  background: var(--pk-panel-2);
+}
+.pk-ins3-row:hover,
+.pk-dash-nav:not([aria-current]):hover {
+  background: var(--pk-panel-2);
+  color: var(--pk-fg);
+}
+.pk-plan-cta:not([data-kind="link"]):hover {
+  background: color-mix(in srgb, var(--plan) 26%, transparent);
+}
+.pk-act:not([data-new]):hover {
+  background: var(--pk-panel-2);
+}
+.pk-omni-row:not([aria-selected="true"]):hover {
+  background: #2a2c31;
+}
+.pk-op:not([data-open]):hover,
+.pk-metric:not([aria-pressed="true"]):hover {
+  background: var(--pk-panel-2);
+}
+.pk-ribbon-tab:not([aria-selected="true"]):hover,
+.pk-d23-tab:not([aria-selected="true"]):hover {
+  color: var(--pk-fg);
+}
