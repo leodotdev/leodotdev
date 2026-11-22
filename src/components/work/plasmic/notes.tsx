@@ -1,13 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react"
 import type { Note, Rect, Side } from "@/components/work/plasmic/types"
 
-/** What each kind of note is called on its card. */
-const KIND: Record<Note["kind"], string> = {
-  direction: "Direction",
-  concept: "How it works",
-  discovery: "Discovery",
-}
-
 /** A note's width, in the page's pixels. */
 const CARD = 232
 /** The leader from the box to its note. */
@@ -284,7 +277,7 @@ export function NoteLayer({
           {placed.map(({ note }, i) => (
             <li key={i} className="pl-note" data-kind={note.kind}>
               <span className="pl-note-kind">
-                {i + 1}. {KIND[note.kind]}
+                {i + 1}. {note.title}
               </span>
               {note.text}
             </li>
@@ -301,7 +294,7 @@ export function NoteLayer({
               data-note={keyOf(note, width)}
               style={{ left: x, top: y, width }}
             >
-              <Written title={KIND[note.kind]} text={note.text} />
+              <Written title={note.title} text={note.text} />
               {p.more && (
                 <span className="pl-note-more">Press for {p.more} →</span>
               )}
@@ -315,7 +308,7 @@ export function NoteLayer({
               data-note={keyOf(note, width)}
               style={{ left: x, top: y, width }}
             >
-              <span className="pl-note-kind">{KIND[note.kind]}</span>
+              <span className="pl-note-kind">{note.title}</span>
               {note.text}
             </p>
           )

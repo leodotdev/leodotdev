@@ -391,7 +391,12 @@ function Player({
     if (go && rect)
       found = {
         part: goPart,
-        note: { kind: "direction", on: goPart, text: go.summary },
+        note: {
+          kind: "direction",
+          title: go.title,
+          on: goPart,
+          text: go.summary,
+        },
         rect,
       }
     const next = found && { ...found, go }

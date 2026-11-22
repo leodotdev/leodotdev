@@ -24,6 +24,13 @@ export type State = Record<string, string | number | boolean | undefined>
  */
 export type Note = {
   kind: "direction" | "concept" | "discovery"
+  /**
+   * What the note is of, in a few words: its part or its subject ("Base
+   * variant", "Recording pill"). The card's title (Leo, 2026-11-22: a
+   * title says what the note is about, not which kind it is; the kind is
+   * its color).
+   */
+  title: string
   on: Anchor
   text: string
   side?: Side

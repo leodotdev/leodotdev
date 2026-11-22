@@ -404,24 +404,28 @@ export const DIVES_2020: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Components",
             on: "row:button",
             beat: 0,
             text: "Button is a component (the four diamonds): designed once, placed anywhere, and every copy an instance that follows it.",
           },
           {
             kind: "direction",
+            title: "Selection labels",
             on: "selection",
             beat: 1,
             text: "“I’m recommending we get rid of Selection Labels (except on Frames), the Tree should be good enough.”",
           },
           {
             kind: "direction",
+            title: "Parents & children",
             on: "tree",
             beat: 2,
             text: "“We need to deepen the difference between containers/parents and items/children.”",
           },
           {
             kind: "concept",
+            title: "Right panel",
             on: "right",
             beat: 3,
             text: "Everything about the selection, in one panel: its variants, size, position, layout, fill, and text.",
@@ -457,11 +461,13 @@ export const DIVES_2020: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Variants panel",
             on: "vpanel",
             text: "“Make your selection a Component to enable more Variants like: primary, secondary, neutral roles; loading, warning, error, success states; light, dark, and other modes; custom interactions.”",
           },
           {
             kind: "concept",
+            title: "Base variant",
             on: "variant:base",
             text: "Base is the component as it is by default. Every other variant keeps only how it differs from Base.",
           },
@@ -498,12 +504,14 @@ export const DIVES_2020: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Imported projects",
             on: "project:component-kit",
             beat: [1, 2],
             text: "A project can import another, like a kit of components or colors, and update when it publishes a new version.",
           },
           {
             kind: "concept",
+            title: "Tutorials",
             on: "tutorials",
             beat: 2,
             text: "Tutorials are projects too: “Click to duplicate” starts a copy to learn in.",
@@ -567,12 +575,14 @@ export const DIVES_2020: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Insert",
             on: "insert",
             beat: [0, 1, 2],
             text: "Insert finds anything by name: the basics (boxes, stacks, text, images) and the project’s own components.",
           },
           {
             kind: "concept",
+            title: "Canvas",
             on: "board:login",
             beat: [4, 5],
             text: "The canvas pans and zooms like a design tool’s, over pages built of real HTML and CSS.",
@@ -642,6 +652,7 @@ export const DIVES_2020: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Arenas",
             on: "board:login",
             side: "bottom",
             beat: 0,
@@ -649,6 +660,7 @@ export const DIVES_2020: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Zooming in",
             on: "board:btn-hover",
             side: "bottom",
             beat: 1,
@@ -656,6 +668,7 @@ export const DIVES_2020: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Zoom control",
             on: "zoom-level",
             side: "right",
             beat: 0,
@@ -723,12 +736,14 @@ export const DIVES_2020: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Dragging in the tree",
             on: "tree",
             beat: [3, 4, 5],
             text: "“Dragging text Block up one”: a line shows where a row will land, at its depth.",
           },
           {
             kind: "direction",
+            title: "Context menu",
             on: "menu",
             beat: 7,
             text: "“Context menu, Paste Styles disabled”: what can’t be done shows, dimmed, rather than going missing.",
@@ -799,30 +814,35 @@ export const DIVES_2020: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Base variant",
             on: "variant:base",
             beat: 0,
             text: "Base is the component as it is by default; every other variant keeps only how it differs.",
           },
           {
             kind: "concept",
+            title: "Element states",
             on: "group:states",
             beat: 1,
             text: "Hover, Pressed, Disabled: element states, variants turned on by interaction. Screen sizes are global variants, for the whole page.",
           },
           {
             kind: "concept",
+            title: "Recording a variant",
             on: "recbar",
             beat: [3, 4],
             text: "Recording: while Secondary records, every change on the canvas is saved to Secondary, not to Base.",
           },
           {
             kind: "concept",
+            title: "Recorded values",
             on: "fill",
             beat: 4,
             text: "A recorded value shows in red: set in this variant, over the base.",
           },
           {
             kind: "concept",
+            title: "Inheritance",
             on: "inherit",
             side: "top",
             beat: 5,
@@ -878,18 +898,21 @@ export const DIVES_2020: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Position",
             on: "sec:position",
             beat: [0, 1],
             text: "“If Free-floating position is our default, this should be as straightforward as possible.” Here, Auto and Free as one switch.",
           },
           {
             kind: "concept",
+            title: "Layout",
             on: "sec:layout",
             beat: 2,
             text: "A box lays its children out in a column or a row, with a gap: flexbox, drawn as a choice.",
           },
           {
             kind: "direction",
+            title: "Size",
             on: "sec:size",
             text: "Sizes, explored: “0. type: fixed (px, %), 1. stretch/fill parent container, 2. wrap children/content.”",
           },
@@ -927,18 +950,21 @@ export const DIVES_2020: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Tokens",
             on: "tokens",
             beat: 0,
             text: "“Set and group foundational values like text, units, and colors.” A token is a value with a name: change it, and everything using it follows.",
           },
           {
             kind: "concept",
+            title: "Token values",
             on: "fill",
             beat: 1,
             text: "A value from a token shows as the token’s name, in blue.",
           },
           {
             kind: "concept",
+            title: "Mixins",
             on: "mixins",
             beat: 2,
             text: "A mixin is a set of styles under one name, applied together, like a class.",
@@ -989,6 +1015,7 @@ export const DIVES_2020: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Multiplayer",
             on: "avatars",
             side: "bottom",
             beat: 0,
@@ -996,6 +1023,7 @@ export const DIVES_2020: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Roles",
             on: "share-pop",
             side: "bottom",
             beat: [3, 4],
@@ -1056,12 +1084,14 @@ export const DIVES_2020: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Code",
             on: "code:jsx",
             beat: 1,
             text: "The design is React: each component a component, its variant groups its props (Button’s type and size).",
           },
           {
             kind: "concept",
+            title: "Versions",
             on: "publish-pop",
             beat: [4, 5, 6],
             text: "“Version numbers are automatically calculated using semantic versioning.” Projects that import this one can update to it.",
@@ -1094,6 +1124,7 @@ export const DIVES_2020: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Activity feed",
             on: "activity",
             side: "right",
             beat: [0, 1],
@@ -1101,6 +1132,7 @@ export const DIVES_2020: Array<Dive> = [
           },
           {
             kind: "discovery",
+            title: "Branches in the feed",
             on: "act:branched",
             side: "right",
             beat: [2, 3],
@@ -1108,6 +1140,7 @@ export const DIVES_2020: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Comments",
             on: "act:comment",
             side: "right",
             beat: 5,
@@ -1115,6 +1148,7 @@ export const DIVES_2020: Array<Dive> = [
           },
           {
             kind: "discovery",
+            title: "Visitors & forks",
             on: "activity",
             side: "right",
             beat: 4,
@@ -1148,12 +1182,14 @@ export const DIVES_2020: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "The rail",
             on: "rail",
             beat: [0, 1],
             text: "The tabs became a rail: tree, insert, components, tokens, mixins, images, and data, each a panel of its own.",
           },
           {
             kind: "discovery",
+            title: "Floating panels",
             on: "left",
             side: "right",
             beat: 2,

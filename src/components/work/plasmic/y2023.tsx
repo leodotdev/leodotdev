@@ -113,18 +113,21 @@ export const DIVES_2023: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Project crumb",
             on: "crumb:project",
             beat: 0,
             text: "The project, and under it everything a project holds: settings, branches, localization.",
           },
           {
             kind: "concept",
+            title: "Branches",
             on: "crumb:branch",
             beat: 1,
             text: "Branches: work apart from main, then review and merge.",
           },
           {
             kind: "concept",
+            title: "Page switcher",
             on: "switch:page",
             side: "right",
             beat: 2,
@@ -132,6 +135,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Variant switcher",
             on: "switch:variant",
             side: "right",
             beat: [3, 4],
@@ -139,6 +143,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Recording",
             on: "crumb:rec",
             side: "bottom",
             beat: 5,
@@ -146,18 +151,21 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Modes",
             on: "modes",
             beat: 7,
             text: "Design, Logic, Preview: modes for the same page, not separate tools.",
           },
           {
             kind: "concept",
+            title: "Screens side by side",
             on: "board:mobile",
             beat: 8,
             text: "Every screen side by side on one canvas, zoomed into as a design tool would.",
           },
           {
             kind: "discovery",
+            title: "Floating shell",
             on: "top",
             side: "bottom",
             beat: 10,
@@ -264,6 +272,7 @@ export const DIVES_2023: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Multiplayer",
             on: "avatars",
             side: "bottom",
             beat: 0,
@@ -271,6 +280,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Live changes",
             on: "land:feature-3",
             side: "bottom",
             beat: 2,
@@ -278,6 +288,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Every screen",
             on: "m:land:features",
             side: "left",
             beat: 3,
@@ -371,6 +382,7 @@ export const DIVES_2023: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Path parameters",
             on: "pageset:route",
             side: "bottom",
             beat: [1, 2, 3, 4],
@@ -378,6 +390,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Settings layout",
             on: "pageset:seo",
             side: "left",
             beat: 5,
@@ -385,6 +398,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "SEO fields",
             on: "pageset:count",
             side: "right",
             beat: [7, 8],
@@ -392,6 +406,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Page permissions",
             on: "pageset",
             side: "bottom",
             beat: 9,
@@ -440,18 +455,21 @@ export const DIVES_2023: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Current branch",
             on: "branches",
             beat: [1, 2],
             text: "“Need to find a way to indicate the current branch”: a check, and the branch in the breadcrumb.",
           },
           {
             kind: "concept",
+            title: "Merging",
             on: "merge:table",
             beat: 3,
             text: "Merging picks, change by change, which branch to keep: pages and tokens.",
           },
           {
             kind: "direction",
+            title: "Merge choices",
             on: "merge",
             beat: 3,
             text: "“make these toggle switch-like”",
@@ -504,18 +522,21 @@ export const DIVES_2023: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Publish pipeline",
             on: "publish:steps",
             beat: 1,
             text: "Publishing is a pipeline: save a version, run tests, deploy a site, call webhooks, push to GitHub.",
           },
           {
             kind: "concept",
+            title: "Tests",
             on: "publish:tests",
             beat: 2,
             text: "Tests check for errors and waste before anything ships.",
           },
           {
             kind: "concept",
+            title: "Test findings",
             on: "tests",
             beat: [3, 4, 5],
             text: "Each finding names its element; some fix themselves: an inefficient visibility setting, variant styles that change nothing.",
@@ -548,24 +569,28 @@ export const DIVES_2023: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Local state",
             on: "logic:state",
             beat: 0,
             text: "Local state: values a component keeps, like a counter’s Count.",
           },
           {
             kind: "direction",
+            title: "Interactions",
             on: "logic:interactions",
             beat: 1,
             text: "“interactions are selection specific”; “everything else higher up”.",
           },
           {
             kind: "direction",
+            title: "Flow graph",
             on: "logic:flow",
             beat: [2, 3],
             text: "A north star: interactions as a flow graph, from Entry through actions to Exit. Explored, and left for a list.",
           },
           {
             kind: "concept",
+            title: "OnClick",
             on: "logic:node",
             beat: 3,
             text: "OnClick: set Count to Count + 1.",
@@ -603,6 +628,7 @@ export const DIVES_2023: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Interactions",
             on: "int:section",
             side: "left",
             beat: [0, 1],
@@ -610,6 +636,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Data operation",
             on: "op:list",
             side: "left",
             beat: [2, 3],
@@ -617,6 +644,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Increment variable",
             on: "op:count",
             side: "left",
             beat: 4,
@@ -675,6 +703,7 @@ export const DIVES_2023: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Welcome card",
             on: "welcome",
             side: "right",
             beat: [1, 2],
@@ -682,6 +711,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Starting points",
             on: "welcome:templates",
             side: "right",
             beat: 3,
@@ -731,6 +761,7 @@ export const DIVES_2023: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Collection types",
             on: "coll:types",
             side: "bottom",
             beat: [2, 3, 4],
@@ -738,12 +769,14 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Labeled rail",
             on: "rail",
             beat: 0,
             text: "The rail got labels: Insert, Tree, Pages, Components, Styles, Assets, Copilot.",
           },
           {
             kind: "concept",
+            title: "Bound list",
             on: "crm:list",
             side: "bottom",
             beat: 1,
@@ -751,6 +784,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Build & Preview",
             on: "modes",
             beat: 6,
             text: "Build and Preview, as one switch: try the app without leaving it.",
@@ -819,6 +853,7 @@ export const DIVES_2023: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Page templates",
             on: "tpl",
             side: "right",
             beat: [0, 1, 2, 3],
@@ -826,6 +861,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Data cards",
             on: "crm:list",
             side: "bottom",
             beat: 5,
@@ -910,6 +946,7 @@ export const DIVES_2023: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Integrations",
             on: "integrations",
             side: "right",
             beat: [0, 1, 2, 3],
@@ -917,6 +954,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Queries",
             on: "query:form",
             side: "top",
             beat: 5,
@@ -924,6 +962,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Query preview",
             on: "query:preview",
             side: "top",
             beat: [6, 10, 11],
@@ -996,6 +1035,7 @@ export const DIVES_2023: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Permissions",
             on: "auth:rules",
             side: "right",
             beat: [1, 2],
@@ -1003,6 +1043,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Authentication",
             on: "settings:nav",
             side: "left",
             beat: [4, 5],
@@ -1010,6 +1051,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Roles",
             on: "auth:roles",
             side: "right",
             beat: 7,
@@ -1017,6 +1059,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Page defaults",
             on: "auth:defaults",
             side: "right",
             beat: 8,
@@ -1024,6 +1067,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Viewing as",
             on: "crm:nav:contracts",
             side: "right",
             beat: [9, 10, 11],
@@ -1073,6 +1117,7 @@ export const DIVES_2023: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Organization",
             on: "d23:workspaces",
             side: "right",
             beat: 0,
@@ -1080,6 +1125,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Free trial",
             on: "d23:upgrade",
             side: "right",
             beat: 1,
@@ -1087,6 +1133,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "New project",
             on: "d23:create",
             side: "bottom",
             beat: [2, 3, 4],
@@ -1112,6 +1159,7 @@ export const DIVES_2023: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Billing",
             on: "d23:plans",
             side: "bottom",
             beat: 0,
@@ -1119,6 +1167,7 @@ export const DIVES_2023: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Plans",
             on: "plan23:basic",
             side: "bottom",
             beat: [1, 2],
@@ -1169,12 +1218,14 @@ export const DIVES_2023: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Command palette",
             on: "palette",
             beat: 1,
             text: "One palette for everything: insert, create, wrap, apply, edit, and the docs.",
           },
           {
             kind: "direction",
+            title: "Copilot",
             on: "copilot",
             beat: 2,
             text: "Copilot started in the palette; the note on it says “this goes in a left panel”.",

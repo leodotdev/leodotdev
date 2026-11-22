@@ -91,30 +91,35 @@ export const DIVES_2021: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Left panel",
             on: "left",
             beat: 0,
             text: "The lo-fi map named each region’s job: “arenas and variants” on the left…",
           },
           {
             kind: "direction",
+            title: "Top bar, middle",
             on: "tool:0",
             beat: 1,
             text: "…“insert, create, tools” across the middle of the top bar…",
           },
           {
             kind: "direction",
+            title: "Top bar, end",
             on: "publish",
             beat: 2,
             text: "…“view, preview, publish” at its end…",
           },
           {
             kind: "direction",
+            title: "Right panel",
             on: "right",
             beat: 3,
             text: "…“selection meta, data, styles” on the right…",
           },
           {
             kind: "direction",
+            title: "The rail",
             on: "rail",
             beat: 4,
             text: "…and “navigation, assets, settings” down the rail, with “plugin, help, account, code view” at its foot.",
@@ -160,12 +165,14 @@ export const DIVES_2021: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Multi-editing",
             on: "multi-rec",
             beat: [2, 3],
             text: "Multi-editing: record into several variants at once, and the edit lands on their combination. Each chip comes off with its ×.",
           },
           {
             kind: "direction",
+            title: "Recording color",
             on: "board:home",
             beat: [1, 2],
             text: "Everything being recorded turns coral red: the chips, the canvas, and the names stacked over the artboard.",
@@ -183,6 +190,7 @@ export const DIVES_2021: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Focused Mode",
             on: "code-drawer",
             beat: 1,
             text: "A north star, “Focused Mode”: the selection’s React and CSS in a drawer under the canvas, ejected once into plain React. Shelved: the layout after it has no code drawer.",
@@ -241,6 +249,7 @@ export const DIVES_2021: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Isolated editing",
             on: "canvas",
             side: "left",
             beat: 0,
@@ -248,6 +257,7 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Variant breadcrumb",
             on: "take:bar",
             side: "bottom",
             beat: 2,
@@ -255,6 +265,7 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Locking",
             on: "take:bar",
             side: "bottom",
             beat: 4,
@@ -262,6 +273,7 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "discovery",
+            title: "Five takes",
             on: "take:bar",
             side: "top",
             beat: 5,
@@ -324,6 +336,7 @@ export const DIVES_2021: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Publish steps",
             on: "p21:status",
             side: "left",
             beat: 0,
@@ -331,6 +344,7 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Webhooks",
             on: "p21:hooks",
             side: "left",
             beat: [2, 3],
@@ -338,6 +352,7 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Push to GitHub",
             on: "p21:log",
             side: "left",
             beat: [5, 6, 7],
@@ -387,30 +402,35 @@ export const DIVES_2021: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Page rows",
             on: "p:contact",
             beat: [0, 1],
             text: "A page has a path (/contact); under the pointer a row shows it, with settings and a menu.",
           },
           {
             kind: "concept",
+            title: "Page settings",
             on: "page-settings",
             beat: 3,
             text: "Page settings: its path, title, description, and the image it shares with, for search and social.",
           },
           {
             kind: "concept",
+            title: "Imported components",
             on: "group:imported from systemkit",
             beat: 4,
             text: "Imported from SystemKit: components from another project, kept in step with its published versions. Ones not in use are dimmed.",
           },
           {
             kind: "concept",
+            title: "Code components",
             on: "group:code components",
             beat: 5,
             text: "Code components: a codebase’s own React components, registered so designers can place them like any other.",
           },
           {
             kind: "direction",
+            title: "Behavioral components",
             on: "group:behavioral components",
             beat: [4, 5],
             text: "“plus icons here? i think yes”",
@@ -481,6 +501,7 @@ export const DIVES_2021: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Light & dark",
             on: "top",
             side: "bottom",
             beat: 0,
@@ -488,6 +509,7 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Hidden, still rendered",
             on: "site:nav",
             side: "bottom",
             beat: 3,
@@ -495,6 +517,7 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Not rendered",
             on: "canvas",
             side: "left",
             beat: 5,
@@ -502,6 +525,7 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Value menu",
             on: "ctx-menu",
             side: "bottom",
             beat: [7, 8],
@@ -540,6 +564,7 @@ export const DIVES_2021: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Spotlight edit",
             on: "spotlight",
             side: "left",
             beat: [0, 1],
@@ -547,6 +572,7 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Instances",
             on: "site:nav",
             side: "bottom",
             beat: 2,
@@ -575,24 +601,28 @@ export const DIVES_2021: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Select component",
             on: "component:head",
             beat: 0,
             text: "Select: “Show a list of options in a dropdown menu. Supports selection 0 or 1 option at a time.”",
           },
           {
             kind: "concept",
+            title: "Missing parts",
             on: "missing",
             beat: 1,
             text: "“Missing”: the variants, slots, and elements it needs before it works, each a link to make it.",
           },
           {
             kind: "concept",
+            title: "Interaction variants",
             on: "vg:interactions",
             beat: 2,
             text: "Interactions (Hover, Focused) turn on by themselves…",
           },
           {
             kind: "concept",
+            title: "Toggle variants",
             on: "vg:toggles",
             beat: 3,
             text: "…toggles (isOpen, isDisabled) are set from outside, as props.",
@@ -648,18 +678,21 @@ export const DIVES_2021: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Variant types",
             on: "picker:types",
             beat: 2,
             text: "Variant types: interactions, toggles, single- or multi-select groups, screen breakpoints, globals, and combinations of them.",
           },
           {
             kind: "direction",
+            title: "Recording pill",
             on: "pill",
             beat: [4, 5],
             text: "Recording moved to a pill on the canvas: what you are recording into, always in view, and one click to stop.",
           },
           {
             kind: "concept",
+            title: "While recording",
             on: "sec:text",
             beat: 5,
             text: "While recording, the pill turns red with Round’s chip; every change is Round’s.",
@@ -713,6 +746,7 @@ export const DIVES_2021: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Logic",
             on: "data:logic",
             side: "left",
             beat: 1,
@@ -720,6 +754,7 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Props",
             on: "data:props",
             side: "left",
             beat: 2,
@@ -727,6 +762,7 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Insert position",
             on: "insert:where",
             beat: [4, 5],
             text: "Insert asks where first: before, inside, or after the selection.",
@@ -813,6 +849,7 @@ export const DIVES_2021: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Preview picker",
             on: "preview:sub",
             side: "right",
             beat: 1,
@@ -820,6 +857,7 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Empty variant",
             on: "cart",
             side: "right",
             beat: 3,
@@ -827,6 +865,7 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Preview",
             on: "preview:page",
             side: "left",
             beat: [5, 6],
@@ -956,6 +995,7 @@ export const DIVES_2021: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Teams",
             on: "dash:teams",
             side: "right",
             beat: 0,
@@ -963,12 +1003,14 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Project location",
             on: "dash:crumbs:designkit-form-controls",
             beat: 1,
             text: "A row says where its project lives: version, team, and workspace.",
           },
           {
             kind: "direction",
+            title: "Upgrade prompt",
             on: "plans:head",
             side: "top",
             beat: 4,
@@ -976,6 +1018,7 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Growth plan",
             on: "plan:growth",
             side: "bottom",
             beat: 5,
@@ -983,6 +1026,7 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Pro plan",
             on: "plan:pro",
             side: "bottom",
             beat: 6,
@@ -990,6 +1034,7 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Checkout error",
             on: "checkout:error",
             side: "bottom",
             beat: 11,
@@ -1092,6 +1137,7 @@ export const DIVES_2021: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Connect a codebase",
             on: "wizard",
             side: "left",
             beat: [0, 1],
@@ -1099,6 +1145,7 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Setup command",
             on: "wizard:command",
             side: "right",
             beat: [4, 5],
@@ -1106,6 +1153,7 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "First sync",
             on: "wizard:sync",
             side: "right",
             beat: 6,
@@ -1153,6 +1201,7 @@ export const DIVES_2021: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Rich text bar",
             on: "richbar",
             side: "right",
             beat: [0, 1, 2],
@@ -1160,6 +1209,7 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Plus button",
             on: "rich:plus",
             side: "bottom",
             beat: 3,
@@ -1212,18 +1262,21 @@ export const DIVES_2021: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Sand canvas",
             on: "canvas",
             beat: 0,
             text: "“Sand”: a warm canvas with a dot grid, tried in Q3.",
           },
           {
             kind: "direction",
+            title: "Padding handles",
             on: "handles",
             beat: 1,
             text: "Padding drawn on the canvas, hatched where it is, its value on it.",
           },
           {
             kind: "direction",
+            title: "Margin drag",
             on: "margin:band",
             side: "right",
             beat: [2, 3, 4],
@@ -1231,6 +1284,7 @@ export const DIVES_2021: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Grid layout",
             on: "site:grid",
             beat: 5,
             text: "Grid layout: columns, rows, and named areas, CSS grid as a choice beside stacks.",
@@ -1279,18 +1333,21 @@ export const DIVES_2021: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Styles tab",
             on: "styles-tabs",
             beat: 0,
             text: "The rail’s icons became a Styles tab in the top bar, giving its width back to the canvas.",
           },
           {
             kind: "direction",
+            title: "Insert toolbar",
             on: "insert-bar",
             beat: 1,
             text: "Insert became a toolbar floating at the foot of the canvas.",
           },
           {
             kind: "concept",
+            title: "Global variants",
             on: "token-pop",
             beat: [2, 3],
             text: "Global variants (Dark, Right-to-left, Mobile) override tokens: one token, a value for each.",

@@ -119,6 +119,7 @@ export const DIVES_2022: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Panels as tabs",
             on: "tabs",
             side: "bottom",
             beat: 0,
@@ -126,6 +127,7 @@ export const DIVES_2022: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Tokens",
             on: "tokens:tip",
             side: "right",
             beat: 1,
@@ -133,6 +135,7 @@ export const DIVES_2022: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Insert in columns",
             on: "ins3:where",
             side: "top",
             beat: [4, 5],
@@ -140,6 +143,7 @@ export const DIVES_2022: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Stores & sources",
             on: "ins3:cats",
             side: "right",
             beat: [7, 8],
@@ -170,36 +174,42 @@ export const DIVES_2022: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "The ribbon",
             on: "tabs",
             beat: 0,
             text: "A ribbon: modes as tabs across the top bar, each filling the ribbon under it.",
           },
           {
             kind: "concept",
+            title: "Selection",
             on: "rb:selection",
             beat: 1,
             text: "The selection leads the row: what it is (Root, a vertical stack) and its menu.",
           },
           {
             kind: "concept",
+            title: "Ribbon controls",
             on: "rb:size",
             beat: 2,
             text: "Every control is a value over its name: Auto over Width, Auto over Height.",
           },
           {
             kind: "concept",
+            title: "Layout pictogram",
             on: "rb:layout",
             beat: 3,
             text: "Layout as a pictogram: three stacked bars for a vertical stack, then how its children stretch and align.",
           },
           {
             kind: "concept",
+            title: "Breakpoint ruler",
             on: "ruler",
             beat: 4,
             text: "A ruler of breakpoints over the artboard: desktop first, then 400 and 1920.",
           },
           {
             kind: "direction",
+            title: "New variant",
             on: "rb:variant",
             beat: 5,
             text: "“New variant…” closes the row, in red: recording is always one press away.",
@@ -239,18 +249,21 @@ export const DIVES_2022: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Text group",
             on: "rb:text",
             beat: 1,
             text: "A heading brings its own group: color, font, weight, size, style, and decoration.",
           },
           {
             kind: "discovery",
+            title: "Out of room",
             on: "ribbon",
             beat: [2, 3],
             text: "The ribbon ran out of room: with text selected the row is 1537px wide and scrolls sideways. Side panels scroll down; a ribbon can only scroll across.",
           },
           {
             kind: "concept",
+            title: "Margin on canvas",
             on: "margin-band",
             beat: 1,
             text: "Margin drawn on the canvas, hatched under the heading.",
@@ -289,18 +302,21 @@ export const DIVES_2022: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Project tab",
             on: "ribbon",
             beat: 0,
             text: "On the Project tab the ribbon is a row of buttons: arenas, layers, tokens, mixins, components, images, fonts, versions, and more.",
           },
           {
             kind: "direction",
+            title: "Floating panels",
             on: "float:arenas",
             beat: 0,
             text: "Each button drops a panel that floats under it, pinnable: the side panels, called up only when wanted.",
           },
           {
             kind: "discovery",
+            title: "Layers panel",
             on: "float:layers",
             beat: [1, 2],
             text: "The ribbon’s Layers panel floats with a pin; the editor after it docks the tree again.",
@@ -364,12 +380,14 @@ export const DIVES_2022: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Optimize tab",
             on: "ribbon",
             beat: 0,
             text: "“3 starting froms: “optimize” panel, tree context menu, right panel details section.” Here, the ribbon’s own tab.",
           },
           {
             kind: "concept",
+            title: "Test goal",
             on: "ab-pop",
             side: "bottom",
             beat: 4,
@@ -377,6 +395,7 @@ export const DIVES_2022: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Version B",
             on: "ab:rec",
             side: "right",
             beat: [5, 6, 7],
@@ -384,6 +403,7 @@ export const DIVES_2022: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Target variant",
             on: "h1",
             beat: 8,
             text: "“Target variant is extra important”: the headline changed here is version B’s, and the Original keeps its own.",
@@ -420,6 +440,7 @@ export const DIVES_2022: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Insights",
             on: "ins:header",
             side: "bottom",
             beat: 0,
@@ -427,6 +448,7 @@ export const DIVES_2022: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Where results live",
             on: "ins:events",
             side: "bottom",
             beat: 3,
@@ -434,6 +456,7 @@ export const DIVES_2022: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Optimizations list",
             on: "ins:side",
             side: "right",
             beat: 4,
@@ -482,18 +505,21 @@ export const DIVES_2022: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Content types",
             on: "cms:types",
             beat: 0,
             text: "Types are models (blog posts, products, FAQs); entries are their content.",
           },
           {
             kind: "concept",
+            title: "Entry publishing",
             on: "cms:publish",
             beat: 4,
             text: "Each entry has its own Publish; rows say Draft or Published.",
           },
           {
             kind: "direction",
+            title: "Locale picker",
             on: "cms:locale",
             beat: [2, 3],
             text: "“multi-select locale at the top, not at each field”",
@@ -522,12 +548,14 @@ export const DIVES_2022: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Breadcrumb top bar",
             on: "top",
             beat: 0,
             text: "The top bar became a breadcrumb: where you are, from the project down to the variant.",
           },
           {
             kind: "direction",
+            title: "Panel review",
             on: "right",
             beat: 1,
             text: "The panel review: “nothing bold except panel section titles”; “Can we please have Element States on Roots?”",
@@ -561,12 +589,14 @@ export const DIVES_2022: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Recording chip",
             on: "crumb:rec",
             beat: [1, 2],
             text: "Recording became a red chip in the breadcrumb, beside the variant: the whole top bar says where your edits go.",
           },
           {
             kind: "concept",
+            title: "Screen variant",
             on: "board:mobile",
             beat: 1,
             text: "Mobile is a screen variant: what is recorded here applies on the Mobile-only screen, over the base.",
@@ -611,6 +641,7 @@ export const DIVES_2022: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Recording a variant",
             on: "crumb:combo:0",
             side: "bottom",
             beat: [0, 1],
@@ -618,6 +649,7 @@ export const DIVES_2022: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Global variant",
             on: "crumb:combo:1",
             side: "bottom",
             beat: 2,
@@ -625,6 +657,7 @@ export const DIVES_2022: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Combined recording",
             on: "top",
             side: "bottom",
             beat: 4,
@@ -682,6 +715,7 @@ export const DIVES_2022: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Slider props",
             on: "props",
             side: "left",
             beat: [5, 6, 7],
@@ -689,6 +723,7 @@ export const DIVES_2022: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Slider actions",
             on: "actions",
             side: "left",
             beat: [1, 2, 3],
@@ -696,6 +731,7 @@ export const DIVES_2022: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Rearranging slides",
             on: "act:tip",
             side: "left",
             beat: 4,
@@ -774,6 +810,7 @@ export const DIVES_2022: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Search preview",
             on: "s22:preview",
             side: "left",
             beat: 2,
@@ -781,6 +818,7 @@ export const DIVES_2022: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Subdomain",
             on: "s22:sub",
             side: "left",
             beat: [4, 5],
@@ -788,6 +826,7 @@ export const DIVES_2022: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Paid settings",
             on: "s22:security",
             side: "left",
             beat: 7,
@@ -795,6 +834,7 @@ export const DIVES_2022: Array<Dive> = [
           },
           {
             kind: "discovery",
+            title: "Split view idea",
             on: "s22",
             side: "right",
             beat: 7,

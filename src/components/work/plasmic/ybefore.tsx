@@ -26,41 +26,65 @@ export const DIVES_BEFORE: Array<Dive> = [
         url: URL,
         state: { sel: "button" },
         notes: [
-          { kind: "direction", on: "logo", beat: 0, text: "“Home”" },
-          { kind: "direction", on: "arena", beat: 1, text: "“Arenas/Pages”" },
           {
             kind: "direction",
+            title: "The logo",
+            on: "logo",
+            beat: 0,
+            text: "“Home”",
+          },
+          {
+            kind: "direction",
+            title: "Page header",
+            on: "arena",
+            beat: 1,
+            text: "“Arenas/Pages”",
+          },
+          {
+            kind: "direction",
+            title: "Top bar tools",
             on: "tools",
             beat: 2,
             text: "“Content Tools / App Actions”",
           },
           {
             kind: "direction",
+            title: "The tree",
             on: "tree",
             beat: 3,
             text: "“Document Tree (Layers)”",
           },
           {
             kind: "direction",
+            title: "Gallery tab",
             on: "tab:gallery",
             beat: 4,
             text: "“Component Gallery Library”: Gallery struck out, renamed.",
           },
           {
             kind: "direction",
+            title: "Assets tab",
             on: "tab:assets",
             beat: 5,
             text: "“Assets (Imports, Keys, Globals, Variables?)”",
           },
           {
             kind: "direction",
+            title: "Zoom control",
             on: "zoom",
             beat: 6,
             text: "“Studio View Controls”",
           },
-          { kind: "direction", on: "share", beat: 7, text: "“Project Share”" },
           {
             kind: "direction",
+            title: "Share button",
+            on: "share",
+            beat: 7,
+            text: "“Project Share”",
+          },
+          {
+            kind: "direction",
+            title: "Right panel",
             on: "right",
             beat: 8,
             text: "“Styles, Attributes, Component Properties”",
@@ -92,36 +116,42 @@ export const DIVES_BEFORE: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Home & project",
             on: "z:grounding",
             beat: 0,
             text: "“Grounding: Home, Project”",
           },
           {
             kind: "direction",
+            title: "Content panel",
             on: "z:content",
             beat: 1,
             text: "“Content: high-level grouping of what’s been made in-product… Search/filter available w/in the context of each.”",
           },
           {
             kind: "direction",
+            title: "Selection path",
             on: "z:path",
             beat: 2,
             text: "“Grounding/Wayfinding: single-selection path + state”",
           },
           {
             kind: "direction",
+            title: "Properties & states",
             on: "z:properties",
             beat: 3,
             text: "“Properties and States: low-level values of what’s been selected”: props, styles, variants, behaviors, media queries, overrides.",
           },
           {
             kind: "direction",
+            title: "Reserved space",
             on: "z:logic",
             beat: 4,
             text: "“Reserved: keyframe animations? business logic visual programming?”",
           },
           {
             kind: "discovery",
+            title: "Room for later",
             on: "z:toasts",
             beat: 5,
             text: "Room held for what wasn’t designed yet. In 2023 Logic became a mode, its panel along the bottom.",
@@ -150,18 +180,21 @@ export const DIVES_BEFORE: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Floating properties card",
             on: "z:card",
             beat: 0,
             text: "Exploratory A: properties as a card floating over the canvas…",
           },
           {
             kind: "direction",
+            title: "Bottom drawer",
             on: "z:drawer",
             beat: [1, 4],
             text: "…and the variants (A) or the library (B) in a drawer along the bottom.",
           },
           {
             kind: "direction",
+            title: "Rail of modes",
             on: "z:modes",
             beat: 3,
             text: "Exploratory B: a rail of modes. Modes came back in 2023: Design, Logic, Preview.",
@@ -187,6 +220,7 @@ export const DIVES_BEFORE: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Breadcrumb root",
             on: "naming:crumbs",
             side: "bottom",
             beat: [0, 1, 2],
@@ -194,6 +228,7 @@ export const DIVES_BEFORE: Array<Dive> = [
           },
           {
             kind: "discovery",
+            title: "Arena",
             on: "naming:root",
             beat: 2,
             text: "Arena stuck: a canvas to lay artboards out on, as the 2020 file draws it.",
@@ -219,6 +254,7 @@ export const DIVES_BEFORE: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            title: "Object model",
             on: "om:project",
             side: "right",
             beat: 0,
@@ -226,6 +262,7 @@ export const DIVES_BEFORE: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Studio level",
             on: "om:studio",
             side: "right",
             beat: 1,
@@ -233,6 +270,7 @@ export const DIVES_BEFORE: Array<Dive> = [
           },
           {
             kind: "concept",
+            title: "Styles, slots & variants",
             on: "om:holds",
             side: "left",
             beat: 2,
@@ -281,36 +319,42 @@ export const DIVES_BEFORE: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Lifecycle modes",
             on: "hw:modes",
             beat: 0,
             text: "Modes for the whole lifecycle: Design, Comment, Code, Run, Deploy.",
           },
           {
             kind: "direction",
+            title: "Dependencies",
             on: "hw:deps",
             beat: 1,
             text: "“Dependencies, packages, external resources. Similar to CodeSandbox.” A charting library added becomes components with props panels.",
           },
           {
             kind: "direction",
+            title: "Content sources",
             on: "hw:sources",
             beat: 2,
             text: "“Data/API connections. Access to content, similar to Webflow CMS.”",
           },
           {
             kind: "direction",
+            title: "DOM tree",
             on: "hw:dom",
             beat: 4,
             text: "“As close to a true representation of the DOM tree as possible… still, treat similar to a design tool’s layer panel.”",
           },
           {
             kind: "direction",
+            title: "Pinned viewports",
             on: "hw:viewports",
             beat: 5,
             text: "Pinned views: “dark theme on mobile w/ rulers… and another custom ultrawide view.” Changes to any viewport reflect across all.",
           },
           {
             kind: "direction",
+            title: "Collaboration",
             on: "avatars",
             side: "bottom",
             beat: 7,
@@ -318,6 +362,7 @@ export const DIVES_BEFORE: Array<Dive> = [
           },
           {
             kind: "discovery",
+            title: "Concept car",
             on: "hw:state",
             beat: 6,
             text: "A concept car, drawn once. Later files draw much of it: code components and data (2021), branches (late 2022), modes and logic (2023).",
@@ -352,6 +397,7 @@ export const DIVES_BEFORE: Array<Dive> = [
         notes: [
           {
             kind: "direction",
+            title: "Boilerplate picker",
             on: "hw:boiler",
             side: "right",
             beat: 0,
@@ -359,6 +405,7 @@ export const DIVES_BEFORE: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Address bar",
             on: "hw:address",
             side: "bottom",
             beat: 3,
@@ -366,6 +413,7 @@ export const DIVES_BEFORE: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "Breadcrumb path",
             on: "hw:crumbs",
             side: "bottom",
             beat: 4,
@@ -373,6 +421,7 @@ export const DIVES_BEFORE: Array<Dive> = [
           },
           {
             kind: "direction",
+            title: "State editors",
             on: "hw:state",
             side: "top",
             beat: 5,
