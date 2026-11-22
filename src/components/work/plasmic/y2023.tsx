@@ -653,9 +653,32 @@ export const DIVES_2023: Array<Dive> = [
         script: [
           {
             on: "rail:data",
-            say: "Open the page’s data",
+            say: "Connect the app to data",
             click: true,
-            set: { query: true },
+            set: { integrations: true },
+            wait: 1400,
+          },
+          { on: "src:airtable", set: { srcHover: "Airtable" }, wait: 700 },
+          {
+            on: "src:google-sheets",
+            set: { srcHover: "Google Sheets" },
+            wait: 700,
+          },
+          {
+            on: "src:postgresql",
+            say: "PostgreSQL",
+            set: { srcHover: "PostgreSQL" },
+            wait: 600,
+          },
+          {
+            on: "src:postgresql",
+            click: true,
+            set: {
+              integrations: false,
+              srcHover: "",
+              query: true,
+              source: "PostgreSQL",
+            },
             wait: 1600,
           },
           { on: "query:form", wait: 2400 },
@@ -700,16 +723,23 @@ export const DIVES_2023: Array<Dive> = [
         notes: [
           {
             kind: "concept",
+            on: "integrations",
+            side: "right",
+            beat: [0, 1, 2, 3],
+            text: "Integrations: “Get started by connecting data.” A source per tile, and “Invite admin user to help.”",
+          },
+          {
+            kind: "concept",
             on: "query:form",
             side: "top",
-            beat: [1],
+            beat: 5,
             text: "A query fetches, caches, and updates a page’s data, from a source picked here, in a GUI or SQL.",
           },
           {
             kind: "concept",
             on: "query:preview",
             side: "top",
-            beat: [2, 6, 7],
+            beat: [6, 10, 11],
             text: "Its rows previewed as the page will get them, as a table or JSON.",
           },
         ],

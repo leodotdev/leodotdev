@@ -1,5 +1,11 @@
 import {
   TbArrowRight,
+  TbBrandAirtable,
+  TbBrandFirebase,
+  TbBrandGoogleBigQuery,
+  TbBrandSupabase,
+  TbCode,
+  TbFileSpreadsheet,
   TbChevronDown,
   TbDatabase,
   TbDots,
@@ -322,7 +328,7 @@ export function QueryDrawer({ s }: { s: State }) {
             <span className="pk-muted">Data</span>
             <span className="pk-input">
               <TbDatabase />
-              Demo Data
+              {str(s.source, "Demo Data")}
               <TbChevronDown className="ml-auto" />
             </span>
           </span>
@@ -807,5 +813,70 @@ export function PageSettings({ s }: { s: State }) {
         )}
       </div>
     </section>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/* Integrations                                                         */
+
+const SOURCES: Array<
+  [string, React.ComponentType<{ className?: string }>, string]
+> = [
+  ["Airtable", TbBrandAirtable, "#f59e0b"],
+  ["BigQuery", TbBrandGoogleBigQuery, "#3b82f6"],
+  ["Elasticsearch", TbSearch, "#14b8a6"],
+  ["Firebase", TbBrandFirebase, "#f97316"],
+  ["Google Sheets", TbFileSpreadsheet, "#16a34a"],
+  ["Generic HTTP", TbCode, "var(--pk-fg-2)"],
+  ["PostgreSQL", TbDatabase, "#3b82f6"],
+  ["Supabase", TbBrandSupabase, "#22c55e"],
+]
+
+/** “Get started by connecting data”: the data sources, as tiles. */
+export function Integrations({ hover }: { hover?: string }) {
+  return (
+    <>
+      <div className="pk-scrim" />
+      <section className="pk-dialog w-[460px]" data-pk="integrations">
+        <div
+          className="flex items-center gap-3 p-5"
+          style={{ borderBottom: "1px solid var(--pk-line)" }}
+        >
+          <span
+            className="grid h-9 w-9 place-items-center rounded-full"
+            style={{ background: "var(--pk-panel-2)" }}
+          >
+            <TbDatabase />
+          </span>
+          <span className="flex flex-1 flex-col leading-4">
+            <b className="text-[15px] leading-5 font-medium">Integrations</b>
+            <span className="pk-muted">Get started by connecting data.</span>
+          </span>
+          <span className="pk-btn">Invite admin user to help</span>
+        </div>
+        <div className="grid grid-cols-3 gap-4 p-5">
+          {SOURCES.map(([name, I, c]) => (
+            <span
+              key={name}
+              className="pk-source"
+              data-state={hover === name ? "hover" : undefined}
+              data-pk={`src:${name.toLowerCase().replace(/\s+/g, "-")}`}
+            >
+              <span
+                className="grid h-12 place-items-center"
+                style={{ color: c }}
+              >
+                <I className="h-6 w-6" />
+              </span>
+              <span className="py-2.5 text-center">{name}</span>
+            </span>
+          ))}
+        </div>
+        <div className="flex justify-between px-5 pb-5">
+          <span className="pk-btn">Suggest more…</span>
+          <span className="pk-btn">Skip</span>
+        </div>
+      </section>
+    </>
   )
 }

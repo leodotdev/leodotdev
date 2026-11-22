@@ -2222,3 +2222,18 @@
 .pk-op + .pk-btn {
   position: relative;
 }
+.pk-source {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--pk-panel-2);
+  transition: box-shadow 0.15s;
+}
+.pk-source > span:first-child {
+  border-bottom: 1px solid var(--pk-line);
+  background: var(--pk-panel-3);
+}
+.pk-source[data-state="hover"] {
+  box-shadow: 0 0 0 2px var(--pk-accent);
+}

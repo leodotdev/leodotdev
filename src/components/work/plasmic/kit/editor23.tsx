@@ -41,6 +41,7 @@ import {
 } from "@/components/work/plasmic/kit/studio"
 import type { TreeNode } from "@/components/work/plasmic/kit/studio"
 import {
+  Integrations,
   PageSettings,
   QueryDrawer,
   SettingsModal,
@@ -133,6 +134,7 @@ export function EditorCrumb({ s }: { s: State }) {
       {s.palette && <Palette q={str(s.q)} />}
       {Boolean(s.settings) && <SettingsModal s={s} />}
       {Boolean(s.pageSet) && <PageSettings s={s} />}
+      {Boolean(s.integrations) && <Integrations hover={str(s.srcHover)} />}
     </div>
   )
 }
