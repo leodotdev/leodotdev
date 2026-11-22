@@ -1401,6 +1401,8 @@ function Site21({
 
 /** Preview mode: the page on its own, a picker of pages and variants, and back. */
 function Preview({ s }: { s: State }) {
+  const w = typeof s.previewW === "number" ? s.previewW : 640
+  const variant = str(s.cartVariant, "Full")
   return (
     <div className="pk-page flex flex-col" data-pk="preview">
       <div className="pk-page-bar" style={{ height: 44 }}>
@@ -1414,7 +1416,7 @@ function Preview({ s }: { s: State }) {
         </span>
         <span className="pk-btn" data-pk="preview:variant">
           <TbTriangle />
-          Full
+          {variant}
           <TbChevronDown className="h-3 w-3" />
         </span>
         <span className="flex-1" />
@@ -1429,38 +1431,176 @@ function Preview({ s }: { s: State }) {
       </div>
       <div className="relative flex-1">
         <div
-          className="absolute top-6 bottom-0 left-1/2 w-[640px] -translate-x-1/2 overflow-hidden rounded-t-lg"
+          className="absolute top-6 bottom-0 left-1/2 -translate-x-1/2 overflow-hidden rounded-t-lg"
+          style={{
+            width: w,
+            transition: "width 0.9s cubic-bezier(0.3,0,0.2,1)",
+          }}
           data-pk="preview:page"
         >
-          <Site21 grid={false} dark={false} />
+          <Cart variant={variant} narrow={w < 480} />
         </div>
+        {[-1, 1].map((side) => (
+          <span
+            key={side}
+            className="absolute top-1/3 h-24 w-1.5 rounded-full"
+            style={{
+              left: `calc(50% + ${side * (w / 2 + 10) - 3}px)`,
+              background: "var(--pk-line-2)",
+              transition: "left 0.9s cubic-bezier(0.3,0,0.2,1)",
+            }}
+            data-pk={side > 0 ? "preview:grip" : undefined}
+          />
+        ))}
         <span
-          className="absolute top-1/3 h-24 w-1.5 rounded-full"
-          style={{ left: "calc(50% - 334px)", background: "var(--pk-line-2)" }}
-        />
-        <span
-          className="absolute top-1/3 h-24 w-1.5 rounded-full"
-          style={{ left: "calc(50% + 328px)", background: "var(--pk-line-2)" }}
-        />
+          className="pk-chip absolute top-1 left-1/2 -translate-x-1/2"
+          data-pk="preview:width"
+        >
+          {w} px
+        </span>
         {s.pickerOpen && (
+          <>
+            <Menu
+              x={560}
+              y={4}
+              w={240}
+              pk="preview:menu"
+              hover={str(s.menuHover)}
+              items={[
+                { heading: "Pages" },
+                { label: "Homepage" },
+                { label: "Shopping Cart", kbd: "›" },
+                { label: "About" },
+                "sep",
+                { heading: "Components" },
+                { label: "Button", kbd: "›" },
+                { label: "Card" },
+                { label: "Select", kbd: "›" },
+              ]}
+            />
+            {s.menuHover === "Shopping Cart" && (
+              <Menu
+                x={804}
+                y={60}
+                w={180}
+                pk="preview:sub"
+                items={[
+                  { heading: "Variants" },
+                  { label: "Base", icon: TbTriangle },
+                  { label: "Empty", icon: TbTriangle },
+                  { label: "Full", icon: TbTriangle },
+                  "sep",
+                  { label: "Screens", kbd: "›" },
+                  { label: "Themes", kbd: "›" },
+                ]}
+              />
+            )}
+          </>
+        )}
+        {Boolean(s.variantOpen) && (
           <Menu
-            x={560}
+            x={700}
             y={4}
-            w={240}
-            pk="preview:menu"
+            w={160}
+            pk="preview:variants"
             hover={str(s.menuHover)}
             items={[
-              { heading: "Pages" },
-              { label: "Homepage" },
-              { label: "Shopping Cart", kbd: "›" },
-              { label: "About" },
-              "sep",
-              { heading: "Components" },
-              { label: "Button", kbd: "›" },
-              { label: "Card" },
-              { label: "Select", kbd: "›" },
+              { label: "Base", icon: TbTriangle },
+              { label: "Empty", icon: TbTriangle, pk: "variant:empty" },
+              { label: "Full", icon: TbTriangle, pk: "variant:full" },
             ]}
           />
+        )}
+      </div>
+    </div>
+  )
+}
+
+/** The sample store's cart, in its Empty and Full variants. */
+function Cart({ variant, narrow }: { variant: string; narrow: boolean }) {
+  const items: Array<[string, string, string]> = [
+    ["Ultra Boost", "$88.99", "#fde68a"],
+    ["Air Zoom", "$88.99", "#bfdbfe"],
+  ]
+  return (
+    <div className="pk-acme" style={{ fontSize: 15, lineHeight: "22px" }}>
+      <div
+        className="flex items-center gap-6 px-6"
+        style={{ height: 60, borderBottom: "1px solid #eee" }}
+      >
+        <TbShoppingBag className="h-6 w-6" style={{ color: "#ec4899" }} />
+        {!narrow && (
+          <>
+            <span style={{ color: "#ec4899" }}>Welcome</span>
+            <span style={{ color: "#ec4899" }}>About</span>
+          </>
+        )}
+        <span
+          className="ml-auto rounded-full px-4 py-1.5 text-white"
+          style={{ background: "#ec4899" }}
+        >
+          Cart · {variant === "Empty" ? 0 : 2}
+        </span>
+      </div>
+      <div className="flex flex-col gap-4 p-6" data-pk="cart">
+        <b style={{ fontSize: narrow ? 24 : 32, lineHeight: 1.2 }}>Your cart</b>
+        {variant === "Empty" ? (
+          <div
+            className="flex flex-col items-center gap-3 rounded-xl py-14"
+            style={{
+              background: "#fdf2f8",
+              animation: "pk-pop-in 0.3s ease-out both",
+            }}
+          >
+            <span style={{ color: "#6b7280" }}>Your cart is empty.</span>
+            <span
+              className="rounded-full px-5 py-2 text-white"
+              style={{ background: "#111827" }}
+            >
+              Shop →
+            </span>
+          </div>
+        ) : (
+          <div
+            className="grid gap-4"
+            style={{ gridTemplateColumns: narrow ? "1fr" : "1.6fr 1fr" }}
+          >
+            <div className="flex flex-col gap-3">
+              {items.map(([n, p, c]) => (
+                <div key={n} className="flex items-center gap-3">
+                  <span
+                    className="h-14 w-14 flex-none rounded-lg"
+                    style={{ background: c }}
+                  />
+                  <span className="flex flex-1 flex-col">
+                    <b>{n}</b>
+                    <span style={{ color: "#6b7280" }}>Size 10 · 1</span>
+                  </span>
+                  <span>{p}</span>
+                </div>
+              ))}
+            </div>
+            <div
+              className="flex flex-col gap-2 rounded-xl p-4"
+              style={{ background: "#f9fafb" }}
+            >
+              <span className="flex justify-between">
+                Subtotal <b>$177.98</b>
+              </span>
+              <span
+                className="flex justify-between"
+                style={{ color: "#6b7280" }}
+              >
+                Shipping <span>Free</span>
+              </span>
+              <span
+                className="mt-2 rounded-full py-2 text-center text-white"
+                style={{ background: "#111827" }}
+              >
+                Checkout
+              </span>
+            </div>
+          </div>
         )}
       </div>
     </div>
