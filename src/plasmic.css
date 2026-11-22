@@ -68,22 +68,6 @@
   background: #fff;
   transform-origin: 0 0;
 }
-.pl-bar {
-  display: flex;
-  flex: none;
-  flex-direction: column;
-  height: 79px;
-  background: #dee1e6;
-  color: #3c4043;
-  font: 400 13px/18px var(--font-sans);
-}
-.pl-tabs {
-  display: flex;
-  align-items: flex-end;
-  gap: 16px;
-  height: 40px;
-  padding: 0 12px;
-}
 .pl-lights {
   display: flex;
   gap: 8px;
@@ -97,78 +81,11 @@
   background: rgb(0 0 0 / 0.16);
   corner-shape: round;
 }
-.pl-tab {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 240px;
-  height: 32px;
-  padding: 0 12px;
-  border-radius: 8px 8px 0 0;
-  background: #fff;
-}
-.pl-favicon {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: conic-gradient(
-    var(--ads-poppy),
-    var(--ads-clay),
-    var(--ads-olive),
-    var(--ads-sky),
-    var(--ads-plum),
-    var(--ads-poppy)
-  );
-  corner-shape: round;
-}
-.pl-address {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  height: 39px;
-  padding: 0 12px;
-  border-bottom: 1px solid #dadce0;
-  background: #fff;
-}
-.pl-nav-arrows {
-  color: #9aa0a6;
-  font-size: 20px;
-  letter-spacing: 8px;
-}
-.pl-url {
-  flex: 1;
-  height: 28px;
-  padding: 0 16px;
-  border-radius: 14px;
-  background: #f1f3f4;
-  font-size: 14px;
-  line-height: 28px;
-  corner-shape: round;
-}
 .pl-app {
   position: relative;
   flex: 1;
   overflow: hidden;
   background: #f5f6f8;
-}
-.pl-frame {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  max-width: none;
-  transition: opacity 0.25s ease-out;
-}
-.pl-frame-old {
-  opacity: 1;
-}
-.pl-frame:not(.pl-frame-old):not(:only-child) {
-  animation: pl-in 0.25s ease-out both;
-}
-@keyframes pl-in {
-  from {
-    opacity: 0;
-  }
 }
 
 /* What is drawn over the browser at the page's own size. */
@@ -176,11 +93,6 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-}
-.pl-hot {
-  position: absolute;
-  pointer-events: auto;
-  cursor: pointer;
 }
 .pl-cursor {
   position: absolute;
@@ -391,17 +303,6 @@
   }
 }
 
-.pl-caption {
-  position: absolute;
-  z-index: 2;
-  margin: 0;
-  padding: 2px 8px;
-  border-radius: 4px;
-  background: rgb(0 0 0 / 0.45);
-  color: #fff;
-  font: 400 12px/17px var(--font-mono);
-}
-
 /* A feature's states, in a window of their own beside the browser. */
 .pl-sheet {
   position: absolute;
@@ -446,16 +347,6 @@
   flex-direction: column;
   gap: 8px;
   margin: 0;
-}
-.pl-sheet-shot {
-  display: block;
-  overflow: hidden;
-  border-radius: 4px;
-  box-shadow: 0 0 0 1px var(--color-border);
-}
-.pl-sheet-shot img {
-  display: block;
-  max-width: none;
 }
 .pl-sheet .pl-lights i {
   background: var(--color-border);
