@@ -579,3 +579,204 @@ function Plans({ s }: { s: State }) {
     </section>
   )
 }
+
+/* ------------------------------------------------------------------ */
+/* Q1 2021: the projects home, in rounds                               */
+
+function RoundRow({
+  name,
+  meta,
+  emoji,
+}: {
+  name: string
+  meta: string
+  emoji?: string
+}) {
+  return (
+    <div className="pk-project-row" style={{ height: 56 }}>
+      {emoji ? (
+        <span className="w-7 text-center text-[18px]">{emoji}</span>
+      ) : (
+        <span className="pk-project-thumb" style={{ width: 40, height: 28 }} />
+      )}
+      <span className="flex flex-1 flex-col leading-4">
+        <b className="font-medium">{name}</b>
+        <span className="pk-faint">{meta}</span>
+      </span>
+      <Avatars names={["L", "Y"]} />
+    </div>
+  )
+}
+
+function Card({
+  title,
+  sub,
+  tint,
+}: {
+  title: string
+  sub: string
+  tint?: string
+}) {
+  return (
+    <span
+      className="flex flex-1 flex-col gap-0.5 rounded-lg p-3"
+      style={{
+        background: tint ?? "var(--pk-panel-2)",
+        color: tint ? "#111827" : undefined,
+      }}
+    >
+      <b className="font-semibold">{title}</b>
+      <span style={{ opacity: 0.7 }}>{sub}</span>
+    </span>
+  )
+}
+
+/**
+ * The Q1 2021 file's Dashboard page: "Round 1", a later round with its
+ * progress and examples, and a round with a nav of Projects, Spaces, and
+ * Teams.
+ */
+export function DashRound({ round }: { round: 1 | 2 | 3 }) {
+  if (round === 3)
+    return (
+      <div className="pk-page flex">
+        <nav
+          className="flex w-[200px] flex-none flex-col gap-0.5 p-3"
+          style={{
+            background: "var(--pk-panel)",
+            borderRight: "1px solid var(--pk-line)",
+          }}
+        >
+          <span className="px-2 pt-1 pb-4">
+            <Mark size={26} />
+          </span>
+          {["Projects", "Spaces", "Teams", "Settings"].map((n, i) => (
+            <span
+              key={n}
+              className="pk-dash-nav"
+              aria-current={i === 0 || undefined}
+            >
+              {n}
+            </span>
+          ))}
+          <span className="flex-1" />
+          <span className="pk-dash-nav">Plugin</span>
+          <span className="pk-dash-nav">Help</span>
+        </nav>
+        <div className="flex flex-1 flex-col gap-3 p-6">
+          <span className="flex items-center justify-between">
+            <b className="text-[15px] font-semibold">Get started</b>
+            <span className="pk-faint flex items-center gap-1">
+              Hide <TbChevronDown />
+            </span>
+          </span>
+          <span className="flex gap-3">
+            <Card
+              title="Play PLASMIC LEVELS"
+              sub="Start here to learn Plasmic"
+              tint="#bbf7d0"
+            />
+            <Card
+              title="Developer Quickstart"
+              sub="Import a component into your codebase"
+              tint="#a5f3fc"
+            />
+          </span>
+          <span className="flex items-center gap-4 pt-3 text-[color:var(--pk-fg-2)]">
+            <span>All projects ▾</span>
+            <span className="flex-1" />
+            <span>Last modified ▾</span>
+            <span className="pk-input w-[180px]">
+              <span className="pk-faint">Search projects…</span>
+            </span>
+          </span>
+          <RoundRow
+            emoji="🍩"
+            name="Acme"
+            meta="v2.0 • Published · Shared · 12m ago"
+          />
+          <RoundRow
+            emoji="🌸"
+            name="DesignKit"
+            meta="v1.3 • Published · Shared · 1h ago"
+          />
+          <RoundRow emoji="🧰" name="Landing Page" meta="v0.0 · 2d ago" />
+        </div>
+      </div>
+    )
+  return (
+    <div className="pk-page flex flex-col">
+      <div className="mx-auto flex w-[750px] flex-col gap-4 pt-8">
+        <span className="flex items-center justify-between">
+          <b className="text-[18px] font-semibold">Projects</b>
+          <span className="pk-btn" data-kind="primary">
+            <TbPlus /> New project
+          </span>
+        </span>
+        <div className="pk-card flex flex-col gap-3 p-4">
+          <span className="flex items-center justify-between">
+            <b className="font-semibold">Get started</b>
+            {round === 2 ? (
+              <span className="pk-badge" data-kind="ok">
+                33% completed
+              </span>
+            ) : (
+              <TbX className="opacity-50" />
+            )}
+          </span>
+          <span className="flex gap-3">
+            <Card
+              title="Play PLASMIC LEVELS"
+              sub="Start here to learn Plasmic"
+            />
+            <Card
+              title={
+                round === 2
+                  ? "MiniTwitter tutorial"
+                  : "3-min Codegen Quickstart"
+              }
+              sub={round === 2 ? "Tutorial" : "Import into your codebase"}
+            />
+          </span>
+        </div>
+        <div className="flex flex-col gap-2">
+          <b className="font-semibold">
+            {round === 2 ? "Plume Kits" : "Resources"}
+          </b>
+          <span className="flex gap-3">
+            {(round === 2
+              ? ["Plain Kit", "Retro Kit", "Boot Kit"]
+              : ["Plain Kit", "Retro Kit", "Tailwind Color", "Ant Design Color"]
+            ).map((k) => (
+              <span key={k} className="pk-wtile flex-1">
+                <span className="grid h-14 place-items-center">
+                  <TbSparkles className="opacity-40" />
+                </span>
+                <span className="py-1.5 text-center">{k}</span>
+              </span>
+            ))}
+          </span>
+          {round === 1 && (
+            <span className="pk-faint">
+              Plume Component Kit · Token Library
+            </span>
+          )}
+        </div>
+        {round === 2 && (
+          <div className="flex flex-col gap-2">
+            <b className="font-semibold">Featured Examples</b>
+            <span className="flex gap-3">
+              <Card title="Ant Design" sub="Example" />
+              <Card title="Twitter Feed" sub="Example" />
+            </span>
+          </div>
+        )}
+        <b className="pt-2 font-semibold">
+          {round === 2 ? "Recent" : "Projects"}
+        </b>
+        <RoundRow name="Acme" meta="v0.0 | updated 20h ago" />
+        <RoundRow name="DesignKit" meta="v1.3 | updated 2d ago" />
+      </div>
+    </div>
+  )
+}

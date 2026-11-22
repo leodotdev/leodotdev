@@ -3,7 +3,7 @@ import { Editor21, EmptyShell21 } from "@/components/work/plasmic/kit/editor21"
 import { Connect } from "@/components/work/plasmic/kit/onboard"
 import { Publish21 } from "@/components/work/plasmic/kit/publish21"
 import { Takes21 } from "@/components/work/plasmic/kit/takes21"
-import { Dashboard21 } from "@/components/work/plasmic/kit/teams"
+import { DashRound, Dashboard21 } from "@/components/work/plasmic/kit/teams"
 import type { Dive, Peer, Shot, State } from "@/components/work/plasmic/types"
 
 // 2021, rebuilt from the year's three quarterly files ("2021 Q1–Q3
@@ -847,10 +847,28 @@ export const DIVES_2021: Array<Dive> = [
         url: "studio.plasmic.app/projects",
         span: 2,
         explore: {
-          label: "3 team pickers",
+          label: "6 dashboards",
           on: "dash:upgrade",
-          title: "Select a team to upgrade, three ways",
+          title: "The dashboard in rounds, and three team pickers",
           items: [
+            {
+              label: "Q1, “Round 1”: Get Started, Resources, projects",
+              w: 1440,
+              h: 868,
+              view: () => <DashRound round={1} />,
+            },
+            {
+              label: "Q1, a later round: 33% completed, kits, examples",
+              w: 1440,
+              h: 868,
+              view: () => <DashRound round={2} />,
+            },
+            {
+              label: "Q1, a round with Projects, Spaces, and Teams",
+              w: 1440,
+              h: 868,
+              view: () => <DashRound round={3} />,
+            },
             {
               label: "A list of teams, or a new one",
               w: 1440,
