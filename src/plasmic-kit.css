@@ -2544,3 +2544,42 @@
   letter-spacing: -0.04em;
   -webkit-text-stroke: 1px var(--pk-line-2);
 }
+
+/* Q3 2021's rich-text bar, on the canvas (kit/editor21.tsx). Drawn in the
+   page's own size, so it scales with the canvas's zoom. */
+.pk-richbar {
+  position: absolute;
+  bottom: calc(100% + 18px);
+  left: -8px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 56px;
+  padding: 0 8px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.08),
+    0 10px 28px -8px rgb(0 0 0 / 0.35);
+  color: #111827;
+  font: 500 20px/1 var(--pk-sans);
+  white-space: nowrap;
+  animation: pk-pop-in 0.2s ease-out both;
+}
+.pk-richbar-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 40px;
+  padding: 0 10px;
+  border-radius: 7px;
+}
+.pk-richbar-item > svg:first-child {
+  width: 22px;
+  height: 22px;
+}
+.pk-richbar-item[aria-pressed="true"] {
+  background: #e5edff;
+  color: #2563eb;
+}

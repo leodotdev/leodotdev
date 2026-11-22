@@ -1116,6 +1116,60 @@ export const DIVES_2021: Array<Dive> = [
     ],
   },
   {
+    slug: "rich-text",
+    title: "Text on the Canvas",
+    summary: "Q3: text edited where it is, a bar floating over it.",
+    scenes: [
+      {
+        view: e21,
+        url: URL,
+        state: { sel: "", expand: "text", zz: 1.15, zx: -60, zy: -200 },
+        script: [
+          {
+            on: "site:subtitle",
+            say: "Double-click the text",
+            click: true,
+            set: { rich: "caret" },
+            wait: 1600,
+          },
+          {
+            on: "site:word",
+            say: "Select a word",
+            shape: "text",
+            click: true,
+            set: { rich: "word" },
+            wait: 1400,
+          },
+          {
+            on: "rich:bold",
+            say: "Make it bold",
+            click: true,
+            set: { rich: "bold" },
+            wait: 2600,
+          },
+          { on: "rich:plus", wait: 2600 },
+          { on: "canvas", at: [0.8, 0.8], set: { rich: "" }, wait: 1400 },
+        ],
+        notes: [
+          {
+            kind: "direction",
+            on: "richbar",
+            side: "right",
+            beat: [0, 1, 2],
+            text: "Rich text edited on the canvas, a bar floating over it: weight, fill, alignment, link, Convert…, and +.",
+          },
+          {
+            kind: "direction",
+            on: "rich:plus",
+            side: "bottom",
+            beat: 3,
+            text: "The designers’ note on the frame: “+ should be smaller here.”",
+          },
+        ],
+      },
+    ],
+  },
+  {
     slug: "sand",
     title: "Sand & Grid",
     summary: "A warmer canvas, padding drawn on it, and CSS grid.",

@@ -1,4 +1,8 @@
 import {
+  TbLink,
+  TbAlignLeft,
+  TbPaint,
+  TbBold,
   TbWand,
   TbAlertTriangle,
   TbArrowLeft,
@@ -147,6 +151,7 @@ export function Editor21({ s }: { s: State }) {
                 navLink={str(s.navLink)}
                 heroMargin={num(s.heroMargin, 0)}
                 ink={s.multiColor ? "#2563eb" : undefined}
+                rich={str(s.rich)}
               />
             </div>
           </div>
@@ -1328,6 +1333,7 @@ function Site21({
   navLink = "",
   heroMargin = 0,
   ink,
+  rich = "",
 }: {
   grid: boolean
   dark: boolean
@@ -1340,6 +1346,8 @@ function Site21({
   heroMargin?: number
   /** The hero heading's color, when an edit has changed it. */
   ink?: string
+  /** Rich text being edited on the canvas: "caret", "word", or "bold". */
+  rich?: string
 }) {
   const away: React.CSSProperties = spot
     ? {
@@ -1411,8 +1419,32 @@ function Site21({
         >
           New collection
         </span>
-        <span style={{ fontSize: 32, lineHeight: "48px", opacity: 0.7 }}>
-          Welcome to your first page.
+        <span
+          className="relative w-fit"
+          style={{
+            fontSize: 32,
+            lineHeight: "48px",
+            opacity: rich ? 1 : 0.7,
+            outline: rich ? "2px solid var(--pk-accent)" : undefined,
+            outlineOffset: 6,
+          }}
+          data-pk="site:subtitle"
+        >
+          {rich && <RichBar bold={rich === "bold"} />}
+          <span
+            style={{
+              fontWeight: rich === "bold" ? 700 : undefined,
+              background:
+                rich === "word" || rich === "bold"
+                  ? "rgb(76 141 255 / 0.25)"
+                  : undefined,
+            }}
+            data-pk="site:word"
+          >
+            Welcome
+          </span>{" "}
+          to your first page.
+          {rich === "caret" && <i className="pk-caret" />}
         </span>
         <span
           className="w-fit rounded-full px-6 py-3 text-white"
@@ -1695,5 +1727,34 @@ export function EmptyShell21({ notFound }: { notFound?: boolean }) {
         style={{ borderLeft: "1px solid var(--pk-line)" }}
       />
     </div>
+  )
+}
+
+/**
+ * Q3 2021's rich-text bar, floating over the text being edited on the
+ * canvas: bold, fill, align, link, Convert…, and +.
+ */
+function RichBar({ bold }: { bold: boolean }) {
+  return (
+    <span className="pk-richbar" data-pk="richbar">
+      <span className="pk-richbar-item" aria-pressed={bold} data-pk="rich:bold">
+        <TbBold /> <TbChevronDown className="h-3 w-3 opacity-60" />
+      </span>
+      <span className="pk-richbar-item">
+        <TbPaint /> <TbChevronDown className="h-3 w-3 opacity-60" />
+      </span>
+      <span className="pk-richbar-item">
+        <TbAlignLeft /> <TbChevronDown className="h-3 w-3 opacity-60" />
+      </span>
+      <span className="pk-richbar-item">
+        <TbLink /> <TbChevronDown className="h-3 w-3 opacity-60" />
+      </span>
+      <span className="pk-richbar-item">
+        Convert… <TbChevronDown className="h-3 w-3 opacity-60" />
+      </span>
+      <span className="pk-richbar-item" data-pk="rich:plus">
+        <TbPlus />
+      </span>
+    </span>
   )
 }
