@@ -63,6 +63,11 @@ export function EditorCrumb({ s }: { s: State }) {
   const rec = str(s.rec)
   const logic = s.mode === "logic"
   const railW = labeled ? 72 : 48
+  const view = {
+    x: typeof s.zx === "number" ? s.zx : 40,
+    y: typeof s.zy === "number" ? s.zy : 40,
+    z: typeof s.zz === "number" ? s.zz : 0.42,
+  }
   const leftW = left === "none" ? 0 : 260
   return (
     <div
@@ -96,12 +101,12 @@ export function EditorCrumb({ s }: { s: State }) {
         data-rec={rec ? "" : undefined}
         style={{ "--pk-dots": "var(--pk-line-2)" } as React.CSSProperties}
       >
-        {s.crm ? <Crm /> : <Boards rec={rec} />}
+        {s.crm ? <Crm /> : <Boards rec={rec} view={view} />}
         <span
           className="pk-zoom absolute right-3 bottom-3 rounded-lg"
           style={{ background: "var(--pk-pop)", boxShadow: "var(--pk-shadow)" }}
         >
-          25% <TbChevronDown className="h-3 w-3" />
+          {Math.round(view.z * 100)}% <TbChevronDown className="h-3 w-3" />
         </span>
         {logic && <LogicPanel flow={Boolean(s.flow)} />}
       </main>
@@ -507,11 +512,19 @@ function Copilot() {
   )
 }
 
-function Boards({ rec }: { rec: string }) {
+function Boards({
+  rec,
+  view,
+}: {
+  rec: string
+  view: { x: number; y: number; z: number }
+}) {
   return (
     <div
       className="pk-world"
-      style={{ transform: "translate(40px, 40px) scale(0.42)" }}
+      style={{
+        transform: `translate(${view.x}px, ${view.y}px) scale(${view.z})`,
+      }}
     >
       <div
         className="pk-board"

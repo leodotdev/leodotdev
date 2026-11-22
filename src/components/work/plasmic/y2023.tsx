@@ -77,12 +77,30 @@ export const DIVES_2023: Array<Dive> = [
             beat: 3,
             text: "Design, Logic, Preview: modes for the same page, not separate tools.",
           },
+          {
+            kind: "concept",
+            on: "board:mobile",
+            beat: 4,
+            text: "Every screen side by side on one canvas, zoomed into as a design tool would.",
+          },
         ],
         script: [
           { on: "crumb:project", wait: 2200 },
           { on: "crumb:branch", wait: 2200 },
           { on: "crumb:variant", wait: 2200 },
           { on: "modes", wait: 2400 },
+          {
+            on: "board:mobile",
+            say: "Zoom in on the phone",
+            set: { zz: 0.9, zx: -1260, zy: -40 },
+            wait: 2600,
+          },
+          {
+            on: "zoom-level",
+            say: "And back out",
+            set: { zz: 0.42, zx: 40, zy: 40 },
+            wait: 2000,
+          },
         ],
         explore: {
           label: "3 shells",

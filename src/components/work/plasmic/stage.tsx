@@ -222,12 +222,15 @@ function Player({
   box: Box
 }) {
   const { theme } = usePkTheme()
-  const { s } = box
+  // On a phone the browser is drawn larger than the window is wide (a
+  // whole desktop app at a quarter of its size cannot be read), and pans
+  // sideways to keep the demo cursor in view.
+  const narrow = box.w < 768
+  const s = narrow ? Math.min(0.5, (box.h * 0.6) / (APP_H + CHROME)) : box.s
   const bw = Math.round(APP_W * s)
   const bh = Math.round((APP_H + CHROME) * s)
   const shift = scene.sheet ? Math.min(160, Math.max(0, box.w - bw) / 2) : 0
-  const left = Math.round((box.w - bw) / 2 - shift)
-  const top = box.w < 768 ? 16 : Math.round((box.h - bh) / 2)
+  const top = narrow ? 16 : Math.round((box.h - bh) / 2)
   const chrome = Math.round(CHROME * s)
 
   const [initial] = useState<State>(() => scene.state ?? {})
@@ -293,6 +296,14 @@ function Player({
     setState,
     measure
   )
+  const left = narrow
+    ? Math.round(
+        Math.min(
+          8,
+          Math.max(box.w - bw - 8, box.w / 2 - (cursor?.x ?? APP_W / 2) * s)
+        )
+      )
+    : Math.round((box.w - bw) / 2 - shift)
   const peers = usePeers(scene.peers, !before && !still, setState, measure)
 
   // The notes showing: those for the whole scene, and those of the beat
@@ -326,9 +337,15 @@ function Player({
   useLayoutEffect(() => {
     const on = scene.explore?.on
     if (on === undefined) return
-    const f = requestAnimationFrame(() => setExploreRect(measure(on)))
-    return () => cancelAnimationFrame(f)
-  }, [scene, measure, s, state])
+    // Measured as drawn, and again once a change has played into the scene.
+    const update = () => setExploreRect(measure(on))
+    const f = requestAnimationFrame(update)
+    const t = window.setTimeout(update, 900)
+    return () => {
+      cancelAnimationFrame(f)
+      clearTimeout(t)
+    }
+  }, [scene, measure, s, state, before])
 
   const at = (x: number, y: number) =>
     `${Math.round(x * s)}px ${Math.round(y * s)}px`

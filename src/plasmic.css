@@ -52,6 +52,7 @@
    corner; its box is the scaled size. */
 .pl-browser-box {
   position: absolute;
+  transition: left 0.6s cubic-bezier(0.3, 0, 0.2, 1);
   border-radius: 10px;
   box-shadow:
     0 0 0 1px rgb(0 0 0 / 0.12),
