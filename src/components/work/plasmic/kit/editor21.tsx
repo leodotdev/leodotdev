@@ -145,6 +145,7 @@ export function Editor21({ s }: { s: State }) {
                 hide={str(s.visMode)}
                 spot={Boolean(s.spot)}
                 navLink={str(s.navLink)}
+                heroMargin={num(s.heroMargin, 0)}
               />
             </div>
           </div>
@@ -186,6 +187,22 @@ export function Editor21({ s }: { s: State }) {
               <i style={{ bottom: 0, height: 48 }} />
               <b style={{ top: 12 }}>48</b>
               <b style={{ bottom: 12 }}>48</b>
+            </div>
+          )}
+          {Boolean(s.mband) && (
+            <div
+              className="pk-mband"
+              style={{
+                left: 80,
+                top: 574,
+                width: 1180,
+                height: num(s.heroMargin, 0),
+              }}
+              data-pk="margin:band"
+            >
+              <b>{num(s.heroMargin, 0)}</b>
+              {Boolean(s.mdrag) && <span className="pk-mtip">Margin</span>}
+              <i data-pk="margin:edge" />
             </div>
           )}
         </div>
@@ -1293,6 +1310,7 @@ function Site21({
   hide = "",
   spot = false,
   navLink = "",
+  heroMargin = 0,
 }: {
   grid: boolean
   dark: boolean
@@ -1301,6 +1319,8 @@ function Site21({
   spot?: boolean
   /** A link added to the navigation. */
   navLink?: string
+  /** The hero's bottom margin, dragged on the canvas. */
+  heroMargin?: number
 }) {
   const away: React.CSSProperties = spot
     ? {
@@ -1354,7 +1374,9 @@ function Site21({
         className="flex flex-col justify-center gap-4 px-20"
         style={{
           height: 400,
+          marginBottom: heroMargin,
           background: dark ? "#111c33" : "#fdf2f8",
+          transition: "margin 0.6s cubic-bezier(0.3,0,0.2,1)",
           ...away,
         }}
         data-pk="site:hero"
