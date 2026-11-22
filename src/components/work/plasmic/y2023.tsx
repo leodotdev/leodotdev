@@ -1,4 +1,6 @@
+import { Dashboard23 } from "@/components/work/plasmic/kit/dash23"
 import { EditorCrumb } from "@/components/work/plasmic/kit/editor23"
+import { Dashboard21 } from "@/components/work/plasmic/kit/teams"
 import type { Dive, Peer, Shot, State } from "@/components/work/plasmic/types"
 
 // 2023, from "P2023 H1": the breadcrumb editor grows branches and merging,
@@ -590,6 +592,69 @@ export const DIVES_2023: Array<Dive> = [
             side: "right",
             beat: 5,
             text: "Defaults for new pages: Login needed, Role needed.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "dashboard",
+    title: "The Dashboard, Again",
+    summary:
+      "An organization and its workspaces, a trial counting down, and new apps from templates.",
+    scenes: [
+      {
+        view: (s: State) => <Dashboard23 s={s} />,
+        url: "studio.plasmic.app/workspaces/marketing",
+        change: {
+          from: () => <Dashboard21 s={{}} />,
+          title: "2023: the dashboard, again",
+          items: [
+            "An organization over its workspaces, where 2021 had teams",
+            "Create an app or a website from a template, up top",
+            "Integrations, Usage, and CMS beside Projects",
+          ],
+        },
+        script: [
+          { on: "d23:workspaces", at: [0.5, 0.4], wait: 2600 },
+          { on: "d23:upgrade", wait: 2400 },
+          { on: "d23:tpl:mobile", set: { hover: "mobile" }, wait: 900 },
+          { on: "d23:tpl:some", set: { hover: "some" }, wait: 900 },
+          {
+            on: "d23:tpl:desktop",
+            say: "A new app, desktop-first",
+            set: { hover: "desktop" },
+            wait: 600,
+          },
+          {
+            on: "d23:tpl:desktop",
+            click: true,
+            set: { hover: "", created: true },
+            wait: 2800,
+          },
+          { on: "d23:tab:integrations", wait: 2200 },
+        ],
+        notes: [
+          {
+            kind: "direction",
+            on: "d23:workspaces",
+            side: "right",
+            beat: 0,
+            text: "The dashboard, regrouped: an organization (“Acme / Organization”), and under it its workspaces.",
+          },
+          {
+            kind: "direction",
+            on: "d23:upgrade",
+            side: "right",
+            beat: 1,
+            text: "A free trial, counted down beside Upgrade: “8 days left.”",
+          },
+          {
+            kind: "concept",
+            on: "d23:create",
+            side: "bottom",
+            beat: [2, 3, 4],
+            text: "“Create a new App | Website”: a project can start from a template, right on the dashboard.",
           },
         ],
       },

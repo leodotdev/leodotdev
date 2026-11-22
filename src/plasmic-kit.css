@@ -1886,3 +1886,60 @@
     stroke-dashoffset: 0;
   }
 }
+
+/* 2023's dashboard (kit/dash23.tsx). */
+.pk-d23-count {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  corner-shape: round;
+  background: var(--pk-rec);
+  color: #fff;
+  font-size: 10px;
+}
+.pk-d23-trial {
+  padding: 1px 8px;
+  border-radius: 99px;
+  corner-shape: round;
+  background: var(--pk-component);
+  color: #fff;
+  font-size: 11px;
+}
+.pk-d23-tab {
+  padding: 0 1px 12px;
+  border-bottom: 2px solid transparent;
+  color: var(--pk-fg-2);
+}
+.pk-d23-tab[aria-selected="true"] {
+  border-color: var(--pk-fg);
+  color: var(--pk-fg);
+}
+.pk-d23-start {
+  display: flex;
+  padding: 20px 22px;
+  border-radius: 18px;
+  background: var(--pk-panel);
+  box-shadow:
+    0 0 0 1px var(--pk-line),
+    0 8px 24px -12px rgb(0 0 0 / 0.25);
+}
+.pk-d23-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 6px 6px 9px;
+  border-radius: 10px;
+  background: var(--pk-panel-2);
+  transition: box-shadow 0.15s;
+}
+.pk-d23-tile[data-state="hover"] {
+  box-shadow: 0 0 0 2px var(--pk-accent);
+}
+.pk-d23-thumb {
+  height: 64px;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--pk-panel);
+}
