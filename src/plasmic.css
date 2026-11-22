@@ -16,9 +16,51 @@
   top: var(--docs-bar);
   z-index: 1;
   height: var(--pl-desk);
-  overflow: hidden;
   margin-inline: calc(50% - 50vw);
   isolation: isolate;
+}
+/* What the desk shows. At 100% (Leo, 2026-11-22) it leaves the desk for
+   the whole window, over the bar and the page's header, with the browser
+   at its true size; the desk keeps its place in the page, so the scroll
+   and the scenes go on as they were. */
+.pl-screen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+.pl-desk[data-full] {
+  z-index: 60;
+}
+.pl-desk[data-full] .pl-screen {
+  position: fixed;
+}
+/* How to leave the 100% view: a pill like the site's toasts at the bottom
+   center, there for as long as the view is. */
+.pl-esc {
+  position: absolute;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  left: 50%;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: var(--color-foreground);
+  color: var(--color-background);
+  box-shadow: 0 8px 24px -8px rgb(0 0 0 / 0.5);
+  font-weight: 600;
+  white-space: nowrap;
+  translate: -50% 0;
+  corner-shape: round;
+}
+.pl-esc kbd {
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--color-background) 16%, transparent);
+  font: 400 12px/17px var(--font-mono);
 }
 .pl-dives {
   margin-top: calc(-1 * var(--pl-desk));
@@ -31,21 +73,70 @@
   scroll-margin-top: calc(var(--docs-bar) - 1px);
 }
 
-/* The wallpaper: the palette's cooler colors, blended, a little deeper in
-   the dark theme. */
+/* The desktop's wallpaper: a mesh of soft color after the macOS of the
+   year on the stage (Leo, 2026-11-22), drawn in Apple's system colors:
+   Catalina's dusk for the research before 2020, Big Sur's red and blue
+   bands for 2020, Monterey's purples and pinks for 2021, Ventura's orange
+   bloom on blue for 2022, and Sonoma's greens for 2023. Each is a handful
+   of radial gradients; the blur melts them into one surface. They are
+   drawn from the releases' colors, not copied from their pictures. */
 .pl-wallpaper {
   position: absolute;
-  inset: 0;
+  inset: -48px;
   z-index: -1;
+  /* Catalina (2019). */
   background:
-    radial-gradient(60% 80% at 12% 18%, var(--ads-sky) 0%, transparent 70%),
-    radial-gradient(55% 70% at 88% 30%, var(--ads-heather) 0%, transparent 70%),
-    radial-gradient(70% 70% at 70% 100%, var(--ads-plum) 0%, transparent 70%),
-    radial-gradient(60% 60% at 10% 95%, var(--ads-mineral) 0%, transparent 70%),
-    var(--ads-cloud);
+    radial-gradient(60% 50% at 78% 62%, #ff9500 0%, transparent 60%),
+    radial-gradient(80% 60% at 60% 100%, #ff2d55 0%, transparent 62%),
+    radial-gradient(70% 80% at 0% 100%, #5856d6 0%, transparent 66%),
+    radial-gradient(70% 70% at 100% 0%, #30b0c7 0%, transparent 62%),
+    radial-gradient(80% 80% at 10% 0%, #1c2a80 0%, transparent 70%), #3634a3;
+  filter: blur(28px) saturate(1.05);
 }
+/* Big Sur. */
+.pl-wallpaper[data-year="2020"] {
+  background:
+    radial-gradient(70% 55% at 18% -4%, #ffcc00 0%, transparent 58%),
+    radial-gradient(75% 60% at 0% 30%, #ff9500 0%, transparent 60%),
+    radial-gradient(70% 55% at 34% 46%, #ff3b30 0%, transparent 60%),
+    radial-gradient(60% 50% at 72% 30%, #ff2d55 0%, transparent 62%),
+    radial-gradient(60% 60% at 100% 0%, #af52de 0%, transparent 62%),
+    radial-gradient(90% 70% at 30% 110%, #5856d6 0%, transparent 60%),
+    radial-gradient(90% 80% at 100% 100%, #32ade6 0%, transparent 62%), #007aff;
+}
+/* Monterey. */
+.pl-wallpaper[data-year="2021"] {
+  background:
+    radial-gradient(60% 60% at 100% 12%, #ff6482 0%, transparent 60%),
+    radial-gradient(70% 60% at 66% 40%, #ff2d55 0%, transparent 60%),
+    radial-gradient(80% 70% at 20% 20%, #bf5af2 0%, transparent 62%),
+    radial-gradient(70% 70% at 0% 80%, #5856d6 0%, transparent 62%),
+    radial-gradient(80% 60% at 60% 110%, #007aff 0%, transparent 62%),
+    radial-gradient(50% 50% at 100% 90%, #ff9500 0%, transparent 60%), #af52de;
+}
+/* Ventura. */
+.pl-wallpaper[data-year="2022"] {
+  background:
+    radial-gradient(34% 44% at 44% 52%, #ffcc00 0%, transparent 62%),
+    radial-gradient(56% 64% at 40% 56%, #ff9500 0%, transparent 62%),
+    radial-gradient(60% 60% at 70% 30%, #ff6b00 0%, transparent 58%),
+    radial-gradient(70% 70% at 100% 100%, #5856d6 0%, transparent 62%),
+    radial-gradient(80% 80% at 0% 0%, #0040dd 0%, transparent 66%),
+    radial-gradient(70% 70% at 0% 100%, #32ade6 0%, transparent 60%), #007aff;
+}
+/* Sonoma. */
+.pl-wallpaper[data-year="2023"] {
+  background:
+    radial-gradient(60% 50% at 30% 20%, #ffd60a 0%, transparent 56%),
+    radial-gradient(80% 60% at 20% 56%, #34c759 0%, transparent 60%),
+    radial-gradient(70% 60% at 70% 40%, #00c7be 0%, transparent 60%),
+    radial-gradient(70% 70% at 100% 0%, #30b0c7 0%, transparent 62%),
+    radial-gradient(80% 70% at 90% 100%, #5856d6 0%, transparent 62%),
+    radial-gradient(70% 60% at 30% 110%, #007aff 0%, transparent 62%), #248a3d;
+}
+/* On the dark page the same wallpaper, dimmed. */
 .dark .pl-wallpaper {
-  filter: brightness(0.55) saturate(0.9);
+  filter: blur(28px) brightness(0.55) saturate(1.1);
 }
 
 /* The browser: laid out at the app's own size and scaled from its top left
@@ -90,8 +181,6 @@
   flex: 1;
   overflow: hidden;
   background: #f5f6f8;
-  /* The demo cursor's alone: a visitor's pointer changes nothing in it. */
-  pointer-events: none;
 }
 
 /* What is drawn over the browser at the page's own size. */
@@ -161,39 +250,33 @@
   }
 }
 
-/* A part with versions to open: ringed, with a badge on its corner. */
-.pl-explore-ring {
-  position: absolute;
-  border: 1.5px dashed var(--ads-clay);
-  border-radius: 4px;
-  animation: pl-ring 1.6s ease-in-out infinite alternate;
+/* The annotations' cards (a note's card, the step said beside the cursor,
+   the change card) are the site's own surfaces, in the theme opposite the
+   product's (Leo, 2026-11-22): light over the dark studio, dark over the
+   light one, whatever the page itself wears. */
+.pl-desk {
+  --pl-card: var(--ads-gray-000);
+  --pl-card-fg: var(--ads-gray-950);
+  --pl-card-line: var(--ads-gray-200);
+  --pl-card-decision: #b53333;
+  --pl-card-concept: #154c92;
+  --pl-card-discovery: #3f7765;
+  /* The ink drawn over the product itself (a part's loop, the arrow to
+     it) is in the tones that show on the product's theme. */
+  --pl-ink-decision: #e86b6b;
+  --pl-ink-concept: #90c3f6;
+  --pl-ink-discovery: #8fc4b2;
 }
-@keyframes pl-ring {
-  to {
-    border-color: transparent;
-  }
-}
-.pl-explore-badge {
-  position: absolute;
-  z-index: 2;
-  translate: -50% -50%;
-  padding: 0 10px;
-  border-radius: 999px;
-  background: var(--ads-clay);
-  color: #fff;
-  font: 400 12px/24px var(--font-mono);
-  white-space: nowrap;
-  pointer-events: auto;
-  cursor: pointer;
-  corner-shape: round;
-}
-.pl-explore-badge[data-edge] {
-  translate: calc(-100% - 6px) 6px;
-}
-@media (prefers-reduced-motion: reduce) {
-  .pl-explore-ring {
-    animation: none;
-  }
+.pl-desk[data-pk-theme="light"] {
+  --pl-card: var(--ads-gray-950);
+  --pl-card-fg: var(--ads-gray-050);
+  --pl-card-line: var(--ads-gray-700);
+  --pl-card-decision: #e86b6b;
+  --pl-card-concept: #90c3f6;
+  --pl-card-discovery: #8fc4b2;
+  --pl-ink-decision: #b53333;
+  --pl-ink-concept: #154c92;
+  --pl-ink-discovery: #3f7765;
 }
 
 /* Notes: decisions in red, how it works in the accent blue. */
@@ -202,9 +285,9 @@
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  --pl-decision: var(--ads-error-fg, #b53333);
-  --pl-concept: var(--color-tint);
-  --pl-discovery: var(--ads-mineral, #629987);
+  --pl-decision: var(--pl-ink-decision);
+  --pl-concept: var(--pl-ink-concept);
+  --pl-discovery: var(--pl-ink-discovery);
 }
 .pl-note-box {
   position: absolute;
@@ -222,9 +305,6 @@
 }
 .pl-leader[data-kind="discovery"] circle {
   fill: var(--pl-discovery);
-}
-.pl-note[data-kind="discovery"] {
-  border-left-color: var(--pl-discovery);
 }
 .pl-note[data-kind="discovery"] .pl-note-kind {
   color: var(--pl-discovery);
@@ -249,18 +329,21 @@
 .pl-note {
   position: absolute;
   margin: 0;
-  padding: 8px 10px;
-  border-left: 2px solid var(--pl-decision);
-  border-radius: 0 6px 6px 0;
-  background: var(--color-background);
-  color: var(--color-foreground);
+  padding: 10px 12px;
+  border: 1px solid var(--pl-card-line);
+  border-radius: 12px;
+  background: var(--pl-card);
+  color: var(--pl-card-fg);
   box-shadow: 0 6px 20px -8px rgb(0 0 0 / 0.3);
   font: 400 12px/17px var(--font-mono);
   text-wrap: pretty;
   animation: pl-note-in 0.3s ease-out both;
 }
-.pl-note[data-kind="concept"] {
-  border-left-color: var(--pl-concept);
+/* On a card the kinds' colors are the card's theme's, not the page's. */
+.pl-note {
+  --pl-decision: var(--pl-card-decision);
+  --pl-concept: var(--pl-card-concept);
+  --pl-discovery: var(--pl-card-discovery);
 }
 /* A note's title is in Inter, its words in Paper Mono. */
 .pl-note-kind {
@@ -271,28 +354,10 @@
 .pl-note[data-kind="concept"] .pl-note-kind {
   color: var(--pl-concept);
 }
-/* In the left gutter a card's colored edge is its near one, the right. */
-.pl-note[data-gutter="left"] {
-  border-right: 2px solid var(--pl-decision);
-  border-left: 0;
-  border-radius: 6px 0 0 6px;
-}
-.pl-note[data-gutter="left"][data-kind="concept"] {
-  border-right-color: var(--pl-concept);
-}
-.pl-note[data-gutter="left"][data-kind="discovery"] {
-  border-right-color: var(--pl-discovery);
-}
-/* A note drawn by hand in a gutter: no card, its words in Playpen Sans
-   (the /work/plasmic notes only), each letter written on in turn. */
+/* A note drawn by hand in a gutter: its words in Playpen Sans (the
+   /work/plasmic notes and steps only), each letter written on in turn. */
 .pl-note.pl-hand {
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: none;
-  box-shadow: none;
   font: 400 14px/20px var(--font-hand);
-  animation: none;
 }
 .pl-hand .pl-note-kind {
   font: 600 17px/24px var(--font-hand);
@@ -463,15 +528,30 @@
   z-index: 2;
   width: min(300px, calc(100% - 48px));
   padding: 16px;
-  border-radius: 10px;
-  background: var(--color-foreground);
-  color: var(--color-background);
+  border: 1px solid var(--pl-card-line);
+  border-radius: var(--radius-menu);
+  background: var(--pl-card);
+  color: var(--pl-card-fg);
   box-shadow: 0 24px 60px -12px rgb(0 0 0 / 0.4);
   animation: pl-note-in 0.3s ease-out both;
 }
+/* The change card is an annotation too, so it is handwritten as the notes
+   are (Leo, 2026-11-22). */
 .pl-change-title {
   margin: 0 0 8px;
-  font-weight: 600;
+  font: 600 17px/24px var(--font-hand);
+}
+.pl-change ol {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding-left: 22px;
+  font: 400 14px/20px var(--font-hand);
+  list-style: decimal;
+}
+.pl-change li[data-dim] {
+  opacity: 0.45;
 }
 .pl-change ul {
   display: flex;
@@ -479,83 +559,8 @@
   gap: 4px;
   margin: 0;
   padding-left: 16px;
-  font: 400 12px/17px var(--font-mono);
+  font: 400 14px/20px var(--font-hand);
   list-style: disc;
-}
-
-/* The lightbox. */
-.pl-lightbox {
-  width: min(1200px, calc(100vw - 32px));
-  max-width: none;
-  height: min(900px, calc(100svh - 32px));
-  max-height: none;
-  margin: auto;
-  padding: 0;
-  border: 0;
-  border-radius: 12px;
-  background: var(--color-background);
-  color: var(--color-foreground);
-}
-.pl-lightbox[open] {
-  display: flex;
-  flex-direction: column;
-}
-.pl-lightbox::backdrop {
-  background: rgb(0 0 0 / 0.6);
-}
-.pl-lightbox-bar {
-  display: flex;
-  flex: none;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--color-border);
-}
-.pl-lightbox-bar button {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--color-card);
-  corner-shape: round;
-}
-.pl-lightbox-stage {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  margin: 16px;
-}
-.pl-lightbox-stage > img {
-  position: absolute;
-  max-width: none;
-  border-radius: 6px;
-  box-shadow: 0 0 0 1px var(--color-border);
-}
-.pl-lightbox-row {
-  display: flex;
-  flex: none;
-  gap: 8px;
-  padding: 12px 16px 16px;
-  overflow-x: auto;
-  border-top: 1px solid var(--color-border);
-}
-.pl-lightbox-row button {
-  flex: none;
-  height: 64px;
-  padding: 4px;
-  border-radius: 6px;
-}
-.pl-lightbox-row button[aria-current] {
-  box-shadow: inset 0 0 0 2px var(--color-foreground);
-}
-.pl-lightbox-row img {
-  height: 100%;
-  width: auto;
-  max-width: 220px;
-  object-fit: contain;
-  border-radius: 3px;
 }
 
 /* The browser's bar, after Safari's, in the product's theme. */
@@ -634,12 +639,13 @@
   align-items: center;
   gap: 6px;
   margin: 22px 0 0 16px;
-  padding: 3px 9px 3px 3px;
+  padding: 4px 12px 4px 4px;
+  border: 1px solid var(--pl-card-line);
   border-radius: 999px;
-  background: var(--color-foreground);
-  color: var(--color-background);
+  background: var(--pl-card);
+  color: var(--pl-card-fg);
   box-shadow: 0 6px 18px -6px rgb(0 0 0 / 0.4);
-  font: 400 12px/17px var(--font-mono);
+  font: 400 14px/20px var(--font-hand);
   white-space: nowrap;
   pointer-events: none;
   transition: translate 0.6s cubic-bezier(0.3, 0, 0.2, 1);

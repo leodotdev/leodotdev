@@ -16,6 +16,10 @@ export const PK_THEMES: Array<{ id: PkTheme; name: string; swatch: string }> = [
 export const PkThemeContext = createContext<{
   theme: PkTheme
   setTheme: (t: PkTheme, from?: HTMLElement) => void
-}>({ theme: "dark", setTheme: () => {} })
+  /** The 100% view: the stage over the whole window, the browser at its
+      true size (the switch after the theme's dots; Esc leaves it). */
+  full: boolean
+  setFull: (on: boolean) => void
+}>({ theme: "dark", setTheme: () => {}, full: false, setFull: () => {} })
 
 export const usePkTheme = () => useContext(PkThemeContext)

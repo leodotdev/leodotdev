@@ -2,6 +2,7 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from "react"
@@ -16,7 +17,6 @@ import {
   TbSquares,
 } from "react-icons/tb"
 import { wave } from "@/lib/wave"
-import { Lightbox } from "@/components/work/plasmic/lightbox"
 import { NoteLayer } from "@/components/work/plasmic/notes"
 import { usePkTheme } from "@/components/work/plasmic/theme"
 import type { PkTheme } from "@/components/work/plasmic/theme"
@@ -24,7 +24,6 @@ import type {
   Anchor,
   Beat,
   Dive,
-  Explore,
   Note,
   Peer,
   Rect,
@@ -55,9 +54,9 @@ const SCALE = 0.8
  * drawn from a small state its script changes as the demo cursor points
  * at parts (bringing up their notes) and works through a workflow (each
  * step said as it happens). The script is the presentation, so a visitor's
- * pointer does not stop it and the studio does not answer it (Leo,
- * 2026-11-22; before, moving into the browser took over); only the badges
- * that open a part's versions are pressed. The browser is laid
+ * pointer does not stop it (Leo, 2026-11-22; before, moving into the
+ * browser took over), but they can tinker as it plays: the parts the
+ * scripts press open and close under a real press too. The browser is laid
  * out at the app's true size and drawn at 80%, whole, scaled further only
  * where the window is too small; the app does not reflow (it was a desktop
  * app). The browser and the studio wear the product theme picked in the
@@ -71,6 +70,10 @@ export function Stage({ year }: { year: Year }) {
   const scene = dive.scenes.at(at.scene) ?? dive.scenes[0]
   const key = `${dive.slug}:${at.scene}`
 
+  const { theme, full, setFull } = usePkTheme()
+  // What a visitor's click on a part does: what the scripts' own clicks do.
+  const live = useMemo(() => clicksOf(year.dives), [year])
+
   const [box, setBox] = useState({ w: 0, h: 0, s: SCALE })
   useLayoutEffect(() => {
     const el = desk.current
@@ -78,9 +81,11 @@ export function Stage({ year }: { year: Year }) {
     const measure = () => {
       const w = el.clientWidth
       const h = el.clientHeight
-      const pad = w < 768 ? 12 : 32
+      // At 100% the browser is its true size, to the window's edges where
+      // the window is no larger than it.
+      const pad = full ? 0 : w < 768 ? 12 : 32
       const s = Math.min(
-        SCALE,
+        full ? 1 : SCALE,
         (w - pad * 2) / APP_W,
         (h - pad * 2) / (APP_H + CHROME)
       )
@@ -88,18 +93,55 @@ export function Stage({ year }: { year: Year }) {
         was.w === w && was.h === h && was.s === s ? was : { w, h, s }
       )
     }
+    measure()
     const observer = new ResizeObserver(measure)
     observer.observe(el)
     return () => observer.disconnect()
-  }, [])
+  }, [full])
+
+  // Esc leaves the 100% view.
+  useEffect(() => {
+    if (!full) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setFull(false)
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [full, setFull])
 
   return (
     <div ref={track} className="pl-track">
-      <div ref={desk} className="pl-desk" data-no-wave>
-        <div aria-hidden className="pl-wallpaper" />
-        {box.w > 0 && (
-          <Player key={key} scene={scene} progress={at.progress} box={box} />
-        )}
+      <div
+        className="pl-desk"
+        data-pk-theme={theme}
+        data-full={full || undefined}
+        data-no-wave
+      >
+        <div ref={desk} className="pl-screen">
+          <div
+            aria-hidden
+            className="pl-wallpaper"
+            data-year={year.slug || undefined}
+          />
+          {box.w > 0 && (
+            <Player
+              key={key}
+              scene={scene}
+              progress={at.progress}
+              box={box}
+              live={live.get(scene.view)}
+            />
+          )}
+          {full && (
+            <button
+              type="button"
+              className="pl-esc"
+              onClick={() => setFull(false)}
+            >
+              <kbd>Esc</kbd> to leave 100%
+            </button>
+          )}
+        </div>
       </div>
       <div className="pl-dives">
         {year.dives.map((d) => (
@@ -203,6 +245,33 @@ type Cursor = {
   slow: boolean
 }
 
+/** What pressing each part does to the state, by the part's name. */
+type Patches = Map<string, Array<State>>
+
+/**
+ * For every view the dives' scenes draw, what its scripts' clicks do: each
+ * part a beat presses, with the changes those beats make, in the order the
+ * scripts make them (so a part pressed to open and again to close does
+ * both).
+ */
+function clicksOf(dives: Array<Dive>) {
+  const views = new Map<Scene["view"], Patches>()
+  for (const dive of dives) {
+    for (const scene of dive.scenes) {
+      for (const beat of scene.script ?? []) {
+        if (!beat.click || !beat.on || !beat.set) continue
+        const patches = views.get(scene.view) ?? new Map<string, Array<State>>()
+        views.set(scene.view, patches)
+        const list = patches.get(beat.on) ?? []
+        patches.set(beat.on, list)
+        const key = JSON.stringify(beat.set)
+        if (!list.some((p) => JSON.stringify(p) === key)) list.push(beat.set)
+      }
+    }
+  }
+  return views
+}
+
 const beatsOf = (n: Note) =>
   n.beat === undefined ? null : Array.isArray(n.beat) ? n.beat : [n.beat]
 
@@ -215,10 +284,12 @@ function Player({
   scene,
   progress,
   box,
+  live,
 }: {
   scene: Scene
   progress: number
   box: Box
+  live?: Patches
 }) {
   const { theme } = usePkTheme()
   // On a phone the browser is drawn larger than the window is wide (a
@@ -263,6 +334,43 @@ function Player({
     ]
   }, [])
 
+  // Tinkering (Leo, 2026-11-22): while the cursor presents, a visitor can
+  // press the parts the scripts press (a menu, a popover, a panel's tab) and
+  // they open and close; pressing anywhere else puts back what they changed.
+  // The script goes on regardless and sets what it needs as it comes to it,
+  // and every round starts from the scene's own state.
+  const touched = useRef(new Set<string>())
+  const tinker = (e: React.MouseEvent<HTMLElement>) => {
+    let el = e.target as Element | null
+    while (el && el !== e.currentTarget) {
+      const patches = live?.get(el.getAttribute("data-pk") ?? "")
+      if (patches) {
+        setState((was) => {
+          const on = (p: State) =>
+            Object.entries(p).every(([k, v]) => was[k] === v)
+          const next = patches.find((p) => !on(p))
+          const keys = Object.keys(next ?? patches[0])
+          for (const k of keys) touched.current.add(k)
+          return next
+            ? { ...was, ...next }
+            : {
+                ...was,
+                ...Object.fromEntries(keys.map((k) => [k, initial[k]])),
+              }
+        })
+        return
+      }
+      el = el.parentElement
+    }
+    if (!touched.current.size) return
+    const keys = [...touched.current]
+    touched.current.clear()
+    setState((was) => ({
+      ...was,
+      ...Object.fromEntries(keys.map((k) => [k, initial[k]])),
+    }))
+  }
+
   const [still] = useState(
     () =>
       typeof window !== "undefined" &&
@@ -270,6 +378,7 @@ function Player({
   )
   const { cursor, say, ghost } = useScript(
     scene.script,
+    scene.notes,
     !before && !still,
     initial,
     setState,
@@ -312,43 +421,6 @@ function Player({
   // Where the change card ends, in the desk's pixels.
   const [changeFoot, setChangeFoot] = useState(0)
 
-  const [open, setOpen] = useState<Explore | null>(null)
-  const [exploreRect, setExploreRect] = useState<Rect | null>(null)
-  useLayoutEffect(() => {
-    const on = scene.explore?.on
-    if (on === undefined) return
-    // Measured as drawn, and again once a change has played into the scene.
-    // A part under a dialog (another part of the app drawn over its middle)
-    // loses its badge until the dialog goes.
-    const update = () => {
-      const root = app.current
-      const el =
-        typeof on === "string" ? root?.querySelector(`[data-pk="${on}"]`) : null
-      if (root && el) {
-        const r = el.getBoundingClientRect()
-        // The app takes no pointer (the script is the presentation), so
-        // it is let in for the length of this look.
-        root.style.pointerEvents = "auto"
-        const over = document.elementFromPoint(
-          r.left + r.width / 2,
-          r.top + r.height / 2
-        )
-        root.style.pointerEvents = ""
-        if (over && root.contains(over) && !el.contains(over)) {
-          setExploreRect(null)
-          return
-        }
-      }
-      setExploreRect(measure(on))
-    }
-    const f = requestAnimationFrame(update)
-    const t = window.setTimeout(update, 900)
-    return () => {
-      cancelAnimationFrame(f)
-      clearTimeout(t)
-    }
-  }, [scene, measure, s, state, before])
-
   const at = (x: number, y: number) =>
     `${Math.round(x * s)}px ${Math.round(y * s)}px`
 
@@ -377,6 +449,7 @@ function Player({
             className="pk pl-app"
             data-pk-theme={theme}
             style={{ width: APP_W, height: APP_H }}
+            onClick={tinker}
           >
             {before && scene.change
               ? scene.change.from(state)
@@ -384,14 +457,6 @@ function Player({
           </div>
         </div>
         <div className="pl-over" style={{ top: chrome }}>
-          {scene.explore && exploreRect && (
-            <ExploreBadge
-              explore={scene.explore}
-              rect={exploreRect}
-              s={s}
-              onOpen={() => setOpen(scene.explore ?? null)}
-            />
-          )}
           {ghost && cursor && (
             <span
               className="pl-ghost"
@@ -432,7 +497,7 @@ function Player({
         // The change card is at the top of the left gutter: notes there
         // start under it.
         under={
-          scene.change && left >= CHANGE_ROOM && changeFoot
+          (scene.change || scene.versions) && left >= CHANGE_ROOM && changeFoot
             ? { left: changeFoot + 12 }
             : undefined
         }
@@ -446,6 +511,15 @@ function Player({
           browser={{ left, top, width: bw, height: bh }}
         />
       )}
+      {scene.versions && (
+        <VersionsCard
+          versions={scene.versions}
+          room={left}
+          top={top}
+          height={bh}
+          onFoot={setChangeFoot}
+        />
+      )}
       {scene.change && (
         <ChangeCard
           change={scene.change}
@@ -454,9 +528,6 @@ function Player({
           height={bh}
           onFoot={setChangeFoot}
         />
-      )}
-      {open && (
-        <Lightbox explore={open} theme={theme} onClose={() => setOpen(null)} />
       )}
     </>
   )
@@ -470,6 +541,7 @@ function Player({
  */
 function useScript(
   script: Array<Beat> | undefined,
+  notes: Array<Note> | undefined,
   running: boolean,
   initial: State,
   setState: React.Dispatch<React.SetStateAction<State>>,
@@ -489,6 +561,18 @@ function useScript(
     const point = (on: string, at: [number, number] = [0.5, 0.5]) => {
       const r = measure(on)
       return r ? ([r[0] + r[2] * at[0], r[1] + r[3] * at[1]] as const) : null
+    }
+    // How long a beat rests at the least: long enough to read what it
+    // brings up (Leo, 2026-11-22: the notes went too quickly to read), its
+    // step and its notes at an easy reading pace, a note that stays for
+    // several beats read across them.
+    const read = (i: number, b: Beat) => {
+      let letters = b.say?.length ?? 0
+      for (const n of notes ?? []) {
+        const on = beatsOf(n)
+        if (on?.includes(i)) letters += n.text.length / on.length
+      }
+      return letters ? 900 + letters * 42 : 0
     }
     void (async () => {
       await after(450)
@@ -539,7 +623,7 @@ function useScript(
             const patch = b.set
             setState((was) => ({ ...was, ...patch }))
           }
-          await after(b.wait ?? 1300)
+          await after(Math.max(b.wait ?? 1300, read(i, b)))
         }
         await after(1500)
         setState(initial)
@@ -548,7 +632,7 @@ function useScript(
       }
     })()
     return () => timers.forEach(clearTimeout)
-  }, [script, running, initial, setState, measure])
+  }, [script, notes, running, initial, setState, measure])
   return { cursor, say, ghost }
 }
 
@@ -729,40 +813,6 @@ function SafariBar({ url }: { url: string }) {
   )
 }
 
-/** Versions of the part under a highlight; a badge on it opens them. */
-function ExploreBadge({
-  explore,
-  rect,
-  s,
-  onOpen,
-}: {
-  explore: Explore
-  rect: Rect
-  s: number
-  onOpen: () => void
-}) {
-  const [x, y, w, h] = rect.map((v) => Math.round(v * s))
-  return (
-    <>
-      <div
-        aria-hidden
-        className="pl-explore-ring"
-        style={{ left: x, top: y, width: w, height: h }}
-      />
-      <button
-        type="button"
-        className="pl-explore-badge"
-        style={{ left: x + w, top: y }}
-        // Near the browser's right edge, the badge sits inside the corner.
-        data-edge={x + w > APP_W * s - 110 ? "" : undefined}
-        onClick={onOpen}
-      >
-        {explore.label}
-      </button>
-    </>
-  )
-}
-
 /** A design shown on its own, at its own size scaled by `k`. */
 export function ShotView({
   shot,
@@ -932,6 +982,69 @@ function ChangeCard({
           <li key={item}>{item}</li>
         ))}
       </ul>
+    </aside>
+  )
+}
+
+/**
+ * Which version of a thing the scene shows, of the set it belongs to: the
+ * set's name and every version's label, the one showing picked out. It
+ * sits where the change card does.
+ */
+function VersionsCard({
+  versions,
+  room,
+  top,
+  height,
+  onFoot,
+}: {
+  versions: NonNullable<Scene["versions"]>
+  room: number
+  top: number
+  height: number
+  onFoot: (y: number) => void
+}) {
+  const fits = room >= CHANGE_ROOM
+  const card = useRef<HTMLElement>(null)
+  useLayoutEffect(() => {
+    const el = card.current
+    if (!el) return
+    const observer = new ResizeObserver(() =>
+      onFoot(el.offsetTop + el.offsetHeight)
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [onFoot, top])
+  return (
+    <aside
+      ref={card}
+      className="pl-change"
+      style={
+        fits
+          ? { left: 16, top, width: Math.min(300, room - 32) }
+          : {
+              left: room + 72,
+              top: top + height - 24,
+              width: 280,
+              translate: "0 -100%",
+              zIndex: 6,
+            }
+      }
+    >
+      <p className="pl-change-title">{versions.title}</p>
+      <ol>
+        {versions.labels.map((label, i) => (
+          <li
+            key={label}
+            aria-current={i === versions.at ? "true" : undefined}
+            data-dim={
+              versions.at !== undefined && i !== versions.at ? "" : undefined
+            }
+          >
+            {label}
+          </li>
+        ))}
+      </ol>
     </aside>
   )
 }

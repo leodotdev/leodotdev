@@ -13,8 +13,9 @@ const MIN = 6
  * window's right edge that sat too far from the page). Each chapter is a
  * segment as long as the chapter is on the page, as a video's chapters are
  * marked along its progress bar: the chapters already read are filled in
- * the muted color, the one being read in the text color, and those to come
- * are left in the line color. Under the segments the chapter being read is
+ * the muted color, the one being read in the text color as far as the page
+ * has scrolled through it (so the bar shows the scroll position, as a
+ * video's does the time), and what is to come is left in the line color. Under the segments the chapter being read is
  * named with its number; under the pointer or with a segment focused, that
  * segment's chapter is named instead. A segment glides the page to its
  * chapter. The styles are `.chapter-*` in src/styles.css.
@@ -35,6 +36,7 @@ export function ChapterNav({
   // below the bar, or the last chapter once the page is at its end (a short
   // one never gets that high). Measured once a frame while scrolling.
   const [reading, setReading] = useState<string | null>(null)
+  const track = useRef<HTMLDivElement>(null)
   useEffect(() => {
     let frame = 0
     const measure = () => {
@@ -44,11 +46,32 @@ export function ChapterNav({
       const atEnd = window.innerHeight + window.scrollY >= page.scrollHeight - 2
       const bar = document.querySelector("[data-docs-bar]")
       const line = (bar?.getBoundingClientRect().height ?? 81) + 81
-      for (const el of document.querySelectorAll("article[data-chapter]")) {
+      const chapters = Array.from(
+        document.querySelectorAll("article[data-chapter]")
+      )
+      let at = -1
+      for (const [i, el] of chapters.entries()) {
         if (!atEnd && el.getBoundingClientRect().top > line) break
         found = el.id
+        at = i
       }
       setReading(found)
+      // How far through that chapter the page is (Leo, 2026-11-22: the bar
+      // shows the scroll position too): from its top to the next one's,
+      // against the same line. Written straight to the bar, not through
+      // React, since it changes on every frame of a scroll.
+      let through = 0
+      if (atEnd) through = 1
+      else if (at >= 0) {
+        const box = chapters[at].getBoundingClientRect()
+        const end = chapters.at(at + 1)?.getBoundingClientRect().top
+        const length = (end ?? box.bottom) - box.top
+        through = length > 0 ? (line - box.top) / length : 0
+      }
+      track.current?.style.setProperty(
+        "--chapter-through",
+        String(Math.min(1, Math.max(0, through)))
+      )
     }
     const queue = () => {
       frame ||= requestAnimationFrame(measure)
@@ -68,7 +91,6 @@ export function ChapterNav({
   // in whole pixels so the segments' ends are crisp. Measured again whenever
   // the page or the bar changes size (the figures take their heights after
   // the page is first drawn).
-  const track = useRef<HTMLDivElement>(null)
   const [widths, setWidths] = useState<Array<number>>([])
   useLayoutEffect(() => {
     const el = track.current

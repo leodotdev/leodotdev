@@ -1,3 +1,4 @@
+import { inline } from "@/components/work/plasmic/inline"
 import { DIVES_2020 } from "@/components/work/plasmic/y2020"
 import { DIVES_2021 } from "@/components/work/plasmic/y2021"
 import { DIVES_2022 } from "@/components/work/plasmic/y2022"
@@ -15,28 +16,28 @@ export const YEARS: Array<Year> = [
     name: "2020",
     summary:
       "From the first dark comps to the light editor: the tree, arenas panned and zoomed, variants, layout, tokens, a team at once, and code with its history.",
-    dives: DIVES_2020,
+    dives: inline(DIVES_2020),
   },
   {
     slug: "2021",
     name: "2021",
     summary:
       "Docked again: the project panel, behavioral components, recording from the canvas, data, teams and plans, a codebase connected, and the rail’s end.",
-    dives: DIVES_2021,
+    dives: inline(DIVES_2021),
   },
   {
     slug: "2022",
     name: "2022",
     summary:
       "Panels as tabs; the ribbon, a concept car with every control over the canvas; A/B tests and a CMS; the way back to a rail; components that act; and a site’s settings.",
-    dives: DIVES_2022,
+    dives: inline(DIVES_2022),
   },
   {
     slug: "2023",
     name: "2023",
     summary:
       "Breadcrumbs, a team on one page, branches, publishing with tests, Logic, an app builder, and Copilot.",
-    dives: DIVES_2023,
+    dives: inline(DIVES_2023),
   },
   { slug: "2024", name: "2024", summary: "", dives: [] },
 ]
@@ -46,7 +47,7 @@ export const BEFORE: Year = {
   slug: "before",
   name: "Before 2020",
   summary: "Research: naming the parts, regrouping them, and a north star.",
-  dives: DIVES_BEFORE,
+  dives: inline(DIVES_BEFORE),
 }
 
 export const findYear = (slug: string) =>

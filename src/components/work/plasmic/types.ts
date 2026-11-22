@@ -66,13 +66,21 @@ export type Shot = {
   notes?: Array<Note>
 }
 
-/** Versions of one thing, highlighted in place and opened in a lightbox. */
+/**
+ * Versions of one thing, set out inline after the scene that names them
+ * (./inline.tsx): whole-app versions a scene each, strips stacked in one,
+ * smaller pieces in the scene's sheet. `label` and `on` name the set and
+ * its part.
+ */
 export type Explore = {
   label: string
   on: Anchor
   title: string
   items: Array<Shot>
 }
+
+/** One of a set of versions (or, with no `at`, all of them at once). */
+export type Versions = { title: string; labels: Array<string>; at?: number }
 
 /** A whole feature's states, inline: a window beside the browser. */
 export type Sheet = { title: string; items: Array<Shot> }
@@ -102,6 +110,7 @@ export type Scene = {
   notes?: Array<Note>
   script?: Array<Beat>
   explore?: Explore
+  versions?: Versions
   sheet?: Sheet
   change?: Change
   peers?: Array<Peer>

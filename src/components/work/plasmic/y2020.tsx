@@ -28,7 +28,7 @@ import type { Dive, Peer, Shot, State } from "@/components/work/plasmic/types"
 const editor = (s: State) => <Editor s={s} />
 const URL = "studio.plasmic.app/projects/acme-app"
 
-/** A panel on its own, for a sheet or a lightbox. */
+/** A panel on its own, for a sheet. */
 const panelShot = (
   label: string,
   h: number,

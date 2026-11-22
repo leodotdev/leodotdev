@@ -435,8 +435,8 @@ function Rail21({ s }: { s: State }) {
         ))}
       </span>
       <span
-        className="pk-avatar mt-2"
-        style={{ margin: "8px 0 0", background: "#10b981" }}
+        className="pk-avatar"
+        style={{ margin: "4px 0 0", background: "#10b981" }}
       >
         L
       </span>

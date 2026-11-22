@@ -21,8 +21,9 @@ const MEET = 20
  * How a note in a gutter is drawn. By hand (Leo, 2026-11-22, "curved lines
  * and more handwritten font being scribble animated written"): a loop drawn
  * round the part, an arrow curving to it from the note, and the note's words
- * in Playpen Sans, written on a letter at a time, with no card. Set to
- * false, a gutter's note is a card on a straight line, as it was first.
+ * in Playpen Sans, written on a letter at a time, on a card. Set to false,
+ * a gutter's note is in Inter and Paper Mono on a straight line, as it was
+ * first.
  */
 const HAND = true as boolean
 const GAP = HAND ? 44 : 20
@@ -74,7 +75,7 @@ export function NoteLayer({
   origin: [number, number]
   desk: [number, number]
   /** The browser's left edge and width, in the desk's pixels; without
-      it (a picture with no gutters, as in the lightbox) notes are cards. */
+      it (a picture with no gutters) a note is beside its part. */
   browser?: { left: number; width: number }
   taken?: { left?: boolean; right?: boolean }
   /** A gutter whose top is something else's: its notes start under this. */
@@ -217,7 +218,8 @@ export function NoteLayer({
     }
   }
 
-  const hand = (p: Placed) => HAND && p.gutter !== null
+  // Drawn by hand wherever there is room to draw (the phone's list is not).
+  const hand = (_: Placed) => HAND && !narrow
   return (
     <div ref={layer} className="pl-notes" data-narrow={narrow || undefined}>
       {placed.map((p, i) =>
@@ -373,18 +375,36 @@ function inkOf(p: Placed) {
     `T${n(l + c + Math.min(22, (r - l) / 3))},${n(t + 1 + j(1))}`,
   ].join(" ")
 
-  // From beside the middle of the note's words to the part's near edge.
-  const right = p.gutter === "right"
-  const x0 = right ? p.x - 8 : p.x + p.width + 8
-  const y0 = p.y + Math.min(p.height / 2, 44)
-  const x3 = right ? r + 7 : l - 7
-  const y3 = Math.min(Math.max(y0, t + 6), b - 6) + j(3)
+  // From the card's edge nearest the part to the part's edge nearest it:
+  // across from a gutter or from beside the part, down or up from a card
+  // over or under it.
+  const where = p.gutter ?? p.side
+  let x0: number
+  let y0: number
+  let x3: number
+  let y3: number
+  if (where === "right" || where === "left") {
+    x0 = where === "right" ? p.x - 8 : p.x + p.width + 8
+    y0 = p.y + Math.min(p.height / 2, 44)
+    x3 = where === "right" ? r + 7 : l - 7
+    y3 = Math.min(Math.max(y0, t + 6), b - 6) + j(3)
+  } else {
+    x0 = p.x + p.width / 2
+    y0 = where === "bottom" ? p.y - 8 : p.y + p.height + 8
+    x3 = Math.min(Math.max(x0, l + 6), r - 6) + j(3)
+    y3 = where === "bottom" ? b + 7 : t - 7
+  }
   const dx = x3 - x0
-  const sag = (roll() < 0.5 ? -1 : 1) * Math.min(34, 12 + Math.abs(dx) * 0.12)
-  const c1x = x0 + dx * 0.35
-  const c1y = y0 + sag
-  const c2x = x0 + dx * 0.72
-  const c2y = y3 + sag * 0.9
+  const dy = y3 - y0
+  const length = Math.hypot(dx, dy) || 1
+  // A sag to one side of the straight way there, more for a longer line.
+  const sag = (roll() < 0.5 ? -1 : 1) * Math.min(34, 10 + length * 0.12)
+  const sx = (-dy / length) * sag
+  const sy = (dx / length) * sag
+  const c1x = x0 + dx * 0.35 + sx
+  const c1y = y0 + dy * 0.35 + sy
+  const c2x = x0 + dx * 0.72 + sx * 0.9
+  const c2y = y0 + dy * 0.72 + sy * 0.9
   const line = `M${n(x0)},${n(y0)} C${n(c1x)},${n(c1y)} ${n(c2x)},${n(c2y)} ${n(x3)},${n(y3)}`
 
   // The head: two strokes back from the end, either side of the way in.

@@ -113,6 +113,10 @@ function PlasmicWork() {
     )
   }
 
+  // The 100% view: the stage over the whole window, the browser at its
+  // true size (the stage draws it, and Esc or its pill leaves it).
+  const [full, setFull] = useState(false)
+
   // The bar's place and height, as on the docs: once held at the top of the
   // window it draws a line under itself, and its height is handed down as
   // `--docs-bar`, which the stage is held under.
@@ -251,7 +255,7 @@ function PlasmicWork() {
   }, [router])
 
   return (
-    <PkThemeContext.Provider value={{ theme, setTheme }}>
+    <PkThemeContext.Provider value={{ theme, setTheme, full, setFull }}>
       <Navigation className="rule-b pb-12">
         <BackButton to="/work" label="Back to work" />
       </Navigation>
@@ -340,6 +344,15 @@ function PlasmicWork() {
                   ← → years
                 </span>
                 <ThemeDots theme={theme} onPick={setTheme} />
+                <button
+                  type="button"
+                  aria-pressed={full}
+                  title="View the studio at 100%, over the whole window"
+                  onClick={() => setFull(true)}
+                  className="h-5 rounded-full px-2 text-xs outline outline-1 -outline-offset-1 outline-[color:var(--color-border)] [corner-shape:round] hover:outline-[color:var(--color-foreground)] max-md:hidden"
+                >
+                  100%
+                </button>
               </div>
             )}
             {year && (

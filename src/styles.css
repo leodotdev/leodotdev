@@ -384,6 +384,15 @@ html:has([data-claude-page]) {
     height 0.15s ease-out,
     color 0.2s ease-out;
 }
+/* The chapter being read is filled as far as the page is through it (at
+   least a few pixels, so it shows from its first line). */
+.chapter-seg[aria-current]::before {
+  background: linear-gradient(
+    to right,
+    var(--color-foreground) max(6px, calc(var(--chapter-through, 0) * 100%)),
+    var(--color-border) 0
+  );
+}
 .chapter-seg:focus-visible::before {
   height: 8px;
 }
