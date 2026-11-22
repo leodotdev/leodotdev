@@ -1,15 +1,25 @@
 import { Link, createFileRoute } from "@tanstack/react-router"
-import { YEARS } from "@/components/work/plasmic/years"
+import { Stage } from "@/components/work/plasmic/stage"
+import { BEFORE, YEARS } from "@/components/work/plasmic/years"
 
-// /work/plasmic's overview: the years, a row each, the built ones linking to
-// their stage.
+// /work/plasmic's overview: the research before 2020, played on the stage
+// like a year, then the years, a row each, linking to theirs.
 export const Route = createFileRoute("/_site/work/plasmic/")({
   component: Overview,
 })
 
 function Overview() {
   return (
-    <div className="flex flex-col pt-0">
+    <>
+      <Stage year={BEFORE} />
+      <YearList />
+    </>
+  )
+}
+
+function YearList() {
+  return (
+    <div className="flex flex-col pt-12">
       {YEARS.map((year) => {
         const row = (
           <>

@@ -15,13 +15,13 @@ const AFTER = 2000
  * 2000px, and goes again near the top. It glides there as the docs'
  * chapter links do (`glideTo`), and hands keyboard focus to the top of the
  * page, since the button itself goes away. While a toast is showing in the
- * same place, the button rises above it. It stays away from /work/plasmic's
- * years, whose stage holds the bottom of the window (the chapter bar takes
+ * same place, the button rises above it. It stays away from /work/plasmic,
+ * whose stage holds the bottom of the window (the chapter bar takes
  * the page anywhere there).
  */
 export function BackToTop() {
   const { pathname } = useLocation()
-  const stage = /^\/work\/plasmic\/\d/.test(pathname)
+  const stage = /^\/work\/plasmic(\/|$)/.test(pathname)
   const [scrolled, setShown] = useState(false)
   const shown = scrolled && !stage
   const toast = useToastShowing()

@@ -2,6 +2,7 @@ import { DIVES_2020 } from "@/components/work/plasmic/y2020"
 import { DIVES_2021 } from "@/components/work/plasmic/y2021"
 import { DIVES_2022 } from "@/components/work/plasmic/y2022"
 import { DIVES_2023 } from "@/components/work/plasmic/y2023"
+import { DIVES_BEFORE } from "@/components/work/plasmic/ybefore"
 import type { Year } from "@/components/work/plasmic/types"
 
 // /work/plasmic's years, the tabs. A year with no dives yet shows in the
@@ -40,4 +41,13 @@ export const YEARS: Array<Year> = [
   { slug: "2024", name: "2024", summary: "", dives: [] },
 ]
 
-export const findYear = (slug: string) => YEARS.find((y) => y.slug === slug)
+/** Before 2020: the research, played on the overview's stage. */
+export const BEFORE: Year = {
+  slug: "before",
+  name: "Before 2020",
+  summary: "Research: naming the parts, regrouping them, and a north star.",
+  dives: DIVES_BEFORE,
+}
+
+export const findYear = (slug: string) =>
+  slug === "" ? BEFORE : YEARS.find((y) => y.slug === slug)
