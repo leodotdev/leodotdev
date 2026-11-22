@@ -152,7 +152,13 @@ export function Editor22({ s }: { s: State }) {
             transition: "translate 0.8s cubic-bezier(0.3,0,0.2,1)",
           }}
         >
-          {tab === "project" ? <ProjectRibbon s={s} /> : <StyleRibbon s={s} />}
+          {tab === "project" ? (
+            <ProjectRibbon s={s} />
+          ) : tab === "optimize" ? (
+            <OptimizeRibbon s={s} />
+          ) : (
+            <StyleRibbon s={s} />
+          )}
         </div>
       </div>
       <main className="pk-canvas pk-area-canvas" data-pk="canvas">
@@ -198,15 +204,18 @@ export function Editor22({ s }: { s: State }) {
               top: -24,
               left: 0,
               borderRadius: "4px 4px 0 0",
+              background: s.abRec ? "var(--pk-rec)" : undefined,
             }}
           >
             <TbArrowDown className="h-3 w-3" />
-            Root
+            {s.abRec ? "Root · Version B" : "Root"}
             <TbDotsVertical className="h-3 w-3" />
           </span>
           <div
             className="pk-board-body"
-            style={{ outline: "1.5px solid var(--pk-accent)" }}
+            style={{
+              outline: `1.5px solid var(${s.abRec ? "--pk-rec" : "--pk-accent"})`,
+            }}
           >
             <div className="pk-acme" style={{ padding: "64px 80px", gap: 20 }}>
               <h1
@@ -223,7 +232,8 @@ export function Editor22({ s }: { s: State }) {
                 }}
                 data-pk="h1"
               >
-                Welcome
+                {str(s.headline, "Welcome")}
+                {s.hFocus && <i className="pk-caret" />}
               </h1>
               {s.sel === "h1" && (
                 <div
@@ -250,6 +260,7 @@ export function Editor22({ s }: { s: State }) {
           </div>
         </div>
         {s.float && <FloatPanel kind={str(s.float)} />}
+        {s.ab && <AbPop s={s} />}
       </main>
     </div>
   )
@@ -259,6 +270,124 @@ type Item = {
   icon: React.ComponentType<{ className?: string }>
   label: string
   pk?: string
+}
+
+/** The Optimize tab: A/B tests, scheduled and targeted content, insights. */
+function OptimizeRibbon({ s }: { s: State }) {
+  const groups: Array<Array<Item>> = [
+    [{ icon: TbArrowsHorizontal, label: "A/B test", pk: "rb:ab" }],
+    [
+      { icon: TbClipboardList, label: "Scheduled" },
+      { icon: TbWorld, label: "Targeted" },
+    ],
+    [{ icon: TbChartBar, label: "Insights" }],
+  ]
+  return (
+    <>
+      {groups.map((g, i) => (
+        <div
+          key={i}
+          className="pk-ribbon-group"
+          style={{ justifyContent: "center", padding: "0 10px" }}
+        >
+          <div className="pk-ribbon-items">
+            {g.map((it) => (
+              <span
+                key={it.label}
+                className="pk-ribbon-item"
+                aria-pressed={
+                  (it.pk === "rb:ab" && Boolean(s.ab || s.abRec)) || undefined
+                }
+                data-pk={it.pk ?? `rb:${it.label.toLowerCase()}`}
+              >
+                <it.icon />
+                {it.label}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+      {Boolean(s.abRec) && (
+        <div
+          className="pk-ribbon-group"
+          style={{ justifyContent: "center", padding: "0 12px" }}
+          data-pk="ab:rec"
+        >
+          <span className="pk-btn" data-kind="rec">
+            Recording Version B<span className="pk-mono opacity-80">20%</span>
+          </span>
+        </div>
+      )}
+    </>
+  )
+}
+
+/** A new A/B test: version B's share of the traffic, and what counts as a win. */
+function AbPop({ s }: { s: State }) {
+  const split = typeof s.split === "number" ? s.split : 50
+  return (
+    <section
+      className="pk-pop"
+      style={{ left: 12, top: 8, width: 300 }}
+      data-pk="ab-pop"
+    >
+      <div className="pk-head" style={{ minHeight: 44 }}>
+        <span>New A/B test</span>
+        <span className="pk-badge" data-kind="new">
+          Homepage
+        </span>
+      </div>
+      <div className="flex flex-col gap-3 px-3 pb-3">
+        <div className="flex flex-col gap-2" data-pk="ab:split">
+          <span className="flex justify-between text-[11px]">
+            <span>
+              Original <b className="pk-mono">{100 - split}%</b>
+            </span>
+            <span style={{ color: "var(--pk-rec)" }}>
+              Version B <b className="pk-mono">{split}%</b>
+            </span>
+          </span>
+          <span
+            className="relative block h-1.5 rounded-full"
+            style={{ background: "var(--pk-rec)" }}
+          >
+            <span
+              className="absolute top-0 bottom-0 left-0 rounded-full"
+              style={{
+                width: `${100 - split}%`,
+                background: "var(--pk-accent)",
+                transition: "width 0.7s cubic-bezier(0.3,0,0.2,1)",
+              }}
+            />
+            <span
+              className="absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full"
+              style={{
+                left: `${100 - split}%`,
+                background: "#fff",
+                boxShadow: "0 1px 3px rgb(0 0 0 / 0.4)",
+                transition: "left 0.7s cubic-bezier(0.3,0,0.2,1)",
+              }}
+              data-pk="ab:knob"
+            />
+          </span>
+        </div>
+        <label className="flex flex-col gap-1" data-pk="ab:goal">
+          <span className="pk-muted">Goal</span>
+          <span className="pk-input">
+            Clicks on <b className="font-medium">Sign up</b>
+            <TbChevronDown className="ml-auto h-3 w-3" />
+          </span>
+        </label>
+        <span
+          className="pk-btn justify-center"
+          data-kind="primary"
+          data-pk="ab:start"
+        >
+          Start editing Version B
+        </span>
+      </div>
+    </section>
+  )
 }
 
 function ProjectRibbon({ s }: { s: State }) {

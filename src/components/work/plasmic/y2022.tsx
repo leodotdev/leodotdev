@@ -204,6 +204,89 @@ export const DIVES_2022: Array<Dive> = [
     ],
   },
   {
+    slug: "optimize",
+    title: "Optimize",
+    summary:
+      "A/B tests, scheduled and targeted content, from a ribbon tab of their own.",
+    scenes: [
+      {
+        view: e22,
+        url: URL,
+        state: { tab: "optimize" },
+        script: [
+          { on: "tab:optimize", wait: 2000 },
+          {
+            on: "rb:ab",
+            say: "Start an A/B test",
+            click: true,
+            set: { ab: true },
+            wait: 1600,
+          },
+          { on: "ab:knob", shape: "grab", wait: 500 },
+          {
+            on: "ab:split",
+            at: [0.8, 0.82],
+            say: "Send a fifth of the traffic to B",
+            shape: "grab",
+            set: { split: 20 },
+            wait: 2200,
+          },
+          { on: "ab:goal", wait: 2200 },
+          {
+            on: "ab:start",
+            say: "Straight into editing B",
+            click: true,
+            set: { ab: false, abRec: true },
+            wait: 1400,
+          },
+          {
+            on: "h1",
+            say: "Try another headline",
+            shape: "text",
+            click: true,
+            set: { hFocus: true, headline: "" },
+            wait: 300,
+          },
+          {
+            on: "h1",
+            shape: "text",
+            type: { key: "headline", text: "Ship it today" },
+            wait: 2600,
+          },
+          { on: "ab:rec", set: { hFocus: false }, wait: 2600 },
+        ],
+        notes: [
+          {
+            kind: "direction",
+            on: "ribbon",
+            beat: 0,
+            text: "“3 starting froms: “optimize” panel, tree context menu, right panel details section.” Here, the ribbon’s own tab.",
+          },
+          {
+            kind: "concept",
+            on: "ab-pop",
+            side: "bottom",
+            beat: 4,
+            text: "A test needs a goal to count. “How to set up conversions?!” was the open question.",
+          },
+          {
+            kind: "concept",
+            on: "ab:rec",
+            side: "right",
+            beat: [5, 6, 7],
+            text: "Version B is a variant: “already in variant editing mode immediately,” so every change is recorded to it.",
+          },
+          {
+            kind: "discovery",
+            on: "h1",
+            beat: 8,
+            text: "“Target variant is extra important”: the base stays the Original, and only B’s visitors see the new headline.",
+          },
+        ],
+      },
+    ],
+  },
+  {
     slug: "cms",
     title: "Content",
     summary:
