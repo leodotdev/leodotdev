@@ -1,5 +1,6 @@
 import { Editor } from "@/components/work/plasmic/kit/editor"
 import { Editor21 } from "@/components/work/plasmic/kit/editor21"
+import { Dashboard21 } from "@/components/work/plasmic/kit/teams"
 import type { Dive, Peer, Shot, State } from "@/components/work/plasmic/types"
 
 // 2021, rebuilt from the year's three quarterly files ("2021 Q1–Q3
@@ -7,6 +8,7 @@ import type { Dive, Peer, Shot, State } from "@/components/work/plasmic/types"
 // panel of its own, components get behavior, recording moves onto the
 // canvas, data arrives, and by Q3 the rail itself goes. The directions
 // quote the files' notes, including the lo-fi map that names every region.
+// Q3 also grew the dashboard teams, workspaces, and plans to pay for them.
 
 const e21 = (s: State) => <Editor21 s={s} />
 const URL = "studio.plasmic.app/projects/acme-store"
@@ -460,6 +462,151 @@ export const DIVES_2021: Array<Dive> = [
             on: "preview:page",
             beat: 2,
             text: "Preview: the page as it will ship, at any width (the grips either side), in any variant.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "teams",
+    title: "Teams & Plans",
+    summary:
+      "Teams, workspaces, and drafts in the dashboard, and the plans to pay for them.",
+    scenes: [
+      {
+        view: (s: State) => <Dashboard21 s={s} />,
+        url: "studio.plasmic.app/projects",
+        span: 2,
+        explore: {
+          label: "3 team pickers",
+          on: "dash:upgrade",
+          title: "Select a team to upgrade, three ways",
+          items: [
+            {
+              label: "A list of teams, or a new one",
+              w: 1440,
+              h: 868,
+              view: () => <Dashboard21 s={{ upgrade: "team", pick: "list" }} />,
+            },
+            {
+              label: "Choose one, then Next",
+              w: 1440,
+              h: 868,
+              view: () => (
+                <Dashboard21 s={{ upgrade: "team", pick: "choose" }} />
+              ),
+            },
+            {
+              label: "No team yet: name one",
+              w: 1440,
+              h: 868,
+              view: () => (
+                <Dashboard21 s={{ upgrade: "team", pick: "create" }} />
+              ),
+            },
+          ],
+        },
+        script: [
+          { on: "dash:teams", wait: 2400 },
+          { on: "dash:crumbs:designkit-form-controls", wait: 2400 },
+          {
+            on: "dash:upgrade",
+            say: "Upgrade a team",
+            click: true,
+            set: { upgrade: "team" },
+            wait: 1600,
+          },
+          {
+            on: "team:design",
+            say: "Pick the Design team",
+            set: { hover: "team:Design" },
+            wait: 700,
+          },
+          {
+            on: "team:design",
+            click: true,
+            set: { upgrade: "plans", hover: "" },
+            wait: 2600,
+          },
+          { on: "plan:growth", say: "Compare the plans", wait: 2600 },
+          { on: "plan:pro", wait: 2400 },
+          {
+            on: "plan:pro:cta",
+            say: "Select Pro",
+            click: true,
+            set: { upgrade: "checkout" },
+            wait: 1400,
+          },
+          {
+            on: "seats:plus",
+            say: "Add a seat",
+            click: true,
+            set: { seats: 2 },
+            wait: 1800,
+          },
+          {
+            on: "card",
+            say: "Pay by card",
+            shape: "text",
+            click: true,
+            set: { cardFocus: true },
+            wait: 300,
+          },
+          {
+            on: "card",
+            shape: "text",
+            type: { key: "card", text: "4242 4242" },
+            wait: 700,
+          },
+          {
+            on: "checkout:submit",
+            say: "Submit",
+            click: true,
+            set: { error: true, cardFocus: false },
+            wait: 3200,
+          },
+        ],
+        notes: [
+          {
+            kind: "concept",
+            on: "dash:teams",
+            side: "right",
+            beat: 0,
+            text: "Teams in the dashboard’s nav, each with its workspaces, and Drafts.",
+          },
+          {
+            kind: "concept",
+            on: "dash:crumbs:designkit-form-controls",
+            beat: 1,
+            text: "A row says where its project lives: version, team, and workspace.",
+          },
+          {
+            kind: "direction",
+            on: "plans:head",
+            side: "top",
+            beat: 4,
+            text: "The upgrade names what it unlocks: “This team’s current plan does not support shared workspaces.”",
+          },
+          {
+            kind: "direction",
+            on: "plan:growth",
+            side: "bottom",
+            beat: 5,
+            text: "Growth promised optimization, segmented content, and scheduled content, before the ribbon’s Optimize tab drew them.",
+          },
+          {
+            kind: "direction",
+            on: "plan:pro",
+            side: "bottom",
+            beat: 6,
+            text: "Priced per collaborator. An earlier card called Pro “Basic,” at $15.",
+          },
+          {
+            kind: "direction",
+            on: "checkout:error",
+            side: "bottom",
+            beat: 11,
+            text: "The checkout’s failure was drawn too: “Your card number is incomplete.”",
           },
         ],
       },

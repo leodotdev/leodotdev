@@ -338,7 +338,25 @@ function Player({
     const on = scene.explore?.on
     if (on === undefined) return
     // Measured as drawn, and again once a change has played into the scene.
-    const update = () => setExploreRect(measure(on))
+    // A part under a dialog (another part of the app drawn over its middle)
+    // loses its badge until the dialog goes.
+    const update = () => {
+      const root = app.current
+      const el =
+        typeof on === "string" ? root?.querySelector(`[data-pk="${on}"]`) : null
+      if (root && el) {
+        const r = el.getBoundingClientRect()
+        const over = document.elementFromPoint(
+          r.left + r.width / 2,
+          r.top + r.height / 2
+        )
+        if (over && root.contains(over) && !el.contains(over)) {
+          setExploreRect(null)
+          return
+        }
+      }
+      setExploreRect(measure(on))
+    }
     const f = requestAnimationFrame(update)
     const t = window.setTimeout(update, 900)
     return () => {
