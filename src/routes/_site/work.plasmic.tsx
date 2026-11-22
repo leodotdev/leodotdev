@@ -6,11 +6,16 @@ import {
   useRouter,
 } from "@tanstack/react-router"
 import { useEffect, useRef, useState } from "react"
+import { flushSync } from "react-dom"
 import { BackButton } from "@/components/BackButton"
 import { Navigation } from "@/components/Navigation"
 import { ChapterNav } from "@/components/work/claude/chapter-nav"
 import { NavLabel, NavRow } from "@/components/work/claude/nav-list"
 import { YEARS, findYear } from "@/components/work/plasmic/years"
+import { PK_THEMES, PkThemeContext } from "@/components/work/plasmic/theme"
+import type { PkTheme } from "@/components/work/plasmic/theme"
+import { notify } from "@/components/ui/toast"
+import { cn } from "@/lib/utils"
 import { wave } from "@/lib/wave"
 
 // leo.dev/work/plasmic: the design of Plasmic, a visual tool for building
@@ -53,10 +58,60 @@ const FACTS: Array<[label: string, values: Array<React.ReactNode>]> = [
   ["Years", ["2020–'24"]],
 ]
 
+/**
+ * The product theme's dots: the studio and its browser, dark (as Plasmic
+ * was meant to be) or light (as it shipped), each dot in its own color.
+ */
+function ThemeDots({
+  theme,
+  onPick,
+}: {
+  theme: PkTheme
+  onPick: (t: PkTheme, from: HTMLElement) => void
+}) {
+  return (
+    <div
+      className="flex items-center gap-1.5"
+      role="group"
+      aria-label="Studio theme"
+    >
+      {PK_THEMES.map(({ id, name, swatch }) => (
+        <button
+          key={id}
+          type="button"
+          aria-label={`${name} studio`}
+          aria-pressed={theme === id}
+          title={name}
+          onClick={(e) => onPick(id, e.currentTarget)}
+          className={cn(
+            "h-5 w-5 rounded-full outline outline-1 -outline-offset-1 outline-[color:var(--color-border)] [corner-shape:round]",
+            theme === id && "outline-2 outline-offset-1 outline-tint"
+          )}
+          style={{ background: swatch }}
+        />
+      ))}
+    </div>
+  )
+}
+
 function PlasmicWork() {
   const { pathname } = useLocation()
   const open = pathname.replace(/\/$/, "").split("/")[3] ?? ""
   const year = findYear(open)
+
+  // The product theme (./theme.tsx): a pick waves over the stage.
+  const [theme, setThemeNow] = useState<PkTheme>("dark")
+  const setTheme = (t: PkTheme, from?: HTMLElement) => {
+    if (t === theme) return
+    notify(`Studio switched to ${t === "dark" ? "Dark" : "Light"}`)
+    void wave(
+      document.querySelector(".pl-desk"),
+      () => flushSync(() => setThemeNow(t)),
+      {
+        source: from,
+      }
+    )
+  }
 
   // The bar's place and height, as on the docs: once held at the top of the
   // window it draws a line under itself, and its height is handed down as
@@ -106,11 +161,40 @@ function PlasmicWork() {
       return
     e.preventDefault()
     if (e.currentTarget.hasAttribute("aria-current")) return
+    // From one year to another, the page lands as far through the next
+    // year as it was through this one, so time can be scrubbed from a tab
+    // to the next (Leo, 2026-11-21: "bounce through time").
+    const through = () => {
+      const t = document.querySelector<HTMLElement>(".pl-track")
+      if (!t) return null
+      const r = t.getBoundingClientRect()
+      const line =
+        document.querySelector("[data-docs-bar]")?.getBoundingClientRect()
+          .bottom ?? 0
+      return {
+        r,
+        p: (line - r.top) / Math.max(1, r.height - window.innerHeight),
+      }
+    }
+    const was = through()
     void wave(
       content.current,
       async () => {
         await go()
         await new Promise((done) => requestAnimationFrame(done))
+        const now = through()
+        if (was && now && was.p > 0) {
+          const line =
+            document.querySelector("[data-docs-bar]")?.getBoundingClientRect()
+              .bottom ?? 0
+          const target =
+            now.r.top +
+            window.scrollY -
+            line +
+            was.p * Math.max(1, now.r.height - window.innerHeight)
+          window.scrollTo({ top: Math.max(0, target), behavior: "instant" })
+          return
+        }
         const top = marker.current?.getBoundingClientRect().top ?? 0
         if (top < 0)
           window.scrollTo({ top: top + window.scrollY, behavior: "instant" })
@@ -120,7 +204,7 @@ function PlasmicWork() {
   }
 
   return (
-    <>
+    <PkThemeContext.Provider value={{ theme, setTheme }}>
       <Navigation className="rule-b pb-12">
         <BackButton to="/work" label="Back to work" />
       </Navigation>
@@ -165,7 +249,7 @@ function PlasmicWork() {
             ref={bar}
             data-docs-bar
             data-stuck={stuck || undefined}
-            className="sticky top-0 z-20 bleed grid gap-6 border-b border-transparent bg-background py-12 data-[stuck]:border-border"
+            className="sticky top-0 z-20 bleed grid gap-x-6 gap-y-6 border-b border-transparent bg-background py-12 data-[stuck]:border-border md:grid-cols-[minmax(0,1fr)_auto] md:items-center"
           >
             <NavRow label="Plasmic" current={pathname}>
               <Link
@@ -201,7 +285,13 @@ function PlasmicWork() {
               ))}
             </NavRow>
             {year && (
+              <div className="flex shrink-0 items-center gap-3 max-md:order-last">
+                <ThemeDots theme={theme} onPick={setTheme} />
+              </div>
+            )}
+            {year && (
               <ChapterNav
+                className="max-md:order-last md:col-span-2"
                 group={{
                   slug: year.slug,
                   name: year.name,
@@ -216,6 +306,6 @@ function PlasmicWork() {
           <Outlet />
         </main>
       </div>
-    </>
+    </PkThemeContext.Provider>
   )
 }

@@ -15,6 +15,7 @@
 @import "./anthropic-ds.css";
 @import "./anthropic/index.css";
 @import "./plasmic.css";
+@import "./plasmic-kit.css";
 
 @custom-variant dark (&:is(.dark *));
 

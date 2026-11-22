@@ -1,41 +1,64 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react"
 import { flushSync } from "react-dom"
+import {
+  TbChevronLeft,
+  TbChevronRight,
+  TbLayoutSidebar,
+  TbLock,
+  TbPlus,
+  TbShare2,
+  TbSquares,
+} from "react-icons/tb"
 import { wave } from "@/lib/wave"
-import { cn } from "@/lib/utils"
 import { Lightbox } from "@/components/work/plasmic/lightbox"
 import { NoteLayer } from "@/components/work/plasmic/notes"
+import { usePkTheme } from "@/components/work/plasmic/theme"
+import type { PkTheme } from "@/components/work/plasmic/theme"
 import type {
+  Anchor,
   Beat,
   Dive,
   Explore,
+  Note,
+  Peer,
+  Rect,
   Scene,
   Sheet,
+  Shot,
+  State,
   Year,
 } from "@/components/work/plasmic/types"
 
-/** The app's width as designed, and its window's height under the bar. */
+/** The app's size as laid out, under the browser's bar. */
 export const APP_W = 1440
-export const APP_H = 945
-/** The browser's own bar (tabs and address), as designed. */
-export const CHROME = 79
+export const APP_H = 868
+/** The browser's own bar, as laid out. */
+export const CHROME = 52
 /** The scale the browser is drawn at, as the docs' figures are (80%). */
 const SCALE = 0.8
 
-/** Where a year's frames are. */
-export const frameSrc = (year: string, name: string) =>
-  `/work/plasmic/${year}/${name}.webp`
-
 /**
  * The stage: one figure as wide as the window, a desktop with the Plasmic
- * app open in a browser on it, held under the bar while the year's dives
- * scroll past (Leo, 2026-11-21). Each dive is an `article[data-chapter]`
+ * studio open in a browser on it, held under the bar while the year's
+ * dives scroll past (Leo, 2026-11-21). Each dive is an `article[data-chapter]`
  * as long as its scenes (so the chapter bar sizes and follows it); the
- * stage plays whichever scene the page has scrolled to: its frame, its
- * redlines and concept notes, and its demo cursor's script, which the
- * visitor can take over by moving into the browser. The browser is laid
- * out at the app's true size and drawn at 80%, whole, scaled down further
- * only where the window is too small to show all of it; the app does not
- * reflow (it was a desktop app).
+ * stage plays whichever scene the page has scrolled to. A scene is the
+ * studio rebuilt in HTML (the kit in ./kit/, styles in src/plasmic-kit.css),
+ * drawn from a small state its script changes as the demo cursor points
+ * at parts (bringing up their notes) and works through a workflow (each
+ * step said as it happens). Moving into the browser takes over: the script
+ * stops and its cursor leaves, the studio answers the visitor's pointer,
+ * and a part's note shows while the pointer is on it. The browser is laid
+ * out at the app's true size and drawn at 80%, whole, scaled further only
+ * where the window is too small; the app does not reflow (it was a desktop
+ * app). The browser and the studio wear the product theme picked in the
+ * bar (./theme.tsx).
  */
 export function Stage({ year }: { year: Year }) {
   const track = useRef<HTMLDivElement>(null)
@@ -45,7 +68,6 @@ export function Stage({ year }: { year: Year }) {
   const scene = dive.scenes.at(at.scene) ?? dive.scenes[0]
   const key = `${dive.slug}:${at.scene}`
 
-  // The browser's scale and the desktop's size.
   const [box, setBox] = useState({ w: 0, h: 0, s: SCALE })
   useLayoutEffect(() => {
     const el = desk.current
@@ -63,42 +85,17 @@ export function Stage({ year }: { year: Year }) {
         was.w === w && was.h === h && was.s === s ? was : { w, h, s }
       )
     }
-    measure()
     const observer = new ResizeObserver(measure)
     observer.observe(el)
     return () => observer.disconnect()
   }, [])
-
-  // The frames ahead are fetched before they are needed.
-  useEffect(() => {
-    const next = [
-      ...dive.scenes.slice(at.scene, at.scene + 3),
-      ...(year.dives.at(at.dive + 1)?.scenes.slice(0, 1) ?? []),
-    ]
-    for (const s of next) {
-      for (const name of [
-        s.frame,
-        s.change?.from,
-        ...(s.script ?? []).map((b) => b.frame),
-        ...(s.hot ?? []).map((h) => h.frame),
-      ]) {
-        if (name) new Image().src = frameSrc(year.slug, name)
-      }
-    }
-  }, [dive, at.scene, at.dive, year])
 
   return (
     <div ref={track} className="pl-track">
       <div ref={desk} className="pl-desk" data-no-wave>
         <div aria-hidden className="pl-wallpaper" />
         {box.w > 0 && (
-          <Player
-            key={key}
-            year={year.slug}
-            scene={scene}
-            progress={at.progress}
-            box={box}
-          />
+          <Player key={key} scene={scene} progress={at.progress} box={box} />
         )}
       </div>
       <div className="pl-dives">
@@ -136,9 +133,8 @@ function DiveArticle({ dive }: { dive: Dive }) {
 
 /**
  * Which scene the page is on: the dive whose top has reached the bottom of
- * the bar, and how far into it the page has scrolled, laid along its
- * scenes by the steps each takes. `progress` is how far through the scene,
- * from 0 to 1, for the sheets that pass as the page scrolls.
+ * the bar, and how far into it, laid along its scenes by the steps each
+ * takes. `progress` is how far through the scene, for the sheets.
  */
 function useScrollScene(
   track: React.RefObject<HTMLDivElement | null>,
@@ -182,7 +178,7 @@ function useScrollScene(
     const queue = () => {
       frame ||= requestAnimationFrame(measure)
     }
-    measure()
+    queue()
     window.addEventListener("scroll", queue, { passive: true })
     window.addEventListener("resize", queue)
     return () => {
@@ -195,53 +191,81 @@ function useScrollScene(
 }
 
 type Box = { w: number; h: number; s: number }
+type Cursor = {
+  index: number
+  x: number
+  y: number
+  shape: NonNullable<Beat["shape"]>
+  pressed: boolean
+  slow: boolean
+}
+
+const beatsOf = (n: Note) =>
+  n.beat === undefined ? null : Array.isArray(n.beat) ? n.beat : [n.beat]
+
+/** Whether a point (in the app's pixels) is inside a box. */
+const inside = ([x, y]: [number, number], [l, t, w, h]: Rect) =>
+  x >= l && x <= l + w && y >= t && y <= t + h
 
 /**
- * One scene, played: the browser with its frame, the notes, the cursor
- * running the scene's script, and whatever else the scene has (a sheet, a
- * change card, versions to open). Remounted for every scene, so a script
- * always starts from its first beat.
+ * One scene, played: the browser with the studio in it, the notes, the
+ * cursor running the scene's script, and whatever else the scene has.
+ * Remounted for every scene, so a script always starts from its first beat.
  */
 function Player({
-  year,
   scene,
   progress,
   box,
 }: {
-  year: string
   scene: Scene
   progress: number
   box: Box
 }) {
+  const { theme } = usePkTheme()
   const { s } = box
   const bw = Math.round(APP_W * s)
   const bh = Math.round((APP_H + CHROME) * s)
-  // The browser sits in the middle of the desktop, or a little to the left
-  // while a sheet is open beside it.
   const shift = scene.sheet ? Math.min(160, Math.max(0, box.w - bw) / 2) : 0
   const left = Math.round((box.w - bw) / 2 - shift)
-  // In the middle of the desktop; on a phone at its top, with the notes
-  // listed under it.
   const top = box.w < 768 ? 16 : Math.round((box.h - bh) / 2)
+  const chrome = Math.round(CHROME * s)
 
-  // The frame shown: the scene's, or a beat's, or the one under the
-  // visitor's pointer. A change scene starts on the frame before the change
-  // and waves into its own.
-  const [frame, setFrame] = useState(scene.change?.from ?? scene.frame)
+  const [initial] = useState<State>(() => scene.state ?? {})
+  const [state, setState] = useState<State>(initial)
+
+  // A change scene starts on what came before and waves into itself.
+  const [before, setBefore] = useState(Boolean(scene.change))
   const app = useRef<HTMLDivElement>(null)
   useEffect(() => {
     if (!scene.change) return
     const t = window.setTimeout(() => {
-      void wave(app.current, () => flushSync(() => setFrame(scene.frame)))
+      void wave(app.current, () => flushSync(() => setBefore(false)))
     }, 900)
     return () => clearTimeout(t)
   }, [scene])
 
-  // The visitor takes over by moving into the browser: the script stops and
-  // its cursor leaves, the hot places answer the visitor's pointer, and the
-  // script starts again a moment after the pointer goes. A tap on a touch
-  // screen holds it for a few seconds.
+  // Where a part is, in the app's pixels (measured as drawn).
+  const measure = useCallback((a: Anchor): Rect | null => {
+    if (typeof a !== "string") return a
+    const root = app.current
+    const el = root?.querySelector(`[data-pk="${a}"]`)
+    if (!root || !el) return null
+    const r = el.getBoundingClientRect()
+    const o = root.getBoundingClientRect()
+    const k = o.width / APP_W || 1
+    return [
+      (r.left - o.left) / k,
+      (r.top - o.top) / k,
+      r.width / k,
+      r.height / k,
+    ]
+  }, [])
+
+  // Taking over: in the browser, the script stops and the visitor's pointer
+  // brings up the note of the part it is on; it starts again a moment
+  // after the pointer goes. A tap holds it for a few seconds.
   const [held, setHeld] = useState(false)
+  const [pointer, setPointer] = useState<[number, number] | null>(null)
   const release = useRef(0)
   const hold = (ms?: number) => {
     clearTimeout(release.current)
@@ -251,15 +275,63 @@ function Player({
   const letGo = () => {
     clearTimeout(release.current)
     release.current = window.setTimeout(() => {
-      setFrame(scene.frame)
       setHeld(false)
+      setPointer(null)
     }, 700)
   }
   useEffect(() => () => clearTimeout(release.current), [])
 
-  const beat = useScript(scene.script, !held && !scene.change, setFrame, scene)
+  const [still] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      matchMedia("(prefers-reduced-motion: reduce)").matches
+  )
+  const { cursor, say, ghost } = useScript(
+    scene.script,
+    !held && !before && !still,
+    initial,
+    setState,
+    measure
+  )
+  const peers = usePeers(scene.peers, !before && !still, setState, measure)
+
+  // The notes showing: those for the whole scene, and those of the beat
+  // the cursor is on (or, taken over, of the part under the pointer; with
+  // reduced motion, all of them).
+  const notes = scene.notes
+  const [rects, setRects] = useState<Array<Rect | null>>([])
+  const beatIndex = cursor?.index
+  useLayoutEffect(() => {
+    // Measured as drawn, and again once a pan or zoom has settled.
+    const update = () => setRects((notes ?? []).map((n) => measure(n.on)))
+    const f = requestAnimationFrame(update)
+    const t = window.setTimeout(update, 900)
+    return () => {
+      cancelAnimationFrame(f)
+      clearTimeout(t)
+    }
+  }, [state, before, s, notes, measure, beatIndex])
+  const shown = (notes ?? [])
+    .map((note, i) => ({ note, rect: rects.at(i) ?? null }))
+    .filter((n): n is { note: Note; rect: Rect } => {
+      if (!n.rect) return false
+      const only = beatsOf(n.note)
+      if (!only || still) return true
+      if (held) return pointer ? inside(pointer, n.rect) : false
+      return beatIndex !== undefined && only.includes(beatIndex)
+    })
 
   const [open, setOpen] = useState<Explore | null>(null)
+  const [exploreRect, setExploreRect] = useState<Rect | null>(null)
+  useLayoutEffect(() => {
+    const on = scene.explore?.on
+    if (on === undefined) return
+    const f = requestAnimationFrame(() => setExploreRect(measure(on)))
+    return () => cancelAnimationFrame(f)
+  }, [scene, measure, s, state])
+
+  const at = (x: number, y: number) =>
+    `${Math.round(x * s)}px ${Math.round(y * s)}px`
 
   return (
     <>
@@ -275,217 +347,313 @@ function Player({
         onPointerDown={(e) => {
           if (e.pointerType !== "mouse") hold(4000)
         }}
+        onPointerMove={(e) => {
+          const o = app.current?.getBoundingClientRect()
+          if (!o || !held) return
+          const k = o.width / APP_W
+          setPointer([(e.clientX - o.left) / k, (e.clientY - o.top) / k])
+        }}
       >
         <div
           className="pl-browser"
+          data-pk-theme={theme}
           style={{ width: APP_W, height: APP_H + CHROME, scale: s }}
         >
-          <BrowserBar url={scene.url ?? "plasmic.app/projects"} />
-          <div ref={app} className="pl-app">
-            <Frames year={year} frame={frame} height={scene.height} />
+          <SafariBar url={scene.url ?? "studio.plasmic.app"} />
+          <div
+            ref={app}
+            className="pk pl-app"
+            data-pk-theme={theme}
+            style={{ width: APP_W, height: APP_H }}
+          >
+            {before && scene.change
+              ? scene.change.from(state)
+              : scene.view(state)}
           </div>
         </div>
-        {/* What is drawn over the browser at the page's own size. */}
-        <div className="pl-over" style={{ top: Math.round(CHROME * s) }}>
-          {(scene.hot ?? []).map((h, i) => (
-            <div
-              key={i}
-              className="pl-hot"
-              style={rect(h.at, s)}
-              onPointerEnter={() => setFrame(h.frame)}
-              onPointerLeave={() => setFrame(scene.frame)}
-            />
-          ))}
-          {scene.explore && (
+        <div className="pl-over" style={{ top: chrome }}>
+          {scene.explore && exploreRect && (
             <ExploreBadge
               explore={scene.explore}
+              rect={exploreRect}
               s={s}
               onOpen={() => setOpen(scene.explore ?? null)}
             />
           )}
-          <Cursor beat={held ? null : beat} s={s} />
+          {ghost && cursor && (
+            <span
+              className="pl-ghost"
+              data-slow={cursor.slow ? "" : undefined}
+              style={{ translate: at(cursor.x, cursor.y) }}
+            >
+              {ghost}
+            </span>
+          )}
+          {peers.map((p) => (
+            <PeerView key={p.name} peer={p} s={s} />
+          ))}
+          <CursorView cursor={held ? null : cursor} s={s} />
+          {say && cursor && !held && (
+            <span
+              className="pl-say"
+              data-slow={cursor.slow ? "" : undefined}
+              style={{ translate: at(cursor.x, cursor.y) }}
+            >
+              <b>{say.n}</b>
+              {say.text}
+            </span>
+          )}
         </div>
       </div>
       <NoteLayer
-        notes={(scene.notes ?? []).filter(
-          (n) => n.from === undefined || (beat ? beat.index >= n.from : false)
-        )}
+        notes={shown}
         s={s}
-        origin={[left, top + Math.round(CHROME * s)]}
+        origin={[left, top + chrome]}
         desk={[box.w, box.h]}
       />
-      {scene.caption && (
-        <p className="pl-caption" style={{ left, top: top + bh + 12 }}>
-          {scene.caption}
-        </p>
-      )}
       {scene.sheet && (
         <SheetWindow
-          year={year}
           sheet={scene.sheet}
           progress={progress}
           box={box}
+          theme={theme}
           browser={{ left, top, width: bw, height: bh }}
         />
       )}
       {scene.change && <ChangeCard change={scene.change} />}
       {open && (
-        <Lightbox year={year} explore={open} onClose={() => setOpen(null)} />
+        <Lightbox explore={open} theme={theme} onClose={() => setOpen(null)} />
       )}
     </>
   )
 }
 
-/** A box on the frame, in the page's pixels over the browser. */
-export const rect = (
-  [x, y, w, h]: [number, number, number, number],
-  s: number
-) => ({
-  left: Math.round(x * s),
-  top: Math.round(y * s),
-  width: Math.round(w * s),
-  height: Math.round(h * s),
-})
-
 /**
- * The browser's own bar, drawn here (the file's screens had Chrome's, on
- * Apple's wallpapers; neither is ours to publish): a row with a tab, and
- * the address under it, as designed (79px).
- */
-function BrowserBar({ url }: { url: string }) {
-  return (
-    <div className="pl-bar">
-      <div className="pl-tabs">
-        <span aria-hidden className="pl-lights">
-          <i />
-          <i />
-          <i />
-        </span>
-        <span className="pl-tab">
-          <span aria-hidden className="pl-favicon" />
-          Plasmic
-        </span>
-      </div>
-      <div className="pl-address">
-        <span aria-hidden className="pl-nav-arrows">
-          ‹ ›
-        </span>
-        <span className="pl-url">{url}</span>
-      </div>
-    </div>
-  )
-}
-
-/**
- * The app's frame, crossfading from the last one as a new one comes in (the
- * old one stays until the new one has loaded, so nothing flashes blank).
- */
-function Frames({
-  year,
-  frame,
-  height,
-}: {
-  year: string
-  frame: string
-  height?: number
-}) {
-  const [shown, setShown] = useState([frame])
-  // A new frame joins over the last one (set while rendering, as React
-  // recommends for state that follows a prop).
-  if (shown.at(-1) !== frame) setShown([...shown.slice(-1), frame])
-  return (
-    <>
-      {shown.map((name, i) => (
-        <img
-          key={name}
-          src={frameSrc(year, name)}
-          alt=""
-          width={APP_W}
-          height={height ?? APP_H}
-          decoding="async"
-          className={cn("pl-frame", i < shown.length - 1 && "pl-frame-old")}
-          onLoad={() => {
-            if (i === shown.length - 1)
-              setShown((was) => (was.length > 1 ? was.slice(-1) : was))
-          }}
-        />
-      ))}
-    </>
-  )
-}
-
-/**
- * Runs a scene's script: the cursor goes to each beat in turn, presses
- * where a beat says, and the app shows the beat's frame; after the last it
- * rests, the app goes back to the scene's frame, and it starts over.
- * Under reduced motion it does not run.
+ * Runs a scene's script: the cursor goes to each beat in turn (measuring
+ * the part it is after where it is drawn now), presses, drags, or types
+ * where a beat says, and the state changes; after the last it rests, the
+ * state goes back to the scene's own, and it starts over.
  */
 function useScript(
   script: Array<Beat> | undefined,
   running: boolean,
-  setFrame: (f: string) => void,
-  scene: Scene
+  initial: State,
+  setState: React.Dispatch<React.SetStateAction<State>>,
+  measure: (a: Anchor) => Rect | null
 ) {
-  const [beat, setBeat] = useState<{
-    index: number
-    beat: Beat
-    pressed: boolean
-  } | null>(null)
+  const [cursor, setCursor] = useState<Cursor | null>(null)
+  const [say, setSay] = useState<{ n: number; text: string } | null>(null)
+  const [ghost, setGhost] = useState<string | null>(null)
   useEffect(() => {
     if (!script?.length || !running) return
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
-    // Every wait is a timer; clearing them ends the script where it is (its
-    // next wait never finishes).
+    // Every wait is a timer; clearing them ends the script where it is.
     const timers: Array<number> = []
     const after = (ms: number) =>
       new Promise<void>((done) => {
         timers.push(window.setTimeout(done, ms))
       })
+    const point = (on: string, at: [number, number] = [0.5, 0.5]) => {
+      const r = measure(on)
+      return r ? ([r[0] + r[2] * at[0], r[1] + r[3] * at[1]] as const) : null
+    }
     void (async () => {
-      await after(500)
+      await after(450)
       for (;;) {
+        let step = 0
         for (const [i, b] of script.entries()) {
-          setBeat({ index: i, beat: b, pressed: false })
-          await after(700)
+          const to = b.to ?? (b.on ? point(b.on, b.at) : null)
+          const shape = b.shape ?? (b.click || b.drag ? "pointer" : "arrow")
+          setCursor((c) =>
+            to
+              ? {
+                  index: i,
+                  x: to[0],
+                  y: to[1],
+                  shape,
+                  pressed: false,
+                  slow: false,
+                }
+              : c && { ...c, index: i }
+          )
+          if (b.say) setSay({ n: ++step, text: b.say })
+          await after(to ? 680 : 120)
           if (b.click) {
-            setBeat({ index: i, beat: b, pressed: true })
+            setCursor((c) => c && { ...c, pressed: true })
             await after(140)
-            setBeat({ index: i, beat: b, pressed: false })
+            setCursor((c) => c && { ...c, pressed: false })
           }
-          if (b.frame) setFrame(b.frame)
-          await after(b.wait ?? 1100)
+          if (b.drag) {
+            const end = point(b.drag)
+            setCursor((c) => c && { ...c, pressed: true, shape: "grab" })
+            setGhost(b.ghost ?? null)
+            await after(220)
+            if (end)
+              setCursor((c) => c && { ...c, x: end[0], y: end[1], slow: true })
+            await after(1000)
+            setCursor((c) => c && { ...c, pressed: false, slow: false })
+            setGhost(null)
+          }
+          if (b.type) {
+            const { key, text } = b.type
+            setCursor((c) => c && { ...c, shape: "text" })
+            for (let k = 1; k <= text.length; k++) {
+              setState((was) => ({ ...was, [key]: text.slice(0, k) }))
+              await after(55)
+            }
+          }
+          if (b.set) {
+            const patch = b.set
+            setState((was) => ({ ...was, ...patch }))
+          }
+          await after(b.wait ?? 1300)
         }
-        await after(1400)
-        setFrame(scene.frame)
-        await after(600)
+        await after(1500)
+        setState(initial)
+        setSay(null)
+        await after(700)
       }
     })()
     return () => timers.forEach(clearTimeout)
-  }, [script, running, setFrame, scene])
-  return beat
+  }, [script, running, initial, setState, measure])
+  return { cursor, say, ghost }
+}
+
+type PeerAt = {
+  name: string
+  color: string
+  x: number
+  y: number
+  sel: Rect | null
+  shown: boolean
+}
+
+/**
+ * Runs the scene's other people: each goes through their own beats on a
+ * loop, at their own pace, alongside the demo cursor (and, unlike it, not
+ * stopped by the visitor taking over: they are someone else).
+ */
+function usePeers(
+  peers: Array<Peer> | undefined,
+  running: boolean,
+  setState: React.Dispatch<React.SetStateAction<State>>,
+  measure: (a: Anchor) => Rect | null
+) {
+  // (The Player is made anew for each scene, so its people start here.)
+  const [at, setAt] = useState<Array<PeerAt>>(() =>
+    (peers ?? []).map((p) => ({
+      name: p.name,
+      color: p.color,
+      x: 0,
+      y: 0,
+      sel: null,
+      shown: false,
+    }))
+  )
+  useEffect(() => {
+    if (!peers?.length || !running) return
+    const timers: Array<number> = []
+    const after = (ms: number) =>
+      new Promise<void>((done) => {
+        timers.push(window.setTimeout(done, ms))
+      })
+    const put = (i: number, patch: Partial<PeerAt>) =>
+      setAt((was) => was.map((p, j) => (j === i ? { ...p, ...patch } : p)))
+    peers.forEach((peer, i) => {
+      void (async () => {
+        await after(900 + i * 700)
+        for (;;) {
+          for (const b of peer.script) {
+            const r = b.on ? measure(b.on) : null
+            const to =
+              b.to ??
+              (r
+                ? ([
+                    r[0] + r[2] * (b.at?.[0] ?? 0.5),
+                    r[1] + r[3] * (b.at?.[1] ?? 0.5),
+                  ] as const)
+                : null)
+            if (to)
+              put(i, {
+                x: to[0],
+                y: to[1],
+                shown: true,
+                sel: b.select ? r : null,
+              })
+            await after(950)
+            if (b.set) {
+              const patch = b.set
+              setState((was) => ({ ...was, ...patch }))
+            }
+            await after(b.wait ?? 1400)
+          }
+        }
+      })()
+    })
+    return () => timers.forEach(clearTimeout)
+  }, [peers, running, setState, measure])
+  return at
+}
+
+/** Someone else's cursor: an arrow in their color, with their name. */
+function PeerView({ peer, s }: { peer: PeerAt; s: number }) {
+  if (!peer.shown) return null
+  return (
+    <>
+      {peer.sel && (
+        <span
+          className="pk-peer-sel"
+          style={
+            {
+              "--peer": peer.color,
+              left: Math.round(peer.sel[0] * s),
+              top: Math.round(peer.sel[1] * s),
+              width: Math.round(peer.sel[2] * s),
+              height: Math.round(peer.sel[3] * s),
+            } as React.CSSProperties
+          }
+        >
+          <b>{peer.name}</b>
+        </span>
+      )}
+      <span
+        aria-hidden
+        className="pk-peer"
+        style={{
+          translate: `${Math.round(peer.x * s)}px ${Math.round(peer.y * s)}px`,
+        }}
+      >
+        <svg viewBox="0 0 18 18">
+          <path
+            d="M2 1.5 15.5 7l-6 1.8L7 15z"
+            fill={peer.color}
+            stroke="#fff"
+            strokeWidth="1.3"
+            strokeLinejoin="round"
+          />
+        </svg>
+        <span style={{ background: peer.color }}>{peer.name}</span>
+      </span>
+    </>
+  )
 }
 
 /**
  * The demo cursor, in the page's own pixels over the browser: one of the
- * macOS cursors (public/cursors), gliding between beats, with a ring where
- * it presses.
+ * macOS cursors (public/cursors), gliding between beats, slower while it
+ * drags, with a ring where it presses.
  */
-function Cursor({
-  beat,
-  s,
-}: {
-  beat: { beat: Beat; pressed: boolean } | null
-  s: number
-}) {
-  const [x, y] = beat?.beat.to ?? [0, 0]
-  const shape = beat?.beat.shape ?? "arrow"
+function CursorView({ cursor, s }: { cursor: Cursor | null; s: number }) {
+  const shape = !cursor || cursor.shape === "grab" ? "pointer" : cursor.shape
   return (
     <div
       aria-hidden
       className="pl-cursor"
-      data-shown={beat ? "" : undefined}
-      data-pressed={beat?.pressed ? "" : undefined}
-      style={{ translate: `${Math.round(x * s)}px ${Math.round(y * s)}px` }}
+      data-shown={cursor ? "" : undefined}
+      data-pressed={cursor?.pressed ? "" : undefined}
+      data-slow={cursor?.slow ? "" : undefined}
+      style={{
+        translate: `${Math.round((cursor?.x ?? 0) * s)}px ${Math.round((cursor?.y ?? 0) * s)}px`,
+      }}
     >
       {(["arrow", "pointer", "text"] as const).map((k) => (
         <img
@@ -493,7 +661,7 @@ function Cursor({
           src={`/cursors/${k}.svg`}
           alt=""
           data-shape={k}
-          hidden={k !== shape}
+          hidden={k !== (cursor ? shape : "arrow")}
         />
       ))}
     </div>
@@ -501,26 +669,56 @@ function Cursor({
 }
 
 /**
- * Versions of the part under a highlight: a badge on it opens them in the
- * lightbox.
+ * The browser's bar, after Safari's: the window's lights, the sidebar and
+ * the arrows, the address in the middle, and share, new tab, and tabs at
+ * the end. It wears the product theme.
  */
+function SafariBar({ url }: { url: string }) {
+  return (
+    <div className="pl-safari">
+      <span aria-hidden className="pl-lights">
+        <i />
+        <i />
+        <i />
+      </span>
+      <TbLayoutSidebar className="pl-safari-icon" />
+      <TbChevronLeft className="pl-safari-icon" />
+      <TbChevronRight className="pl-safari-icon pl-faded" />
+      <span className="pl-safari-url">
+        <TbLock />
+        {url}
+      </span>
+      <TbShare2 className="pl-safari-icon" />
+      <TbPlus className="pl-safari-icon" />
+      <TbSquares className="pl-safari-icon" />
+    </div>
+  )
+}
+
+/** Versions of the part under a highlight; a badge on it opens them. */
 function ExploreBadge({
   explore,
+  rect,
   s,
   onOpen,
 }: {
   explore: Explore
+  rect: Rect
   s: number
   onOpen: () => void
 }) {
-  const r = rect(explore.at, s)
+  const [x, y, w, h] = rect.map((v) => Math.round(v * s))
   return (
     <>
-      <div aria-hidden className="pl-explore-ring" style={r} />
+      <div
+        aria-hidden
+        className="pl-explore-ring"
+        style={{ left: x, top: y, width: w, height: h }}
+      />
       <button
         type="button"
         className="pl-explore-badge"
-        style={{ left: r.left + r.width, top: r.top }}
+        style={{ left: x + w, top: y }}
         onClick={onOpen}
       >
         {explore.label}
@@ -529,21 +727,53 @@ function ExploreBadge({
   )
 }
 
+/** A design shown on its own, at its own size scaled by `k`. */
+export function ShotView({
+  shot,
+  k,
+  theme,
+  height,
+}: {
+  shot: Shot
+  k: number
+  theme: PkTheme
+  /** Cut off at this height (the shot's top is what matters). */
+  height?: number
+}) {
+  return (
+    <span
+      className="pl-shot"
+      style={{
+        width: Math.round(shot.w * k),
+        height: Math.round(height ?? shot.h * k),
+      }}
+    >
+      <span
+        className="pk"
+        data-pk-theme={theme}
+        style={{ width: shot.w, height: shot.h, scale: k }}
+      >
+        {shot.view()}
+      </span>
+    </span>
+  )
+}
+
 /**
  * A feature's states, inline: a window on the desktop beside the browser,
  * its states in a row that passes as the page scrolls through the scene.
  */
 function SheetWindow({
-  year,
   sheet,
   progress,
   box,
+  theme,
   browser,
 }: {
-  year: string
   sheet: Sheet
   progress: number
   box: Box
+  theme: PkTheme
   browser: { left: number; top: number; width: number; height: number }
 }) {
   const row = useRef<HTMLDivElement>(null)
@@ -553,9 +783,8 @@ function SheetWindow({
     const r = row.current
     const v = view.current
     if (!r || !v) return
-    const measure = () => setRoom(Math.max(0, r.scrollWidth - v.clientWidth))
-    measure()
-    const observer = new ResizeObserver(measure)
+    const update = () => setRoom(Math.max(0, r.scrollWidth - v.clientWidth))
+    const observer = new ResizeObserver(update)
     observer.observe(r)
     observer.observe(v)
     return () => observer.disconnect()
@@ -567,8 +796,6 @@ function SheetWindow({
     browser.left + browser.width - Math.round(width * 0.45)
   )
   const top = browser.top + Math.round(browser.height * 0.14)
-  // Each state is drawn at most 200px wide, and cut off at the window's
-  // height, less its caption (a tall panel's top is what matters).
   const tall = height - 40 - 32 - 64
   return (
     <section
@@ -592,27 +819,19 @@ function SheetWindow({
           style={{ translate: `${-Math.round(progress * room)}px 0` }}
         >
           {sheet.items.map((shot) => {
-            const k = Math.min(1, 200 / shot.w)
-            const w = Math.round(shot.w * k)
+            const k = Math.min(1, 220 / shot.w)
             return (
               <figure
-                key={shot.src}
+                key={shot.label}
                 className="pl-sheet-item"
-                style={{ width: w }}
+                style={{ width: Math.round(shot.w * k) }}
               >
-                <span
-                  className="pl-sheet-shot"
-                  style={{ height: Math.min(tall, Math.round(shot.h * k)) }}
-                >
-                  <img
-                    src={frameSrc(year, shot.src)}
-                    alt=""
-                    width={w}
-                    height={Math.round(shot.h * k)}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </span>
+                <ShotView
+                  shot={shot}
+                  k={k}
+                  theme={theme}
+                  height={Math.min(tall, shot.h * k)}
+                />
                 <figcaption>{shot.label}</figcaption>
               </figure>
             )

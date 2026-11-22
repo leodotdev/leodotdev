@@ -1,104 +1,117 @@
 // The shape of /work/plasmic's story: years (the tabs), each a run of dives
 // (the chapter bar), each a run of scenes the stage plays as the page
-// scrolls. Every place on a frame is in the app's own pixels: a frame is the
-// Plasmic app as designed, 1440 wide, under the browser's bar.
+// scrolls. A scene is the studio rebuilt in HTML (the kit), drawn from a
+// small state its script changes. Places are the app's own pixels (1440
+// wide), or the name of a part (`data-pk`), measured where it is drawn.
 
-/** A box on a frame: left, top, width, height. */
+/** A box in the app: left, top, width, height. */
 export type Rect = [x: number, y: number, w: number, h: number]
 
-/** A point on a frame. */
+/** A point in the app. */
 export type Point = [x: number, y: number]
+
+/** A part of the app by its `data-pk` name, or a box. */
+export type Anchor = string | Rect
 
 export type Side = "left" | "right" | "top" | "bottom"
 
+export type State = Record<string, string | number | boolean | undefined>
+
 /**
- * An annotation pinned to a part of the frame. A `decision` is a redline:
- * what was being weighed there, in the file's own words where it has them.
- * A `concept` says how Plasmic works, so the story of the product reads
- * alongside the story of its design.
+ * An annotation pinned to a part. A `direction` is a path the design took,
+ * branched, revisited, or left (a north star shelved like a concept car).
+ * A `concept` says how Plasmic works. A `discovery` is what was learned.
  */
 export type Note = {
-  kind: "decision" | "concept"
-  at: Rect
+  kind: "direction" | "concept" | "discovery"
+  on: Anchor
   text: string
-  /** Which side of the box the note sits on; by default the roomier one. */
   side?: Side
-  /** Shows from this beat of the scene's script on (from the start if unset). */
-  from?: number
+  /**
+   * The beats of the script it shows during (the cursor pointing at its
+   * part); without one it shows for the whole scene.
+   */
+  beat?: number | Array<number>
 }
 
 /** One move of the demo cursor. */
 export type Beat = {
-  to: Point
-  shape?: "arrow" | "pointer" | "text"
+  /** The part to go to (its middle, or `at`, a fraction of its box). */
+  on?: string
+  at?: [number, number]
+  /** Or a point in the app. */
+  to?: Point
+  shape?: "arrow" | "pointer" | "text" | "grab"
   /** Presses where it lands. */
   click?: boolean
-  /** The frame the app shows once the cursor gets there (after a click). */
-  frame?: string
+  /** Drags from where it is to this part, carrying `ghost`. */
+  drag?: string
+  ghost?: string
+  /** Types `text` into the state's `key`, a letter at a time. */
+  type?: { key: string; text: string }
+  /** What changes once it gets there (after a click, a drop, or typing). */
+  set?: State
+  /** A step of a workflow, said as it happens. */
+  say?: string
   /** How long it stays, in ms, before the next beat. */
   wait?: number
 }
 
-/** A place the visitor's own pointer can hover, to see the frame for it. */
-export type Hot = { at: Rect; frame: string }
-
-/** A design shown on its own: a panel's state, a version of a part. */
+/** A design shown on its own (a version, a state), at its own size. */
 export type Shot = {
-  /** An image in the year's folder, without its extension. */
-  src: string
   label: string
-  /** Its size as designed. */
   w: number
   h: number
+  view: () => React.ReactNode
   notes?: Array<Note>
 }
 
 /** Versions of one thing, highlighted in place and opened in a lightbox. */
 export type Explore = {
-  /** On the badge, e.g. "13 top bars". */
   label: string
-  at: Rect
+  on: Anchor
   title: string
   items: Array<Shot>
 }
 
-/**
- * A deep look at a whole feature, shown inline: a window on the desktop
- * beside the browser, its states passing as the page scrolls.
- */
+/** A whole feature's states, inline: a window beside the browser. */
 export type Sheet = { title: string; items: Array<Shot> }
 
-/** A big change, called out: the app before, and what changed. */
+/** A big change, called out: what was there before, and what changed. */
 export type Change = {
-  /** The frame the browser shows before the change plays. */
-  from: string
+  from: (s: State) => React.ReactNode
   title: string
   items: Array<string>
 }
 
+/**
+ * Someone else in the project (Plasmic was multiplayer): their own cursor,
+ * named in their color, going through their own beats alongside the demo
+ * cursor; a beat's `on` part shows as selected by them while they are on it.
+ */
+export type Peer = {
+  name: string
+  color: string
+  script: Array<Beat & { select?: boolean }>
+}
+
 export type Scene = {
-  /** The app's frame: an image in the year's folder, without its extension. */
-  frame: string
-  /** The frame's height as designed, if taller than the window (945). */
-  height?: number
-  /** The browser's address. */
+  view: (s: State) => React.ReactNode
+  state?: State
   url?: string
-  /** A line for the scene, shown with it: what the file calls this state. */
-  caption?: string
   notes?: Array<Note>
   script?: Array<Beat>
-  hot?: Array<Hot>
   explore?: Explore
   sheet?: Sheet
   change?: Change
-  /** How many steps of scrolling the scene takes (1 unless it has a sheet). */
+  peers?: Array<Peer>
+  /** How many steps of scrolling the scene takes (1 by default). */
   span?: number
 }
 
 export type Dive = {
   slug: string
   title: string
-  /** A line on what the dive covers. */
   summary: string
   scenes: Array<Scene>
 }

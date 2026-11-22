@@ -1,4 +1,11 @@
-import type { Note, Side } from "@/components/work/plasmic/types"
+import type { Note, Rect, Side } from "@/components/work/plasmic/types"
+
+/** What each kind of note is called on its card. */
+const KIND: Record<Note["kind"], string> = {
+  direction: "Direction",
+  concept: "How it works",
+  discovery: "Discovery",
+}
 
 /** A note's width, in the page's pixels. */
 const CARD = 232
@@ -9,8 +16,8 @@ const LEAD = 28
  * The scene's notes, at the page's own size over a picture drawn at scale
  * `s` whose top left is at `origin` in a box of size `desk`. Each note
  * outlines its part of the picture and sits beside it on a leader, on the
- * side asked for or the roomier one: decisions in red, as redlines are, and
- * the notes on how Plasmic works in the accent blue. Notes on the same side
+ * side asked for or the roomier one: directions in red, as redlines are,
+ * how Plasmic works in the accent blue, and discoveries in green. Notes on the same side
  * are kept from overlapping. In a box narrower than a tablet the notes are
  * a list under the picture, each numbered on its part.
  */
@@ -20,7 +27,8 @@ export function NoteLayer({
   origin,
   desk,
 }: {
-  notes: Array<Note>
+  /** Each note with the box its part takes up, in the app's pixels. */
+  notes: Array<{ note: Note; rect: Rect }>
   s: number
   origin: [number, number]
   desk: [number, number]
@@ -30,8 +38,8 @@ export function NoteLayer({
   const [dw, dh] = desk
   const narrow = dw < 768
 
-  const placed = notes.map((note) => {
-    const [x, y, w, h] = note.at
+  const placed = notes.map(({ note, rect }) => {
+    const [x, y, w, h] = rect
     const box = {
       left: Math.round(ox + x * s),
       top: Math.round(oy + y * s),
@@ -109,7 +117,7 @@ export function NoteLayer({
           {placed.map(({ note }, i) => (
             <li key={i} className="pl-note" data-kind={note.kind}>
               <span className="pl-note-kind">
-                {i + 1}. {note.kind === "concept" ? "How it works" : "Decision"}
+                {i + 1}. {KIND[note.kind]}
               </span>
               {note.text}
             </li>
@@ -123,9 +131,7 @@ export function NoteLayer({
             data-kind={note.kind}
             style={{ left: x, top: y, width: CARD }}
           >
-            <span className="pl-note-kind">
-              {note.kind === "concept" ? "How it works" : "Decision"}
-            </span>
+            <span className="pl-note-kind">{KIND[note.kind]}</span>
             {note.text}
           </p>
         ))

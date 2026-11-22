@@ -283,6 +283,7 @@
   pointer-events: none;
   --pl-decision: var(--ads-error-fg, #b53333);
   --pl-concept: var(--color-tint);
+  --pl-discovery: var(--ads-mineral, #629987);
 }
 .pl-note-box {
   position: absolute;
@@ -291,6 +292,21 @@
 }
 .pl-note-box[data-kind="concept"] {
   border-color: var(--pl-concept);
+}
+.pl-note-box[data-kind="discovery"] {
+  border-color: var(--pl-discovery);
+}
+.pl-leader[data-kind="discovery"] {
+  stroke: var(--pl-discovery);
+}
+.pl-leader[data-kind="discovery"] circle {
+  fill: var(--pl-discovery);
+}
+.pl-note[data-kind="discovery"] {
+  border-left-color: var(--pl-discovery);
+}
+.pl-note[data-kind="discovery"] .pl-note-kind {
+  color: var(--pl-discovery);
 }
 .pl-leader {
   position: absolute;
@@ -551,4 +567,139 @@
   max-width: 220px;
   object-fit: contain;
   border-radius: 3px;
+}
+
+/* The browser's bar, after Safari's, in the product's theme. */
+.pl-browser {
+  --pl-bar: #f6f6f6;
+  --pl-bar-fg: #5f5f62;
+  --pl-bar-field: #e9e9eb;
+  --pl-bar-line: #d9d9db;
+}
+.pl-browser[data-pk-theme="dark"] {
+  --pl-bar: #2a2a2d;
+  --pl-bar-fg: #a7a7ab;
+  --pl-bar-field: #3a3a3e;
+  --pl-bar-line: #1a1a1c;
+}
+.pl-safari {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 14px;
+  height: 52px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--pl-bar-line);
+  background: var(--pl-bar);
+  color: var(--pl-bar-fg);
+  font: 400 13px/18px var(--font-sans);
+}
+.pl-safari .pl-lights {
+  margin-right: 10px;
+}
+.pl-safari .pl-lights i:nth-child(1) {
+  background: #ff5f57;
+}
+.pl-safari .pl-lights i:nth-child(2) {
+  background: #febc2e;
+}
+.pl-safari .pl-lights i:nth-child(3) {
+  background: #28c840;
+}
+.pl-safari-icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+.pl-faded {
+  opacity: 0.4;
+}
+.pl-safari-url {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 560px;
+  height: 32px;
+  margin: 0 auto;
+  border-radius: 9px;
+  background: var(--pl-bar-field);
+  color: var(--pl-bar-fg);
+  font-size: 13px;
+}
+.pl-safari-url svg {
+  width: 12px;
+  height: 12px;
+}
+.pl-browser .pl-app {
+  flex: none;
+}
+
+/* A workflow's step, said beside the cursor as it happens. */
+.pl-say {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 22px 0 0 16px;
+  padding: 3px 9px 3px 3px;
+  border-radius: 999px;
+  background: var(--color-foreground);
+  color: var(--color-background);
+  box-shadow: 0 6px 18px -6px rgb(0 0 0 / 0.4);
+  font: 400 12px/17px var(--font-mono);
+  white-space: nowrap;
+  pointer-events: none;
+  transition: translate 0.6s cubic-bezier(0.3, 0, 0.2, 1);
+  corner-shape: round;
+}
+.pl-say b {
+  display: grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--color-tint);
+  color: #fff;
+  font-weight: 400;
+  corner-shape: round;
+}
+.pl-ghost {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  margin: 8px 0 0 12px;
+  padding: 4px 10px;
+  border-radius: 7px;
+  background: var(--color-tint);
+  color: #fff;
+  box-shadow: 0 8px 20px -6px rgb(0 0 0 / 0.5);
+  font: 500 12px/17px var(--font-sans);
+  white-space: nowrap;
+  pointer-events: none;
+  transition: translate 0.6s cubic-bezier(0.3, 0, 0.2, 1);
+}
+.pl-cursor[data-slow],
+.pl-say[data-slow],
+.pl-ghost[data-slow] {
+  transition-duration: 1s;
+  transition-timing-function: cubic-bezier(0.45, 0, 0.25, 1);
+}
+.pl-shot {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px var(--color-border);
+}
+.pl-shot > .pk {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  transform-origin: 0 0;
 }

@@ -1,22 +1,23 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { TbChevronLeft, TbChevronRight, TbX } from "react-icons/tb"
 import { NoteLayer } from "@/components/work/plasmic/notes"
-import { frameSrc } from "@/components/work/plasmic/stage"
-import type { Explore } from "@/components/work/plasmic/types"
+import { ShotView } from "@/components/work/plasmic/stage"
+import type { PkTheme } from "@/components/work/plasmic/theme"
+import type { Explore, Note } from "@/components/work/plasmic/types"
 
 /**
- * Versions of one part, opened from the badge on it: one large, with its
- * own notes, and a row of the rest under it. The arrow keys step through
- * them, and Escape, the close button, or a press outside closes it (a
- * modal `<dialog>`, which keeps the keyboard inside while open).
+ * Versions of one part, opened from the badge on it: one large, built in
+ * HTML like the stage, with its own notes, and a row of the rest under
+ * it. The arrow keys step through them, and Escape, the close button, or
+ * a press outside closes it (a modal `<dialog>`).
  */
 export function Lightbox({
-  year,
   explore,
+  theme,
   onClose,
 }: {
-  year: string
   explore: Explore
+  theme: PkTheme
   onClose: () => void
 }) {
   const dialog = useRef<HTMLDialogElement>(null)
@@ -32,7 +33,6 @@ export function Lightbox({
     return () => el.close()
   }, [])
 
-  // The large picture's scale, for its notes.
   const stage = useRef<HTMLDivElement>(null)
   const [fit, setFit] = useState({ w: 0, h: 0, s: 1 })
   useLayoutEffect(() => {
@@ -41,10 +41,8 @@ export function Lightbox({
     const measure = () => {
       const w = el.clientWidth
       const h = el.clientHeight
-      const s = Math.min(1, w / shot.w, h / shot.h)
-      setFit({ w, h, s })
+      setFit({ w, h, s: Math.min(1.5, w / shot.w, h / shot.h) })
     }
-    measure()
     const observer = new ResizeObserver(measure)
     observer.observe(el)
     return () => observer.disconnect()
@@ -53,16 +51,19 @@ export function Lightbox({
   const ih = Math.round(shot.h * fit.s)
   const ox = Math.round((fit.w - iw) / 2)
   const oy = Math.round((fit.h - ih) / 2)
+  // A shot's notes point at boxes in its own pixels.
+  const notes = (shot.notes ?? []).flatMap((note: Note) =>
+    typeof note.on === "string" ? [] : [{ note, rect: note.on }]
+  )
 
   return (
     <dialog
       ref={dialog}
       className="pl-lightbox"
       aria-label={explore.title}
-      // A close the dialog itself reports (Escape) ends it. One left over
-      // from a close and reopen (React's development double effects) comes
-      // in while it is open again, and is let go.
       onClose={() => {
+        // A close left over from React's development double effects
+        // arrives while the dialog is open again, and is let go.
         if (!dialog.current?.open) onClose()
       }}
       onClick={(e) => {
@@ -96,15 +97,11 @@ export function Lightbox({
       <div ref={stage} className="pl-lightbox-stage">
         {fit.w > 0 && (
           <>
-            <img
-              src={frameSrc(year, shot.src)}
-              alt={shot.label}
-              width={iw}
-              height={ih}
-              style={{ left: ox, top: oy }}
-            />
+            <span className="absolute" style={{ left: ox, top: oy }}>
+              <ShotView shot={shot} k={fit.s} theme={theme} />
+            </span>
             <NoteLayer
-              notes={shot.notes ?? []}
+              notes={notes}
               s={fit.s}
               origin={[ox, oy]}
               desk={[fit.w, fit.h]}
@@ -115,17 +112,16 @@ export function Lightbox({
       <div className="pl-lightbox-row">
         {explore.items.map((item, j) => (
           <button
-            key={item.src}
+            key={item.label + j}
             type="button"
             aria-label={item.label}
             aria-current={j === i || undefined}
             onClick={() => setI(j)}
           >
-            <img
-              src={frameSrc(year, item.src)}
-              alt=""
-              loading="lazy"
-              style={{ aspectRatio: `${item.w} / ${item.h}` }}
+            <ShotView
+              shot={item}
+              k={Math.min(56 / item.h, 200 / item.w)}
+              theme={theme}
             />
           </button>
         ))}
