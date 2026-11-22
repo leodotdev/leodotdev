@@ -1,4 +1,8 @@
 import {
+  TbKeyboard,
+  TbBrandFigma,
+  TbFlask,
+  TbDownload,
   TbLayoutKanban,
   TbInbox,
   TbTable,
@@ -150,6 +154,34 @@ export function EditorCrumb({ s }: { s: State }) {
       {s.palette && <Palette q={str(s.q)} />}
       {Boolean(s.settings) && <SettingsModal s={s} />}
       {Boolean(s.pageSet) && <PageSettings s={s} />}
+      {s.railMenu === "more" && (
+        <Menu
+          x={railW + 6}
+          y={labeled ? 420 : 250}
+          w={190}
+          pk="rail:more-menu"
+          items={[
+            { label: "Imports", icon: TbDownload },
+            { label: "Optimizations", icon: TbFlask },
+            { label: "Run tests…", icon: TbCircleCheck },
+            { label: "Edit devices…", icon: TbDeviceMobile },
+          ]}
+        />
+      )}
+      {s.railMenu === "help" && (
+        <Menu
+          x={railW + 6}
+          y={660}
+          w={210}
+          pk="rail:help-menu"
+          items={[
+            { label: "Slack community", icon: TbMessage },
+            { label: "Import from Figma", icon: TbBrandFigma },
+            { label: "Keyboard shortcuts", icon: TbKeyboard },
+            { label: "Documentation", icon: TbBook },
+          ]}
+        />
+      )}
       {s.crumbMenu === "page" && (
         <Menu
           x={290}

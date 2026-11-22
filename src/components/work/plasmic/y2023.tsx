@@ -693,6 +693,41 @@ export const DIVES_2023: Array<Dive> = [
         view: crumb,
         url: "studio.plasmic.app/projects/crm-app",
         state: { ...APP, crm: true },
+        explore: {
+          label: "4 rails",
+          on: "rail",
+          title: "The rail, from the file’s Left Bar set",
+          items: [
+            {
+              label: "Default: icons only",
+              w: 1440,
+              h: 868,
+              view: () => <EditorCrumb s={{ left: "tree" }} />,
+            },
+            {
+              label: "Builder: icons with labels",
+              w: 1440,
+              h: 868,
+              view: () => <EditorCrumb s={{ ...APP, crm: true }} />,
+            },
+            {
+              label: "With the More menu open",
+              w: 1440,
+              h: 868,
+              view: () => (
+                <EditorCrumb s={{ left: "tree", railMenu: "more" }} />
+              ),
+            },
+            {
+              label: "With the Help menu open",
+              w: 1440,
+              h: 868,
+              view: () => (
+                <EditorCrumb s={{ left: "tree", railMenu: "help" }} />
+              ),
+            },
+          ],
+        },
         notes: [
           {
             kind: "concept",
