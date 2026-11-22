@@ -18,21 +18,28 @@ const MIN = 140
 const EDGE = 12
 const MEET = 20
 /**
- * How a note in a gutter is drawn. By hand (Leo, 2026-11-22, "curved lines
- * and more handwritten font being scribble animated written"): a loop drawn
- * round the part, an arrow curving to it from the note, and the note's words
- * in Playpen Sans, written on a letter at a time, on a card. Set to false,
- * a gutter's note is in Inter and Paper Mono on a straight line, as it was
+ * How a note is drawn. By hand (Leo, 2026-11-22, "curved lines and more
+ * handwritten font being scribble animated written"): the note's words in
+ * Playpen Sans, written on a letter at a time, on a card, with an arrow
+ * curving from the card to its part. The part's outline and the arrow are
+ * drawn clean, not wobbly (Leo, later that day), and a card that is right
+ * beside its part is set against the outline with no arrow at all. Set to
+ * false, a note is in Inter and Paper Mono on a straight line, as it was
  * first.
  */
 const HAND = true as boolean
 const GAP = HAND ? 44 : 20
 /** Between two notes in one gutter. */
 const APART = HAND ? 18 : 8
+/** A card this near its part's outline is set against it, with no arrow;
+    and how far from the outline it then sits. */
+const NEAR = 76
+const AGAINST = 9
 
 type Box = { left: number; top: number; width: number; height: number }
 type Placed = {
   note: Note
+  more?: string
   box: Box
   /** In a gutter, the side it is on. */
   gutter: "left" | "right" | null
@@ -70,7 +77,12 @@ export function NoteLayer({
   under,
 }: {
   /** Each note with the box its part takes up, in the app's pixels. */
-  notes: Array<{ note: Note; rect: Rect }>
+  notes: Array<{
+    note: Note
+    rect: Rect
+    /** Where a press on the part goes for more of it, said under the note. */
+    more?: string
+  }>
   s: number
   origin: [number, number]
   desk: [number, number]
@@ -124,7 +136,7 @@ export function NoteLayer({
   const edges = browser ?? { left: 0, width: dw }
   const middle = edges.left + edges.width / 2
 
-  const placed: Array<Placed> = notes.map(({ note, rect }) => {
+  const placed: Array<Placed> = notes.map(({ note, rect, more }) => {
     const [x, y, w, h] = rect
     const box = {
       left: Math.round(ox + x * s),
@@ -156,7 +168,7 @@ export function NoteLayer({
     const chars = Math.max(8, Math.floor((width - 22) / 7.2))
     const guess = 16 + 24 + Math.ceil(note.text.length / chars) * 17
     const height = heights[keyOf(note, width)] ?? guess
-    return { note, box, gutter, side, width, height, x: 0, y: 0 }
+    return { note, more, box, gutter, side, width, height, x: 0, y: 0 }
   })
 
   // In a gutter: each card's title level with its part's middle, then the
@@ -172,6 +184,18 @@ export function NoteLayer({
         side === "left"
           ? edges.left - GAP - p.width
           : edges.left + edges.width + GAP
+      // Near enough to its part, it is set against the part's outline.
+      if (HAND) {
+        const gap =
+          side === "left"
+            ? p.box.left - (p.x + p.width)
+            : p.x - (p.box.left + p.box.width)
+        if (gap < NEAR)
+          p.x =
+            side === "left"
+              ? p.box.left - AGAINST - p.width
+              : p.box.left + p.box.width + AGAINST
+      }
       p.y = Math.round(
         Math.max(under?.[side] ?? EDGE, p.box.top + p.box.height / 2 - MEET)
       )
@@ -192,18 +216,19 @@ export function NoteLayer({
     const { box, side, height } = p
     const midY = box.top + box.height / 2
     const midX = box.left + box.width / 2
+    const lead = HAND ? AGAINST : LEAD
     if (side === "right") {
-      p.x = box.left + box.width + LEAD
+      p.x = box.left + box.width + lead
       p.y = midY - height / 2
     } else if (side === "left") {
-      p.x = box.left - LEAD - CARD
+      p.x = box.left - lead - CARD
       p.y = midY - height / 2
     } else if (side === "top") {
       p.x = midX - CARD / 2
-      p.y = box.top - LEAD - height
+      p.y = box.top - lead - height
     } else {
       p.x = midX - CARD / 2
-      p.y = box.top + box.height + LEAD
+      p.y = box.top + box.height + lead
     }
     p.x = Math.round(Math.min(Math.max(8, p.x), dw - CARD - 8))
     p.y = Math.round(Math.min(Math.max(8, p.y), dh - height - 8))
@@ -222,29 +247,28 @@ export function NoteLayer({
   const hand = (_: Placed) => HAND && !narrow
   return (
     <div ref={layer} className="pl-notes" data-narrow={narrow || undefined}>
-      {placed.map((p, i) =>
-        hand(p) ? null : (
-          <div
-            key={i}
-            aria-hidden
-            className="pl-note-box"
-            data-kind={p.note.kind}
-            style={p.box}
-          >
-            {narrow && <span className="pl-note-num">{i + 1}</span>}
-          </div>
-        )
-      )}
+      {placed.map((p, i) => (
+        <div
+          key={narrow ? i : p.note.text}
+          aria-hidden
+          className="pl-note-box"
+          data-kind={p.note.kind}
+          style={p.box}
+        >
+          {narrow && <span className="pl-note-num">{i + 1}</span>}
+        </div>
+      ))}
       {!narrow && placed.some(hand) && (
         <svg aria-hidden className="pl-ink" width={dw} height={dh}>
           {placed.filter(hand).map((p) => {
-            const ink = inkOf(p)
+            const ink = arrowOf(p)
             return (
-              <g key={p.note.text} data-kind={p.note.kind}>
-                <path className="pl-ink-loop" pathLength={1} d={ink.loop} />
-                <path className="pl-ink-line" pathLength={1} d={ink.line} />
-                <path className="pl-ink-head" pathLength={1} d={ink.head} />
-              </g>
+              ink && (
+                <g key={p.note.text} data-kind={p.note.kind}>
+                  <path className="pl-ink-line" pathLength={1} d={ink.line} />
+                  <path className="pl-ink-head" pathLength={1} d={ink.head} />
+                </g>
+              )
             )
           })}
         </svg>
@@ -278,6 +302,9 @@ export function NoteLayer({
               style={{ left: x, top: y, width }}
             >
               <Written title={KIND[note.kind]} text={note.text} />
+              {p.more && (
+                <span className="pl-note-more">Press for {p.more} →</span>
+              )}
             </p>
           ) : (
             <p
@@ -327,78 +354,47 @@ function Written({ title, text }: { title: string; text: string }) {
   )
 }
 
-/** A number from 0 to 1 that is always the same for the same words. */
-function dice(seed: string) {
-  let h = 2166136261
-  for (let i = 0; i < seed.length; i++) {
-    h = Math.imul(h ^ seed.charCodeAt(i), 16777619)
-  }
-  return () => {
-    h = Math.imul(h ^ (h >>> 15), 2246822507)
-    h = Math.imul(h ^ (h >>> 13), 3266489909)
-    h ^= h >>> 16
-    return (h >>> 0) / 4294967296
-  }
-}
+const keyOf = (note: Note, width: number) => `${width}:${note.text}`
 
 /**
- * A note's ink, as paths in the desk's pixels: a loop round its part that
- * runs a little past where it began, as one drawn in a hurry does; a line
- * curving from the note's near edge to the part; and the arrow's head on
- * the part's end of it. The wobble is from the note's own words, so it is
- * the same each time the note is drawn.
+ * A note's arrow, as paths in the desk's pixels: a line curving from the
+ * card's edge nearest the part to the part's outline, and its head there.
+ * A card set against its part (or over it) has none.
  */
-function inkOf(p: Placed) {
-  const roll = dice(p.note.text)
-  const j = (by: number) => (roll() - 0.5) * 2 * by
+function arrowOf(p: Placed) {
   const n = (v: number) => v.toFixed(1)
-
-  const pad = 5
+  const pad = 4
   const l = p.box.left - pad
   const t = p.box.top - pad
   const r = p.box.left + p.box.width + pad
   const b = p.box.top + p.box.height + pad
-  const mx = (l + r) / 2
-  const my = (t + b) / 2
-  const c = Math.min(9, (r - l) / 3, (b - t) / 3)
-  const bow = Math.min(3, (r - l) / 40 + 1, (b - t) / 40 + 1)
-  const loop = [
-    `M${n(l + c + j(2))},${n(t + j(1.5))}`,
-    `Q${n(mx)},${n(t - bow + j(1))} ${n(r - c)},${n(t + j(1.5))}`,
-    `Q${n(r + j(1))},${n(t + j(1))} ${n(r + j(1))},${n(t + c)}`,
-    `Q${n(r + bow + j(1))},${n(my)} ${n(r + j(1.5))},${n(b - c)}`,
-    `Q${n(r + j(1))},${n(b + j(1))} ${n(r - c)},${n(b + j(1))}`,
-    `Q${n(mx)},${n(b + bow + j(1))} ${n(l + c)},${n(b + j(1.5))}`,
-    `Q${n(l + j(1))},${n(b + j(1))} ${n(l + j(1))},${n(b - c)}`,
-    `Q${n(l - bow + j(1))},${n(my)} ${n(l + j(1.5))},${n(t + c)}`,
-    `Q${n(l + j(1))},${n(t - 1 + j(1))} ${n(l + c + 4)},${n(t - 1.5 + j(1))}`,
-    `T${n(l + c + Math.min(22, (r - l) / 3))},${n(t + 1 + j(1))}`,
-  ].join(" ")
+  // How far the card is from the outline, across and down (0 where they
+  // lie alongside each other).
+  const across = Math.max(l - (p.x + p.width), p.x - r, 0)
+  const down = Math.max(t - (p.y + p.height), p.y - b, 0)
+  if (across < 24 && down < 24) return null
 
-  // From the card's edge nearest the part to the part's edge nearest it:
-  // across from a gutter or from beside the part, down or up from a card
-  // over or under it.
   const where = p.gutter ?? p.side
   let x0: number
   let y0: number
   let x3: number
   let y3: number
   if (where === "right" || where === "left") {
-    x0 = where === "right" ? p.x - 8 : p.x + p.width + 8
+    x0 = where === "right" ? p.x - 6 : p.x + p.width + 6
     y0 = p.y + Math.min(p.height / 2, 44)
-    x3 = where === "right" ? r + 7 : l - 7
-    y3 = Math.min(Math.max(y0, t + 6), b - 6) + j(3)
+    x3 = where === "right" ? r + 5 : l - 5
+    y3 = Math.min(Math.max(y0, t + 8), b - 8)
   } else {
     x0 = p.x + p.width / 2
-    y0 = where === "bottom" ? p.y - 8 : p.y + p.height + 8
-    x3 = Math.min(Math.max(x0, l + 6), r - 6) + j(3)
-    y3 = where === "bottom" ? b + 7 : t - 7
+    y0 = where === "bottom" ? p.y - 6 : p.y + p.height + 6
+    x3 = Math.min(Math.max(x0, l + 8), r - 8)
+    y3 = where === "bottom" ? b + 5 : t - 5
   }
   const dx = x3 - x0
   const dy = y3 - y0
   const length = Math.hypot(dx, dy) || 1
-  // A sag to one side of the straight way there, more for a longer line.
-  const sag = (roll() < 0.5 ? -1 : 1) * Math.min(34, 10 + length * 0.12)
+  // It bows to one side of the straight way there, more the longer it is.
+  const sag = -Math.min(30, 8 + length * 0.1) * (dx < 0 ? -1 : 1)
   const sx = (-dy / length) * sag
   const sy = (dx / length) * sag
   const c1x = x0 + dx * 0.35 + sx
@@ -409,14 +405,11 @@ function inkOf(p: Placed) {
 
   // The head: two strokes back from the end, either side of the way in.
   const way = Math.atan2(y3 - c2y, x3 - c2x)
-  const back = (turn: number, len: number) =>
-    `${n(x3 - Math.cos(way + turn) * len)},${n(y3 - Math.sin(way + turn) * len)}`
-  const head = `M${back(0.5 + j(0.08), 10)} L${n(x3)},${n(y3)} L${back(-0.5 + j(0.08), 9)}`
-
-  return { loop, line, head }
+  const back = (turn: number) =>
+    `${n(x3 - Math.cos(way + turn) * 8)},${n(y3 - Math.sin(way + turn) * 8)}`
+  const head = `M${back(0.5)} L${n(x3)},${n(y3)} L${back(-0.5)}`
+  return { line, head }
 }
-
-const keyOf = (note: Note, width: number) => `${width}:${note.text}`
 
 /**
  * The corners of a note's line, from its part to its card. To a gutter:

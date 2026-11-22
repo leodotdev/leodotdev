@@ -179,8 +179,17 @@ export function EditorTabs({ s }: { s: State }) {
             </span>
           ))}
         </div>
-        <span className="pk-input mx-3 mt-3 h-10">
-          <TbWorld />
+        <span
+          className="pk-input"
+          // The kit's own height and padding are for a one-line field.
+          style={{
+            height: 46,
+            margin: "8px 8px 0",
+            padding: "0 10px",
+            gap: 10,
+          }}
+        >
+          <TbWorld style={{ width: 16, height: 16 }} />
           <span className="flex flex-col leading-4">
             Base
             <span className="pk-faint text-[11px]">Global variant</span>

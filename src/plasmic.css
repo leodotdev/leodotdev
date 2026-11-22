@@ -258,6 +258,11 @@
   --pl-card: var(--ads-gray-000);
   --pl-card-fg: var(--ads-gray-950);
   --pl-card-line: var(--ads-gray-200);
+  /* A card's edge is a hairline in its shadow, not a border: a border's
+     color sat wrong against the wallpaper and the studio alike. */
+  --pl-card-shadow:
+    0 0 0 0.5px rgb(0 0 0 / 0.18), 0 2px 6px -2px rgb(0 0 0 / 0.2),
+    0 12px 32px -10px rgb(0 0 0 / 0.4);
   --pl-card-decision: #b53333;
   --pl-card-concept: #154c92;
   --pl-card-discovery: #3f7765;
@@ -271,6 +276,9 @@
   --pl-card: var(--ads-gray-950);
   --pl-card-fg: var(--ads-gray-050);
   --pl-card-line: var(--ads-gray-700);
+  --pl-card-shadow:
+    0 0 0 0.5px rgb(255 255 255 / 0.22), 0 2px 6px -2px rgb(0 0 0 / 0.3),
+    0 12px 32px -10px rgb(0 0 0 / 0.5);
   --pl-card-decision: #e86b6b;
   --pl-card-concept: #90c3f6;
   --pl-card-discovery: #8fc4b2;
@@ -289,16 +297,25 @@
   --pl-concept: var(--pl-ink-concept);
   --pl-discovery: var(--pl-ink-discovery);
 }
+/* A note's part, outlined: a clean line a little outside it. */
 .pl-note-box {
   position: absolute;
-  border: 1px dashed var(--pl-decision);
-  border-radius: 3px;
+  border-radius: 4px;
+  outline: 1.5px solid var(--pl-decision);
+  outline-offset: 3px;
+  animation: pl-box-in 0.25s ease-out both;
 }
 .pl-note-box[data-kind="concept"] {
-  border-color: var(--pl-concept);
+  outline-color: var(--pl-concept);
 }
 .pl-note-box[data-kind="discovery"] {
-  border-color: var(--pl-discovery);
+  outline-color: var(--pl-discovery);
+}
+@keyframes pl-box-in {
+  from {
+    opacity: 0;
+    outline-offset: 7px;
+  }
 }
 .pl-leader[data-kind="discovery"] {
   stroke: var(--pl-discovery);
@@ -330,11 +347,10 @@
   position: absolute;
   margin: 0;
   padding: 10px 12px;
-  border: 1px solid var(--pl-card-line);
   border-radius: 12px;
   background: var(--pl-card);
   color: var(--pl-card-fg);
-  box-shadow: 0 6px 20px -8px rgb(0 0 0 / 0.3);
+  box-shadow: var(--pl-card-shadow);
   font: 400 12px/17px var(--font-mono);
   text-wrap: pretty;
   animation: pl-note-in 0.3s ease-out both;
@@ -362,6 +378,16 @@
 .pl-hand .pl-note-kind {
   font: 600 17px/24px var(--font-hand);
 }
+/* Where a press on the part goes for more of it. */
+.pl-note-more {
+  display: block;
+  margin-top: 6px;
+  color: var(--pl-concept);
+  font-weight: 600;
+}
+.pl-app[data-go] {
+  cursor: pointer;
+}
 .pl-hand i {
   font-style: normal;
   opacity: 0;
@@ -376,8 +402,7 @@
     opacity: 1;
   }
 }
-/* Its ink: the loop round the part, then the arrow from the note to it,
-   each drawn along its length. */
+/* Its arrow, from the card to the part, drawn along its length. */
 .pl-ink {
   position: absolute;
   inset: 0;
@@ -402,11 +427,11 @@
 }
 .pl-ink .pl-ink-line {
   animation-duration: 0.4s;
-  animation-delay: 0.35s;
+  animation-delay: 0.1s;
 }
 .pl-ink .pl-ink-head {
   animation-duration: 0.15s;
-  animation-delay: 0.72s;
+  animation-delay: 0.47s;
 }
 @keyframes pl-draw {
   to {
@@ -420,6 +445,9 @@
   }
   .pl-ink path {
     stroke-dashoffset: 0;
+    animation: none;
+  }
+  .pl-note-box {
     animation: none;
   }
 }
@@ -528,11 +556,11 @@
   z-index: 2;
   width: min(300px, calc(100% - 48px));
   padding: 16px;
-  border: 1px solid var(--pl-card-line);
   border-radius: var(--radius-menu);
   background: var(--pl-card);
   color: var(--pl-card-fg);
-  box-shadow: 0 24px 60px -12px rgb(0 0 0 / 0.4);
+  box-shadow: var(--pl-card-shadow);
+  transition: opacity 0.4s ease-out;
   animation: pl-note-in 0.3s ease-out both;
 }
 /* The change card is an annotation too, so it is handwritten as the notes
@@ -640,11 +668,10 @@
   gap: 6px;
   margin: 22px 0 0 16px;
   padding: 4px 12px 4px 4px;
-  border: 1px solid var(--pl-card-line);
   border-radius: 999px;
   background: var(--pl-card);
   color: var(--pl-card-fg);
-  box-shadow: 0 6px 18px -6px rgb(0 0 0 / 0.4);
+  box-shadow: var(--pl-card-shadow);
   font: 400 14px/20px var(--font-hand);
   white-space: nowrap;
   pointer-events: none;

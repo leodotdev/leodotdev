@@ -46,7 +46,7 @@ export function Studio({
 }
 
 /** Plasmic's mark: arcs in the product's colors. */
-export function Mark({ size = 28 }: { size?: number }) {
+export function Mark({ size = 32 }: { size?: number }) {
   const arcs = ["#4c8dff", "#a88bfa", "#f472b6", "#f5b84a"]
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden>

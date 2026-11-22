@@ -7,6 +7,7 @@ import {
   useState,
 } from "react"
 import { flushSync } from "react-dom"
+import { useNavigate } from "@tanstack/react-router"
 import {
   TbChevronLeft,
   TbChevronRight,
@@ -17,6 +18,9 @@ import {
   TbSquares,
 } from "react-icons/tb"
 import { wave } from "@/lib/wave"
+import { diveOf, explain } from "@/components/work/plasmic/explain"
+import type { Target } from "@/components/work/plasmic/explain"
+import { glideTo } from "@/lib/glide"
 import { NoteLayer } from "@/components/work/plasmic/notes"
 import { usePkTheme } from "@/components/work/plasmic/theme"
 import type { PkTheme } from "@/components/work/plasmic/theme"
@@ -130,6 +134,7 @@ export function Stage({ year }: { year: Year }) {
               progress={at.progress}
               box={box}
               live={live.get(scene.view)}
+              here={{ year: year.slug, slug: dive.slug }}
             />
           )}
           {full && (
@@ -285,11 +290,14 @@ function Player({
   progress,
   box,
   live,
+  here,
 }: {
   scene: Scene
   progress: number
   box: Box
   live?: Patches
+  /** The year and dive on the stage. */
+  here: { year: string; slug: string }
 }) {
   const { theme } = usePkTheme()
   // On a phone the browser is drawn larger than the window is wide (a
@@ -340,7 +348,86 @@ function Player({
   // The script goes on regardless and sets what it needs as it comes to it,
   // and every round starts from the scene's own state.
   const touched = useRef(new Set<string>())
+
+  // Asking (Leo, 2026-11-22): the pointer on a part there is something to
+  // say of holds the show where it is and brings up that part's note, a
+  // child's own before its parent's (./explain.ts). Where another dive has
+  // more on the part, the note says so, and a press goes there.
+  const [asked, setAsked] = useState<{
+    part: string
+    note: Note
+    rect: Rect
+    go?: Target
+  } | null>(null)
+  const paused = useRef(false)
+  useEffect(() => {
+    paused.current = asked !== null
+  }, [asked])
+  const ask = (e: React.PointerEvent<HTMLElement>) => {
+    if (e.pointerType !== "mouse") return
+    let found: typeof asked = null
+    let go: Target | undefined
+    let goPart = ""
+    for (
+      let el = e.target as Element | null;
+      el && el !== e.currentTarget;
+      el = el.parentElement
+    ) {
+      const part = el.getAttribute("data-pk")
+      if (!part) continue
+      if (!go) {
+        go = diveOf(part, here)
+        if (go) goPart = part
+      }
+      if (found) continue
+      const note =
+        scene.notes?.find((n) => n.on === part) ??
+        explain(scene.view, here.year, part)
+      const rect = note && measure(part)
+      if (note && rect) found = { part, note: { ...note, on: part }, rect }
+    }
+    // A part with a dive but no note of its own is told by the dive's line.
+    const rect = !found && go ? measure(goPart) : null
+    if (go && rect)
+      found = {
+        part: goPart,
+        note: { kind: "direction", on: goPart, text: go.summary },
+        rect,
+      }
+    const next = found && { ...found, go }
+    setAsked((was) =>
+      was?.part === next?.part && was?.go?.slug === next?.go?.slug ? was : next
+    )
+  }
+  const navigate = useNavigate()
+  const visit = (to: Target) => {
+    setAsked(null)
+    if (to.year === here.year) {
+      // A dive of this year: glide to it, its top on the bar's line.
+      const dive = document.getElementById(to.slug)
+      const line =
+        document.querySelector("[data-docs-bar]")?.getBoundingClientRect()
+          .bottom ?? 0
+      if (dive)
+        void glideTo(
+          window.scrollY + dive.getBoundingClientRect().top - line + 1
+        )
+      return
+    }
+    void (to.year
+      ? navigate({
+          to: "/work/plasmic/$year",
+          params: { year: to.year },
+          hash: to.slug,
+        })
+      : navigate({ to: "/work/plasmic", hash: to.slug }))
+  }
+
   const tinker = (e: React.MouseEvent<HTMLElement>) => {
+    if (asked?.go) {
+      visit(asked.go)
+      return
+    }
     let el = e.target as Element | null
     while (el && el !== e.currentTarget) {
       const patches = live?.get(el.getAttribute("data-pk") ?? "")
@@ -379,6 +466,7 @@ function Player({
   const { cursor, say, ghost } = useScript(
     scene.script,
     scene.notes,
+    paused,
     !before && !still,
     initial,
     setState,
@@ -409,7 +497,7 @@ function Player({
       clearTimeout(t)
     }
   }, [state, before, s, notes, measure, beatIndex])
-  const shown = (notes ?? [])
+  const playing = (notes ?? [])
     .map((note, i) => ({ note, rect: rects.at(i) ?? null }))
     .filter((n): n is { note: Note; rect: Rect } => {
       if (!n.rect) return false
@@ -417,6 +505,18 @@ function Player({
       if (!only || still) return true
       return beatIndex !== undefined && only.includes(beatIndex)
     })
+  // The part asked of takes the notes' place while it is asked of.
+  const shown = asked
+    ? [
+        {
+          note: asked.note,
+          rect: asked.rect,
+          more:
+            asked.go &&
+            `${asked.go.name === "Overview" ? "Research" : asked.go.name} · ${asked.go.title}`,
+        },
+      ]
+    : playing
 
   // Where the change card ends, in the desk's pixels.
   const [changeFoot, setChangeFoot] = useState(0)
@@ -449,7 +549,10 @@ function Player({
             className="pk pl-app"
             data-pk-theme={theme}
             style={{ width: APP_W, height: APP_H }}
+            data-go={asked?.go ? "" : undefined}
             onClick={tinker}
+            onPointerMove={ask}
+            onPointerLeave={() => setAsked(null)}
           >
             {before && scene.change
               ? scene.change.from(state)
@@ -542,6 +645,8 @@ function Player({
 function useScript(
   script: Array<Beat> | undefined,
   notes: Array<Note> | undefined,
+  /** Held where it is while this is set (the visitor is asking of a part). */
+  paused: React.RefObject<boolean>,
   running: boolean,
   initial: State,
   setState: React.Dispatch<React.SetStateAction<State>>,
@@ -554,10 +659,15 @@ function useScript(
     if (!script?.length || !running) return
     // Every wait is a timer; clearing them ends the script where it is.
     const timers: Array<number> = []
-    const after = (ms: number) =>
+    const wait = (ms: number) =>
       new Promise<void>((done) => {
         timers.push(window.setTimeout(done, ms))
       })
+    // A wait, and then for as long as the show is held.
+    const after = async (ms: number) => {
+      await wait(ms)
+      while (paused.current) await wait(200)
+    }
     const point = (on: string, at: [number, number] = [0.5, 0.5]) => {
       const r = measure(on)
       return r ? ([r[0] + r[2] * at[0], r[1] + r[3] * at[1]] as const) : null
@@ -632,7 +742,7 @@ function useScript(
       }
     })()
     return () => timers.forEach(clearTimeout)
-  }, [script, notes, running, initial, setState, measure])
+  }, [script, notes, paused, running, initial, setState, measure])
   return { cursor, say, ghost }
 }
 
@@ -949,6 +1059,28 @@ function ChangeCard({
 }) {
   const fits = room >= CHANGE_ROOM
   const card = useRef<HTMLElement>(null)
+  // It opens the scene and then leaves (Leo, 2026-11-22: "maybe it doesnt
+  // need to stick around for the show, it's shown as the start"): there
+  // for as long as it takes to read, then faded out and gone, the gutter
+  // left to the notes.
+  const letters =
+    change.title.length + change.items.reduce((n, item) => n + item.length, 0)
+  const [leaving, setLeaving] = useState(false)
+  const [gone, setGone] = useState(false)
+  useEffect(() => {
+    const read = window.setTimeout(() => setLeaving(true), 2400 + letters * 42)
+    const out = window.setTimeout(
+      () => {
+        setGone(true)
+        onFoot(0)
+      },
+      2400 + letters * 42 + 450
+    )
+    return () => {
+      clearTimeout(read)
+      clearTimeout(out)
+    }
+  }, [letters, onFoot])
   useLayoutEffect(() => {
     const el = card.current
     if (!el) return
@@ -958,13 +1090,19 @@ function ChangeCard({
     observer.observe(el)
     return () => observer.disconnect()
   }, [onFoot, top])
+  if (gone) return null
   return (
     <aside
       ref={card}
       className="pl-change"
       style={
         fits
-          ? { left: 16, top, width: Math.min(300, room - 32) }
+          ? {
+              left: 16,
+              top,
+              width: Math.min(300, room - 32),
+              opacity: leaving ? 0 : 1,
+            }
           : // With no room beside the browser, it sits over the canvas's
             // foot, clear of the rail.
             {
@@ -973,6 +1111,7 @@ function ChangeCard({
               width: 280,
               translate: "0 -100%",
               zIndex: 6,
+              opacity: leaving ? 0 : 1,
             }
       }
     >

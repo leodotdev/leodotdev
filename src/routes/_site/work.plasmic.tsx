@@ -7,6 +7,7 @@ import {
 } from "@tanstack/react-router"
 import { useEffect, useRef, useState } from "react"
 import { flushSync } from "react-dom"
+import { TbArrowsMaximize } from "react-icons/tb"
 import { BackButton } from "@/components/BackButton"
 import { Navigation } from "@/components/Navigation"
 import { ChapterNav } from "@/components/work/claude/chapter-nav"
@@ -347,11 +348,12 @@ function PlasmicWork() {
                 <button
                   type="button"
                   aria-pressed={full}
-                  title="View the studio at 100%, over the whole window"
+                  aria-label="View the studio at 100%, over the whole window"
+                  title="View at 100%"
                   onClick={() => setFull(true)}
-                  className="h-5 rounded-full px-2 text-xs outline outline-1 -outline-offset-1 outline-[color:var(--color-border)] [corner-shape:round] hover:outline-[color:var(--color-foreground)] max-md:hidden"
+                  className="grid h-5 w-5 place-items-center rounded-full text-muted-foreground hover:text-foreground max-md:hidden"
                 >
-                  100%
+                  <TbArrowsMaximize aria-hidden className="h-4 w-4" />
                 </button>
               </div>
             )}
