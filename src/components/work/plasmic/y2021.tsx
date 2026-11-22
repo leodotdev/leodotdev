@@ -1,6 +1,7 @@
 import { Editor } from "@/components/work/plasmic/kit/editor"
 import { Editor21 } from "@/components/work/plasmic/kit/editor21"
 import { Connect } from "@/components/work/plasmic/kit/onboard"
+import { Publish21 } from "@/components/work/plasmic/kit/publish21"
 import { Takes21 } from "@/components/work/plasmic/kit/takes21"
 import { Dashboard21 } from "@/components/work/plasmic/kit/teams"
 import type { Dive, Peer, Shot, State } from "@/components/work/plasmic/types"
@@ -638,6 +639,82 @@ export const DIVES_2021: Array<Dive> = [
             on: "preview:page",
             beat: 2,
             text: "Preview: the page as it will ship, at any width (the grips either side), in any variant.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "publish",
+    title: "Publish, Step by Step",
+    summary:
+      "A publish as steps you pick: save a version, push and deploy, call webhooks.",
+    scenes: [
+      {
+        view: (s: State) => (
+          <>
+            <Editor21 s={{}} />
+            <Publish21 s={s} />
+          </>
+        ),
+        url: URL,
+        script: [
+          { on: "p21:status", wait: 2200 },
+          {
+            on: "p21:deploy",
+            at: [0.04, 0.5],
+            say: "Push and deploy, too",
+            click: true,
+            set: { deploy: true },
+            wait: 1800,
+          },
+          {
+            on: "p21:newhook",
+            say: "Add a webhook",
+            click: true,
+            set: { hookFocus: true },
+            wait: 400,
+          },
+          {
+            on: "p21:hook:new",
+            at: [0.6, 0.5],
+            shape: "text",
+            type: { key: "hook", text: "https://hooks.acme.dev/rebuild" },
+            wait: 900,
+          },
+          {
+            on: "p21:publish",
+            say: "Publish",
+            click: true,
+            set: { hookFocus: false, phase: "running", lines: 1 },
+            wait: 500,
+          },
+          { on: "p21:log", at: [0.5, 0.2], set: { lines: 3 }, wait: 700 },
+          { on: "p21:log", at: [0.5, 0.5], set: { lines: 5 }, wait: 700 },
+          { on: "p21:log", at: [0.5, 0.7], set: { lines: 6 }, wait: 900 },
+          { on: "p21:status", set: { phase: "done" }, wait: 3000 },
+        ],
+        notes: [
+          {
+            kind: "concept",
+            on: "p21:status",
+            side: "left",
+            beat: 0,
+            text: "A publish is a set of steps, each switched on or off: save a new version, push and deploy, call webhooks.",
+          },
+          {
+            kind: "direction",
+            on: "p21:hooks",
+            side: "left",
+            beat: [2, 3],
+            text: "“Delivers updated code to other applications when you publish.” 2020’s Publish was one button; in 2023 the steps run tests, too.",
+          },
+          {
+            kind: "concept",
+            on: "p21:log",
+            side: "left",
+            beat: [5, 6, 7],
+            text: "Pushing opens a pull request with the generated code, so engineers review a publish like any change.",
           },
         ],
       },
