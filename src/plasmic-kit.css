@@ -1836,3 +1836,53 @@
   color: #111827;
   animation: pk-pop-in 0.3s ease-out both;
 }
+
+/* 2022's Insights (kit/insights.tsx). */
+.pk-ins-card {
+  padding: 18px 20px;
+  border-radius: 14px;
+  background: var(--pk-panel);
+  box-shadow: 0 0 0 1px var(--pk-line);
+}
+.pk-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 7px 9px;
+  border-radius: 7px;
+}
+.pk-metric[aria-pressed="true"] {
+  background: var(--pk-panel-2);
+}
+.pk-metric + .pk-metric {
+  box-shadow: 0 -1px 0 var(--pk-line);
+}
+.pk-metric[aria-pressed="true"] + .pk-metric,
+.pk-metric[aria-pressed="true"] {
+  box-shadow: none;
+}
+.pk-chart {
+  width: 100%;
+  height: 230px;
+  overflow: visible;
+}
+.pk-chart-area {
+  opacity: 0;
+  animation: pk-chart-area 0.5s 1.05s ease-out forwards;
+}
+@keyframes pk-chart-area {
+  to {
+    opacity: 0.06;
+  }
+}
+.pk-chart-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  vector-effect: non-scaling-stroke;
+  animation: pk-chart-draw 1.1s cubic-bezier(0.3, 0, 0.2, 1) forwards;
+}
+@keyframes pk-chart-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}

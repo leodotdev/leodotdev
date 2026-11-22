@@ -2,6 +2,7 @@ import { Editor21 } from "@/components/work/plasmic/kit/editor21"
 import { Editor22 } from "@/components/work/plasmic/kit/editor22"
 import { EditorCrumb } from "@/components/work/plasmic/kit/editor23"
 import { Cms } from "@/components/work/plasmic/kit/cms"
+import { Insights } from "@/components/work/plasmic/kit/insights"
 import type { Dive, Shot, State } from "@/components/work/plasmic/types"
 
 // 2022, from the "2021 – 2022 Product" file: the ribbon, a concept car
@@ -281,6 +282,57 @@ export const DIVES_2022: Array<Dive> = [
             on: "h1",
             beat: 8,
             text: "“Target variant is extra important”: the base stays the Original, and only B’s visitors see the new headline.",
+          },
+        ],
+      },
+      {
+        view: (s: State) => <Insights s={s} />,
+        url: "studio.plasmic.app/insights/new-website",
+        script: [
+          { on: "ins:header", at: [0.3, 0.5], wait: 2600 },
+          {
+            on: "ins:metric:clicks",
+            say: "Compare unique clicks",
+            click: true,
+            set: { metric: "clicks" },
+            wait: 2200,
+          },
+          {
+            on: "ins:metric:ctr",
+            click: true,
+            set: { metric: "ctr" },
+            wait: 2400,
+          },
+          {
+            on: "ins:event:signup-link",
+            say: "And each conversion event",
+            click: true,
+            set: { event: "signup-link" },
+            wait: 2600,
+          },
+          { on: "ins:side", at: [0.5, 0.3], wait: 2600 },
+        ],
+        notes: [
+          {
+            kind: "concept",
+            on: "ins:header",
+            side: "bottom",
+            beat: 0,
+            text: "Insights: the Original against its variant, the visitors each has had, and the days the test has run.",
+          },
+          {
+            kind: "direction",
+            on: "ins:events",
+            side: "bottom",
+            beat: 3,
+            text: "Where results live was open: “no events or results (the data is tracked in Google Optimize),” or tracked “in both Plasmic analytics and Google Optimize.”",
+          },
+          {
+            kind: "concept",
+            on: "ins:side",
+            side: "right",
+            beat: 4,
+            text: "Every optimization in one list: an A/B test, scheduled content, targeted content.",
           },
         ],
       },
