@@ -1036,6 +1036,53 @@ export const DIVES_2020: Array<Dive> = [
           },
         ],
       },
+      {
+        view: editor,
+        url: URL,
+        state: { layout: "rail", left: "activity", leftFloat: true },
+        script: [
+          { on: "act:figma", wait: 2400 },
+          {
+            on: "act:autosaves",
+            say: "Autosaves, folded away",
+            click: true,
+            set: { open: "act:autosaves" },
+            wait: 2200,
+          },
+          { on: "act:branched", wait: 2600 },
+          { on: "act:published", wait: 2400 },
+          {
+            on: "act:merged",
+            say: "A comment comes in",
+            set: { comment: true },
+            wait: 1400,
+          },
+          { on: "act:comment", wait: 2800 },
+        ],
+        notes: [
+          {
+            kind: "concept",
+            on: "activity",
+            side: "right",
+            beat: [0, 1],
+            text: "Activity: the project’s history as a feed, from its creation and a Figma import to visits, with autosaves folded away.",
+          },
+          {
+            kind: "discovery",
+            on: "act:branched",
+            side: "right",
+            beat: [2, 3, 4],
+            text: "Branched, forked, and merged are already in 2020’s feed. Branching got a menu of its own in the late-2022 and 2023 files.",
+          },
+          {
+            kind: "concept",
+            on: "act:comment",
+            side: "right",
+            beat: 5,
+            text: "Comments arrive in the feed with their replies.",
+          },
+        ],
+      },
     ],
   },
   {

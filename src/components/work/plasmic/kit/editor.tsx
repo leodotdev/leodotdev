@@ -53,6 +53,7 @@ import type {
   RailItem,
   TreeNode,
 } from "@/components/work/plasmic/kit/studio"
+import { Activity20 } from "@/components/work/plasmic/kit/activity20"
 import { ProjectsPage } from "@/components/work/plasmic/kit/pages"
 import type { State } from "@/components/work/plasmic/types"
 
@@ -154,7 +155,7 @@ export function Editor({ s }: { s: State }) {
                 left: 58,
                 top: 54,
                 width: 256,
-                height: 600,
+                height: left === "activity" ? 750 : 600,
                 position: "absolute",
               }
             : undefined
@@ -173,7 +174,9 @@ export function Editor({ s }: { s: State }) {
             hover={str(s.tabHover)}
           />
         )}
-        {left === "insert" ? (
+        {left === "activity" ? (
+          <Activity20 s={s} />
+        ) : left === "insert" ? (
           <InsertPanel
             query={str(s.q)}
             focus={Boolean(s.qFocus)}
@@ -219,7 +222,13 @@ export function Editor({ s }: { s: State }) {
       />
       {layout === "rail" && (
         <Rail
-          active={(left === "none" ? undefined : left) as RailItem | undefined}
+          active={
+            (left === "none"
+              ? undefined
+              : left === "activity"
+                ? "versions"
+                : left) as RailItem | undefined
+          }
           hover={str(s.railHover)}
         />
       )}

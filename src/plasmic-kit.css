@@ -2237,3 +2237,23 @@
 .pk-source[data-state="hover"] {
   box-shadow: 0 0 0 2px var(--pk-accent);
 }
+
+/* 2020's Activity feed (kit/activity20.tsx). */
+.pk-act {
+  display: flex;
+  gap: 10px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--pk-line);
+}
+.pk-act[data-nested] {
+  margin-left: 22px;
+  padding-left: 12px;
+  border-top: 0;
+  border-left: 1px solid var(--pk-line-2);
+}
+.pk-act[data-new] {
+  margin: 4px 8px;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1.5px var(--pk-accent);
+  animation: pk-pop-in 0.3s ease-out both;
+}
