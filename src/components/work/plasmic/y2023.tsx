@@ -41,6 +41,8 @@ const TEAM: Array<Peer> = [
   },
 ]
 
+const APP: State = { labeled: true, project: "CRM App", left: "none" }
+
 export const DIVES_2023: Array<Dive> = [
   {
     slug: "breadcrumbs",
@@ -288,12 +290,12 @@ export const DIVES_2023: Array<Dive> = [
     slug: "app-builder",
     title: "App Builder",
     summary:
-      "Internal apps: a labeled rail, collections, and lists bound to data.",
+      "Internal apps: templates, lists bound to data, queries, and sign-in.",
     scenes: [
       {
         view: crumb,
         url: "studio.plasmic.app/projects/crm-app",
-        state: { labeled: true, project: "CRM App", crm: true, left: "none" },
+        state: { ...APP, crm: true },
         notes: [
           {
             kind: "direction",
@@ -318,6 +320,169 @@ export const DIVES_2023: Array<Dive> = [
           { on: "rail:components", wait: 2400 },
           { on: "crm:list", wait: 2600 },
           { on: "mode:preview", wait: 2200 },
+        ],
+      },
+      {
+        view: crumb,
+        url: "studio.plasmic.app/projects/crm-app",
+        state: { ...APP, newPage: true },
+        script: [
+          { on: "tpl", wait: 2200 },
+          { on: "tpl:inbox", set: { tpl: "Inbox" }, wait: 1300 },
+          { on: "tpl:kanban-board", set: { tpl: "Kanban board" }, wait: 1300 },
+          { on: "tpl:data-details", set: { tpl: "Data details" }, wait: 1300 },
+          {
+            on: "tpl:cards",
+            say: "Start from Cards",
+            set: { tpl: "Cards" },
+            wait: 700,
+          },
+          {
+            on: "tpl:cards",
+            click: true,
+            set: { newPage: false, crm: true, tpl: "" },
+            wait: 2800,
+          },
+        ],
+        notes: [
+          {
+            kind: "direction",
+            on: "tpl",
+            side: "right",
+            beat: [0, 1, 2, 3],
+            text: "A new page opens on templates in the shapes internal apps take: cards, inbox, table, kanban board, list, form, and data details.",
+          },
+          {
+            kind: "concept",
+            on: "crm:list",
+            side: "bottom",
+            beat: 5,
+            text: "Cards, filled from the data: one card designed, one per row.",
+          },
+        ],
+      },
+      {
+        view: crumb,
+        url: "studio.plasmic.app/projects/crm-app",
+        state: { ...APP, crm: true },
+        script: [
+          {
+            on: "rail:data",
+            say: "Open the page’s data",
+            click: true,
+            set: { query: true },
+            wait: 1600,
+          },
+          { on: "query:form", wait: 2400 },
+          { on: "query:preview", at: [0.5, 0.45], wait: 2400 },
+          {
+            on: "query:sql",
+            say: "The same query, as SQL",
+            click: true,
+            set: { sql: true },
+            wait: 1400,
+          },
+          {
+            on: "query:code",
+            at: [0.9, 0.5],
+            shape: "text",
+            click: true,
+            set: { sqlFocus: true },
+            wait: 300,
+          },
+          {
+            on: "query:code",
+            at: [0.9, 0.5],
+            shape: "text",
+            type: { key: "where", text: "state = 'CA'" },
+            wait: 900,
+          },
+          {
+            on: "query:run",
+            say: "Save & run",
+            click: true,
+            set: { sqlFocus: false, ran: true },
+            wait: 2600,
+          },
+          {
+            on: "query:view",
+            say: "See it as JSON",
+            click: true,
+            set: { json: true },
+            wait: 2600,
+          },
+        ],
+        notes: [
+          {
+            kind: "concept",
+            on: "query:form",
+            side: "top",
+            beat: [1],
+            text: "A query fetches, caches, and updates a page’s data, from a source picked here, in a GUI or SQL.",
+          },
+          {
+            kind: "concept",
+            on: "query:preview",
+            side: "top",
+            beat: [2, 6, 7],
+            text: "Its rows previewed as the page will get them, as a table or JSON.",
+          },
+        ],
+      },
+      {
+        view: crumb,
+        url: "studio.plasmic.app/projects/crm-app",
+        state: { ...APP, crm: true },
+        script: [
+          {
+            on: "rail:settings",
+            say: "Open the project’s settings",
+            click: true,
+            set: { settings: true },
+            wait: 1600,
+          },
+          { on: "auth:provider", wait: 2200 },
+          { on: "auth:registration", wait: 2200 },
+          {
+            on: "auth:google",
+            at: [0.12, 0.5],
+            say: "Let people sign in with Google",
+            click: true,
+            set: { google: true },
+            wait: 1800,
+          },
+          { on: "auth:roles", wait: 2400 },
+          {
+            on: "auth:login",
+            at: [0.12, 0.5],
+            say: "New pages need a login",
+            click: true,
+            set: { loginNeeded: true },
+            wait: 2400,
+          },
+        ],
+        notes: [
+          {
+            kind: "concept",
+            on: "settings:nav",
+            side: "left",
+            beat: [1, 2],
+            text: "An app has users: Authentication sits in the project’s Settings with data sources, publishing, the app host, and localization.",
+          },
+          {
+            kind: "concept",
+            on: "auth:roles",
+            side: "right",
+            beat: 4,
+            text: "Roles nest, Admin over Power over Normal, and a page can ask for one.",
+          },
+          {
+            kind: "concept",
+            on: "auth:defaults",
+            side: "right",
+            beat: 5,
+            text: "Defaults for new pages: Login needed, Role needed.",
+          },
         ],
       },
     ],

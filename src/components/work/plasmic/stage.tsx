@@ -435,6 +435,8 @@ function Player({
               // Near the browser's right edge, the step is said to the
               // cursor's left.
               data-flip={cursor.x * s > bw - 240 ? "" : undefined}
+              // And near its foot, above it.
+              data-up={cursor.y * s > bh - chrome - 56 ? "" : undefined}
               style={{ translate: at(cursor.x, cursor.y) }}
             >
               <b>{say.n}</b>

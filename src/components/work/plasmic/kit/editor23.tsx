@@ -7,6 +7,7 @@ import {
   TbChevronRight,
   TbCircleCheck,
   TbComponents,
+  TbDatabase,
   TbDeviceDesktop,
   TbDiamond,
   TbDots,
@@ -38,6 +39,11 @@ import {
   Tree,
 } from "@/components/work/plasmic/kit/studio"
 import type { TreeNode } from "@/components/work/plasmic/kit/studio"
+import {
+  QueryDrawer,
+  SettingsModal,
+  TemplatePick,
+} from "@/components/work/plasmic/kit/app23"
 import type { State } from "@/components/work/plasmic/types"
 
 // The editor after the ribbon (late 2022) and through 2023, from the
@@ -101,7 +107,13 @@ export function EditorCrumb({ s }: { s: State }) {
         data-rec={rec ? "" : undefined}
         style={{ "--pk-dots": "var(--pk-line-2)" } as React.CSSProperties}
       >
-        {s.crm ? <Crm /> : <Boards rec={rec} view={view} />}
+        {s.newPage ? (
+          <TemplatePick hover={str(s.tpl)} />
+        ) : s.crm ? (
+          <Crm />
+        ) : (
+          <Boards rec={rec} view={view} />
+        )}
         <span
           className="pk-zoom absolute right-3 bottom-3 rounded-lg"
           style={{ background: "var(--pk-pop)", boxShadow: "var(--pk-shadow)" }}
@@ -109,12 +121,14 @@ export function EditorCrumb({ s }: { s: State }) {
           {Math.round(view.z * 100)}% <TbChevronDown className="h-3 w-3" />
         </span>
         {logic && <LogicPanel flow={Boolean(s.flow)} />}
+        {Boolean(s.query) && <QueryDrawer s={s} />}
       </main>
       {!s.crm && !logic && <RightCrumb s={s} />}
       {s.projMenu && <ProjectMenu s={s} />}
       {s.publish && <PublishDialog ran={Boolean(s.testsRun)} />}
       {s.merge && <MergeDialog />}
       {s.palette && <Palette q={str(s.q)} />}
+      {Boolean(s.settings) && <SettingsModal s={s} />}
     </div>
   )
 }
@@ -181,7 +195,7 @@ function CrumbBar({ s }: { s: State }) {
       <TbChevronRight className="h-3 w-3 opacity-40" />
       <Crumb
         icon={TbFileText}
-        value={logic ? "Counter" : "Homepage"}
+        value={logic ? "Counter" : s.newPage ? "New" : "Homepage"}
         label={logic ? "Component" : "Page"}
         pk="crumb:page"
       />
@@ -319,6 +333,7 @@ function RailCrumb({ s }: { s: State }) {
         ["components", TbComponents, "Components"],
         ["styles", TbDroplet, "Styles"],
         ["assets", TbPhoto, "Assets"],
+        ["data", TbDatabase, "Data"],
         ["copilot", TbSparkles, "Copilot"],
         ["more", TbDots, "More…"],
       ]
@@ -368,6 +383,15 @@ function RailCrumb({ s }: { s: State }) {
         </span>
       ))}
       <span className="pk-rail-end" />
+      {labeled && (
+        <span
+          className="pk-tool"
+          data-pk="rail:settings"
+          aria-pressed={Boolean(s.settings)}
+        >
+          <TbSettings />
+        </span>
+      )}
       <span className="pk-tool">
         <TbMessage />
       </span>

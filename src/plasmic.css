@@ -552,6 +552,9 @@
   margin: 22px 0 0 -12px;
   transform: translateX(-100%);
 }
+.pl-say[data-up] {
+  margin-top: -34px;
+}
 .pl-say b {
   display: grid;
   place-items: center;
