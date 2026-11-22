@@ -761,6 +761,8 @@ function ExploreBadge({
         type="button"
         className="pl-explore-badge"
         style={{ left: x + w, top: y }}
+        // Near the browser's right edge, the badge sits inside the corner.
+        data-edge={x + w > APP_W * s - 110 ? "" : undefined}
         onClick={onOpen}
       >
         {explore.label}
