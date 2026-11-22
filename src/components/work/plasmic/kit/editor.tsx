@@ -131,20 +131,32 @@ export function Editor({ s }: { s: State }) {
   const hoverBox = s.canvasHover ? inLogin(str(s.canvasHover)) : null
   const accent = str(s.accent, "#2563eb")
 
-  const tree = LOGIN_TREE.filter(
-    (n) => !s.q || n.label.toLowerCase().includes(str(s.q).toLowerCase())
-  ).concat(
-    s.dropped
-      ? [
-          {
-            id: "dropped",
-            label: "Button",
-            kind: "component",
-            depth: 2,
-          },
-        ]
-      : []
-  )
+  // Moved: the subtitle dragged up one, above the heading.
+  const order = s.moved
+    ? LOGIN_TREE.map((n) =>
+        n.id === "heading"
+          ? LOGIN_TREE[5]
+          : n.id === "subtitle"
+            ? LOGIN_TREE[4]
+            : n
+      )
+    : LOGIN_TREE
+  const tree = order
+    .filter(
+      (n) => !s.q || n.label.toLowerCase().includes(str(s.q).toLowerCase())
+    )
+    .concat(
+      s.dropped
+        ? [
+            {
+              id: "dropped",
+              label: "Button",
+              kind: "component",
+              depth: 2,
+            },
+          ]
+        : []
+    )
 
   const leftPanel =
     left === "none" ? null : (
@@ -229,7 +241,9 @@ export function Editor({ s }: { s: State }) {
               ? undefined
               : left === "activity"
                 ? "versions"
-                : left) as RailItem | undefined
+                : left === "assets"
+                  ? "tokens"
+                  : left) as RailItem | undefined
           }
           hover={str(s.railHover)}
         />
@@ -317,7 +331,9 @@ export function Editor({ s }: { s: State }) {
                     ? "Title slot"
                     : sel === "root"
                       ? "Root"
-                      : "Button"}
+                      : sel === "subtitle" || sel === "heading"
+                        ? "Text"
+                        : "Button"}
               </>
             }
             size={

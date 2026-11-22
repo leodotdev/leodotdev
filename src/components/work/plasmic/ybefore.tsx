@@ -190,7 +190,7 @@ export const DIVES_BEFORE: Array<Dive> = [
             on: "naming:crumbs",
             side: "bottom",
             beat: [0, 1, 2],
-            text: "Three restyles, one difference: the breadcrumb’s root, Studio, Page, or Arena.",
+            text: "Three restyles, and the breadcrumb’s root in each: Studio, Page, or Arena.",
           },
           {
             kind: "discovery",
@@ -338,7 +338,8 @@ export const DIVES_BEFORE: Array<Dive> = [
             wait: 1400,
           },
           {
-            on: "hw:dom:checkbox",
+            on: "hw:dom",
+            at: [0.5, 0.75],
             say: "Select the checkbox",
             click: true,
             set: { screen2: true },

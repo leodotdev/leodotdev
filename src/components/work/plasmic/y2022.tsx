@@ -296,13 +296,13 @@ export const DIVES_2022: Array<Dive> = [
           {
             kind: "direction",
             on: "float:arenas",
-            beat: 1,
+            beat: 0,
             text: "Each button drops a panel that floats under it, pinnable: the side panels, called up only when wanted.",
           },
           {
             kind: "discovery",
             on: "float:layers",
-            beat: 2,
+            beat: [1, 2],
             text: "The ribbon’s Layers panel floats with a pin; the editor after it docks the tree again.",
           },
         ],
@@ -553,6 +553,7 @@ export const DIVES_2022: Array<Dive> = [
             on: "r:spacing",
             say: "Tighter padding on phones",
             click: true,
+            set: { tightPad: true },
             wait: 2400,
           },
           { on: "publish", wait: 2000 },

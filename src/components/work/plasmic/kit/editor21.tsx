@@ -109,7 +109,7 @@ export function Editor21({ s }: { s: State }) {
       <main
         className="pk-canvas pk-area-canvas"
         data-pk="canvas"
-        data-rec={s.rec ? "" : undefined}
+        data-rec={s.rec || s.multiRec ? "" : undefined}
         style={
           s.sand
             ? ({
@@ -202,8 +202,17 @@ export function Editor21({ s }: { s: State }) {
             >
               <b>{num(s.heroMargin, 0)}</b>
               {Boolean(s.mdrag) && <span className="pk-mtip">Margin</span>}
-              <i data-pk="margin:edge" />
             </div>
+          )}
+          {Boolean(s.sand) && s.sel === "hero" && (
+            <i
+              className="pk-medge"
+              style={{
+                left: 80 + 1180 * 0.3 - 24,
+                top: 574 + num(s.heroMargin, 0) - 6,
+              }}
+              data-pk="margin:edge"
+            />
           )}
         </div>
         <VariantPill s={s} />
@@ -593,7 +602,7 @@ function ComponentPanel({ s }: { s: State }) {
         className="pk-muted mx-3 mb-2 text-[11px] leading-4"
         data-pk="component:about"
       >
-        Show a list of options in a dropdown menu. Supports selecting 0 or 1
+        Show a list of options in a dropdown menu. Supports selection 0 or 1
         option at a time.
       </p>
       <div
@@ -661,7 +670,7 @@ function ComponentPanel({ s }: { s: State }) {
 /** The right panel in 2021's order; `expand` lists the sections open. */
 function Right21({ s }: { s: State }) {
   const open = str(s.expand, "size").split(",")
-  const rec = Boolean(s.rec)
+  const rec = Boolean(s.rec || s.multiRec)
   const head = (
     <div
       className="grid grid-cols-3 gap-1 border-b px-3 py-2.5"
@@ -872,9 +881,15 @@ function Right21({ s }: { s: State }) {
             <Input rec={rec}>
               <span
                 className="pk-swatch"
-                style={{ background: s.globalDark ? "#f8fafc" : "#222" }}
+                style={{
+                  background: s.globalDark
+                    ? "#f8fafc"
+                    : s.multiColor
+                      ? "#2563eb"
+                      : "#222",
+                }}
               />
-              {s.globalDark ? "#F8FAFC" : "#222222"}
+              {s.globalDark ? "#F8FAFC" : s.multiColor ? "#2563EB" : "#222222"}
             </Input>
           </Field>
           <Field label="Family">

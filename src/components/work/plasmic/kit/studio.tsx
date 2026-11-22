@@ -433,7 +433,7 @@ export function Tree({
   nodes: Array<TreeNode>
   selected?: string
   hover?: string
-  /** The row a dragged item would land under. */
+  /** The row a dragged item would land under (or, as `^id`, above). */
   drop?: string
 }) {
   return (
@@ -451,7 +451,13 @@ export function Tree({
             data-pk={`row:${n.id}`}
             data-kind={kind}
             data-dim={n.dim || undefined}
-            data-drop={drop === n.id || undefined}
+            data-drop={
+              drop === n.id
+                ? "below"
+                : drop === `^${n.id}`
+                  ? "above"
+                  : undefined
+            }
             data-state={hover === n.id ? "hover" : undefined}
             aria-selected={selected === n.id}
             style={

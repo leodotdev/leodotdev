@@ -418,7 +418,7 @@ export const DIVES_2020: Array<Dive> = [
             kind: "direction",
             on: "tree",
             beat: 2,
-            text: "“We need to deepen the difference between containers/parents and items/children.” A selected container reads bolder in the tree; its children get a slight shade.",
+            text: "“We need to deepen the difference between containers/parents and items/children.”",
           },
           {
             kind: "concept",
@@ -691,16 +691,27 @@ export const DIVES_2020: Array<Dive> = [
           },
           {
             on: "row:subtitle",
-            drag: "row:header",
+            drag: "row:heading",
             ghost: "Log in to keep building.",
-            set: { drop: "" },
-            wait: 1200,
+            set: { drop: "^heading" },
+            wait: 900,
+          },
+          {
+            on: "row:heading",
+            set: { drop: "", moved: true },
+            wait: 1400,
           },
           {
             on: "row:button",
             say: "Right-click for more",
             click: true,
-            set: { sel: "button", menu: "context", menuX: 140, menuY: 330 },
+            set: {
+              sel: "button",
+              menu: "context",
+              menuX: 140,
+              menuY: 330,
+              moved: false,
+            },
             wait: 900,
           },
           {
@@ -713,13 +724,13 @@ export const DIVES_2020: Array<Dive> = [
           {
             kind: "direction",
             on: "tree",
-            beat: [3, 4],
+            beat: [3, 4, 5],
             text: "“Dragging text Block up one”: a line shows where a row will land, at its depth.",
           },
           {
             kind: "direction",
             on: "menu",
-            beat: 6,
+            beat: 7,
             text: "“Context menu, Paste Styles disabled”: what can’t be done shows, dimmed, rather than going missing.",
           },
         ],

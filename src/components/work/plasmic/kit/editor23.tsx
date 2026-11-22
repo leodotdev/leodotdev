@@ -128,6 +128,7 @@ export function EditorCrumb({ s }: { s: State }) {
         <span
           className="pk-zoom absolute right-3 bottom-3 rounded-lg"
           style={{ background: "var(--pk-pop)", boxShadow: "var(--pk-shadow)" }}
+          data-pk="zoom-level"
         >
           {Math.round(view.z * 100)}% <TbChevronDown className="h-3 w-3" />
         </span>
@@ -879,7 +880,9 @@ function RightCrumb({ s }: { s: State }) {
             <span>Spacing</span>
           </div>
           <Field label="Padding">
-            <Input rec={Boolean(s.rec)}>{s.rec ? "48 24" : "80 40"}</Input>
+            <Input rec={Boolean(s.rec && s.tightPad)}>
+              {s.rec && s.tightPad ? "48 24" : "80 40"}
+            </Input>
           </Field>
         </div>
         <div className="pk-section" data-pk="r:background">
@@ -1257,9 +1260,11 @@ function Palette({ q }: { q: string }) {
   > = [
     [TbSparkles, `Ask Plasmic Copilot${q ? `: ${q}` : "…"}`, true],
     [TbPlus, `Insert element, component, template${q ? `: ${q}` : "…"}`],
-    [TbPlus, "New page, component, interaction…"],
+    [TbPlus, "New page, component, interaction, page variant…"],
+    [TbPlus, "New image, icon, mixin, token…"],
     [TbPencil, "Wrap in container, section, slot, link…"],
-    [TbPalette, "Apply repeat, mixin, element state…"],
+    [TbPalette, "Apply repeat, mixin, element state, custom behavior…"],
+    [TbPencil, "Edit name, settings, design…"],
     [TbBook, "Search the docs…"],
   ]
   return (
@@ -1290,7 +1295,6 @@ function Palette({ q }: { q: string }) {
   )
 }
 
-/** The app builder's sample: a dark internal app, its list bound to data. */
 /**
  * The sample CRM, as a role would see it (viewAs): Anonymous meets the
  * login, Normal has no Staff page, and Admin sees everything.

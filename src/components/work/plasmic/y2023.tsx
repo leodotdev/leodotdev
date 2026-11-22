@@ -448,7 +448,7 @@ export const DIVES_2023: Array<Dive> = [
             kind: "concept",
             on: "merge:table",
             beat: 3,
-            text: "Merging picks, change by change, which branch to keep: pages, components, and tokens.",
+            text: "Merging picks, change by change, which branch to keep: pages and tokens.",
           },
           {
             kind: "direction",
