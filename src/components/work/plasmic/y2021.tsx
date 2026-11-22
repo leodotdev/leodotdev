@@ -417,7 +417,7 @@ export const DIVES_2021: Array<Dive> = [
     slug: "right-panel",
     title: "Visibility & Values",
     summary:
-      "Visible, rendered but hidden, or not rendered; and a value’s own menu.",
+      "Visible, rendered but hidden, or not rendered; a value’s own menu; and Spotlight edit.",
     scenes: [
       {
         view: e21,
@@ -500,6 +500,51 @@ export const DIVES_2021: Array<Dive> = [
             side: "bottom",
             beat: [7, 8],
             text: "A value’s own menu: take it out of a variant or the base, extract it to a mixin, token, or variant, or link it to a prop or data.",
+          },
+        ],
+      },
+      {
+        view: e21,
+        url: URL,
+        state: { sel: "nav", expand: "size" },
+        script: [
+          { on: "site:nav", wait: 2000 },
+          {
+            on: "spotlight",
+            say: "Spotlight edit, ⌘↵",
+            click: true,
+            set: { spot: true },
+            wait: 2400,
+          },
+          {
+            on: "site:nav",
+            at: [0.5, 0.5],
+            say: "Add a link, in place",
+            click: true,
+            set: { navLink: "Sale" },
+            wait: 2600,
+          },
+          {
+            on: "spotlight",
+            click: true,
+            set: { spot: false, navLink: "" },
+            wait: 1600,
+          },
+        ],
+        notes: [
+          {
+            kind: "direction",
+            on: "spotlight",
+            side: "left",
+            beat: [0, 1],
+            text: "“Spotlight edit” (⌘↵), on a component instance: the page grays out around it.",
+          },
+          {
+            kind: "concept",
+            on: "site:nav",
+            side: "bottom",
+            beat: 2,
+            text: "An instance takes its look from its component, so a link added to Navigation is in every instance of it.",
           },
         ],
       },

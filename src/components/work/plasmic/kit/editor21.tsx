@@ -1,4 +1,5 @@
 import {
+  TbWand,
   TbAlertTriangle,
   TbArrowLeft,
   TbArrowRight,
@@ -142,6 +143,8 @@ export function Editor21({ s }: { s: State }) {
                 grid={Boolean(s.grid)}
                 dark={s.globalDark === true}
                 hide={str(s.visMode)}
+                spot={Boolean(s.spot)}
+                navLink={str(s.navLink)}
               />
             </div>
           </div>
@@ -661,6 +664,18 @@ function Right21({ s }: { s: State }) {
           <span className="pk-faint text-[11px]">{b}</span>
         </span>
       ))}
+      {s.sel === "nav" && (
+        <span
+          className="pk-btn col-span-3 mt-1 justify-start"
+          data-kind={s.spot ? "primary" : "ghost"}
+          style={{ height: 26 }}
+          data-pk="spotlight"
+        >
+          <TbWand className="h-3.5 w-3.5" />
+          {s.spot ? "Spotlight editing Navigation" : "Spotlight edit"}
+          <span className="pk-mono ml-auto opacity-70">⌘↵</span>
+        </span>
+      )}
     </div>
   )
   const row = (
@@ -1276,11 +1291,24 @@ function Site21({
   grid,
   dark,
   hide = "",
+  spot = false,
+  navLink = "",
 }: {
   grid: boolean
   dark: boolean
   hide?: string
+  /** Spotlight edit: the navigation alone, the page grayed out around it. */
+  spot?: boolean
+  /** A link added to the navigation. */
+  navLink?: string
 }) {
+  const away: React.CSSProperties = spot
+    ? {
+        opacity: 0.25,
+        filter: "grayscale(1)",
+        transition: "opacity 0.4s, filter 0.4s",
+      }
+    : { transition: "opacity 0.4s, filter 0.4s" }
   const fg = dark ? "#f8fafc" : "#111827"
   const bg = dark ? "#0f172a" : "#fff"
   return (
@@ -1304,6 +1332,17 @@ function Site21({
         </span>
         <span style={{ color: "#ec4899" }}>About</span>
         <span style={{ color: "#ec4899" }}>Contact</span>
+        {navLink && (
+          <span
+            style={{
+              color: "#ec4899",
+              animation: "pk-pop-in 0.3s ease-out both",
+            }}
+            data-pk="site:navlink"
+          >
+            {navLink}
+          </span>
+        )}
         <span
           className="ml-auto rounded-full px-5 py-2 text-white"
           style={{ background: "#ec4899" }}
@@ -1313,7 +1352,11 @@ function Site21({
       </div>
       <div
         className="flex flex-col justify-center gap-4 px-20"
-        style={{ height: 400, background: dark ? "#111c33" : "#fdf2f8" }}
+        style={{
+          height: 400,
+          background: dark ? "#111c33" : "#fdf2f8",
+          ...away,
+        }}
         data-pk="site:hero"
       >
         <span style={{ fontSize: 56, lineHeight: "64px", fontWeight: 700 }}>
@@ -1333,6 +1376,7 @@ function Site21({
         className="grid gap-8 px-20 py-12"
         style={{
           gridTemplateColumns: grid ? "repeat(3, 1fr)" : "repeat(4, 1fr)",
+          ...away,
         }}
         data-pk="site:grid"
       >
