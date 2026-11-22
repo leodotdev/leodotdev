@@ -28,7 +28,7 @@ export const YEARS: Array<Year> = [
     slug: "2022",
     name: "2022",
     summary:
-      "The ribbon, a concept car with every control over the canvas; A/B tests and a CMS; and the way back to a rail.",
+      "Panels as tabs; the ribbon, a concept car with every control over the canvas; A/B tests and a CMS; and the way back to a rail.",
     dives: DIVES_2022,
   },
   {

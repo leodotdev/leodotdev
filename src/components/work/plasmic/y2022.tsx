@@ -2,6 +2,7 @@ import { Editor21 } from "@/components/work/plasmic/kit/editor21"
 import { Editor22 } from "@/components/work/plasmic/kit/editor22"
 import { EditorCrumb } from "@/components/work/plasmic/kit/editor23"
 import { Cms } from "@/components/work/plasmic/kit/cms"
+import { EditorTabs } from "@/components/work/plasmic/kit/editortabs"
 import { Insights } from "@/components/work/plasmic/kit/insights"
 import type { Dive, Shot, State } from "@/components/work/plasmic/types"
 
@@ -44,6 +45,99 @@ const RIBBONS: Array<Shot> = [
 ]
 
 export const DIVES_2022: Array<Dive> = [
+  {
+    slug: "tabs",
+    title: "Panels as Tabs",
+    summary:
+      "The panels as icon tabs in the top bar, a breadcrumb between them, and Insert in columns.",
+    scenes: [
+      {
+        view: (s: State) => <EditorTabs s={s} />,
+        url: URL,
+        script: [
+          { on: "tabs", wait: 2400 },
+          { on: "tokens:tip", wait: 2400 },
+          { on: "textbar", wait: 2000 },
+          {
+            on: "tab:insert",
+            say: "Open Insert",
+            click: true,
+            set: { dialog: true, cat: "Recent" },
+            wait: 1400,
+          },
+          {
+            on: "cat:media",
+            say: "Media, then Images",
+            click: true,
+            set: { cat: "Media" },
+            wait: 1200,
+          },
+          {
+            on: "pic:sunset",
+            click: true,
+            set: { pick: "sunset.png" },
+            wait: 2200,
+          },
+          {
+            on: "ins3:insert",
+            say: "Insert it inside the page",
+            click: true,
+            set: { dialog: false, inserted: "sunset.png", pick: "" },
+            wait: 2400,
+          },
+          {
+            on: "tab:insert",
+            say: "Or from the Component Store",
+            click: true,
+            set: { dialog: true, cat: "Component Store" },
+            wait: 1200,
+          },
+          {
+            on: "store:pricing-table",
+            click: true,
+            set: { pick: "Pricing table" },
+            wait: 2600,
+          },
+          {
+            on: "tab:styles",
+            click: true,
+            set: { dialog: false, pick: "", inserted: "" },
+            wait: 1200,
+          },
+        ],
+        notes: [
+          {
+            kind: "direction",
+            on: "tabs",
+            side: "bottom",
+            beat: 0,
+            text: "The rail’s panels moved into the top bar as icon tabs: insert, tree, styles, globals, and data.",
+          },
+          {
+            kind: "concept",
+            on: "tokens:tip",
+            side: "right",
+            beat: 1,
+            text: "“Create and reuse tokens for foundational design values like colors and measurements. A token can also reference another token.”",
+          },
+          {
+            kind: "concept",
+            on: "ins3:where",
+            side: "top",
+            beat: [4, 5],
+            text: "Insert in columns, a category, its items, then the one picked, and where it goes: before, inside, or after the selection.",
+          },
+          {
+            kind: "direction",
+            on: "ins3:cats",
+            side: "right",
+            beat: [7, 8],
+            text: "Insert reached past the project: a Component Store and a Template Store, then Airtable and Google Sheets.",
+          },
+        ],
+      },
+    ],
+  },
   {
     slug: "ribbon",
     title: "The Ribbon",

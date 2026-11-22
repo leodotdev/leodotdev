@@ -2088,3 +2088,97 @@
     rotate: 1turn;
   }
 }
+
+/* Early 2022's icon-tab shell (kit/editortabs.tsx). */
+.pk-tokens-tip {
+  display: flex;
+  gap: 8px;
+  margin: 10px 12px 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--pk-warn) 14%, var(--pk-panel));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--pk-warn) 30%, transparent);
+  line-height: 16px;
+}
+.pk-textbar {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 38px;
+  padding: 0 10px;
+  border-radius: 9px;
+  background: var(--pk-pop);
+  box-shadow: var(--pk-shadow);
+  translate: -50% 0;
+}
+.pk-textbar .pk-icon-btn[aria-pressed="true"] {
+  background: var(--pk-panel-3);
+  color: var(--pk-fg);
+}
+.pk-ins3 {
+  top: 90px;
+  left: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  height: 430px;
+  overflow: hidden;
+}
+.pk-ins3-col {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px;
+  overflow: hidden;
+  border-right: 1px solid var(--pk-line);
+}
+.pk-ins3-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 7px;
+}
+.pk-ins3-row > svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  opacity: 0.7;
+}
+.pk-ins3-row[aria-selected="true"] {
+  background: var(--pk-accent-bg);
+  color: var(--pk-accent);
+  font-weight: 500;
+}
+.pk-store-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: 140px;
+  padding: 14px;
+  border-radius: 10px;
+  background: #fff;
+}
+.pk-store-card > i {
+  display: block;
+  height: 10px;
+  border-radius: 5px;
+  background: #e5e7eb;
+}
+.pk-store-card > i:first-child {
+  width: 40%;
+  height: 14px;
+  background: #1f2937;
+}
+.pk-store-card > i:last-child {
+  width: 30%;
+  height: 24px;
+  margin-top: auto;
+  background: #7c3aed;
+}
