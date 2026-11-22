@@ -2373,3 +2373,46 @@
 .pk-d23-tab:not([aria-selected="true"]):hover {
   color: var(--pk-fg);
 }
+
+/* Late 2022's Project settings (kit/settings22.tsx). */
+.pk-s22-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 20px 22px;
+  border-bottom: 1px solid var(--pk-line);
+}
+.pk-s22-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.pk-s22-row > span {
+  padding: 22px 0 0 16px;
+  border-left: 1px solid var(--pk-line);
+}
+.pk-s22-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px var(--pk-line-2);
+}
+.pk-s22-drop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 52px;
+  border: 1px dashed var(--pk-line-2);
+  border-radius: 6px;
+  color: var(--pk-fg-3);
+}
+
+/* Over a popover's or dialog's own ground, a field takes the step up, so
+   it reads as a field. */
+.pk-pop .pk-input,
+.pk-dialog .pk-input {
+  background: var(--pk-panel-3);
+}

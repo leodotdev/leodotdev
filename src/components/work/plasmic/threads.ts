@@ -45,6 +45,14 @@ export const THREADS: Array<Thread> = [
     ],
   },
   {
+    title: "Settings",
+    steps: [
+      ["2022", "settings"],
+      ["2023", "page-settings"],
+      ["2023", "app-builder"],
+    ],
+  },
+  {
     title: "Together",
     steps: [
       ["2020", "together"],

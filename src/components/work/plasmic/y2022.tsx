@@ -4,6 +4,7 @@ import { EditorCrumb } from "@/components/work/plasmic/kit/editor23"
 import { Cms } from "@/components/work/plasmic/kit/cms"
 import { EditorTabs } from "@/components/work/plasmic/kit/editortabs"
 import { Insights } from "@/components/work/plasmic/kit/insights"
+import { Settings22 } from "@/components/work/plasmic/kit/settings22"
 import { Slider22 } from "@/components/work/plasmic/kit/slider22"
 import type { Dive, Shot, State } from "@/components/work/plasmic/types"
 
@@ -698,6 +699,105 @@ export const DIVES_2022: Array<Dive> = [
             side: "left",
             beat: 4,
             text: "“*To re-arrange slides, use the outline panel (alt+1).” The slides are its children, so they are also rows in the tree.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "settings",
+    title: "Site Settings",
+    summary:
+      "A site’s title, how it reads in a search, its domains and images, and what an upgrade unlocks.",
+    scenes: [
+      {
+        view: (s: State) => (
+          <>
+            <Slider22 s={{}} />
+            <Settings22 s={s} />
+          </>
+        ),
+        url: URL,
+        script: [
+          {
+            on: "s22:title",
+            say: "Title the site",
+            shape: "text",
+            click: true,
+            set: { titleFocus: true, title: "" },
+            wait: 300,
+          },
+          {
+            on: "s22:title",
+            shape: "text",
+            type: { key: "title", text: "Acme Store" },
+            wait: 500,
+          },
+          {
+            on: "s22:preview",
+            set: { titleFocus: false },
+            wait: 2400,
+          },
+          {
+            on: "s22:sub",
+            say: "Pick a subdomain",
+            shape: "text",
+            click: true,
+            set: { subFocus: true, sub: "" },
+            wait: 300,
+          },
+          {
+            on: "s22:sub",
+            shape: "text",
+            type: { key: "sub", text: "acme-store" },
+            wait: 500,
+          },
+          { on: "s22:sub", set: { subFocus: false }, wait: 2200 },
+          {
+            on: "s22:images",
+            say: "Scroll down",
+            set: { scroll: 560 },
+            wait: 2200,
+          },
+          { on: "s22:security", wait: 2800 },
+          {
+            on: "s22:details",
+            set: {
+              scroll: 0,
+              title: "My Plasmic Project",
+              sub: "blank-project",
+            },
+            wait: 1200,
+          },
+        ],
+        notes: [
+          {
+            kind: "concept",
+            on: "s22:preview",
+            side: "left",
+            beat: 2,
+            text: "The site’s title and description, previewed as a result in a search would show them.",
+          },
+          {
+            kind: "concept",
+            on: "s22:sub",
+            side: "left",
+            beat: [4, 5],
+            text: "“Must be alphanumeric (a-z, 0-9) with dashes between words”: checked as it is typed.",
+          },
+          {
+            kind: "direction",
+            on: "s22:security",
+            side: "left",
+            beat: 7,
+            text: "A password and custom code, shown but disabled, each with Upgrade plan.",
+          },
+          {
+            kind: "discovery",
+            on: "s22",
+            side: "right",
+            beat: 7,
+            text: "One long column. Drawn beside it, “Idea - Split view settings”: App Settings, Publish Destinations, Data Sources down a side. 2023’s Settings is split that way.",
           },
         ],
       },
