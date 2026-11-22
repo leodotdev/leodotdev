@@ -55,6 +55,15 @@ export const DIVES_2022: Array<Dive> = [
       {
         view: (s: State) => <EditorTabs s={s} />,
         url: URL,
+        change: {
+          from: () => <Editor21 s={{ railless: true, expand: "text" }} />,
+          title: "2022: panels as tabs",
+          items: [
+            "The panels as icon tabs at the top bar’s left",
+            "A breadcrumb in its middle: project, page, screen",
+            "Insert as a dialog of columns",
+          ],
+        },
         script: [
           { on: "tabs", wait: 2400 },
           { on: "tokens:tip", wait: 2400 },

@@ -2,6 +2,7 @@ import { Dashboard23 } from "@/components/work/plasmic/kit/dash23"
 import { Editor } from "@/components/work/plasmic/kit/editor"
 import { EditorCrumb } from "@/components/work/plasmic/kit/editor23"
 import { Interactions23 } from "@/components/work/plasmic/kit/interactions23"
+import { Slider22 } from "@/components/work/plasmic/kit/slider22"
 import { Dashboard21 } from "@/components/work/plasmic/kit/teams"
 import type { Dive, Peer, Shot, State } from "@/components/work/plasmic/types"
 
@@ -101,6 +102,14 @@ export const DIVES_2023: Array<Dive> = [
         view: crumb,
         url: URL,
         peers: TEAM,
+        change: {
+          from: () => <Slider22 s={{}} />,
+          title: "2023: branches and modes",
+          items: [
+            "A branch in the breadcrumb, between the project and the page",
+            "Design, Logic, and Preview as modes at the top bar’s middle",
+          ],
+        },
         notes: [
           {
             kind: "concept",
