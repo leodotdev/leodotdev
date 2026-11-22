@@ -75,7 +75,12 @@ function YearList() {
 function Threads() {
   return (
     <div className="flex flex-col pt-12">
-      <h2 className="pb-6 font-semibold">Threads</h2>
+      <div className="flex flex-col gap-1 pb-6">
+        <h2 className="font-semibold">Threads</h2>
+        <p className="max-w-cols-9 text-pretty text-muted-foreground">
+          One part of the app, followed across the years.
+        </p>
+      </div>
       {THREADS.map((thread) => (
         <div
           key={thread.title}

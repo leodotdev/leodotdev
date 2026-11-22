@@ -266,8 +266,7 @@ function PlasmicWork() {
                 the work, year by year, rebuilt from my design files: scroll
                 through the app as it was designed, with the directions taken,
                 how it works, and what was learned. Move into the app to try it
-                yourself, follow one part of it across the years, or step
-                through them with ← and →.
+                yourself.
               </p>
             </div>
             <dl className="grid grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-4">
