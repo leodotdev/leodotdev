@@ -2485,3 +2485,19 @@
   box-shadow: 0 0 0 1.5px var(--pk-accent);
   color: var(--pk-accent);
 }
+.pk-perm {
+  display: flex;
+  flex-direction: column;
+  border-radius: 9px;
+  box-shadow: 0 0 0 1px var(--pk-line-2);
+}
+.pk-perm-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 4px 12px;
+}
+.pk-perm-row + .pk-perm-row {
+  border-top: 1px solid var(--pk-line);
+}

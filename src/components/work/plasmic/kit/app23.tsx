@@ -1,4 +1,5 @@
 import {
+  TbUser,
   TbArrowRight,
   TbBrandAirtable,
   TbBrandFirebase,
@@ -15,7 +16,7 @@ import {
   TbUsersGroup,
   TbX,
 } from "react-icons/tb"
-import { Mark, Tabs } from "@/components/work/plasmic/kit/studio"
+import { Avatars, Mark, Tabs } from "@/components/work/plasmic/kit/studio"
 import type { State } from "@/components/work/plasmic/types"
 
 // 2023's app builder, from the "P2023 H1" file's App Builder page: a new
@@ -538,101 +539,105 @@ export function SettingsModal({ s }: { s: State }) {
           <div className="px-4 pt-3">
             <Tabs
               items={["Permissions", "Settings", "Activity"]}
-              active="Settings"
+              active={str(s.authTab, "Settings")}
             />
           </div>
-          <div className="flex flex-col px-6">
-            <div className="pk-set-row" data-pk="auth:provider">
-              <span>Provider</span>
-              <span className="pk-input flex-1">
-                <Mark size={16} />
-                Plasmic Auth
-                <TbChevronDown className="ml-auto" />
-              </span>
-            </div>
-            <div className="pk-set-group" data-pk="auth:registration">
-              <b className="font-semibold">Registration</b>
-              <div className="pk-set-row">
-                <span>Allow signups</span>
-                <Switch on />
-              </div>
-              <div className="pk-set-row">
-                <span className="flex flex-col">
-                  Restrict signups
-                  <span className="pk-faint text-[11px]">
-                    e.g. “@domain.com”
-                  </span>
-                </span>
+          {s.authTab === "Permissions" ? (
+            <Permissions />
+          ) : (
+            <div className="flex flex-col px-6">
+              <div className="pk-set-row" data-pk="auth:provider">
+                <span>Provider</span>
                 <span className="pk-input flex-1">
-                  <span className="pk-chip">@acme.com</span>
+                  <Mark size={16} />
+                  Plasmic Auth
                   <TbChevronDown className="ml-auto" />
                 </span>
               </div>
-              <div className="pk-set-row items-start!">
-                <span className="pt-1">Allow</span>
-                <span className="flex flex-col gap-2.5">
-                  <span className="flex items-center gap-2.5">
-                    <Switch on />
-                    Email and password
-                  </span>
-                  <span
-                    className="flex items-center gap-2.5"
-                    data-pk="auth:google"
-                  >
-                    <Switch on={Boolean(s.google)} />
-                    Google
-                  </span>
-                </span>
-              </div>
-            </div>
-            <div className="pk-set-group">
-              <div className="pk-set-row" data-pk="auth:directory">
-                <b className="font-semibold">Directory</b>
-                <span className="pk-input flex-1">
-                  <TbUsersGroup />
-                  Main users
-                  <TbChevronDown className="ml-auto" />
-                </span>
-                <span className="flex items-center gap-1">
-                  Manage <TbArrowRight />
-                </span>
-              </div>
-            </div>
-            <div className="pk-set-group">
-              <div className="pk-set-row items-start!" data-pk="auth:roles">
-                <b className="pt-1.5 font-semibold">Roles</b>
-                <span className="pk-roles flex-1">
-                  {["Admin", "Power", "Normal"].map((r, i) => (
-                    <span key={r} style={{ paddingLeft: 12 + i * 16 }}>
-                      {r}
+              <div className="pk-set-group" data-pk="auth:registration">
+                <b className="font-semibold">Registration</b>
+                <div className="pk-set-row">
+                  <span>Allow signups</span>
+                  <Switch on />
+                </div>
+                <div className="pk-set-row">
+                  <span className="flex flex-col">
+                    Restrict signups
+                    <span className="pk-faint text-[11px]">
+                      e.g. “@domain.com”
                     </span>
-                  ))}
-                </span>
-                <TbPlus className="mt-1.5 opacity-60" />
+                  </span>
+                  <span className="pk-input flex-1">
+                    <span className="pk-chip">@acme.com</span>
+                    <TbChevronDown className="ml-auto" />
+                  </span>
+                </div>
+                <div className="pk-set-row items-start!">
+                  <span className="pt-1">Allow</span>
+                  <span className="flex flex-col gap-2.5">
+                    <span className="flex items-center gap-2.5">
+                      <Switch on />
+                      Email and password
+                    </span>
+                    <span
+                      className="flex items-center gap-2.5"
+                      data-pk="auth:google"
+                    >
+                      <Switch on={Boolean(s.google)} />
+                      Google
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div className="pk-set-group">
+                <div className="pk-set-row" data-pk="auth:directory">
+                  <b className="font-semibold">Directory</b>
+                  <span className="pk-input flex-1">
+                    <TbUsersGroup />
+                    Main users
+                    <TbChevronDown className="ml-auto" />
+                  </span>
+                  <span className="flex items-center gap-1">
+                    Manage <TbArrowRight />
+                  </span>
+                </div>
+              </div>
+              <div className="pk-set-group">
+                <div className="pk-set-row items-start!" data-pk="auth:roles">
+                  <b className="pt-1.5 font-semibold">Roles</b>
+                  <span className="pk-roles flex-1">
+                    {["Admin", "Power", "Normal"].map((r, i) => (
+                      <span key={r} style={{ paddingLeft: 12 + i * 16 }}>
+                        {r}
+                      </span>
+                    ))}
+                  </span>
+                  <TbPlus className="mt-1.5 opacity-60" />
+                </div>
+              </div>
+              <div className="pk-set-group" data-pk="auth:defaults">
+                <div className="pk-set-row items-start!">
+                  <span className="flex flex-col">
+                    <b className="font-semibold">Defaults</b>
+                    <span className="pk-faint text-[11px]">For new pages</span>
+                  </span>
+                  <span className="flex flex-col gap-2.5">
+                    <span
+                      className="flex items-center gap-2.5"
+                      data-pk="auth:login"
+                    >
+                      <Switch on={Boolean(s.loginNeeded)} />
+                      Login needed
+                    </span>
+                    <span className="flex items-center gap-2.5">
+                      <Switch on={false} />
+                      Role needed
+                    </span>
+                  </span>
+                </div>
               </div>
             </div>
-            <div className="pk-set-group" data-pk="auth:defaults">
-              <div className="pk-set-row items-start!">
-                <span className="flex flex-col">
-                  <b className="font-semibold">Defaults</b>
-                  <span className="pk-faint text-[11px]">For new pages</span>
-                </span>
-                <span className="flex flex-col gap-2.5">
-                  <span
-                    className="flex items-center gap-2.5"
-                    data-pk="auth:login"
-                  >
-                    <Switch on={Boolean(s.loginNeeded)} />
-                    Login needed
-                  </span>
-                  <span className="flex items-center gap-2.5">
-                    <Switch on={false} />
-                    Role needed
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       </section>
     </>
@@ -878,5 +883,78 @@ export function Integrations({ hover }: { hover?: string }) {
         </div>
       </section>
     </>
+  )
+}
+
+/**
+ * Authentication's Permissions, from the file's frame: who may use the app,
+ * by rule (anonymous visitors, anyone logged in, a domain, a group) and by
+ * person, each with a role. The people are the file's sample accounts.
+ */
+function Permissions() {
+  const rules: Array<
+    [React.ComponentType<{ className?: string }>, React.ReactNode, string]
+  > = [
+    [TbUser, "Anonymous visitors", "Denied"],
+    [TbUser, "Logged in users", "Normal"],
+    [
+      TbUsersGroup,
+      <>
+        Anyone from <span className="pk-chip">@consultants.com</span>
+      </>,
+      "Power",
+    ],
+    [
+      TbUsersGroup,
+      <>
+        Group <span className="pk-chip">mgmt</span>
+      </>,
+      "Power",
+    ],
+  ]
+  const people: Array<[string, string, string]> = [
+    ["mike@dundermifflin.com", "2d ago · mgmt", "Normal"],
+    ["russ@sv.com", "2d ago", "Power"],
+    ["jian@aviato.com", "2d ago · eng", "Normal"],
+  ]
+  return (
+    <div className="flex flex-col gap-4 px-6 pt-4" data-pk="auth:permissions">
+      <span className="pk-input" style={{ height: 34 }}>
+        <TbSearch />
+        <span className="pk-faint">Add people, groups, or @domains…</span>
+      </span>
+      <span className="grid grid-cols-[1fr_110px] px-3 font-medium">
+        <span>Users</span>
+        <span>Role</span>
+      </span>
+      <div className="pk-perm" data-pk="auth:rules">
+        {rules.map(([I, who, role], i) => (
+          <span key={i} className="pk-perm-row">
+            <I className="h-4 w-4 opacity-60" />
+            <span className="flex flex-1 items-center gap-1.5">{who}</span>
+            <span
+              className="flex w-[100px] items-center gap-1"
+              style={role === "Denied" ? { color: "var(--pk-rec)" } : undefined}
+            >
+              {role} <TbChevronDown className="h-3 w-3" />
+            </span>
+          </span>
+        ))}
+      </div>
+      <div className="pk-perm" data-pk="auth:people">
+        {people.map(([who, sub, role], i) => (
+          <span key={who} className="pk-perm-row">
+            <Avatars names={[who[0].toUpperCase()]} key={i} />
+            <span className="flex flex-1 flex-col leading-4">
+              {who}
+              <span className="pk-faint text-[11px]">{sub}</span>
+            </span>
+            <span className="flex w-[100px] items-center gap-1">
+              {role} <TbChevronDown className="h-3 w-3" />
+            </span>
+          </span>
+        ))}
+      </div>
+    </div>
   )
 }
