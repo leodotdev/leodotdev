@@ -6,36 +6,36 @@ import { DIVES_BEFORE } from "@/components/work/plasmic/ybefore"
 import type { Year } from "@/components/work/plasmic/types"
 
 // /work/plasmic's years, the tabs. A year with no dives yet shows in the
-// overview as to come, with no tab. Each year's frames are in
-// public/work/plasmic/<year>/.
+// overview as to come, with no tab. Each year's dives are rebuilt in HTML
+// (y2020.tsx … y2023.tsx, with the kit in kit/).
 
 export const YEARS: Array<Year> = [
   {
     slug: "2020",
     name: "2020",
     summary:
-      "From the first dark comps to the light editor: the tree, artboards, variants, layout, tokens, and code.",
+      "From the first dark comps to the light editor: the tree, arenas panned and zoomed, variants, layout, tokens, a team at once, and code.",
     dives: DIVES_2020,
   },
   {
     slug: "2021",
     name: "2021",
     summary:
-      "Docked again: the project panel, behavioral components, recording from the canvas, data, preview, and the rail’s end.",
+      "Docked again: the project panel, behavioral components, recording from the canvas, data, teams and plans, a codebase connected, and the rail’s end.",
     dives: DIVES_2021,
   },
   {
     slug: "2022",
     name: "2022",
     summary:
-      "The ribbon, a concept car with every control over the canvas, and the way back to a rail.",
+      "The ribbon, a concept car with every control over the canvas; A/B tests and a CMS; and the way back to a rail.",
     dives: DIVES_2022,
   },
   {
     slug: "2023",
     name: "2023",
     summary:
-      "Breadcrumbs, branches, publishing with tests, Logic, an app builder, and Copilot.",
+      "Breadcrumbs, a team on one page, branches, publishing with tests, Logic, an app builder, and Copilot.",
     dives: DIVES_2023,
   },
   { slug: "2024", name: "2024", summary: "", dives: [] },
