@@ -17,7 +17,8 @@ import {
   TbMessage,
   TbPencil,
 } from "react-icons/tb"
-import { Avatars, Mark } from "@/components/work/plasmic/kit/studio"
+import { AcmeLogin } from "@/components/work/plasmic/kit/acme"
+import { Avatars, Mark, Tree } from "@/components/work/plasmic/kit/studio"
 import type { State } from "@/components/work/plasmic/types"
 
 // The research before 2020, from the "Research" file: wireframes of where
@@ -373,24 +374,36 @@ export function Naming({ s }: { s: State }) {
             </span>
           ))}
         </div>
+        <Tree
+          nodes={[
+            { id: "root", label: crumbs[0], kind: "frame", open: true },
+            {
+              id: "frame",
+              label: crumbs[1],
+              kind: "vstack",
+              depth: 1,
+              open: true,
+            },
+            {
+              id: "header",
+              label: crumbs[2],
+              kind: "component",
+              depth: 2,
+              open: true,
+            },
+            { id: "h1", label: "h1: Text Block", kind: "text", depth: 3 },
+            { id: "body", label: "app-body", kind: "vstack", depth: 2 },
+          ]}
+          selected="h1"
+        />
       </div>
       <main className="pk-canvas pk-area-canvas">
         <div
           className="pk-board"
           style={{ left: 120, top: 60, width: 375, height: 720 }}
         >
-          <div className="pk-board-body">
-            <div className="pk-acme">
-              <div className="pk-acme-header">app-header</div>
-              <div className="pk-acme-body">
-                <p
-                  className="pk-acme-title"
-                  style={{ outline: "1.5px solid var(--pk-accent)" }}
-                >
-                  Sign in
-                </p>
-              </div>
-            </div>
+          <div className="pk-board-body pk-naming">
+            <AcmeLogin title="Sign in" />
           </div>
         </div>
       </main>
@@ -423,23 +436,53 @@ const HOLDS: Array<Array<string>> = [
   ["Variant group", "Variant", "Style"],
 ]
 
-/** The object model: what the product is made of, as the file drew it. */
+/**
+ * The object model: what the product is made of, as the file drew it, each
+ * level drawn inside the one that holds it (the file repeats Project's row
+ * for many projects). Beside it, what an element holds.
+ */
 export function ObjectModel() {
-  const chain = (row: Array<string>, pk?: string, strike?: string) => (
-    <div className="flex items-center gap-2" data-pk={pk}>
-      {row.map((w, i) => (
-        <span key={w + i} className="flex items-center gap-2">
-          <span
-            className="rounded-lg px-3 py-1.5 font-semibold"
-            style={{
-              background: "var(--pk-panel-2)",
-              textDecoration: w === strike ? "line-through" : undefined,
-              color: w === strike ? "var(--pk-fg-3)" : undefined,
-            }}
-            data-pk={`om:${w.toLowerCase().replace(/\W/g, "")}`}
-          >
-            {w}
+  const levels = MODEL[0]
+  const id = (w: string) => `om:${w.toLowerCase().replace(/\W/g, "")}`
+  const level = (i: number): React.ReactNode => {
+    const name = levels[i]
+    const last = i === levels.length - 1
+    return (
+      <div
+        className="pk-om-level"
+        data-q={name.endsWith("??") || undefined}
+        data-last={last || undefined}
+        data-pk={id(name)}
+      >
+        <span className="pk-om-label">{name}</span>
+        {last ? (
+          <span className="grid flex-1 place-items-center">
+            <span className="pk-btn" data-kind="primary">
+              Log in
+            </span>
           </span>
+        ) : name === "Dashboard" ? (
+          <span className="flex min-h-0 flex-1 gap-3">
+            {level(i + 1)}
+            <span className="flex w-[104px] flex-none flex-col gap-3">
+              {["Project", "Project", "Project"].map((p, k) => (
+                <span key={k} className="pk-om-level" data-mini>
+                  <span className="pk-om-label">{p}</span>
+                </span>
+              ))}
+            </span>
+          </span>
+        ) : (
+          level(i + 1)
+        )}
+      </div>
+    )
+  }
+  const chain = (row: Array<string>) => (
+    <div className="flex flex-wrap items-center gap-1.5">
+      {row.map((w, i) => (
+        <span key={w + i} className="flex items-center gap-1.5">
+          <span className="pk-om-chip">{w}</span>
           {i < row.length - 1 && <span className="pk-faint">›</span>}
         </span>
       ))}
@@ -447,15 +490,21 @@ export function ObjectModel() {
   )
   return (
     <div
-      className="absolute inset-0 flex flex-col gap-6 p-12"
-      style={{ background: "var(--pk-bg)", fontSize: 14 }}
+      className="absolute inset-0 flex gap-10 px-12 pt-10 pb-12"
+      style={{ background: "var(--pk-bg)", fontSize: 13 }}
       data-pk="model"
     >
-      <b className="text-[22px]">The object model</b>
-      {chain(MODEL[0], "om:chain")}
-      <div className="h-px" style={{ background: "var(--pk-line-2)" }} />
-      <div className="flex flex-col gap-3" data-pk="om:holds">
-        <span className="pk-faint">What an element holds</span>
+      <div className="flex min-w-0 flex-1 flex-col gap-5">
+        <b className="text-[22px] leading-7 font-semibold">The object model</b>
+        <div className="flex min-h-0 flex-1" data-pk="om:chain">
+          {level(0)}
+        </div>
+      </div>
+      <div
+        className="flex w-[400px] flex-none flex-col gap-4 pt-12"
+        data-pk="om:holds"
+      >
+        <span className="pk-muted">What an element holds</span>
         {HOLDS.map((r, i) => (
           <div key={i}>{chain(r)}</div>
         ))}
@@ -464,11 +513,6 @@ export function ObjectModel() {
   )
 }
 
-/**
- * "Homework": a north-star concept of a code-backed studio, around a sample
- * repository (ToDoMVP): modes from Design to Deploy, files, dependencies,
- * and content sources, a tree true to the DOM, pinned views, and state.
- */
 export function Homework({ s }: { s: State }) {
   const mode = str(s.mode, "Design")
   const side = str(s.side, "Files")

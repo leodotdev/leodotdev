@@ -907,7 +907,15 @@ function ChangeCard({
       style={
         fits
           ? { left: 16, top, width: Math.min(300, room - 32) }
-          : { left: 16, top: top + height - 200, width: 260 }
+          : // With no room beside the browser, it sits over the canvas's
+            // foot, clear of the rail.
+            {
+              left: room + 72,
+              top: top + height - 24,
+              width: 280,
+              translate: "0 -100%",
+              zIndex: 6,
+            }
       }
     >
       <p className="pl-change-title">{change.title}</p>

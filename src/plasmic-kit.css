@@ -1785,3 +1785,46 @@
 .pk-roles > span + span {
   border-top: 1px solid var(--pk-line);
 }
+
+/* The object model (research): each level drawn inside the one that holds
+   it, a little lighter at each step in. */
+.pk-om-level {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px 14px 14px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--pk-fg) 3%, transparent);
+  box-shadow: 0 0 0 1px var(--pk-line-2);
+}
+.pk-om-level[data-q] {
+  background: none;
+  box-shadow: none;
+  outline: 1.5px dashed var(--pk-warn);
+}
+.pk-om-level[data-q] > .pk-om-label {
+  color: var(--pk-warn);
+}
+.pk-om-level[data-last] {
+  background: var(--pk-accent-bg);
+  box-shadow: 0 0 0 1.5px var(--pk-accent);
+}
+.pk-om-level[data-mini] {
+  opacity: 0.55;
+}
+.pk-om-label {
+  font-weight: 600;
+  line-height: 16px;
+}
+.pk-om-chip {
+  padding: 4px 10px;
+  border-radius: 7px;
+  background: var(--pk-panel-2);
+  font-weight: 600;
+}
+.pk-naming [data-pk="acme:title"] {
+  outline: 1.5px solid var(--pk-accent);
+  outline-offset: 3px;
+}

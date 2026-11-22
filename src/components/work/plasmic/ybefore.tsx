@@ -188,6 +188,7 @@ export const DIVES_BEFORE: Array<Dive> = [
           {
             kind: "direction",
             on: "naming:crumbs",
+            side: "bottom",
             beat: [0, 1, 2],
             text: "Three restyles, one difference: the breadcrumb’s root, Studio, Page, or Arena.",
           },
@@ -211,26 +212,29 @@ export const DIVES_BEFORE: Array<Dive> = [
         view: () => <ObjectModel />,
         url: URL,
         script: [
-          { on: "om:chain", wait: 2400 },
-          { on: "om:studio", wait: 2400 },
+          { on: "om:project", at: [0.3, 0.04], wait: 2400 },
+          { on: "om:studio", at: [0.3, 0.05], wait: 2400 },
           { on: "om:holds", wait: 2600 },
         ],
         notes: [
           {
             kind: "concept",
-            on: "om:chain",
+            on: "om:project",
+            side: "right",
             beat: 0,
             text: "Plasmic › Dashboard › Project › Arena › View › Component › Element.",
           },
           {
             kind: "direction",
             on: "om:studio",
+            side: "right",
             beat: 1,
             text: "“Studio??”: whether the editor is a level of its own was still a question.",
           },
           {
             kind: "concept",
             on: "om:holds",
+            side: "left",
             beat: 2,
             text: "A style holds a value, a token, or a mixin of tokens; a master has slots, an instance fills them; variant groups hold variants of style.",
           },
