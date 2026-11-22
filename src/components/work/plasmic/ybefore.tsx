@@ -276,6 +276,7 @@ export const DIVES_BEFORE: Array<Dive> = [
           { on: "hw:dom", wait: 2400 },
           { on: "hw:viewports", wait: 2400 },
           { on: "hw:state", wait: 2400 },
+          { on: "avatars", wait: 2800 },
         ],
         notes: [
           {
@@ -307,6 +308,13 @@ export const DIVES_BEFORE: Array<Dive> = [
             on: "hw:viewports",
             beat: 5,
             text: "Pinned views: “dark theme on mobile w/ rulers… and another custom ultrawide view.” Changes to any viewport reflect across all.",
+          },
+          {
+            kind: "direction",
+            on: "avatars",
+            side: "bottom",
+            beat: 7,
+            text: "“Figma-like realtime collaborative editability isn’t a must, but users should be able to have visitors and peers to review and fork if needed.”",
           },
           {
             kind: "discovery",

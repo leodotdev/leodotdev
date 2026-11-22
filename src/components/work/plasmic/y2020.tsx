@@ -1090,7 +1090,7 @@ export const DIVES_2020: Array<Dive> = [
             kind: "discovery",
             on: "act:branched",
             side: "right",
-            beat: [2, 3, 4],
+            beat: [2, 3],
             text: "Branched, forked, and merged are already in 2020’s feed. Branching got a menu of its own in the late-2022 and 2023 files.",
           },
           {
@@ -1099,6 +1099,13 @@ export const DIVES_2020: Array<Dive> = [
             side: "right",
             beat: 5,
             text: "Comments arrive in the feed with their replies.",
+          },
+          {
+            kind: "discovery",
+            on: "activity",
+            side: "right",
+            beat: 4,
+            text: "The research homework asked for “visitors and peers to review and fork if needed.” The 2020 feed has visits, a fork, and a merge.",
           },
         ],
       },
