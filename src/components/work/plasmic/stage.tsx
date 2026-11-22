@@ -420,7 +420,9 @@ function Player({
           browser={{ left, top, width: bw, height: bh }}
         />
       )}
-      {scene.change && <ChangeCard change={scene.change} />}
+      {scene.change && (
+        <ChangeCard change={scene.change} room={left} top={top} height={bh} />
+      )}
       {open && (
         <Lightbox explore={open} theme={theme} onClose={() => setOpen(null)} />
       )}
@@ -842,10 +844,32 @@ function SheetWindow({
   )
 }
 
-/** A big change, called out on the desktop: what changed, in a list. */
-function ChangeCard({ change }: { change: NonNullable<Scene["change"]> }) {
+/**
+ * A big change, called out on the desktop: what changed, in a list. It sits
+ * in the margin beside the browser where there is room for it, and over
+ * the browser's lower left corner where there is not.
+ */
+function ChangeCard({
+  change,
+  room,
+  top,
+  height,
+}: {
+  change: NonNullable<Scene["change"]>
+  room: number
+  top: number
+  height: number
+}) {
+  const fits = room >= 276
   return (
-    <aside className="pl-change">
+    <aside
+      className="pl-change"
+      style={
+        fits
+          ? { left: 16, top, width: Math.min(300, room - 32) }
+          : { left: 16, top: top + height - 200, width: 260 }
+      }
+    >
       <p className="pl-change-title">{change.title}</p>
       <ul>
         {change.items.map((item) => (
