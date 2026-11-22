@@ -22,12 +22,22 @@ export type RecentWork = {
   /** When, written like the experience list's dates ("2025–'26"). */
   year: string
   /** The work's own page on this site (a route under /work). */
-  to?: "/work/claude" | "/work/anthropic"
+  to?: "/work/claude" | "/work/anthropic" | "/work/plasmic"
   /** An outside link, for a work without its own page. */
   href?: string
 }
 
 export const recentWork: Array<RecentWork> = [
+  {
+    title: "Plasmic",
+    summary:
+      "Every interface, component, and flow of a visual tool for building React apps.",
+    logo: "/logo-pl.svg",
+    client: "Plasmic",
+    location: "Remote",
+    year: "2020–'24",
+    to: "/work/plasmic",
+  },
   {
     title: "Anthropic.com Design System & Web Design",
     summary:

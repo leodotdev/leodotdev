@@ -22,12 +22,15 @@ import { Route as SiteProjectsSlugRouteImport } from './routes/_site/projects.$s
 import { Route as SiteWorkIndexRouteImport } from './routes/_site/work.index'
 import { Route as SiteWorkAnthropicRouteImport } from './routes/_site/work.anthropic'
 import { Route as SiteWorkClaudeRouteImport } from './routes/_site/work.claude'
+import { Route as SiteWorkPlasmicRouteImport } from './routes/_site/work.plasmic'
 import { Route as AdminProjectsIndexRouteImport } from './routes/admin/projects.index'
 import { Route as AdminProjectsIdRouteImport } from './routes/admin/projects.$id'
 import { Route as SiteWorkAnthropicIndexRouteImport } from './routes/_site/work.anthropic.index'
 import { Route as SiteWorkAnthropicDocRouteImport } from './routes/_site/work.anthropic.$doc'
 import { Route as SiteWorkClaudeIndexRouteImport } from './routes/_site/work.claude.index'
 import { Route as SiteWorkClaudeDocRouteImport } from './routes/_site/work.claude.$doc'
+import { Route as SiteWorkPlasmicIndexRouteImport } from './routes/_site/work.plasmic.index'
+import { Route as SiteWorkPlasmicYearRouteImport } from './routes/_site/work.plasmic.$year'
 
 const SiteRoute = SiteRouteImport.update({
   id: '/_site',
@@ -93,6 +96,11 @@ const SiteWorkClaudeRoute = SiteWorkClaudeRouteImport.update({
   path: '/work/claude',
   getParentRoute: () => SiteRoute,
 } as any)
+const SiteWorkPlasmicRoute = SiteWorkPlasmicRouteImport.update({
+  id: '/work/plasmic',
+  path: '/work/plasmic',
+  getParentRoute: () => SiteRoute,
+} as any)
 const AdminProjectsIndexRoute = AdminProjectsIndexRouteImport.update({
   id: '/projects/',
   path: '/projects/',
@@ -123,6 +131,16 @@ const SiteWorkClaudeDocRoute = SiteWorkClaudeDocRouteImport.update({
   path: '/$doc',
   getParentRoute: () => SiteWorkClaudeRoute,
 } as any)
+const SiteWorkPlasmicIndexRoute = SiteWorkPlasmicIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SiteWorkPlasmicRoute,
+} as any)
+const SiteWorkPlasmicYearRoute = SiteWorkPlasmicYearRouteImport.update({
+  id: '/$year',
+  path: '/$year',
+  getParentRoute: () => SiteWorkPlasmicRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof SiteIndexRoute
@@ -135,14 +153,17 @@ export interface FileRoutesByFullPath {
   '/projects/$slug': typeof SiteProjectsSlugRoute
   '/work/anthropic': typeof SiteWorkAnthropicRouteWithChildren
   '/work/claude': typeof SiteWorkClaudeRouteWithChildren
+  '/work/plasmic': typeof SiteWorkPlasmicRouteWithChildren
   '/admin/projects/$id': typeof AdminProjectsIdRoute
   '/projects/': typeof SiteProjectsIndexRoute
   '/work/': typeof SiteWorkIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
   '/work/anthropic/$doc': typeof SiteWorkAnthropicDocRoute
   '/work/claude/$doc': typeof SiteWorkClaudeDocRoute
+  '/work/plasmic/$year': typeof SiteWorkPlasmicYearRoute
   '/work/anthropic/': typeof SiteWorkAnthropicIndexRoute
   '/work/claude/': typeof SiteWorkClaudeIndexRoute
+  '/work/plasmic/': typeof SiteWorkPlasmicIndexRoute
 }
 export interface FileRoutesByTo {
   '/life-calendar': typeof SiteLifeCalendarRoute
@@ -158,8 +179,10 @@ export interface FileRoutesByTo {
   '/admin/projects': typeof AdminProjectsIndexRoute
   '/work/anthropic/$doc': typeof SiteWorkAnthropicDocRoute
   '/work/claude/$doc': typeof SiteWorkClaudeDocRoute
+  '/work/plasmic/$year': typeof SiteWorkPlasmicYearRoute
   '/work/anthropic': typeof SiteWorkAnthropicIndexRoute
   '/work/claude': typeof SiteWorkClaudeIndexRoute
+  '/work/plasmic': typeof SiteWorkPlasmicIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -174,14 +197,17 @@ export interface FileRoutesById {
   '/_site/projects/$slug': typeof SiteProjectsSlugRoute
   '/_site/work/anthropic': typeof SiteWorkAnthropicRouteWithChildren
   '/_site/work/claude': typeof SiteWorkClaudeRouteWithChildren
+  '/_site/work/plasmic': typeof SiteWorkPlasmicRouteWithChildren
   '/admin/projects/$id': typeof AdminProjectsIdRoute
   '/_site/projects/': typeof SiteProjectsIndexRoute
   '/_site/work/': typeof SiteWorkIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
   '/_site/work/anthropic/$doc': typeof SiteWorkAnthropicDocRoute
   '/_site/work/claude/$doc': typeof SiteWorkClaudeDocRoute
+  '/_site/work/plasmic/$year': typeof SiteWorkPlasmicYearRoute
   '/_site/work/anthropic/': typeof SiteWorkAnthropicIndexRoute
   '/_site/work/claude/': typeof SiteWorkClaudeIndexRoute
+  '/_site/work/plasmic/': typeof SiteWorkPlasmicIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -196,14 +222,17 @@ export interface FileRouteTypes {
     | '/projects/$slug'
     | '/work/anthropic'
     | '/work/claude'
+    | '/work/plasmic'
     | '/admin/projects/$id'
     | '/projects/'
     | '/work/'
     | '/admin/projects/'
     | '/work/anthropic/$doc'
     | '/work/claude/$doc'
+    | '/work/plasmic/$year'
     | '/work/anthropic/'
     | '/work/claude/'
+    | '/work/plasmic/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/life-calendar'
@@ -219,8 +248,10 @@ export interface FileRouteTypes {
     | '/admin/projects'
     | '/work/anthropic/$doc'
     | '/work/claude/$doc'
+    | '/work/plasmic/$year'
     | '/work/anthropic'
     | '/work/claude'
+    | '/work/plasmic'
   id:
     | '__root__'
     | '/_site'
@@ -234,14 +265,17 @@ export interface FileRouteTypes {
     | '/_site/projects/$slug'
     | '/_site/work/anthropic'
     | '/_site/work/claude'
+    | '/_site/work/plasmic'
     | '/admin/projects/$id'
     | '/_site/projects/'
     | '/_site/work/'
     | '/admin/projects/'
     | '/_site/work/anthropic/$doc'
     | '/_site/work/claude/$doc'
+    | '/_site/work/plasmic/$year'
     | '/_site/work/anthropic/'
     | '/_site/work/claude/'
+    | '/_site/work/plasmic/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -342,6 +376,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteWorkClaudeRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/_site/work/plasmic': {
+      id: '/_site/work/plasmic'
+      path: '/work/plasmic'
+      fullPath: '/work/plasmic'
+      preLoaderRoute: typeof SiteWorkPlasmicRouteImport
+      parentRoute: typeof SiteRoute
+    }
     '/admin/projects/': {
       id: '/admin/projects/'
       path: '/projects'
@@ -384,6 +425,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteWorkClaudeDocRouteImport
       parentRoute: typeof SiteWorkClaudeRoute
     }
+    '/_site/work/plasmic/': {
+      id: '/_site/work/plasmic/'
+      path: '/'
+      fullPath: '/work/plasmic/'
+      preLoaderRoute: typeof SiteWorkPlasmicIndexRouteImport
+      parentRoute: typeof SiteWorkPlasmicRoute
+    }
+    '/_site/work/plasmic/$year': {
+      id: '/_site/work/plasmic/$year'
+      path: '/$year'
+      fullPath: '/work/plasmic/$year'
+      preLoaderRoute: typeof SiteWorkPlasmicYearRouteImport
+      parentRoute: typeof SiteWorkPlasmicRoute
+    }
   }
 }
 
@@ -414,6 +469,20 @@ const SiteWorkClaudeRouteWithChildren = SiteWorkClaudeRoute._addFileChildren(
   SiteWorkClaudeRouteChildren,
 )
 
+interface SiteWorkPlasmicRouteChildren {
+  SiteWorkPlasmicYearRoute: typeof SiteWorkPlasmicYearRoute
+  SiteWorkPlasmicIndexRoute: typeof SiteWorkPlasmicIndexRoute
+}
+
+const SiteWorkPlasmicRouteChildren: SiteWorkPlasmicRouteChildren = {
+  SiteWorkPlasmicYearRoute: SiteWorkPlasmicYearRoute,
+  SiteWorkPlasmicIndexRoute: SiteWorkPlasmicIndexRoute,
+}
+
+const SiteWorkPlasmicRouteWithChildren = SiteWorkPlasmicRoute._addFileChildren(
+  SiteWorkPlasmicRouteChildren,
+)
+
 interface SiteRouteChildren {
   SiteLifeCalendarRoute: typeof SiteLifeCalendarRoute
   SiteSoonRoute: typeof SiteSoonRoute
@@ -421,6 +490,7 @@ interface SiteRouteChildren {
   SiteProjectsSlugRoute: typeof SiteProjectsSlugRoute
   SiteWorkAnthropicRoute: typeof SiteWorkAnthropicRouteWithChildren
   SiteWorkClaudeRoute: typeof SiteWorkClaudeRouteWithChildren
+  SiteWorkPlasmicRoute: typeof SiteWorkPlasmicRouteWithChildren
   SiteProjectsIndexRoute: typeof SiteProjectsIndexRoute
   SiteWorkIndexRoute: typeof SiteWorkIndexRoute
 }
@@ -432,6 +502,7 @@ const SiteRouteChildren: SiteRouteChildren = {
   SiteProjectsSlugRoute: SiteProjectsSlugRoute,
   SiteWorkAnthropicRoute: SiteWorkAnthropicRouteWithChildren,
   SiteWorkClaudeRoute: SiteWorkClaudeRouteWithChildren,
+  SiteWorkPlasmicRoute: SiteWorkPlasmicRouteWithChildren,
   SiteProjectsIndexRoute: SiteProjectsIndexRoute,
   SiteWorkIndexRoute: SiteWorkIndexRoute,
 }
