@@ -2538,3 +2538,9 @@
 .pk-wtile:hover {
   box-shadow: 0 0 0 2px var(--pk-accent);
 }
+.pk-404 {
+  color: transparent;
+  font: 200 220px/1 var(--pk-sans);
+  letter-spacing: -0.04em;
+  -webkit-text-stroke: 1px var(--pk-line-2);
+}

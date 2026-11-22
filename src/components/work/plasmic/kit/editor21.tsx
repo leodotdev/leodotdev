@@ -1655,3 +1655,45 @@ function Cart({ variant, narrow }: { variant: string; narrow: boolean }) {
     </div>
   )
 }
+
+/**
+ * Q2 2021's empty and error states: the shell with nothing in it, and a
+ * page that could not be found, drawn inside the shell.
+ */
+export function EmptyShell21({ notFound }: { notFound?: boolean }) {
+  return (
+    <div
+      className="pk-studio"
+      style={{
+        gridTemplateRows: "44px minmax(0,1fr)",
+        gridTemplateColumns: "48px 208px minmax(0,1fr) 256px",
+        gridTemplateAreas: '"top top top top" "rail left canvas right"',
+      }}
+    >
+      <header className="pk-top pk-area-top">
+        <span className="pk-logo">
+          <Mark />
+        </span>
+      </header>
+      <nav className="pk-rail pk-area-rail" />
+      <div
+        className="pk-panel pk-area-left"
+        style={{ borderRight: "1px solid var(--pk-line)" }}
+      />
+      <main className="pk-canvas pk-area-canvas grid place-items-center">
+        {notFound && (
+          <div className="flex flex-col items-center gap-4">
+            <span className="pk-404">404</span>
+            <span className="pk-muted text-[14px]">
+              This page could not be found.
+            </span>
+          </div>
+        )}
+      </main>
+      <div
+        className="pk-panel pk-area-right"
+        style={{ borderLeft: "1px solid var(--pk-line)" }}
+      />
+    </div>
+  )
+}

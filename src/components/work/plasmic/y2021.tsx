@@ -1,5 +1,5 @@
 import { Editor } from "@/components/work/plasmic/kit/editor"
-import { Editor21 } from "@/components/work/plasmic/kit/editor21"
+import { Editor21, EmptyShell21 } from "@/components/work/plasmic/kit/editor21"
 import { Connect } from "@/components/work/plasmic/kit/onboard"
 import { Publish21 } from "@/components/work/plasmic/kit/publish21"
 import { Takes21 } from "@/components/work/plasmic/kit/takes21"
@@ -745,6 +745,25 @@ export const DIVES_2021: Array<Dive> = [
         view: e21,
         url: "studio.plasmic.app/projects/acme-store/preview/cart",
         state: { preview: true },
+        explore: {
+          label: "2 states",
+          on: "preview:page",
+          title: "Empty and error, inside the shell",
+          items: [
+            {
+              label: "Loading: the shell, empty",
+              w: 1440,
+              h: 868,
+              view: () => <EmptyShell21 />,
+            },
+            {
+              label: "“This page could not be found.”",
+              w: 1440,
+              h: 868,
+              view: () => <EmptyShell21 notFound />,
+            },
+          ],
+        },
         script: [
           {
             on: "preview:picker",
