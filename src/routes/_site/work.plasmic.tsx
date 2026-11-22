@@ -215,11 +215,11 @@ function PlasmicWork() {
             <div className="flex flex-col gap-2">
               <h1 className="font-semibold">Plasmic</h1>
               <p className="max-w-cols-9 text-pretty text-muted-foreground">
-                As Plasmic's founding designer, I led the design of every
-                interface, component, and flow of a visual tool for building
-                React apps. This is that work, year by year: scroll through the
-                app as it was designed, with the decisions behind it and how it
-                works. Move into the app to try it yourself.
+                I was Plasmic’s founding designer, from 2020 to 2024. This is
+                the work, year by year, rebuilt from my design files: scroll
+                through the app as it was designed, with the directions taken,
+                how it works, and what was learned. Move into the app to try it
+                yourself, or follow one part of it across the years.
               </p>
             </div>
             <dl className="grid grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-4">
