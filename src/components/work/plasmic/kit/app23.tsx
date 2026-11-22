@@ -404,8 +404,8 @@ export function QueryDrawer({ s }: { s: State }) {
         </div>
         {s.json ? (
           <pre
-            className="pk-code m-3 flex-1 overflow-hidden"
-            style={{ whiteSpace: "pre" }}
+            className="pk-code flex-1 overflow-hidden"
+            style={{ whiteSpace: "pre", margin: 12 }}
           >
             {ROWS.slice(0, 3).map(([n, e, l], i) => (
               <span key={n}>

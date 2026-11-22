@@ -413,12 +413,14 @@ export const DIVES_2021: Array<Dive> = [
           {
             kind: "concept",
             on: "data:logic",
+            side: "left",
             beat: 1,
             text: "Logic: show an element only if a value is true, or repeat it for each item in a collection from a query.",
           },
           {
             kind: "concept",
             on: "data:props",
+            side: "left",
             beat: 2,
             text: "Props: what an instance passes in, and what happens on click or hover.",
           },

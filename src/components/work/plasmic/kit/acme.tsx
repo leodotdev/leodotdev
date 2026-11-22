@@ -104,8 +104,14 @@ export function AcmeButton({
 }) {
   return (
     <div
-      className="pk-acme grid place-items-center"
-      style={{ "--acme": accent, background: "#f8fafc" } as React.CSSProperties}
+      className="pk-acme place-items-center"
+      style={
+        {
+          "--acme": accent,
+          background: "#f8fafc",
+          display: "grid",
+        } as React.CSSProperties
+      }
     >
       <div
         className="pk-acme-btn w-[140px]"

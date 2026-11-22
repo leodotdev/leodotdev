@@ -1099,8 +1099,10 @@ function InsertBar({ s }: { s: State }) {
 function DataPanel() {
   return (
     <div
-      className="pk-panel absolute"
+      className="pk-panel"
       style={{
+        // Inline, since .pk-panel's own position would win over a utility.
+        position: "absolute",
         top: 44,
         right: 256,
         bottom: 0,
