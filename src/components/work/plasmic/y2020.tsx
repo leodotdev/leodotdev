@@ -1064,7 +1064,15 @@ export const DIVES_2020: Array<Dive> = [
           {
             kind: "direction",
             on: "rail",
+            beat: [0, 1],
             text: "The tabs became a rail: tree, insert, components, tokens, mixins, images, and data, each a panel of its own.",
+          },
+          {
+            kind: "discovery",
+            on: "left",
+            side: "right",
+            beat: 2,
+            text: "The rail stayed; the floating didn’t. In 2021 the panels docked beside it again.",
           },
         ],
         script: [

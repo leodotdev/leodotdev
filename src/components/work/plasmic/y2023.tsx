@@ -130,6 +130,13 @@ export const DIVES_2023: Array<Dive> = [
             beat: 4,
             text: "Every screen side by side on one canvas, zoomed into as a design tool would.",
           },
+          {
+            kind: "discovery",
+            on: "top",
+            side: "bottom",
+            beat: 6,
+            text: "The shell was also drawn floating, the top bar as pills and the right panel as a card. It wasn’t carried forward: the year ends docked.",
+          },
         ],
         script: [
           { on: "crumb:project", wait: 2200 },
@@ -148,6 +155,7 @@ export const DIVES_2023: Array<Dive> = [
             set: { zz: 0.42, zx: 40, zy: 40 },
             wait: 2000,
           },
+          { on: "top", at: [0.5, 0.5], wait: 2800 },
         ],
         explore: {
           label: "3 shells",
