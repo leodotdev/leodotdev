@@ -332,7 +332,13 @@ function PlasmicWork() {
               ))}
             </NavRow>
             {year && (
-              <div className="flex shrink-0 items-center gap-3 max-md:order-last">
+              <div className="flex shrink-0 items-center gap-4 max-md:order-last">
+                <span
+                  className="text-xs text-muted-foreground max-lg:hidden [@media(pointer:coarse)]:hidden"
+                  title="Step through the years"
+                >
+                  ← → years
+                </span>
                 <ThemeDots theme={theme} onPick={setTheme} />
               </div>
             )}
