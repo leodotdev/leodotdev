@@ -13,6 +13,7 @@ import { GROUPS, THEMES, findGroup } from "@/components/work/anthropic/docs"
 import { NavLabel, NavRow } from "@/components/work/claude/nav-list"
 import { SpacingOverlay, SpacingToggle } from "@/components/work/claude/spacing"
 import { ThemeProvider, usePreviewTheme } from "@/components/work/claude/ui"
+import { notify } from "@/components/ui/toast"
 import { cn } from "@/lib/utils"
 import { wave } from "@/lib/wave"
 
@@ -102,7 +103,10 @@ function ThemePicker({ pair }: { pair?: boolean }) {
           aria-label={`${name} theme`}
           aria-pressed={on(id)}
           title={name}
-          onClick={(e) => setTheme(id, e)}
+          onClick={(e) => {
+            if (!on(id)) notify(`Figures switched to ${name}`)
+            setTheme(id, e)
+          }}
           className={cn(
             // Each dot is ringed in its own theme's border color, not the
             // page's: a pale ring round a dark dot looked wrong.
@@ -270,7 +274,7 @@ function AnthropicDocs() {
             column. */}
         <main
           ref={content}
-          className="bleed bg-background pb-12 [--bleed-pad:24px] [--docs-bar:165px] md:[--bleed-pad:48px] md:[--docs-bar:121px]"
+          className="bleed bg-background pb-12 [--bleed-pad:24px] [--docs-bar:226px] md:[--bleed-pad:48px] md:[--docs-bar:182px]"
           style={
             barHeight === null
               ? undefined
@@ -282,9 +286,10 @@ function AnthropicDocs() {
               of names starting on the text column, with the theme dots at
               the other end. It does not wrap: run out of room, it scrolls
               sideways, with an arrow button over whichever end has names out
-              of sight. The open page's chapters are not in the bar: they
-              are marks down the window's right edge (`ChapterNav`, below).
-              On a phone the dots go under the tabs. The
+              of sight. Under the tabs, on a group's page, are its chapters
+              as a bar of segments, one as long as each chapter, with the
+              chapter being read named under it (`ChapterNav`). On a phone
+              the dots go under the tabs, and the chapters under the dots. The
               bar spans the window, on the page's own color, so what scrolls
               under it is covered, the overview's strip of clips included. Its padding is the sections' own, 48px
               above and below its rows, and is the same whether the bar is
@@ -303,7 +308,7 @@ function AnthropicDocs() {
             data-docs-bar
             className="sticky top-0 z-20 bleed grid gap-x-6 gap-y-6 border-b border-transparent bg-background py-12 data-[lifted]:z-[2147483001] data-[stuck]:border-border md:grid-cols-[minmax(0,1fr)_auto] md:items-center"
           >
-            <NavRow label="Design system" current={pathname} underline>
+            <NavRow label="Design system" current={pathname}>
               <Link
                 to="/work/anthropic"
                 activeOptions={{ exact: true }}
@@ -348,12 +353,15 @@ function AnthropicDocs() {
                 <SpacingToggle />
               </div>
             )}
+            {group && (
+              <ChapterNav
+                group={group}
+                className="max-md:order-last md:col-span-2"
+              />
+            )}
           </div>
           <Outlet />
         </main>
-        {/* The open page's chapters, as marks down the window's right
-            edge (ChapterNav). */}
-        {group && <ChapterNav group={group} />}
         <SpacingOverlay />
       </div>
     </ThemeProvider>

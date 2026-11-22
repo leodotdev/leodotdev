@@ -457,6 +457,7 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
+  corner-shape: round;
   background: #ff5f57;
 }
 .ads-terminal-lights > i:nth-child(2) {

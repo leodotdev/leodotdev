@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
+import { useLocation } from "@tanstack/react-router"
 import { TbArrowUp } from "react-icons/tb"
 import { Button } from "@/components/ui/button"
+import { useToastShowing } from "@/components/ui/toast"
 import { glideTo } from "@/lib/glide"
 import { cn } from "@/lib/utils"
 
@@ -12,10 +14,17 @@ const AFTER = 2000
  * top (Leo, 2026-11-20): it comes up once the page is scrolled down about
  * 2000px, and goes again near the top. It glides there as the docs'
  * chapter links do (`glideTo`), and hands keyboard focus to the top of the
- * page, since the button itself goes away.
+ * page, since the button itself goes away. While a toast is showing in the
+ * same place, the button rises above it. It stays away from /work/plasmic's
+ * years, whose stage holds the bottom of the window (the chapter bar takes
+ * the page anywhere there).
  */
 export function BackToTop() {
-  const [shown, setShown] = useState(false)
+  const { pathname } = useLocation()
+  const stage = /^\/work\/plasmic\/\d/.test(pathname)
+  const [scrolled, setShown] = useState(false)
+  const shown = scrolled && !stage
+  const toast = useToastShowing()
   useEffect(() => {
     let frame = 0
     const measure = () => {
@@ -38,7 +47,8 @@ export function BackToTop() {
       className={cn(
         "pointer-events-none fixed inset-x-0 bottom-[max(24px,env(safe-area-inset-bottom))] z-30 flex justify-center",
         "transition-[opacity,translate] duration-200 ease-out motion-reduce:transition-opacity",
-        shown ? "opacity-100" : "translate-y-2 opacity-0"
+        shown ? "opacity-100" : "translate-y-2 opacity-0",
+        shown && toast && "-translate-y-[46px]"
       )}
       inert={!shown}
     >

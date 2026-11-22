@@ -1134,6 +1134,7 @@
   padding: 0 6px;
   border: 1px solid var(--ads-border-2);
   border-radius: 999px;
+  corner-shape: round;
   background: var(--ads-bg-2);
   color: var(--ads-fg-3);
   font: 400 11px/16.5px var(--ads-mono);
@@ -1244,6 +1245,7 @@
   height: 24px;
   border: 4.5px solid var(--ads-off-bg);
   border-radius: 99px;
+  corner-shape: round;
   box-sizing: border-box;
   object-fit: cover;
   transform: translate(-50%, -50%);

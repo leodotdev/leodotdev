@@ -4,6 +4,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { notify } from "@/components/ui/toast"
 import { cn } from "@/lib/utils"
 
 // The docs' spacing view: in every figure (`[data-figure]`), the components'
@@ -13,13 +14,13 @@ import { cn } from "@/lib/utils"
 
 let on = false
 const listeners = new Set<() => void>()
-const subscribe = (notify: () => void) => {
-  listeners.add(notify)
-  return () => void listeners.delete(notify)
+const subscribe = (listener: () => void) => {
+  listeners.add(listener)
+  return () => void listeners.delete(listener)
 }
 const setOn = (next: boolean) => {
   on = next
-  listeners.forEach((notify) => notify())
+  listeners.forEach((listener) => listener())
 }
 const useSpacing = () =>
   useSyncExternalStore(
@@ -45,7 +46,12 @@ export function SpacingToggle() {
             aria-pressed={active}
             data-wave-manual
             data-wave-hover="off"
-            onClick={() => setOn(!active)}
+            onClick={() => {
+              setOn(!active)
+              notify(
+                active ? "Spacing view turned off" : "Spacing view turned on"
+              )
+            }}
             className="relative h-5 w-5 shrink-0 rounded-full border-[1.5px] border-grid [corner-shape:round] before:absolute before:-inset-2.5 before:content-['']"
             style={{
               backgroundImage:

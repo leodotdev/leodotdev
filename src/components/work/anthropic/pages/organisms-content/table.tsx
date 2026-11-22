@@ -663,7 +663,10 @@ export function TableDoc() {
             <Resizable
               label="Table width"
               sizes={[["Desktop"], ["Tablet", 959], ["Mobile", 559]]}
-              className="min-h-[1120px] overflow-hidden sm:h-[1120px]"
+              // Clipped to its height, but 16px wider than itself each side:
+              // a row under the pointer, or open, reaches that far past the
+              // table (`overflow-hidden` cut it off at the title).
+              className="min-h-[1120px] [clip-path:inset(0_-16px)] sm:h-[1120px]"
             >
               <div className="ads-oc-c">
                 <Table />

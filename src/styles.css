@@ -14,6 +14,7 @@
 @import "./claude-templates/solutions-b.css";
 @import "./anthropic-ds.css";
 @import "./anthropic/index.css";
+@import "./plasmic.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -260,8 +261,7 @@ html:has([data-claude-page]) {
  *
  * Horizontal, the list scrolls sideways when it runs out of room. It clips,
  * so it keeps 4px of padding (and the same negative margin) for a focus
- * outline. Vertical, it is a column from 1024px and a wrapping row below. In a list
- * marked `data-underline` (the tabs) the current name is underlined too.
+ * outline. Vertical, it is a column from 1024px and a wrapping row below.
  */
 .nav-list {
   display: flex;
@@ -297,11 +297,6 @@ html:has([data-claude-page]) {
 .nav-link[aria-current] {
   color: var(--color-foreground);
   font-weight: 600;
-}
-.nav-list[data-underline] .nav-link[aria-current] .nav-label {
-  text-decoration-line: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 6px;
 }
 /* A name holds the width of its heavier, current form, so the list does not
    shift when the current entry changes. */
@@ -345,140 +340,90 @@ html:has([data-claude-page]) {
 }
 
 /*
- * The docs' chapter minimap (ChapterNav): a mark per chapter down the
- * window's right edge, each a short line in the muted color placed by where
- * its chapter falls on the page; the chapter being read has a longer one in
- * the text color. A mark's name sits to its left, in a chip of the page's
- * color so it reads over whatever is under it: it shows under the pointer,
- * on focus, for the current mark while the page scrolls, and for the current
- * mark always from 1280px, where the window's margin has room for it. The
- * whole map fades in once the bar is held at the top of the window.
- *
- * The map is a strip down the edge, 40px wide (24px on a phone, its
- * margin), that opens under the pointer or with a mark focused from the
- * keyboard: it widens to take in the names, every name shows, and the marks
- * slide to their open places (`--y-open`, further apart than `--y`), so the
- * names have room; the pointer can then move along the names and press one.
+ * The docs' chapters under the tabs (ChapterNav): a bar of segments, one per
+ * chapter and as long as it is (widths set by the component), the chapters
+ * read in the muted color, the one being read in the text color, and those
+ * to come in the line color. A segment is a 16px strip to press, its bar
+ * 4px tall in the middle, growing to 8px under the pointer. Under the bar,
+ * the chapter being read (or the one pointed at) is named in mono.
  */
-.chapter-map {
-  position: fixed;
-  z-index: 20;
-  right: 0;
-  width: 40px;
-  opacity: 0;
-  transition: opacity 0.2s ease-out;
-}
-.chapter-map[data-shown] {
-  opacity: 1;
-}
-.chapter-mark {
-  position: absolute;
-  top: 0;
-  right: 0;
+.chapter-bar {
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  width: 40px;
-  height: 14px;
-  padding-right: 16px;
-  translate: 0 calc(var(--y) - 50%);
-  color: var(--color-muted-foreground);
-  transition: translate 0.25s cubic-bezier(0.2, 0, 0, 1);
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
 }
-.chapter-mark:hover,
-.chapter-mark[aria-current] {
+.chapter-track {
+  display: flex;
+  gap: 3px;
+}
+.chapter-seg {
+  display: flex;
+  height: 16px;
+  min-width: 0;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--color-border);
+}
+.chapter-seg[data-read] {
+  color: var(--color-muted-foreground);
+}
+.chapter-seg[aria-current] {
   color: var(--color-foreground);
 }
-.chapter-tick {
-  width: 10px;
-  height: 2px;
-  border-radius: 1px;
+.chapter-seg::before {
+  content: "";
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
   background: currentColor;
-  transition: width 0.2s ease-out;
+  transition:
+    height 0.15s ease-out,
+    color 0.2s ease-out;
 }
-.chapter-mark:hover .chapter-tick,
-.chapter-mark[aria-current] .chapter-tick {
-  width: 18px;
+.chapter-seg:focus-visible::before {
+  height: 8px;
 }
-.chapter-mark-name {
-  position: absolute;
-  right: 100%;
-  max-width: min(240px, calc(100vw - 64px));
-  overflow: hidden;
-  padding: 0 6px;
-  border-radius: 4px;
-  background: var(--color-background);
+/* (Only where there is a pointer that hovers: a tap leaves a phone's
+   segment "hovered" until the next tap elsewhere.) */
+@media (hover: hover) {
+  .chapter-seg:hover::before {
+    height: 8px;
+  }
+}
+.chapter-name {
+  display: flex;
+  min-width: 0;
+  gap: 12px;
   font-family: var(--font-mono);
   font-size: 12px;
   line-height: 17px;
-  text-overflow: ellipsis;
   white-space: nowrap;
-  opacity: 0;
-  translate: 4px 0;
-  pointer-events: none;
-  transition:
-    opacity 0.15s ease-out,
-    translate 0.15s ease-out;
-}
-.chapter-mark:is(:hover, :focus-visible) .chapter-mark-name,
-.chapter-map[data-scrolling] .chapter-mark[aria-current] .chapter-mark-name {
-  opacity: 1;
-  translate: none;
-}
-.chapter-map:has(:focus-visible) {
-  width: min(300px, calc(100vw - 32px));
-}
-.chapter-map:has(:focus-visible) .chapter-mark {
-  translate: 0 calc(var(--y-open) - 50%);
-}
-.chapter-map:has(:focus-visible) .chapter-mark-name {
-  opacity: 1;
-  translate: none;
-  pointer-events: auto;
-}
-/* (Only where there is a pointer that hovers: a tap leaves a phone's map
-   "hovered" until the next tap elsewhere.) */
-@media (hover: hover) {
-  .chapter-map:hover {
-    width: min(300px, calc(100vw - 32px));
-  }
-  .chapter-map:hover .chapter-mark {
-    translate: 0 calc(var(--y-open) - 50%);
-  }
-  .chapter-map:hover .chapter-mark-name {
-    opacity: 1;
-    translate: none;
-    pointer-events: auto;
-  }
-}
-/* On a phone the margin is 24px: the marks keep to it, clear of the
-   figures. */
-@media (max-width: 767px) {
-  .chapter-map {
-    width: 24px;
-  }
-  .chapter-mark {
-    padding-right: 6px;
-  }
-  .chapter-tick {
-    width: 8px;
-  }
-  .chapter-mark:hover .chapter-tick,
-  .chapter-mark[aria-current] .chapter-tick {
-    width: 14px;
-  }
-}
-@media (min-width: 1280px) {
-  .chapter-mark[aria-current] .chapter-mark-name {
-    opacity: 1;
-    translate: none;
-  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .chapter-mark {
+  .chapter-seg::before {
     transition: none;
   }
-  .chapter-mark-name {
+}
+
+/*
+ * A toast (src/components/ui/toast.tsx) rises 8px and fades in, and goes
+ * the same way. Swiped down, it follows the finger.
+ */
+.toast {
+  transform: translateY(var(--toast-swipe-movement-y, 0px));
+  transition:
+    opacity 0.2s ease-out,
+    translate 0.2s ease-out;
+}
+.toast[data-starting-style],
+.toast[data-ending-style] {
+  opacity: 0;
+  translate: 0 8px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .toast[data-starting-style],
+  .toast[data-ending-style] {
     translate: none;
   }
 }

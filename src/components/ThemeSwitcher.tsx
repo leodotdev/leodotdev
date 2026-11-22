@@ -4,6 +4,7 @@ import { useHydrated } from "@tanstack/react-router"
 import { useTheme } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 import { wave } from "@/lib/wave"
+import { notify } from "@/components/ui/toast"
 import {
   Tooltip,
   TooltipContent,
@@ -60,6 +61,7 @@ export const ThemeSwitcher = forwardRef<
                   holdScale: 5,
                 }
               )
+              notify(`Switched to ${next} mode`)
             }}
             className={classes}
             {...props}

@@ -2,6 +2,7 @@ import { useSyncExternalStore } from "react"
 import { useHydrated } from "@tanstack/react-router"
 import { cn } from "@/lib/utils"
 import { loadWave, setWaves, subscribeWaves, wave, wavesOn } from "@/lib/wave"
+import { notify } from "@/components/ui/toast"
 import {
   Tooltip,
   TooltipContent,
@@ -42,6 +43,7 @@ export function WaveSwitcher({ className }: { className?: string }) {
               const source = e.currentTarget
               const focus = e.nativeEvent
               setWaves(!on)
+              notify(on ? "Waves turned off" : "Waves turned on")
               if (on) return
               // Back on: one wave over the page, from the ball, with the
               // light switch's settings (nothing gathers on a 20px dot).

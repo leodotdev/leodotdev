@@ -68,6 +68,7 @@
   padding: 0 8px;
   border: 1px solid var(--ads-secondary-border);
   border-radius: 96px;
+  corner-shape: round;
   background: var(--ads-secondary-bg);
   color: var(--ads-secondary-fg);
   cursor: pointer;
@@ -441,6 +442,7 @@
   height: 18.29px;
   border: 3.66px solid var(--ads-bg-2);
   border-radius: 999px;
+  corner-shape: round;
   object-fit: cover;
 }
 .ads-rel-article {

@@ -257,7 +257,7 @@ function Line({
 
 function TooltipDoc() {
   return (
-    <Section caption="Six types: Max, Min, Citation, Citation Inner Hover, Footnote, and Type3, a small label. The related article card keeps the height of its longest title, so the tooltip does not jump around.">
+    <Section>
       <Specimen figure>
         <DemoCursor steps={TOOLTIP_DEMO}>
           <div className="ads-demo-tip-figure">

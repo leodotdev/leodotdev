@@ -1,33 +1,27 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { glideTo } from "@/lib/glide"
+import { cn } from "@/lib/utils"
 
-/** Space kept between two marks, in px, however close their chapters are. */
-const GAP = 14
-/** The same, with the map open and every mark's name showing beside it. */
-const OPEN_GAP = 24
-/** Room kept above the marks under the bar, and under them at the foot. */
-const MARGIN = 24
+/** Space between two segments, in px. */
+const GAP = 3
+/** The narrowest a segment gets, however short its chapter, in px. */
+const MIN = 6
 
 /**
- * The chapters of a group's page, as a minimap down the window's right edge
- * (Leo, 2026-11-20: the "Edge minimap" of the layouts he was shown; the bar
- * above holds only the tabs). Each chapter is a short mark, placed by where
- * the chapter falls on the page, as a scrollbar marks what a search found:
- * the stretch from the first chapter's top to the last one's foot is laid
- * along the window's height under the bar, and marks closer than `GAP` are
- * spread apart. The chapter being read has the longer mark, in the text
- * color. A mark's name shows beside it under the pointer or on focus;
- * the current one's shows while the page scrolls, and always where the
- * window leaves the room for it (from 1280px). Under the pointer, or with
- * a mark focused from the keyboard, the map opens (Leo, 2026-11-20: "it
- * should show all the chapters when I'm over it using it"): every name
- * shows, and the marks spread to `OPEN_GAP` apart so the names have room.
- * A mark glides the page to its chapter. The marks show once the bar is held at the top of the
- * window, while the chapters are being read, and fade away above that. The
- * styles are `.chapter-*` in src/styles.css.
+ * The chapters of a group's page, as a bar under the tabs (Leo, 2026-11-20:
+ * the "Chapter bar" of the layouts he was shown, after a minimap down the
+ * window's right edge that sat too far from the page). Each chapter is a
+ * segment as long as the chapter is on the page, as a video's chapters are
+ * marked along its progress bar: the chapters already read are filled in
+ * the muted color, the one being read in the text color, and those to come
+ * are left in the line color. Under the segments the chapter being read is
+ * named with its number; under the pointer or with a segment focused, that
+ * segment's chapter is named instead. A segment glides the page to its
+ * chapter. The styles are `.chapter-*` in src/styles.css.
  */
 export function ChapterNav({
   group,
+  className,
 }: {
   /** A group of a system's docs: its chapters, by slug and title. */
   group: {
@@ -35,103 +29,81 @@ export function ChapterNav({
     name: string
     docs: ReadonlyArray<{ slug: string; title: string }>
   }
+  className?: string
 }) {
   // The chapter being read: the last one whose top has passed a line a little
   // below the bar, or the last chapter once the page is at its end (a short
-  // one never gets that high); and whether the bar is held at the top of the
-  // window. Measured once a frame while scrolling.
+  // one never gets that high). Measured once a frame while scrolling.
   const [reading, setReading] = useState<string | null>(null)
-  const [stuck, setStuck] = useState(false)
-  const [scrolling, setScrolling] = useState(false)
   useEffect(() => {
     let frame = 0
-    let idle = 0
     const measure = () => {
       frame = 0
       let found: string | null = null
       const page = document.documentElement
       const atEnd = window.innerHeight + window.scrollY >= page.scrollHeight - 2
       const bar = document.querySelector("[data-docs-bar]")
-      const box = bar?.getBoundingClientRect()
-      const line = (box?.height ?? 81) + 81
+      const line = (bar?.getBoundingClientRect().height ?? 81) + 81
       for (const el of document.querySelectorAll("article[data-chapter]")) {
         if (!atEnd && el.getBoundingClientRect().top > line) break
         found = el.id
       }
       setReading(found)
-      setStuck(!!box && box.top <= 1)
     }
     const queue = () => {
       frame ||= requestAnimationFrame(measure)
     }
-    const onScroll = () => {
-      queue()
-      setScrolling(true)
-      clearTimeout(idle)
-      idle = window.setTimeout(() => setScrolling(false), 1000)
-    }
     queue()
-    window.addEventListener("scroll", onScroll, { passive: true })
+    window.addEventListener("scroll", queue, { passive: true })
     window.addEventListener("resize", queue)
     return () => {
       cancelAnimationFrame(frame)
-      clearTimeout(idle)
-      window.removeEventListener("scroll", onScroll)
+      window.removeEventListener("scroll", queue)
       window.removeEventListener("resize", queue)
     }
   }, [group.slug])
 
-  // Where each mark goes: the track runs from under the bar to the window's
-  // foot. Measured again whenever the page or the window changes size (the
-  // figures take their heights after the page is first drawn).
-  const [track, setTrack] = useState<{
-    top: number
-    length: number
-    shut: Array<number>
-    open: Array<number>
-  }>({ top: 0, length: 0, shut: [], open: [] })
-  const last = useRef("")
+  // Each segment's width: the bar's width shared out by how long each chapter
+  // is on the page, from its top to the next one's (the last to its foot),
+  // in whole pixels so the segments' ends are crisp. Measured again whenever
+  // the page or the bar changes size (the figures take their heights after
+  // the page is first drawn).
+  const track = useRef<HTMLDivElement>(null)
+  const [widths, setWidths] = useState<Array<number>>([])
   useLayoutEffect(() => {
+    const el = track.current
+    if (!el) return
     let frame = 0
     const place = () => {
       frame = 0
       const chapters = Array.from(
         document.querySelectorAll<HTMLElement>("article[data-chapter]")
       )
-      const bar = document.querySelector("[data-docs-bar]")
-      if (!chapters.length || !bar) return
-      const top = bar.getBoundingClientRect().height + MARGIN
-      const length = Math.max(0, window.innerHeight - top - MARGIN)
-      const at = (el: HTMLElement) =>
-        el.getBoundingClientRect().top + window.scrollY
-      const start = at(chapters[0])
+      if (!chapters.length) return
+      const tops = chapters.map((c) => c.getBoundingClientRect().top)
       const final = chapters[chapters.length - 1]
-      const end = at(final) + final.offsetHeight
-      const span = Math.max(1, end - start)
-      const marks = chapters.map((el) => ((at(el) - start) / span) * length)
-      const shut = spread(marks, GAP, length)
-      const open = spread(marks, OPEN_GAP, length)
-      const key = `${Math.round(top)}:${shut.join(",")}:${open.join(",")}`
-      if (key === last.current) return
-      last.current = key
-      setTrack({ top, length: Math.round(length), shut, open })
+      const end = tops[tops.length - 1] + final.offsetHeight
+      const sizes = tops.map((top, i) =>
+        Math.max(0, (tops[i + 1] ?? end) - top)
+      )
+      const next = share(sizes, Math.floor(el.clientWidth))
+      setWidths((was) => (was.join() === next.join() ? was : next))
     }
     const queue = () => {
       frame ||= requestAnimationFrame(place)
     }
     place()
     const sizes = new ResizeObserver(queue)
+    sizes.observe(el)
     const main = document.querySelector("article[data-chapter]")?.parentElement
     if (main) sizes.observe(main)
-    window.addEventListener("resize", queue)
     return () => {
       cancelAnimationFrame(frame)
       sizes.disconnect()
-      window.removeEventListener("resize", queue)
     }
   }, [group.slug])
 
-  // A mark glides the page to its chapter: quickly, but so the way there
+  // A segment glides the page to its chapter: quickly, but so the way there
   // shows. The address gets the chapter's hash once it has arrived (set
   // first, the router would jump there at once). A click with a modifier key
   // keeps its browser meaning.
@@ -152,53 +124,70 @@ export function ChapterNav({
     0,
     group.docs.findIndex((doc) => doc.slug === reading)
   )
+  // The segment under the pointer or focused, whose chapter is named.
+  const [pointed, setPointed] = useState<number | null>(null)
+  const named = pointed ?? index
+  const count = group.docs.length
+  const number = (i: number) => String(i + 1).padStart(2, "0")
 
   return (
     <nav
       aria-label={`${group.name} chapters`}
-      className="chapter-map"
+      className={cn("chapter-bar", className)}
       data-no-wave
-      data-shown={stuck || undefined}
-      data-scrolling={scrolling || undefined}
-      inert={!stuck}
-      style={{ top: track.top, height: track.length }}
     >
-      {group.docs.map((doc, i) => (
-        <a
-          key={doc.slug}
-          href={`#${doc.slug}`}
-          className="chapter-mark"
-          aria-current={i === index ? "location" : undefined}
-          style={
-            {
-              "--y": `${track.shut.at(i) ?? 0}px`,
-              "--y-open": `${track.open.at(i) ?? 0}px`,
-            } as React.CSSProperties
-          }
-          onClick={(e) => visit(e, doc.slug)}
-        >
-          <span className="chapter-mark-name">{doc.title}</span>
-          <span aria-hidden className="chapter-tick" />
-        </a>
-      ))}
+      <div
+        ref={track}
+        className="chapter-track"
+        onPointerLeave={() => setPointed(null)}
+      >
+        {group.docs.map((doc, i) => (
+          <a
+            key={doc.slug}
+            href={`#${doc.slug}`}
+            className="chapter-seg"
+            data-read={i < index || undefined}
+            aria-current={i === index ? "location" : undefined}
+            style={widths.length ? { width: widths.at(i) } : { flexGrow: 1 }}
+            onPointerEnter={() => setPointed(i)}
+            onFocus={() => setPointed(i)}
+            onBlur={() => setPointed(null)}
+            onClick={(e) => visit(e, doc.slug)}
+          >
+            <span className="sr-only">{doc.title}</span>
+          </a>
+        ))}
+      </div>
+      <p aria-hidden className="chapter-name">
+        <span className="shrink-0 text-muted-foreground">
+          {number(named)} / {number(count - 1)}
+        </span>
+        <span className="truncate">{group.docs.at(named)?.title}</span>
+      </p>
     </nav>
   )
 }
 
 /**
- * Marks at least `gap` apart: those that sit too close are pushed down, and
- * drawn back up from the track's foot if that pushed the last past it. A
- * track too short for them all at `gap` spaces them evenly instead.
+ * `width` shared out among segments in proportion to `sizes`, each at least
+ * `MIN` wide with `GAP` between them, in whole pixels: the running total is
+ * rounded, not each share, so the segments still fill the width exactly.
  */
-function spread(marks: Array<number>, gap: number, length: number) {
-  const out = [...marks]
-  if (out.length > 1 && (out.length - 1) * gap > length)
-    return out.map((_, i) => Math.round((i * length) / (out.length - 1)))
-  for (let i = 1; i < out.length; i++)
-    out[i] = Math.max(out[i], out[i - 1] + gap)
-  for (let i = out.length - 1; i >= 0; i--) {
-    const room = length - (out.length - 1 - i) * gap
-    out[i] = Math.max(0, Math.min(out[i], room))
+function share(sizes: Array<number>, width: number) {
+  const n = sizes.length
+  const room = width - GAP * (n - 1) - MIN * n
+  const total = sizes.reduce((a, b) => a + b, 0)
+  if (room <= 0 || total <= 0) {
+    const each = Math.max(1, (width - GAP * (n - 1)) / n)
+    return sizes.map(() => Math.floor(each))
   }
-  return out.map(Math.round)
+  let sum = 0
+  let edge = 0
+  return sizes.map((size) => {
+    sum += size
+    const next = Math.round((sum / total) * room)
+    const w = MIN + next - edge
+    edge = next
+    return w
+  })
 }

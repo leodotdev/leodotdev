@@ -188,12 +188,7 @@ export const DOCS: Array<Doc> = [
     "Code Block & Claude Terminal",
     "Code to read, and Claude at work in a terminal."
   ),
-  doc(
-    "Organisms",
-    "claude-narrator",
-    "Claude Narrator",
-    "Claude reading a piece aloud."
-  ),
+  doc("Organisms", "claude-narrator", "Claude Narrator", ""),
   doc(
     "Organisms",
     "tooltip",
