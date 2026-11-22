@@ -1,5 +1,6 @@
 import { Editor } from "@/components/work/plasmic/kit/editor"
 import { Editor21 } from "@/components/work/plasmic/kit/editor21"
+import { Connect } from "@/components/work/plasmic/kit/onboard"
 import { Dashboard21 } from "@/components/work/plasmic/kit/teams"
 import type { Dive, Peer, Shot, State } from "@/components/work/plasmic/types"
 
@@ -607,6 +608,122 @@ export const DIVES_2021: Array<Dive> = [
             side: "bottom",
             beat: 11,
             text: "The checkout’s failure was drawn too: “Your card number is incomplete.”",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "connect",
+    title: "Connect a Codebase",
+    summary:
+      "Onboarding: a new project asks where its code will live, then hands over one command.",
+    scenes: [
+      {
+        view: (s: State) => (
+          <>
+            <Editor21 s={s} />
+            {Boolean(s.wizard) && <Connect s={s} />}
+          </>
+        ),
+        url: URL,
+        state: { wizard: "repo" },
+        explore: {
+          label: "2 ways in",
+          on: "wizard",
+          title: "Step two, by repo",
+          items: [
+            {
+              label: "A test repo: NextJS, Gatsby, or Other",
+              w: 1440,
+              h: 868,
+              view: () => (
+                <>
+                  <Editor21 s={{}} />
+                  <Connect s={{ wizard: "flavor" }} />
+                </>
+              ),
+            },
+            {
+              label: "Your own repo: React too, and a longer snippet",
+              w: 1440,
+              h: 868,
+              view: () => (
+                <>
+                  <Editor21 s={{}} />
+                  <Connect
+                    s={{ wizard: "flavor", repo: "existing", flavor: "react" }}
+                  />
+                </>
+              ),
+            },
+          ],
+        },
+        script: [
+          { on: "choice:test", wait: 2400 },
+          {
+            on: "choice:existing",
+            set: { repo: "existing" },
+            click: true,
+            wait: 1400,
+          },
+          {
+            on: "choice:test",
+            say: "Start from a test repo",
+            click: true,
+            set: { repo: "test" },
+            wait: 1000,
+          },
+          {
+            on: "wizard:next",
+            click: true,
+            set: { wizard: "flavor" },
+            wait: 1400,
+          },
+          {
+            on: "flavor:gatsby",
+            say: "Pick a flavor",
+            click: true,
+            set: { flavor: "gatsby" },
+            wait: 2400,
+          },
+          {
+            on: "wizard:copy",
+            say: "Copy the command",
+            click: true,
+            set: { copied: true },
+            wait: 2200,
+          },
+          { on: "wizard:sync", wait: 2600 },
+          {
+            on: "wizard:done",
+            say: "Done: off to the terminal",
+            click: true,
+            set: { wizard: "" },
+            wait: 2600,
+          },
+        ],
+        notes: [
+          {
+            kind: "concept",
+            on: "wizard",
+            side: "left",
+            beat: [0, 1],
+            text: "Plasmic’s pages and components become code in a codebase, so a new project begins by asking which.",
+          },
+          {
+            kind: "concept",
+            on: "wizard:command",
+            side: "right",
+            beat: [4, 5],
+            text: "One command makes the app, already wired to this project, in the flavor picked.",
+          },
+          {
+            kind: "direction",
+            on: "wizard:sync",
+            side: "right",
+            beat: 6,
+            text: "“Now make some changes in the studio and see your updates sync!” Then into the real codebase.",
           },
         ],
       },

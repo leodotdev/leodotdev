@@ -1602,3 +1602,28 @@
   color: var(--pk-rec);
   animation: pk-pop-in 0.2s ease-out both;
 }
+
+/* A big choice in a dialog (Q3 2021's onboarding). */
+.pk-choice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 14px;
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px var(--pk-line-2);
+  font-size: 13px;
+  font-weight: 500;
+}
+.pk-choice > svg {
+  width: 18px;
+  height: 18px;
+  opacity: 0.7;
+}
+.pk-choice[data-state="focus"] {
+  background: var(--pk-accent-bg);
+  box-shadow: 0 0 0 2px var(--pk-accent);
+}
+.pk-choice[data-state="hover"] {
+  background: var(--pk-panel-2);
+}
