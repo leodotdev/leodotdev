@@ -1057,7 +1057,6 @@ export const DIVES_2020: Array<Dive> = [
           items: [
             "An icon rail down the left, an icon per panel",
             "One panel at a time, floating over the canvas",
-            "More room for the canvas",
           ],
         },
         notes: [

@@ -104,7 +104,7 @@ export const DIVES_2023: Array<Dive> = [
             kind: "concept",
             on: "crumb:project",
             beat: 0,
-            text: "The project, and under it everything a project holds: settings, imports, tests.",
+            text: "The project, and under it everything a project holds: settings, branches, localization.",
           },
           {
             kind: "concept",
@@ -741,7 +741,7 @@ export const DIVES_2023: Array<Dive> = [
             on: "crm:nav:contracts",
             side: "right",
             beat: [6, 7, 8],
-            text: "“Viewing as”: the app as each role meets it, from inside the editor. Anonymous gets the login; Normal has no Staff page.",
+            text: "“Viewing as”: the app as each role meets it, from inside the editor.",
           },
         ],
       },

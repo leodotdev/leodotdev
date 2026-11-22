@@ -162,7 +162,7 @@ export const DIVES_2022: Array<Dive> = [
             kind: "direction",
             on: "tabs",
             beat: 0,
-            text: "A ribbon, after Office’s: modes as tabs across the top bar, each filling the ribbon under it.",
+            text: "A ribbon: modes as tabs across the top bar, each filling the ribbon under it.",
           },
           {
             kind: "concept",
@@ -293,7 +293,7 @@ export const DIVES_2022: Array<Dive> = [
             kind: "discovery",
             on: "float:layers",
             beat: 2,
-            text: "The tree came back pinned: the file’s “Pin Tree” frames keep it open beside the canvas, and the later editor docks it.",
+            text: "The ribbon’s Layers panel floats with a pin; the editor after it docks the tree again.",
           },
         ],
       },
@@ -436,8 +436,7 @@ export const DIVES_2022: Array<Dive> = [
   {
     slug: "cms",
     title: "Content",
-    summary:
-      "A hosted CMS: types, entries, and publishing content without a deploy.",
+    summary: "A hosted CMS: types, entries, locales, and a Publish per entry.",
     scenes: [
       {
         view: (s: State) => <Cms s={s} />,
@@ -475,13 +474,13 @@ export const DIVES_2022: Array<Dive> = [
             kind: "concept",
             on: "cms:types",
             beat: 0,
-            text: "Types are models (blog posts, products, FAQs); entries are their content, written by people who never open the studio.",
+            text: "Types are models (blog posts, products, FAQs); entries are their content.",
           },
           {
             kind: "concept",
             on: "cms:publish",
             beat: 4,
-            text: "An entry publishes on its own: content changes go live without a new version of the site.",
+            text: "Each entry has its own Publish; rows say Draft or Published.",
           },
           {
             kind: "direction",
@@ -559,13 +558,7 @@ export const DIVES_2022: Array<Dive> = [
             kind: "concept",
             on: "board:mobile",
             beat: 1,
-            text: "Mobile is a screen variant: what is recorded here applies under 414px, over the base.",
-          },
-          {
-            kind: "concept",
-            on: "publish",
-            beat: 2,
-            text: "Even Publish turns red while recording.",
+            text: "Mobile is a screen variant: what is recorded here applies on the Mobile-only screen, over the base.",
           },
         ],
       },
