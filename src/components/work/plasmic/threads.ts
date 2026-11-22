@@ -33,6 +33,7 @@ export const THREADS: Array<Thread> = [
       ["2020", "insert"],
       ["2021", "data"],
       ["2022", "tabs"],
+      ["2023", "app-builder"],
       ["2023", "copilot"],
     ],
   },

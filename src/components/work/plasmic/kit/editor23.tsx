@@ -48,11 +48,13 @@ import {
 } from "@/components/work/plasmic/kit/studio"
 import type { TreeNode } from "@/components/work/plasmic/kit/studio"
 import {
+  EmptyStack,
   Integrations,
   PageSettings,
   QueryDrawer,
   SettingsModal,
   TemplatePick,
+  WelcomeInsert,
 } from "@/components/work/plasmic/kit/app23"
 import type { State } from "@/components/work/plasmic/types"
 
@@ -118,7 +120,9 @@ export function EditorCrumb({ s }: { s: State }) {
         data-rec={rec ? "" : undefined}
         style={{ "--pk-dots": "var(--pk-line-2)" } as React.CSSProperties}
       >
-        {s.newPage ? (
+        {s.emptyPage ? (
+          <EmptyStack drop={Boolean(s.stackDrop)} />
+        ) : s.newPage ? (
           <TemplatePick hover={str(s.tpl)} />
         ) : s.crm ? (
           <Crm viewAs={str(s.viewAs)} type={str(s.ctype, "Cards")} />
@@ -134,6 +138,7 @@ export function EditorCrumb({ s }: { s: State }) {
         </span>
         {logic && <LogicPanel flow={Boolean(s.flow)} />}
         {Boolean(s.query) && <QueryDrawer s={s} />}
+        {Boolean(s.welcome) && <WelcomeInsert hover={str(s.tplHover)} />}
       </main>
       {!s.crm && !logic && <RightCrumb s={s} />}
       {Boolean(s.crm && s.coll) && (

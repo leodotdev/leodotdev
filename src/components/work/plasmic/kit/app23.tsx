@@ -958,3 +958,163 @@ function Permissions() {
     </div>
   )
 }
+
+/* ------------------------------------------------------------------ */
+/* Welcome, and Insert                                                  */
+
+/** A tile's small picture: a button, a table, a board, a form, a field. */
+function TileArt({ kind }: { kind: string }) {
+  if (kind === "Button" || kind === "Board")
+    return (
+      <span
+        className="rounded px-4 py-1 text-[11px] text-white"
+        style={{ background: "#2563eb" }}
+      >
+        Click
+      </span>
+    )
+  if (kind === "Table" || kind === "Edit Form")
+    return (
+      <span className="flex w-16 flex-col gap-1 rounded bg-white p-1.5">
+        {[1, 0.7, 0.85].map((k, i) => (
+          <i
+            key={i}
+            className="block h-0.5 rounded-full bg-[#9ca3af]"
+            style={{ width: `${k * 100}%` }}
+          />
+        ))}
+      </span>
+    )
+  if (kind === "Select")
+    return (
+      <span className="flex w-16 items-center justify-between rounded bg-white px-1.5 py-1">
+        <i className="block h-0.5 w-8 rounded-full bg-[#6b7280]" />
+        <TbChevronDown className="h-2.5 w-2.5 text-[#6b7280]" />
+      </span>
+    )
+  if (kind === "C:Button")
+    return (
+      <span className="h-4 w-14 rounded" style={{ background: "#2563eb" }} />
+    )
+  return <span className="h-4 w-16 rounded bg-white" />
+}
+
+/**
+ * The 2023 file's Insert panel as a new project opens it: a welcome with
+ * resources, then templates, then components, then basic elements.
+ */
+export function WelcomeInsert({ hover }: { hover?: string }) {
+  const tile = (label: string, art: string, pk: string) => (
+    <span
+      className="pk-wtile"
+      data-state={hover === label ? "hover" : undefined}
+      data-pk={pk}
+    >
+      <span className="grid h-12 place-items-center">
+        <TileArt kind={art} />
+      </span>
+      <span className="py-1.5 text-center">{label}</span>
+    </span>
+  )
+  return (
+    <section className="pk-pop pk-welcome" data-pk="welcome">
+      <div className="pk-welcome-hero" data-pk="welcome:hero">
+        <span className="flex items-start justify-between">
+          <span className="flex flex-col leading-4">
+            <b className="text-[14px] leading-5 font-semibold">
+              Welcome to Plasmic!
+            </b>
+            <span className="pk-muted">Resources to get started:</span>
+          </span>
+          <TbX className="opacity-50" />
+        </span>
+        {["Documentation", "Video tutorials", "Community forums"].map((r) => (
+          <span
+            key={r}
+            className="flex items-center gap-2 pl-2"
+            style={{ color: "var(--pk-accent)" }}
+          >
+            <i
+              className="block h-1 w-1 rounded-full"
+              style={{ background: "var(--pk-accent)" }}
+            />
+            {r}
+          </span>
+        ))}
+      </div>
+      <div
+        className="flex flex-col gap-2 px-4 pt-4"
+        data-pk="welcome:templates"
+      >
+        <span className="flex items-start justify-between">
+          <span className="flex flex-col leading-4">
+            <b className="text-[14px] leading-5 font-medium">Templates</b>
+            <span className="pk-faint">Start by using pre-built examples…</span>
+          </span>
+          <TbX className="opacity-50" />
+        </span>
+        <span className="grid grid-cols-2 gap-2">
+          {tile("Button", "Button", "wt:button")}
+          {tile("Table", "Table", "wt:table")}
+          {tile("Board", "Board", "wt:board")}
+          {tile("Edit Form", "Edit Form", "wt:form")}
+        </span>
+        <span
+          className="flex items-center justify-end gap-1 py-1"
+          style={{ color: "var(--pk-accent)" }}
+        >
+          View all templates… <TbArrowRight className="-rotate-45" />
+        </span>
+      </div>
+      <div
+        className="flex flex-col gap-2 px-4 pt-3"
+        style={{ borderTop: "1px solid var(--pk-line)" }}
+        data-pk="welcome:components"
+      >
+        <span className="flex flex-col leading-4">
+          <b className="text-[14px] leading-5 font-medium">Components</b>
+          <span className="pk-faint">
+            …or start by inserting pre-built components.
+          </span>
+        </span>
+        <span className="grid grid-cols-2 gap-2">
+          {tile("Button ", "C:Button", "wc:button")}
+          {tile("Text Input", "Input", "wc:input")}
+          {tile("Select", "Select", "wc:select")}
+          {tile("Text Input ", "Input", "wc:input2")}
+        </span>
+      </div>
+      <div className="px-4 py-3">
+        <b className="text-[14px] font-medium">Basic elements</b>
+      </div>
+    </section>
+  )
+}
+
+/** A new page: one empty vertical stack, selected. */
+export function EmptyStack({ drop }: { drop?: boolean }) {
+  return (
+    <div
+      className="absolute inset-6 rounded-lg"
+      style={{ background: "var(--pk-panel)" }}
+    >
+      <div
+        className="absolute rounded"
+        style={{
+          left: "30%",
+          top: "14%",
+          width: "56%",
+          height: "64%",
+          background: drop ? "var(--pk-accent-bg)" : "#fff",
+          outline: "1.5px solid var(--pk-accent)",
+          transition: "background 0.2s",
+        }}
+        data-pk="stack"
+      >
+        <span className="pk-sel-tag" style={{ top: -24, left: -1 }}>
+          Vertical Stack
+        </span>
+      </div>
+    </div>
+  )
+}

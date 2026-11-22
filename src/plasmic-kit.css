@@ -2501,3 +2501,40 @@
 .pk-perm-row + .pk-perm-row {
   border-top: 1px solid var(--pk-line);
 }
+
+/* 2023's Welcome / Insert card (kit/app23.tsx). */
+.pk-welcome {
+  top: 12px;
+  left: 12px;
+  width: 300px;
+}
+.pk-welcome-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 12px 0;
+  padding: 56px 14px 14px;
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at 12% 22%, #f9a8d4 0 4px, transparent 5px),
+    radial-gradient(circle at 30% 12%, #93c5fd 0 3px, transparent 4px),
+    radial-gradient(circle at 52% 24%, #fde68a 0 5px, transparent 6px),
+    radial-gradient(circle at 72% 10%, #a7f3d0 0 4px, transparent 5px),
+    radial-gradient(circle at 88% 26%, #c4b5fd 0 3px, transparent 4px),
+    var(--pk-accent-bg);
+}
+.pk-wtile {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--pk-panel-2);
+  transition: box-shadow 0.15s;
+}
+.pk-wtile > span:first-child {
+  background: var(--pk-panel-3);
+}
+.pk-wtile[data-state="hover"],
+.pk-wtile:hover {
+  box-shadow: 0 0 0 2px var(--pk-accent);
+}

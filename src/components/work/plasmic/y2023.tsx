@@ -635,6 +635,63 @@ export const DIVES_2023: Array<Dive> = [
       {
         view: crumb,
         url: "studio.plasmic.app/projects/crm-app",
+        state: { ...APP, emptyPage: true },
+        script: [
+          {
+            on: "rail:insert",
+            say: "Open Insert",
+            click: true,
+            set: { welcome: true },
+            wait: 1600,
+          },
+          { on: "welcome:hero", wait: 2400 },
+          { on: "wt:board", set: { tplHover: "Board" }, wait: 900 },
+          {
+            on: "wt:table",
+            say: "Drop the Table template in",
+            set: { tplHover: "Table" },
+            wait: 500,
+          },
+          {
+            on: "wt:table",
+            drag: "stack",
+            ghost: "Table",
+            set: { stackDrop: true },
+            wait: 400,
+          },
+          {
+            on: "stack",
+            set: {
+              welcome: false,
+              tplHover: "",
+              stackDrop: false,
+              emptyPage: false,
+              crm: true,
+              ctype: "Table",
+            },
+            wait: 2800,
+          },
+        ],
+        notes: [
+          {
+            kind: "direction",
+            on: "welcome",
+            side: "right",
+            beat: [1, 2],
+            text: "Insert, as a new project first opens it: a welcome with resources, then templates, components, and basic elements, in one floating card.",
+          },
+          {
+            kind: "concept",
+            on: "welcome:templates",
+            side: "right",
+            beat: 3,
+            text: "“Start by using pre-built examples…” or, under them, “…start by inserting pre-built components.”",
+          },
+        ],
+      },
+      {
+        view: crumb,
+        url: "studio.plasmic.app/projects/crm-app",
         state: { ...APP, crm: true },
         notes: [
           {
