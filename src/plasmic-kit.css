@@ -2460,3 +2460,23 @@
   color: #fff;
   font: 500 16px/22px var(--pk-sans);
 }
+.pk-ctype {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 0 6px;
+  border-radius: 7px;
+  background: var(--pk-panel-2);
+  color: var(--pk-fg-2);
+  font-size: 11px;
+}
+.pk-ctype > svg {
+  width: 16px;
+  height: 16px;
+}
+.pk-ctype[aria-pressed="true"] {
+  background: var(--pk-accent-bg);
+  box-shadow: 0 0 0 1.5px var(--pk-accent);
+  color: var(--pk-accent);
+}

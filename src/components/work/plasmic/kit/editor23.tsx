@@ -1,4 +1,8 @@
 import {
+  TbLayoutKanban,
+  TbInbox,
+  TbTable,
+  TbList,
   TbDeviceMobile,
   TbLayoutGrid,
   TbBolt,
@@ -87,7 +91,7 @@ export function EditorCrumb({ s }: { s: State }) {
       className="pk-studio"
       style={{
         gridTemplateRows: "48px minmax(0,1fr)",
-        gridTemplateColumns: `${railW}px ${leftW}px minmax(0,1fr) ${s.crm || logic ? 0 : 300}px`,
+        gridTemplateColumns: `${railW}px ${leftW}px minmax(0,1fr) ${(s.crm && !s.coll) || logic ? 0 : 300}px`,
         gridTemplateAreas: '"top top top top" "rail left canvas right"',
       }}
     >
@@ -117,7 +121,7 @@ export function EditorCrumb({ s }: { s: State }) {
         {s.newPage ? (
           <TemplatePick hover={str(s.tpl)} />
         ) : s.crm ? (
-          <Crm viewAs={str(s.viewAs)} />
+          <Crm viewAs={str(s.viewAs)} type={str(s.ctype, "Cards")} />
         ) : (
           <Boards rec={rec} view={view} s={s} />
         )}
@@ -131,6 +135,9 @@ export function EditorCrumb({ s }: { s: State }) {
         {Boolean(s.query) && <QueryDrawer s={s} />}
       </main>
       {!s.crm && !logic && <RightCrumb s={s} />}
+      {Boolean(s.crm && s.coll) && (
+        <CollectionPanel type={str(s.ctype, "Cards")} />
+      )}
       {s.projMenu && <ProjectMenu s={s} />}
       {s.publish && <PublishDialog ran={Boolean(s.testsRun)} />}
       {s.merge && <MergeDialog />}
@@ -1288,7 +1295,14 @@ function Palette({ q }: { q: string }) {
  * The sample CRM, as a role would see it (viewAs): Anonymous meets the
  * login, Normal has no Staff page, and Admin sees everything.
  */
-function Crm({ viewAs = "" }: { viewAs?: string }) {
+function Crm({
+  viewAs = "",
+  type = "Cards",
+}: {
+  viewAs?: string
+  /** The collection's Type: how its items are laid out. */
+  type?: string
+}) {
   const anon = viewAs === "Anonymous"
   const cos = [
     "Bluth Company",
@@ -1369,37 +1383,216 @@ function Crm({ viewAs = "" }: { viewAs?: string }) {
           >
             Search…
           </span>
-          <div
-            className="grid grid-cols-2 gap-2"
-            data-pk="crm:list"
-            style={{
-              outline: "1.5px dashed var(--pk-accent)",
-              outlineOffset: 4,
-            }}
-          >
-            {cos.map((c) => (
-              <div
-                key={c}
-                className="flex items-center gap-3 rounded-lg p-3"
-                style={{ background: "#14171c" }}
-              >
-                <span
-                  className="h-8 w-8 rounded-md"
-                  style={{
-                    background: "linear-gradient(135deg,#334155,#64748b)",
-                  }}
-                />
-                <span className="flex flex-col">
-                  <b className="text-[13px]">{c}</b>
-                  <span className="text-[11px]" style={{ color: "#6b7280" }}>
-                    Collection · Companies
-                  </span>
-                </span>
-              </div>
-            ))}
-          </div>
+          <CrmList cos={cos} type={type} />
         </div>
       )}
+    </div>
+  )
+}
+
+const CITIES = [
+  "Newport Beach, CA",
+  "Scranton, PA",
+  "Los Angeles, CA",
+  "Los Angeles, CA",
+  "Palo Alto, CA",
+  "New York City, NY",
+  "New York City, NY",
+]
+
+/** The bound list, laid out as its collection's Type says. */
+function CrmList({ cos, type }: { cos: Array<string>; type: string }) {
+  const thumb = (
+    <span
+      className="h-8 w-8 flex-none rounded-md"
+      style={{ background: "linear-gradient(135deg,#334155,#64748b)" }}
+    />
+  )
+  const frame: React.CSSProperties = {
+    outline: "1.5px dashed var(--pk-accent)",
+    outlineOffset: 4,
+    animation: "pk-fade 0.35s ease-out both",
+  }
+  if (type === "Table")
+    return (
+      <div
+        key={type}
+        className="flex flex-col"
+        style={frame}
+        data-pk="crm:list"
+      >
+        <div
+          className="grid grid-cols-[2fr_1.4fr_1fr] gap-3 px-3 py-2 text-[11px]"
+          style={{ color: "#6b7280" }}
+        >
+          <span>Name</span>
+          <span>Location</span>
+          <span>Created</span>
+        </div>
+        {cos.map((c, i) => (
+          <div
+            key={c}
+            className="grid grid-cols-[2fr_1.4fr_1fr] gap-3 px-3 py-2"
+            style={{ borderTop: "1px solid #1f2329" }}
+          >
+            <b className="text-[13px]">{c}</b>
+            <span style={{ color: "#9ca3af" }}>{CITIES[i]}</span>
+            <span style={{ color: "#6b7280" }}>0{(i % 9) + 1}/20/2021</span>
+          </div>
+        ))}
+      </div>
+    )
+  if (type === "List")
+    return (
+      <div
+        key={type}
+        className="flex flex-col gap-1"
+        style={frame}
+        data-pk="crm:list"
+      >
+        {cos.map((c, i) => (
+          <div
+            key={c}
+            className="flex items-center gap-3 rounded-md px-3 py-2"
+            style={{ background: i === 0 ? "#1f2329" : undefined }}
+          >
+            {thumb}
+            <span className="flex flex-col">
+              <b className="text-[13px]">{c}</b>
+              <span className="text-[11px]" style={{ color: "#6b7280" }}>
+                {CITIES[i]}
+              </span>
+            </span>
+          </div>
+        ))}
+      </div>
+    )
+  if (type === "Kanban")
+    return (
+      <div
+        key={type}
+        className="grid grid-cols-3 gap-3"
+        style={frame}
+        data-pk="crm:list"
+      >
+        {["Lead", "Active", "Closed"].map((col, k) => (
+          <div
+            key={col}
+            className="flex flex-col gap-2 rounded-lg p-2"
+            style={{ background: "#14171c" }}
+          >
+            <span className="px-1 text-[11px]" style={{ color: "#9ca3af" }}>
+              {col}
+            </span>
+            {cos
+              .filter((_, i) => i % 3 === k)
+              .map((c) => (
+                <div
+                  key={c}
+                  className="rounded-md p-2"
+                  style={{ background: "#1f2329" }}
+                >
+                  <b className="text-[12px]">{c}</b>
+                </div>
+              ))}
+          </div>
+        ))}
+      </div>
+    )
+  return (
+    <div
+      key={type}
+      className="grid grid-cols-2 gap-2"
+      style={frame}
+      data-pk="crm:list"
+    >
+      {cos.map((c) => (
+        <div
+          key={c}
+          className="flex items-center gap-3 rounded-lg p-3"
+          style={{ background: "#14171c" }}
+        >
+          {thumb}
+          <span className="flex flex-col">
+            <b className="text-[13px]">{c}</b>
+            <span className="text-[11px]" style={{ color: "#6b7280" }}>
+              Collection · Companies
+            </span>
+          </span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+/** A selected collection's panel: its data, its Type as a grid, its fields. */
+function CollectionPanel({ type }: { type: string }) {
+  const types: Array<[string, React.ComponentType<{ className?: string }>]> = [
+    ["Cards", TbLayoutGrid],
+    ["List", TbList],
+    ["Table", TbTable],
+    ["Inbox", TbInbox],
+    ["Kanban", TbLayoutKanban],
+    ["Custom", TbDots],
+  ]
+  return (
+    <div
+      className="pk-panel pk-area-right"
+      style={{ borderLeft: "1px solid var(--pk-line)" }}
+      data-pk="coll"
+    >
+      <div className="pk-head" style={{ minHeight: 56 }}>
+        <span className="flex flex-col leading-4">
+          <b className="font-semibold">Companies</b>
+          <span className="pk-faint text-[11px]">Collection</span>
+        </span>
+      </div>
+      <div className="flex flex-col gap-3 p-3">
+        <span className="grid grid-cols-[56px_1fr] items-center gap-2">
+          <span className="pk-muted">Data</span>
+          <span className="pk-input">
+            <TbDatabase /> Demo Data <TbChevronDown className="ml-auto" />
+          </span>
+        </span>
+        <span
+          className="grid grid-cols-[56px_1fr] items-start gap-2"
+          data-pk="coll:types"
+        >
+          <span className="pk-muted pt-2">Type</span>
+          <span className="grid grid-cols-3 gap-1.5">
+            {types.map(([t, I]) => (
+              <span
+                key={t}
+                className="pk-ctype"
+                aria-pressed={t === type}
+                data-pk={`ctype:${t.toLowerCase()}`}
+              >
+                <I />
+                {t}
+              </span>
+            ))}
+          </span>
+        </span>
+      </div>
+      <div
+        className="pk-section-head"
+        style={{ height: 36, padding: "0 12px" }}
+      >
+        <span>Fields</span>
+        <TbPlus className="h-3.5 w-3.5 opacity-60" />
+      </div>
+      {[
+        ["id", "Key"],
+        ["name", "Text"],
+        ["location › city", "Text"],
+        ["location › state", "Text"],
+        ["avatar", "Image"],
+      ].map(([k, t]) => (
+        <span key={k} className="flex h-8 items-center justify-between px-3">
+          <span className="pk-mono">{k}</span>
+          <span className="pk-faint">{t}</span>
+        </span>
+      ))}
     </div>
   )
 }

@@ -638,6 +638,13 @@ export const DIVES_2023: Array<Dive> = [
         state: { ...APP, crm: true },
         notes: [
           {
+            kind: "concept",
+            on: "coll:types",
+            side: "bottom",
+            beat: [2, 3, 4],
+            text: "A collection’s Type: Cards, List, Table, Inbox, Kanban, or Custom. The same rows, laid out another way.",
+          },
+          {
             kind: "direction",
             on: "rail",
             beat: 0,
@@ -646,19 +653,52 @@ export const DIVES_2023: Array<Dive> = [
           {
             kind: "concept",
             on: "crm:list",
+            side: "bottom",
             beat: 1,
             text: "A list bound to a collection: one card designed, repeated for every company in the data.",
           },
           {
             kind: "direction",
             on: "modes",
-            beat: 2,
+            beat: 6,
             text: "Build and Preview, as one switch: try the app without leaving it.",
           },
         ],
         script: [
           { on: "rail:components", wait: 2400 },
-          { on: "crm:list", wait: 2600 },
+          {
+            on: "crm:list",
+            say: "Select the list",
+            click: true,
+            set: { coll: true },
+            wait: 2400,
+          },
+          {
+            on: "ctype:table",
+            say: "Make it a table",
+            click: true,
+            set: { ctype: "Table" },
+            wait: 2200,
+          },
+          {
+            on: "ctype:kanban",
+            say: "A kanban board",
+            click: true,
+            set: { ctype: "Kanban" },
+            wait: 2200,
+          },
+          {
+            on: "ctype:list",
+            click: true,
+            set: { ctype: "List" },
+            wait: 1800,
+          },
+          {
+            on: "ctype:cards",
+            click: true,
+            set: { ctype: "Cards", coll: false },
+            wait: 1400,
+          },
           { on: "mode:preview", wait: 2200 },
         ],
       },
