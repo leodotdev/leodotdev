@@ -1,4 +1,7 @@
 import {
+  TbDeviceMobile,
+  TbLayoutGrid,
+  TbBolt,
   TbAlertTriangle,
   TbBook,
   TbBuildingSkyscraper,
@@ -134,6 +137,49 @@ export function EditorCrumb({ s }: { s: State }) {
       {s.palette && <Palette q={str(s.q)} />}
       {Boolean(s.settings) && <SettingsModal s={s} />}
       {Boolean(s.pageSet) && <PageSettings s={s} />}
+      {s.crumbMenu === "page" && (
+        <Menu
+          x={290}
+          y={46}
+          w={230}
+          pk="switch:page"
+          hover={str(s.menuHover)}
+          items={[
+            { heading: "Pages" },
+            { label: "Homepage", icon: TbFileText, kbd: "/" },
+            { label: "Pricing", icon: TbFileText, kbd: "/pricing" },
+            { label: "Blog", icon: TbFileText, kbd: "/blog" },
+            "sep",
+            { heading: "Components" },
+            { label: "Button", icon: TbComponents },
+            { label: "Navigation", icon: TbComponents },
+            "sep",
+            { heading: "Custom arenas" },
+            { label: "Explorations", icon: TbLayoutGrid },
+          ]}
+        />
+      )}
+      {s.crumbMenu === "variant" && (
+        <Menu
+          x={430}
+          y={46}
+          w={220}
+          pk="switch:variant"
+          hover={str(s.menuHover)}
+          items={[
+            { heading: "Interactions" },
+            { label: "Hover", icon: TbBolt },
+            { label: "Pressed", icon: TbBolt },
+            { heading: "Toggles" },
+            { label: "isDark", icon: TbTriangle },
+            { heading: "Screens" },
+            { label: "Desktop", icon: TbDeviceDesktop },
+            { label: "Mobile-only", icon: TbDeviceMobile, pk: "switch:mobile" },
+            { heading: "Globals" },
+            { label: "DarkTheme", icon: TbWorld },
+          ]}
+        />
+      )}
       {Boolean(s.integrations) && <Integrations hover={str(s.srcHover)} />}
     </div>
   )
