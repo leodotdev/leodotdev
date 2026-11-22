@@ -929,7 +929,7 @@ export const DIVES_2023: Array<Dive> = [
     slug: "dashboard",
     title: "The Dashboard, Again",
     summary:
-      "An organization and its workspaces, a trial counting down, and new apps from templates.",
+      "An organization and its workspaces, a trial counting down, new apps from templates, and its plans.",
     scenes: [
       {
         view: (s: State) => <Dashboard23 s={s} />,
@@ -983,6 +983,38 @@ export const DIVES_2023: Array<Dive> = [
             side: "bottom",
             beat: [2, 3, 4],
             text: "“Create a new App | Website”: a project can start from a template, right on the dashboard.",
+          },
+        ],
+      },
+      {
+        view: (s: State) => <Dashboard23 s={s} />,
+        url: "studio.plasmic.app/orgs/acme/settings/billing",
+        state: { settings: true },
+        script: [
+          { on: "d23:plans", at: [0.2, 0.08], wait: 2400 },
+          {
+            on: "plan23:basic",
+            say: "Compare Basic",
+            set: { plan: "Basic" },
+            wait: 2600,
+          },
+          { on: "plan23:growth", set: { plan: "Growth" }, wait: 1800 },
+          { on: "plan23:starter", set: { plan: "" }, wait: 1800 },
+        ],
+        notes: [
+          {
+            kind: "concept",
+            on: "d23:plans",
+            side: "bottom",
+            beat: 0,
+            text: "Billing in the organization’s settings, beside members, workspaces, analytics, and security.",
+          },
+          {
+            kind: "direction",
+            on: "plan23:basic",
+            side: "bottom",
+            beat: [1, 2],
+            text: "The plans, again: Starter, Basic, Growth, Enterprise. 2021’s were Starter, Pro, Growth, Enterprise, with Pro priced per collaborator; Basic is priced by the month.",
           },
         ],
       },
