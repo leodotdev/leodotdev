@@ -424,8 +424,11 @@
   border-bottom: 1px solid var(--pk-line);
 }
 .pk-tab {
+  display: inline-flex;
+  align-items: center;
   height: 26px;
   padding: 0 8px;
+  white-space: nowrap;
   border-radius: 6px;
   color: var(--pk-fg-3);
   font-weight: 500;

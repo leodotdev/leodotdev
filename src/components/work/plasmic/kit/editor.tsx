@@ -2,16 +2,16 @@ import {
   TbAdjustmentsHorizontal,
   TbArrowsMaximize,
   TbChevronDown,
+  TbCircleDot,
   TbColumns,
   TbComponents,
   TbCopy,
-  TbDiamond,
   TbLayoutRows,
   TbPalette,
   TbPlus,
   TbPointer,
-  TbRotate,
   TbRectangle,
+  TbRotate,
   TbTrash,
   TbTriangle,
   TbTypography,
@@ -86,14 +86,14 @@ export const BOARDS = {
 /** Boxes inside the login artboard, from the Acme page's own layout. */
 const IN_LOGIN: Record<string, [number, number, number, number]> = {
   header: [0, 0, 360, 52],
-  title: [40, 17, 120, 18],
+  title: [40, 17, 100, 18],
   heading: [16, 72, 328, 26],
   subtitle: [16, 110, 328, 18],
-  email: [16, 140, 328, 58],
-  password: [16, 210, 328, 58],
-  button: [16, 280, 328, 40],
-  dropped: [16, 332, 328, 40],
-  root: [0, 52, 360, 588],
+  email: [16, 140, 328, 60],
+  password: [16, 212, 328, 60],
+  button: [16, 284, 328, 40],
+  dropped: [16, 336, 328, 40],
+  root: [0, 0, 360, 640],
 }
 
 const str = (v: State[string], d = "") => (typeof v === "string" ? v : d)
@@ -287,6 +287,7 @@ export function Editor({ s }: { s: State }) {
           kind="component"
           size="375 × 667"
           pk="board:login"
+          covered={sel === "root"}
         >
           <AcmeLogin
             accent={accent}
@@ -324,7 +325,15 @@ export function Editor({ s }: { s: State }) {
             }
             tag={
               <>
-                <TbDiamond className="h-3 w-3" />
+                {sel === "root" ? (
+                  <TbLayoutRows className="h-3 w-3" />
+                ) : sel === "subtitle" || sel === "heading" ? (
+                  <TbTypography className="h-3 w-3" />
+                ) : sel === "title" ? (
+                  <TbCircleDot className="h-3 w-3" />
+                ) : (
+                  <TbComponents className="h-3 w-3" />
+                )}
                 {sel === "header"
                   ? "Header"
                   : sel === "title"
@@ -425,7 +434,7 @@ function RightDesign({ s }: { s: State }) {
         pk="right:head"
         title={
           <span className="flex items-center gap-2">
-            <TbDiamond style={{ color: "var(--pk-component)" }} />
+            <TbComponents style={{ color: "var(--pk-component)" }} />
             {name}
             <span className="pk-faint font-normal">Component</span>
           </span>
@@ -766,7 +775,7 @@ function Inheritance({
             data-over={over || undefined}
           >
             {kind === "base" ? (
-              <TbDiamond className="h-3 w-3" />
+              <TbComponents className="h-3 w-3" />
             ) : (
               <TbTriangle className="h-3 w-3" />
             )}

@@ -1,8 +1,8 @@
 import {
   TbCheck,
   TbChevronDown,
+  TbComponents,
   TbCopy,
-  TbDiamond,
   TbLayoutRows,
   TbLink,
   TbPhoto,
@@ -196,7 +196,7 @@ export function InsertPanel({
           <div key={name}>
             <div className="pk-menu-label px-4">{name}</div>
             {items.map((it) => {
-              const Icon = it.icon ?? TbDiamond
+              const Icon = it.icon ?? TbComponents
               return (
                 <div
                   key={it.label}

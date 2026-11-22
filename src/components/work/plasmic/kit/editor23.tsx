@@ -1,17 +1,8 @@
 import {
-  TbKeyboard,
-  TbBrandFigma,
-  TbFlask,
-  TbDownload,
-  TbLayoutKanban,
-  TbInbox,
-  TbTable,
-  TbList,
-  TbDeviceMobile,
-  TbLayoutGrid,
-  TbBolt,
   TbAlertTriangle,
+  TbBolt,
   TbBook,
+  TbBrandFigma,
   TbBuildingSkyscraper,
   TbCheck,
   TbChevronDown,
@@ -20,15 +11,23 @@ import {
   TbComponents,
   TbDatabase,
   TbDeviceDesktop,
-  TbDiamond,
+  TbDeviceMobile,
   TbDots,
+  TbDownload,
   TbDroplet,
   TbExternalLink,
   TbEye,
   TbFileText,
+  TbFlask,
   TbGitBranch,
   TbHelp,
+  TbInbox,
+  TbKeyboard,
   TbLayersSubtract,
+  TbLayoutGrid,
+  TbLayoutKanban,
+  TbLayoutRows,
+  TbList,
   TbMessage,
   TbPalette,
   TbPencil,
@@ -38,6 +37,7 @@ import {
   TbSearch,
   TbSettings,
   TbSparkles,
+  TbTable,
   TbTriangle,
   TbWorld,
   TbX,
@@ -865,7 +865,7 @@ function RightCrumb({ s }: { s: State }) {
             color: "var(--pk-accent)",
           }}
         >
-          <TbDiamond className="h-4 w-4" />
+          <TbLayoutRows className="h-4 w-4" />
         </span>
         <span className="flex flex-col">
           <b className="font-semibold">Hero</b>

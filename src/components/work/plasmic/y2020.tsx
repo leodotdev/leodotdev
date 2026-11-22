@@ -406,7 +406,7 @@ export const DIVES_2020: Array<Dive> = [
             kind: "concept",
             on: "row:button",
             beat: 0,
-            text: "Button is a component (the diamond): designed once, placed anywhere, and every copy an instance that follows it.",
+            text: "Button is a component (the four diamonds): designed once, placed anywhere, and every copy an instance that follows it.",
           },
           {
             kind: "direction",

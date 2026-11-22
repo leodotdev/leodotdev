@@ -1,12 +1,9 @@
 import {
-  TbLink,
-  TbAlignLeft,
-  TbPaint,
-  TbBold,
-  TbWand,
   TbAlertTriangle,
+  TbAlignLeft,
   TbArrowLeft,
   TbArrowRight,
+  TbBold,
   TbBolt,
   TbBook,
   TbBrowser,
@@ -16,7 +13,6 @@ import {
   TbColumns,
   TbComponents,
   TbDatabase,
-  TbDiamond,
   TbDots,
   TbDotsVertical,
   TbEye,
@@ -29,6 +25,8 @@ import {
   TbHistory,
   TbLayoutColumns,
   TbLayoutRows,
+  TbLink,
+  TbPaint,
   TbPalette,
   TbPhoto,
   TbPlayerPlay,
@@ -39,6 +37,7 @@ import {
   TbShoppingBag,
   TbTriangle,
   TbTypography,
+  TbWand,
   TbX,
 } from "react-icons/tb"
 import { Menu, Pop, Toast } from "@/components/work/plasmic/kit/overlays"
@@ -637,7 +636,7 @@ function ComponentPanel({ s }: { s: State }) {
         <IconBtn icon={TbPlus} pk="variants:add" />
       </div>
       <div className="pk-variant" aria-checked={!rec} data-pk="v:base">
-        <TbDiamond style={{ color: "var(--pk-component)" }} />
+        <TbComponents style={{ color: "var(--pk-component)" }} />
         Base
       </div>
       {groups.map(([g, I, opts]) => (
@@ -948,7 +947,7 @@ function VariantPill({ s }: { s: State }) {
         <Pop x={(1440 - 48 - 208 - 256) / 2 - 140} y={52} w={280} pk="picker">
           <Search placeholder="Search variants…" pk="picker:search" />
           <div className="pk-variant" aria-checked>
-            <TbDiamond style={{ color: "var(--pk-component)" }} />
+            <TbComponents style={{ color: "var(--pk-component)" }} />
             Base
           </div>
           {s.types ? (

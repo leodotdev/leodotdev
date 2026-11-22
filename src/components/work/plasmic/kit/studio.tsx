@@ -1,10 +1,14 @@
 import {
+  TbBorderAll,
   TbChevronDown,
   TbChevronRight,
+  TbCircleDot,
   TbCode,
   TbColumns,
   TbComponents,
+  TbDots,
   TbEye,
+  TbFrame,
   TbHandStop,
   TbHelp,
   TbLayoutRows,
@@ -18,11 +22,6 @@ import {
   TbSquareRoundedPlus,
   TbTypography,
   TbVariable,
-  TbBorderAll,
-  TbDots,
-  TbDiamond,
-  TbFrame,
-  TbCircleDot,
 } from "react-icons/tb"
 import { cn } from "@/lib/utils"
 
@@ -405,7 +404,7 @@ const NODE_ICON: Record<
   React.ComponentType<{ className?: string }>
 > = {
   frame: TbFrame,
-  component: TbDiamond,
+  component: TbComponents,
   box: TbRectangle,
   vstack: TbLayoutRows,
   hstack: TbColumns,
@@ -629,7 +628,7 @@ export function Variants({
           aria-checked={!rec}
           data-state={hover === "base" ? "hover" : undefined}
         >
-          <TbDiamond style={{ color: "var(--pk-component)" }} />
+          <TbComponents style={{ color: "var(--pk-component)" }} />
           Base
           {!rec && <span className="pk-badge ml-auto">editing</span>}
         </div>
@@ -715,7 +714,10 @@ export function Canvas({
   )
 }
 
-/** An artboard on the canvas, its label above it. */
+/**
+ * An artboard on the canvas, its label above it. `covered`: its root is
+ * selected, and the selection's tag stands where the label was.
+ */
 export function Board({
   x,
   y,
@@ -727,6 +729,7 @@ export function Board({
   pk,
   children,
   tag,
+  covered,
 }: {
   x: number
   y: number
@@ -738,6 +741,7 @@ export function Board({
   pk?: string
   tag?: React.ReactNode
   children?: React.ReactNode
+  covered?: boolean
 }) {
   return (
     <div
@@ -745,8 +749,12 @@ export function Board({
       style={{ left: x, top: y, width: w, height: h }}
       data-pk={pk ?? `board:${label.toLowerCase().replace(/\s+/g, "-")}`}
     >
-      <span className="pk-board-label" data-kind={kind}>
-        {kind === "component" ? <TbDiamond /> : <TbFrame />}
+      <span
+        className="pk-board-label"
+        data-kind={kind}
+        style={covered ? { visibility: "hidden" } : undefined}
+      >
+        {kind === "component" ? <TbComponents /> : <TbFrame />}
         {label}
         {tag}
         {size && <span className="pk-faint pk-mono">{size}</span>}
