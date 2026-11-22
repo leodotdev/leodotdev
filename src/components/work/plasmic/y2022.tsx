@@ -1,6 +1,7 @@
 import { Editor21 } from "@/components/work/plasmic/kit/editor21"
 import { Editor22 } from "@/components/work/plasmic/kit/editor22"
 import { EditorCrumb } from "@/components/work/plasmic/kit/editor23"
+import { Cms } from "@/components/work/plasmic/kit/cms"
 import type { Dive, Shot, State } from "@/components/work/plasmic/types"
 
 // 2022, from the "2021 – 2022 Product" file: the ribbon, a concept car
@@ -197,6 +198,66 @@ export const DIVES_2022: Array<Dive> = [
             on: "float:layers",
             beat: 2,
             text: "The tree is wanted all the time; floating it on call turned every selection into a round trip.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "cms",
+    title: "Content",
+    summary:
+      "A hosted CMS: types, entries, and publishing content without a deploy.",
+    scenes: [
+      {
+        view: (s: State) => <Cms s={s} />,
+        url: "studio.plasmic.app/cms/acme-content",
+        script: [
+          { on: "cms:types", wait: 2000 },
+          {
+            on: "entry:2",
+            say: "Open a draft",
+            click: true,
+            set: { entry: 2 },
+            wait: 1400,
+          },
+          {
+            on: "cms:question",
+            click: true,
+            set: { qFocus: true, question: "" },
+            wait: 300,
+          },
+          {
+            on: "cms:question",
+            type: { key: "question", text: "Does Plasmic host my site?" },
+            wait: 900,
+          },
+          {
+            on: "cms:publish",
+            say: "Publish the entry",
+            click: true,
+            set: { qFocus: false, published: true },
+            wait: 2600,
+          },
+        ],
+        notes: [
+          {
+            kind: "concept",
+            on: "cms:types",
+            beat: 0,
+            text: "Types are models (blog posts, products, FAQs); entries are their content, written by people who never open the studio.",
+          },
+          {
+            kind: "concept",
+            on: "cms:publish",
+            beat: 4,
+            text: "An entry publishes on its own: content changes go live without a new version of the site.",
+          },
+          {
+            kind: "direction",
+            on: "cms:locale",
+            beat: [2, 3],
+            text: "“multi-select locale at the top, not at each field”",
           },
         ],
       },

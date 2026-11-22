@@ -105,7 +105,7 @@ function PlasmicWork() {
     if (t === theme) return
     notify(`Studio switched to ${t === "dark" ? "Dark" : "Light"}`)
     void wave(
-      document.querySelector(".pl-desk"),
+      document.querySelector(".pl-browser"),
       () => flushSync(() => setThemeNow(t)),
       {
         source: from,

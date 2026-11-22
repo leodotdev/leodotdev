@@ -126,6 +126,61 @@ export const DIVES_2021: Array<Dive> = [
     ],
   },
   {
+    slug: "multi",
+    title: "Recording Many",
+    summary:
+      "Q1: recording into several variants at once, and a north star with code beside the design.",
+    scenes: [
+      {
+        view: e21,
+        url: URL,
+        state: { expand: "size,text" },
+        script: [
+          { on: "board:home", wait: 1800 },
+          {
+            on: "pill",
+            say: "Target three variants",
+            set: { multiRec: "new layout experiment,with blue button,Mobile" },
+            wait: 2400,
+          },
+          { on: "multi-rec", wait: 2600 },
+          { on: "sec:text", say: "One edit, all three", wait: 2400 },
+        ],
+        notes: [
+          {
+            kind: "concept",
+            on: "multi-rec",
+            beat: [2, 3],
+            text: "Multi-editing: record into several variants at once, and the edit lands on their combination. Each chip comes off with its ×.",
+          },
+          {
+            kind: "direction",
+            on: "board:home",
+            beat: [1, 2],
+            text: "Everything being recorded turns coral red: the chips, the artboard, and the names stacked over it.",
+          },
+        ],
+      },
+      {
+        view: e21,
+        url: URL,
+        state: { sel: "nav", codeDrawer: true },
+        script: [
+          { on: "site:nav", wait: 2000 },
+          { on: "code-drawer", wait: 3000 },
+        ],
+        notes: [
+          {
+            kind: "direction",
+            on: "code-drawer",
+            beat: 1,
+            text: "A north star, “Focused Mode”: the selection’s React and CSS in a drawer under the canvas, ejected once into plain React. Shelved; code components and the code sync carried it instead.",
+          },
+        ],
+      },
+    ],
+  },
+  {
     slug: "project",
     title: "The Project Panel",
     summary: "Pages, components, imports, and code components in one list.",

@@ -127,8 +127,15 @@ export function Editor21({ s }: { s: State }) {
             style={{ left: 80, top: 90, width: 1180, height: 900 }}
             data-pk="board:home"
           >
-            <span className="pk-board-label" style={{ fontSize: 16 }}>
-              Home <span className="pk-faint pk-mono">Desktop · 1180</span>
+            <span
+              className="pk-board-label"
+              style={{
+                fontSize: 16,
+                color: s.multiRec ? "var(--pk-rec)" : undefined,
+              }}
+            >
+              {s.multiRec ? str(s.multiRec).split(",").join(" / ") : "Home"}{" "}
+              <span className="pk-faint pk-mono">Desktop · 1180</span>
             </span>
             <div className="pk-board-body">
               <Site21 grid={Boolean(s.grid)} dark={s.globalDark === true} />
@@ -177,6 +184,7 @@ export function Editor21({ s }: { s: State }) {
         </div>
         <VariantPill s={s} />
         {s.insert && <InsertPop21 s={s} />}
+        {s.codeDrawer && <CodeDrawer />}
         {railless && <InsertBar s={s} />}
         <span
           className="pk-zoom absolute bottom-3 left-3 rounded-lg"
@@ -639,6 +647,35 @@ function Right21({ s }: { s: State }) {
       className="pk-scroll"
       style={rec ? { boxShadow: "inset 0 0 0 2px var(--pk-rec)" } : undefined}
     >
+      {s.multiRec && (
+        <div
+          className="flex flex-col gap-1.5 px-3 py-2.5 text-white"
+          style={{ background: "var(--pk-rec)" }}
+          data-pk="multi-rec"
+        >
+          <b className="text-[11px] tracking-wide">RECORDING</b>
+          <span className="flex flex-wrap gap-1">
+            {str(s.multiRec)
+              .split(",")
+              .map((v) => (
+                <span
+                  key={v}
+                  className="flex items-center gap-1 rounded-md px-1.5 py-0.5"
+                  style={{ background: "rgb(255 255 255 / 0.2)" }}
+                >
+                  {v}
+                  <TbX className="h-3 w-3" />
+                </span>
+              ))}
+            <span
+              className="rounded-md px-1.5 py-0.5"
+              style={{ background: "rgb(255 255 255 / 0.2)" }}
+            >
+              +
+            </span>
+          </span>
+        </div>
+      )}
       {s.recLocked && (
         <div
           className="flex items-center gap-2 px-3 py-2 text-white"
@@ -948,6 +985,76 @@ function InsertPop21({ s }: { s: State }) {
       ))}
       <div className="pb-2" />
     </Pop>
+  )
+}
+
+/**
+ * Q1's north star ("Focused Mode"): the selected component's code in a
+ * drawer under the canvas, React on one side and its CSS on the other,
+ * ejected once into plain React.
+ */
+function CodeDrawer() {
+  return (
+    <div
+      className="absolute right-0 bottom-0 left-0 flex"
+      style={{
+        height: 300,
+        background: "#0b0c0e",
+        borderTop: "1px solid var(--pk-line)",
+      }}
+      data-pk="code-drawer"
+    >
+      {[
+        [
+          "PlasmicNavigation.jsx",
+          [
+            "<nav className={sty.root}>",
+            "  <Logo />",
+            "  <Links items={links} />",
+            '  <Button kind="pill">',
+            "    Let’s go!",
+            "  </Button>",
+            "</nav>",
+          ],
+        ],
+        [
+          "PlasmicNavigation.module.css",
+          [
+            ".root {",
+            "  display: flex;",
+            "  align-items: center;",
+            "  gap: 32px;",
+            "  padding: 0 80px;",
+            "}",
+          ],
+        ],
+      ].map(([file, code]) => (
+        <div
+          key={file as string}
+          className="flex min-w-0 flex-1 flex-col"
+          style={{ borderRight: "1px solid #1f2329" }}
+        >
+          <div
+            className="flex items-center gap-2 px-3 py-2 text-[11px]"
+            style={{ color: "#9ca3af", borderBottom: "1px solid #1f2329" }}
+          >
+            <TbCode className="h-3.5 w-3.5" />
+            {file as string}
+            {(file as string).endsWith(".jsx") && (
+              <span className="pk-badge ml-auto">
+                Plain React (one-time eject)
+              </span>
+            )}
+          </div>
+          <pre
+            className="pk-code m-0 flex-1 rounded-none"
+            style={{ background: "transparent" }}
+          >
+            {(code as Array<string>).join("\n")}
+          </pre>
+        </div>
+      ))}
+    </div>
   )
 }
 
