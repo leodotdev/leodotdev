@@ -43,6 +43,49 @@ const TEAM: Array<Peer> = [
 
 const APP: State = { labeled: true, project: "CRM App", left: "none" }
 
+/** Three teammates on the landing page at once, each on a part of it. */
+const CREW: Array<Peer> = [
+  {
+    name: "Maya",
+    color: "#ec4899",
+    script: [
+      { on: "land:headline", select: true, wait: 1800 },
+      {
+        on: "land:headline",
+        select: true,
+        set: { headline: "Tools your team will love" },
+        wait: 4200,
+      },
+      {
+        on: "land:headline",
+        select: true,
+        set: { headline: "Welcome to Acme" },
+        wait: 3200,
+      },
+    ],
+  },
+  {
+    name: "Sam",
+    color: "#10b981",
+    script: [
+      { on: "land:cta", select: true, wait: 2600 },
+      { on: "land:cta", select: true, set: { cta: "#7c3aed" }, wait: 3600 },
+      { on: "m:land:cta", select: true, wait: 2400 },
+      { on: "land:cta", select: true, set: { cta: "#2563eb" }, wait: 2600 },
+    ],
+  },
+  {
+    name: "Kai",
+    color: "#0ea5e9",
+    script: [
+      { on: "land:nav", select: true, wait: 3000 },
+      { on: "land:nav", select: true, set: { nav: "Customers" }, wait: 4400 },
+      { on: "m:land:headline", select: true, wait: 2600 },
+      { on: "land:nav", select: true, set: { nav: "" }, wait: 2000 },
+    ],
+  },
+]
+
 export const DIVES_2023: Array<Dive> = [
   {
     slug: "breadcrumbs",
@@ -110,6 +153,71 @@ export const DIVES_2023: Array<Dive> = [
           title: "The 2023 shell, explored",
           items: CHROME,
         },
+      },
+    ],
+  },
+  {
+    slug: "together",
+    title: "Building Together",
+    summary:
+      "Four people on one page at once: a headline, a button, a link, and a new card.",
+    scenes: [
+      {
+        view: crumb,
+        url: URL,
+        state: { left: "none", zz: 0.54, zx: 0, zy: 24 },
+        peers: CREW,
+        script: [
+          { on: "avatars", wait: 2600 },
+          {
+            on: "land:features",
+            at: [0.97, 0.5],
+            say: "Add a fourth feature",
+            click: true,
+            set: { features: true, featureName: "" },
+            wait: 900,
+          },
+          {
+            on: "land:feature-3",
+            at: [0.3, 0.3],
+            shape: "text",
+            type: { key: "featureName", text: "Secure" },
+            wait: 3200,
+          },
+          {
+            on: "m:land:features",
+            say: "It’s on mobile too",
+            wait: 3000,
+          },
+          {
+            on: "land:features",
+            set: { features: false },
+            wait: 1600,
+          },
+        ],
+        notes: [
+          {
+            kind: "concept",
+            on: "avatars",
+            side: "bottom",
+            beat: 0,
+            text: "Everyone in the page at once, each selection in its person’s color, with their name.",
+          },
+          {
+            kind: "concept",
+            on: "land:feature-3",
+            side: "bottom",
+            beat: 2,
+            text: "Each change lands on every canvas as it is made: a headline, a button’s color, a link, a card.",
+          },
+          {
+            kind: "concept",
+            on: "m:land:features",
+            side: "left",
+            beat: 3,
+            text: "One page, laid out for each screen: the new card is on the mobile board too.",
+          },
+        ],
       },
     ],
   },

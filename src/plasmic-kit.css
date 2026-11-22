@@ -1828,3 +1828,11 @@
   outline: 1.5px solid var(--pk-accent);
   outline-offset: 3px;
 }
+.pk-land-new {
+  color: #111827;
+  animation: pk-pop-in 0.3s ease-out both;
+}
+.pk-land-new {
+  color: #111827;
+  animation: pk-pop-in 0.3s ease-out both;
+}

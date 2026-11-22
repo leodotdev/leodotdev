@@ -112,7 +112,7 @@ export function EditorCrumb({ s }: { s: State }) {
         ) : s.crm ? (
           <Crm />
         ) : (
-          <Boards rec={rec} view={view} />
+          <Boards rec={rec} view={view} s={s} />
         )}
         <span
           className="pk-zoom absolute right-3 bottom-3 rounded-lg"
@@ -539,9 +539,11 @@ function Copilot() {
 function Boards({
   rec,
   view,
+  s,
 }: {
   rec: string
   view: { x: number; y: number; z: number }
+  s: State
 }) {
   return (
     <div
@@ -559,7 +561,7 @@ function Boards({
           Desktop <span className="pk-faint pk-mono">1440 × 1024</span>
         </span>
         <div className="pk-board-body">
-          <Landing />
+          <Landing s={s} />
         </div>
       </div>
       <div
@@ -577,14 +579,24 @@ function Boards({
           className="pk-board-body"
           style={rec ? { outline: "4px solid var(--pk-rec)" } : undefined}
         >
-          <Landing narrow />
+          <Landing narrow s={s} />
         </div>
       </div>
     </div>
   )
 }
 
-function Landing({ narrow }: { narrow?: boolean }) {
+/**
+ * The sample landing page, drawn from the scene's state so a team can
+ * change it: headline, cta (the button's color), nav (an added link), and
+ * features (a fourth card, featureName its title). Parts on the mobile
+ * board are named with "m:" first.
+ */
+function Landing({ narrow, s }: { narrow?: boolean; s: State }) {
+  const p = narrow ? "m:" : ""
+  const features = ["Fast", "Flexible", "Yours"].concat(
+    s.features ? [str(s.featureName, "")] : []
+  )
   return (
     <div className="pk-acme" style={{ fontSize: narrow ? 18 : 22 }}>
       <div
@@ -593,10 +605,17 @@ function Landing({ narrow }: { narrow?: boolean }) {
       >
         <b style={{ fontSize: 26 }}>Acme</b>
         {!narrow && (
-          <span className="flex gap-8" style={{ color: "#6b7280" }}>
+          <span
+            className="flex gap-8"
+            style={{ color: "#6b7280" }}
+            data-pk="land:nav"
+          >
             <span>Product</span>
             <span>Pricing</span>
             <span>Docs</span>
+            {Boolean(s.nav) && (
+              <span className="pk-land-new">{str(s.nav)}</span>
+            )}
           </span>
         )}
         <span
@@ -620,30 +639,44 @@ function Landing({ narrow }: { narrow?: boolean }) {
             fontWeight: 800,
             letterSpacing: "-0.03em",
           }}
+          data-pk={`${p}land:headline`}
         >
-          Welcome to Acme
+          {str(s.headline, "Welcome to Acme")}
         </span>
         <span style={{ color: "#6b7280", maxWidth: 640 }}>
           The internal tools your team actually wants to use.
         </span>
         <span
           className="rounded-xl px-8 py-4 text-white"
-          style={{ background: "#2563eb" }}
+          style={{
+            background: str(s.cta, "#2563eb"),
+            transition: "background 0.5s",
+          }}
+          data-pk={`${p}land:cta`}
         >
           Get started
         </span>
       </div>
       <div
         className="grid gap-6 px-10"
-        style={{ gridTemplateColumns: narrow ? "1fr" : "repeat(3, 1fr)" }}
+        style={{
+          gridTemplateColumns: narrow
+            ? "1fr"
+            : `repeat(${features.length}, 1fr)`,
+        }}
+        data-pk={`${p}land:features`}
       >
-        {["Fast", "Flexible", "Yours"].map((f) => (
+        {features.map((f, i) => (
           <div
-            key={f}
+            key={i}
             className="flex flex-col gap-2 rounded-2xl p-6"
-            style={{ background: "#f3f4f6" }}
+            style={{
+              background: "#f3f4f6",
+              animation: i === 3 ? "pk-pop-in 0.3s ease-out both" : undefined,
+            }}
+            data-pk={`${p}land:feature-${i}`}
           >
-            <b>{f}</b>
+            <b style={{ minHeight: "1.2em" }}>{f}</b>
             <span style={{ color: "#6b7280", fontSize: 16 }}>
               Built with real components and real data.
             </span>
