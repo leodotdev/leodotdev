@@ -1,6 +1,7 @@
 import { Editor } from "@/components/work/plasmic/kit/editor"
 import { Editor21 } from "@/components/work/plasmic/kit/editor21"
 import { Connect } from "@/components/work/plasmic/kit/onboard"
+import { Takes21 } from "@/components/work/plasmic/kit/takes21"
 import { Dashboard21 } from "@/components/work/plasmic/kit/teams"
 import type { Dive, Peer, Shot, State } from "@/components/work/plasmic/types"
 
@@ -178,6 +179,86 @@ export const DIVES_2021: Array<Dive> = [
             on: "code-drawer",
             beat: 1,
             text: "A north star, “Focused Mode”: the selection’s React and CSS in a drawer under the canvas, ejected once into plain React. Shelved; code components and the code sync carried it instead.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "takes",
+    title: "Recording, Five Takes",
+    summary:
+      "One component, every variant an artboard; and where recording should live, drawn five ways in a quarter.",
+    scenes: [
+      {
+        view: (s: State) => <Takes21 s={s} />,
+        url: "studio.plasmic.app/projects/acme/button",
+        state: { take: "context" },
+        script: [
+          { on: "canvas", at: [0.45, 0.55], wait: 2400 },
+          {
+            on: "art:hover",
+            say: "Take 1: pills in a context bar",
+            click: true,
+            set: { rec: true },
+            wait: 2600,
+          },
+          {
+            on: "take:bar",
+            at: [0.5, 0.5],
+            say: "Take 2: a targeting bar across the canvas",
+            set: { take: "bar" },
+            wait: 3400,
+          },
+          {
+            on: "art:hover",
+            say: "Take 3: a toolbar on the artboard",
+            set: { take: "float" },
+            wait: 3000,
+          },
+          {
+            on: "art:hover",
+            at: [0.7, 0.75],
+            say: "Take 4: a tab hanging from the top",
+            set: { take: "tab" },
+            wait: 3000,
+          },
+          {
+            on: "canvas",
+            at: [0.5, 0.94],
+            say: "Take 5: a red bar along the bottom",
+            set: { take: "bottom" },
+            wait: 3200,
+          },
+        ],
+        notes: [
+          {
+            kind: "concept",
+            on: "canvas",
+            side: "left",
+            beat: 0,
+            text: "Isolated editing: one component, every variant and combination laid out as an artboard of its own.",
+          },
+          {
+            kind: "direction",
+            on: "take:bar",
+            side: "bottom",
+            beat: 2,
+            text: "“This is important for grounding users. This is our variant breadcrumb.” In 2023 the whole top bar became that breadcrumb.",
+          },
+          {
+            kind: "direction",
+            on: "take:bar",
+            side: "bottom",
+            beat: 4,
+            text: "“Locking is per artboard, not per session or arena(?)”, and “test: unlocked by default.”",
+          },
+          {
+            kind: "discovery",
+            on: "take:bar",
+            side: "top",
+            beat: 5,
+            text: "Five homes for one control in one quarter. Q2 moved it to a pill on the canvas.",
           },
         ],
       },
