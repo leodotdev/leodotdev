@@ -245,7 +245,8 @@ export const DIVES_BEFORE: Array<Dive> = [
   {
     slug: "north-star",
     title: "A North Star",
-    summary: "A concept car: a code-backed studio, from Design to Deploy.",
+    summary:
+      "“Leo’s Homework”: a concept car of a code-backed studio, from Design to Deploy.",
     scenes: [
       {
         view: (s: State) => <Homework s={s} />,
