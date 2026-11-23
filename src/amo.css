@@ -598,14 +598,20 @@
 /* A fan of pictures shared together: cards 196px wide set 104px apart, in
    a row that scrolls sideways and snaps. Each leans by how far it is from
    the snapping place (set from script as it scrolls), the one in place
-   straight and on top. The row is padded so its last card can reach the
-   place, and above and below so a leaning card's corners are not cut. */
+   straight and on top. The row runs to the screen's two edges, out of its
+   contact's column (80px on the left: the list's margin, the picture, and
+   the gap; 16px on the right), and is padded back in by as much, so a card
+   that has gone by is cut off by the edge of the screen and not part-way
+   across it (Leo, 2026-11-23). It is padded on the right so its last card
+   can reach the place, and above and below so a leaning card's corners are
+   not cut. */
 .amo-fan {
   display: flex;
-  margin: -6px 0 -10px;
-  padding: 12px 108px 14px 0;
+  margin: -6px -16px -10px -80px;
+  padding: 12px 124px 14px 80px;
   overflow: auto hidden;
   overscroll-behavior-x: contain;
+  scroll-padding-left: 80px;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
 }
