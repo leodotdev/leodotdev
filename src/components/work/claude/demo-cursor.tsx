@@ -315,8 +315,16 @@ export function DemoCursor({
 
     // The fields it has typed in, and what each held before.
     const typed = new Map<HTMLInputElement | HTMLTextAreaElement, string>()
+    // A field is told its value changed, as typing tells it: `input`, for
+    // a figure that listens to the field itself (React's own handler does
+    // not hear a value set from script; /work/amo's search does).
+    const told = (field: HTMLInputElement | HTMLTextAreaElement) =>
+      field.dispatchEvent(new Event("input", { bubbles: true }))
     const restore = () => {
-      for (const [field, value] of typed) field.value = value
+      for (const [field, value] of typed) {
+        field.value = value
+        told(field)
+      }
       typed.clear()
     }
 
@@ -609,8 +617,10 @@ export function DemoCursor({
               if (!typed.has(field)) typed.set(field, field.value)
               if (hovered === el) el.setAttribute("data-state", "focus")
               field.value = ""
+              told(field)
               for (const letter of step.type) {
                 field.value += letter
+                told(field)
                 await sleep(30 + Math.random() * 60)
                 if (!live()) return
               }

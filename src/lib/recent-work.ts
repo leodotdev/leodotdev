@@ -22,7 +22,7 @@ export type RecentWork = {
   /** When, written like the experience list's dates ("2025–'26"). */
   year: string
   /** The work's own page on this site (a route under /work). */
-  to?: "/work/claude" | "/work/anthropic" | "/work/plasmic"
+  to?: "/work/claude" | "/work/anthropic" | "/work/plasmic" | "/work/amo"
   /** An outside link, for a work without its own page. */
   href?: string
 }
@@ -57,5 +57,13 @@ export const recentWork: Array<RecentWork> = [
     location: "Remote",
     year: "2020–'24",
     to: "/work/plasmic",
+  },
+  {
+    title: "Amo",
+    summary:
+      "An exploration reimagining the iOS Contacts app as the social networking app.",
+    client: "Amo",
+    year: "2023",
+    to: "/work/amo",
   },
 ]
