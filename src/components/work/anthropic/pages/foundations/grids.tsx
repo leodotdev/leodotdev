@@ -20,11 +20,47 @@ const SPECS = [
 
 // The cursor narrows the page from a laptop's width to a phone's, through
 // the tablet, and lets it out again.
+// Its notes are the file's: the Grids board (three frames, Mobile, Tablet,
+// and Desktop, each with its "Specs"), and the "Responsive" collection's
+// Layout/Grid variables.
 const GRID_DEMO: Array<DemoStep> = [
-  { on: ".cds-resize-grip", nth: 1, drag: 900, rest: 1000 },
-  { on: ".cds-resize-grip", nth: 1, drag: 600, rest: 1200 },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 900,
+    rest: 1000,
+    note: {
+      kind: "concept",
+      title: "Specs",
+      on: ".ads-grid-specs",
+      text: "The file writes each grid’s specs across its middle: columns, gutter, and margin.",
+    },
+  },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 600,
+    rest: 1200,
+    note: {
+      kind: "concept",
+      title: "Mobile",
+      on: ".ads-grid",
+      text: "One of three grids on the file’s board, with Tablet and Desktop.",
+    },
+  },
   { on: ".cds-resize-grip", nth: 1, drag: 390, rest: 1200 },
-  { on: ".cds-resize-grip", nth: 1, drag: 4000, rest: 1400 },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 4000,
+    rest: 1400,
+    note: {
+      kind: "concept",
+      title: "Layout/Grid",
+      on: ".ads-grid",
+      text: "Column count, gutter, and margin are variables, with a mode for each breakpoint.",
+    },
+  },
 ]
 
 /** The grid as a page that resizes through the breakpoints. */
@@ -94,10 +130,33 @@ const SPACERS = [
   ["Section Spacer SM", [48, 48, 48, 32, 24]],
 ] as const
 
+// Its notes are the file's "Responsive" collection: its five modes are the
+// breakpoints, and its Layout/Section spacing group holds the five spacers.
 const BREAKPOINT_DEMO: Array<DemoStep> = [
-  { on: ".ads-breakpoint", nth: 3, click: true, rest: 1000 },
+  {
+    on: ".ads-breakpoint",
+    nth: 3,
+    click: true,
+    rest: 1000,
+    note: {
+      kind: "concept",
+      title: "Desktop XL",
+      text: "A frame on the file’s Breakpoints board, and a mode of its Responsive variables.",
+    },
+  },
   { on: ".ads-breakpoint", nth: 2, click: true, rest: 1000 },
-  { on: ".ads-breakpoint", nth: 1, click: true, rest: 1200 },
+  {
+    on: ".ads-breakpoint",
+    nth: 1,
+    click: true,
+    rest: 1200,
+    note: {
+      kind: "concept",
+      title: "Section spacing",
+      on: ":scope > :nth-child(2)",
+      text: "Two hero spacers and three section spacers: variables with a value for each breakpoint.",
+    },
+  },
   { on: ".ads-breakpoint", nth: 0, click: true, rest: 1200 },
   { on: ".ads-breakpoint", nth: 4, click: true, rest: 1200 },
 ]

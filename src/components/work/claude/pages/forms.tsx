@@ -10,17 +10,61 @@ import {
 import type { DemoStep } from "@/components/work/claude/demo-cursor"
 
 // What the demo cursor tries on the text inputs: it writes in a few of them
-// and sends one. The fields are emptied again when it starts over.
+// and sends one. The fields are emptied again when it starts over. Its notes
+// are the file's own, from the designers' notes on the Text Input's boards
+// on the Molecules page and from the component's properties; for the two
+// that are about a field as drawn (at rest, focused) it only goes there.
 const INPUT_DEMO: Array<DemoStep> = [
+  {
+    on: ".cds-input",
+    nth: 0,
+    at: [0.5, 0.5],
+    idle: true,
+    note: {
+      kind: "concept",
+      title: "At rest",
+      text: "“At rest, the text input holds a calm, consistent tone.”",
+    },
+  },
   { on: ".cds-input", nth: 0, type: "A week in Lisbon" },
-  { on: ".cds-input", nth: 1, type: "Sourdough starter" },
+  {
+    on: ".cds-input",
+    nth: 1,
+    type: "Sourdough starter",
+    note: {
+      kind: "concept",
+      title: "Icon",
+      text: "One property places the icons: None, Leading, Trailing, Trailing & Leading, or Trailing Button.",
+    },
+  },
   { on: ".cds-input", nth: 4, type: "Thank-you note" },
   { on: ".cds-input .cds-btn", click: true },
+  {
+    on: ".cds-input",
+    nth: 5,
+    at: [0.5, 0.5],
+    idle: true,
+    note: {
+      kind: "concept",
+      title: "Focus",
+      text: "The input receives an outline, set off from it.",
+    },
+  },
   { on: ".cds-input", nth: 6, type: "A haiku about fog", rest: 600 },
 ]
 
 const INPUT_THEMES_DEMO: Array<DemoStep> = [
-  { on: ".cds-input", nth: 0, type: "Hello" },
+  {
+    on: ".cds-input",
+    nth: 0,
+    type: "Hello",
+    note: {
+      kind: "concept",
+      title: "Themes",
+      text: "The input changes its fill and stroke colors with the color theme.",
+      on: "[data-figure]",
+    },
+  },
   { on: ".cds-input", nth: 2, type: "Hello" },
   { on: ".cds-input", nth: 4, type: "Hello", rest: 600 },
 ]
@@ -29,14 +73,53 @@ const checkbox = '.cds-check input[type="checkbox"]'
 
 // Each control is pressed twice, so it changes and comes back to what its
 // label says before the cursor moves on. The radios swap and swap back.
+// Between the checkboxes and the radios it stops by the checkbox drawn
+// hovered, for the file's note on the two strokes.
 const CHECK_DEMO: Array<DemoStep> = [
-  { on: checkbox, nth: 0, click: true },
+  {
+    on: checkbox,
+    nth: 0,
+    click: true,
+    note: {
+      kind: "concept",
+      title: "Selected",
+      text: "One property sets the checkbox: False, True, or Indeterminate.",
+    },
+  },
   { on: checkbox, nth: 0, click: true, rest: 300 },
   { on: checkbox, nth: 1, click: true },
   { on: checkbox, nth: 1, click: true, rest: 300 },
+  {
+    on: '.cds-check:has(input[type="checkbox"][data-state="hover"])',
+    idle: true,
+    note: {
+      kind: "concept",
+      title: "Stroke",
+      text: "Its stroke is “Border/Secondary” at rest and “Border/Primary” on hover.",
+      on: '.cds-check input[type="checkbox"][data-state="hover"]',
+    },
+  },
   { on: 'input[name="radio-demo"]', nth: 0, click: true },
-  { on: 'input[name="radio-demo"]', nth: 1, click: true },
-  { on: ".cds-switch input", nth: 0, click: true },
+  {
+    on: 'input[name="radio-demo"]',
+    nth: 1,
+    click: true,
+    note: {
+      kind: "concept",
+      title: "Radio",
+      text: "Checkboxes take multiple selections; the Radio is “used for binary selections.”",
+    },
+  },
+  {
+    on: ".cds-switch input",
+    nth: 0,
+    click: true,
+    note: {
+      kind: "concept",
+      title: "Switch",
+      text: "“A binary toggle component”: a sliding control with a descriptive label.",
+    },
+  },
   { on: ".cds-switch input", nth: 0, click: true, rest: 300 },
   { on: ".cds-switch input", nth: 2, click: true },
   { on: ".cds-switch input", nth: 2, click: true, rest: 300 },
@@ -44,7 +127,17 @@ const CHECK_DEMO: Array<DemoStep> = [
 
 // A switch in the first, middle and last theme, on and back off.
 const CHECK_THEMES_DEMO: Array<DemoStep> = [
-  { on: ".cds-switch input", nth: 0, click: true },
+  {
+    on: ".cds-switch input",
+    nth: 0,
+    click: true,
+    note: {
+      kind: "concept",
+      title: "Themes",
+      text: "The switch changes its fill and stroke colors with the color theme.",
+      on: "[data-figure]",
+    },
+  },
   { on: ".cds-switch input", nth: 0, click: true, rest: 300 },
   { on: ".cds-switch input", nth: 4, click: true },
   { on: ".cds-switch input", nth: 4, click: true, rest: 300 },

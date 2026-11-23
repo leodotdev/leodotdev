@@ -98,12 +98,36 @@ function FamilySwitch({
 }
 
 // The cursor turns the scale to the serif, narrows the figure through the
-// breakpoints to a phone, and back, then turns it to the sans again.
+// breakpoints to a phone, and back, then turns it to the sans again. Its
+// notes are the file's: the note beside the serif scale on its Heading
+// Refinement page ("Updated typescale"), and the "Responsive" collection's
+// Typography variables, which have a mode for each breakpoint.
 const SCALE_DEMO: Array<DemoStep> = [
-  { on: ".ads-type-switch .ads-btn", text: "Serif", click: true, rest: 900 },
+  {
+    on: ".ads-type-switch .ads-btn",
+    text: "Serif",
+    click: true,
+    rest: 900,
+    note: {
+      kind: "direction",
+      title: "Serif",
+      text: "From the file’s updated typescale: “All font-sizes and line-heights are the same as sans.”",
+    },
+  },
   { on: ".cds-resize-grip", nth: 1, drag: 900 },
   { on: ".cds-resize-grip", nth: 1, drag: 640 },
-  { on: ".cds-resize-grip", nth: 1, drag: 390, rest: 1200 },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 390,
+    rest: 1200,
+    note: {
+      kind: "concept",
+      title: "Size & Leading",
+      on: ".ads-type-name",
+      text: "Variables in the file, with a value for each of its five breakpoints.",
+    },
+  },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
   { on: ".ads-type-switch .ads-btn", text: "Sans", click: true, rest: 900 },
 ]
@@ -179,20 +203,46 @@ function TypeScale() {
   )
 }
 
+// Its notes are the file's: the Drop Cap component's one property, and the
+// boards the two styles are drawn on (Drop Cap and Small Caps, each with a
+// Desktop and a Mobile board, at Body 1, Body 2, and Body 3).
 const CAP_DEMO: Array<DemoStep> = [
   {
     on: ".ads-type-switch .ads-btn",
     text: "Drop Cap 2",
     click: true,
     rest: 1100,
+    note: {
+      kind: "concept",
+      title: "Drop Cap",
+      on: "[class^='ads-drop-cap-']",
+      text: "A component with one property, Size. Its values are Body 1, Body 2, and Body 3.",
+    },
   },
   {
     on: ".ads-type-switch .ads-btn",
     text: "Drop Cap 3",
     click: true,
     rest: 1100,
+    note: {
+      kind: "concept",
+      title: "Small Caps",
+      on: "[class^='ads-small-caps-']",
+      text: "Set on boards of their own in the file, at the same three body sizes.",
+    },
   },
-  { on: ".cds-resize-grip", nth: 1, drag: 390, rest: 1200 },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 390,
+    rest: 1200,
+    note: {
+      kind: "concept",
+      title: "Mobile",
+      on: ".ads-drop-para",
+      text: "Both styles have a Desktop board and a Mobile board in the file.",
+    },
+  },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
   {
     on: ".ads-type-switch .ads-btn",
@@ -258,8 +308,20 @@ const PAIRS: Array<[string, string]> = [
   ["Heading 5", "ads-heading-5"],
 ]
 
+// Its note is the file's board names: "Display 2 + Body sizes" and its
+// like, each a headline over Body 3, Body 2, and Body 1.
 const PAIRS_DEMO: Array<DemoStep> = [
-  { on: ".ads-type-switch .ads-btn", text: "Display 2", click: true },
+  {
+    on: ".ads-type-switch .ads-btn",
+    text: "Display 2",
+    click: true,
+    note: {
+      kind: "concept",
+      title: "Body sizes",
+      on: ".ads-type-page",
+      text: "“Display 2 + Body sizes” is this one’s board in the file. Each heading has one.",
+    },
+  },
   { on: ".ads-type-switch .ads-btn", text: "Heading 2", click: true },
   { on: ".ads-type-switch .ads-btn", text: "Heading 4", click: true },
   { on: ".ads-type-switch .ads-btn", text: "Display 1", click: true },

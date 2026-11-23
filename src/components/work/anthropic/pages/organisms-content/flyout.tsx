@@ -137,11 +137,32 @@ export function FlyOutPage() {
 }
 
 // It opens a case study, reads down it, and sends it back with the arrow.
+// Its notes are the "Fly-out" component's two parts and its sample words.
 const FLYOUT_DEMO: Array<DemoStep> = [
   { on: ".ads-case .ads-btn", nth: 1, rest: 500 },
-  { on: ".ads-case .ads-btn", nth: 0, click: true, rest: 900 },
+  {
+    on: ".ads-case .ads-btn",
+    nth: 0,
+    click: true,
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Fly-out",
+      on: ".ads-flyout",
+      text: "Two parts in the file: a Header, with a label and the arrow back, and a Body.",
+    },
+  },
   { on: ".ads-flyout-play", rest: 900 },
-  { on: ".ads-flyout-body", scroll: 50, rest: 1200 },
+  {
+    on: ".ads-flyout-body",
+    scroll: 50,
+    rest: 1200,
+    note: {
+      kind: "concept",
+      title: "Optional parts",
+      text: "The file’s sample names them: “Optional metadata,” “Optional headline,” and “Optional stat.”",
+    },
+  },
   { on: ".ads-flyout-body", scroll: 100, rest: 1200 },
   { on: ".ads-flyout-close", click: true, rest: 1200 },
 ]

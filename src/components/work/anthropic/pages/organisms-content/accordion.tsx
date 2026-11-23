@@ -122,9 +122,20 @@ const ITEMS: Array<AccordionEntry> = [
 ]
 
 // It opens the third row (which closes the second), reads it, and opens
-// the second again.
+// the second again. Its note is the file's own sample title.
 const ITEMS_DEMO: Array<DemoStep> = [
-  { on: ".ads-accordion-row", nth: 2, click: "open", rest: 500 },
+  {
+    on: ".ads-accordion-row",
+    nth: 2,
+    click: "open",
+    rest: 500,
+    note: {
+      kind: "concept",
+      title: "Long titles",
+      on: ".ads-accordion-item[data-open] .ads-accordion-title",
+      text: "The file’s own sample: an “Item title with a lengthy character count that will stack on mobile.”",
+    },
+  },
   { on: ".ads-accordion-item[data-open] p", rest: 1400 },
   { on: ".ads-accordion-row", nth: 4, rest: 600 },
   { on: ".ads-accordion-row", nth: 1, click: "open", rest: 500 },
@@ -132,9 +143,20 @@ const ITEMS_DEMO: Array<DemoStep> = [
 ]
 
 // It looks down the card's rows (each hover as the figure has it), opens
-// the first, and opens the third again.
+// the first, and opens the third again. Its note is the label of the
+// file's board for this hover.
 const CARD_DEMO: Array<DemoStep> = [
-  { on: ".ads-accordion-row", nth: 0, rest: 700 },
+  {
+    on: ".ads-accordion-row",
+    nth: 0,
+    rest: 700,
+    note: {
+      kind: "direction",
+      title: "Dim siblings",
+      on: ".ads-accordion",
+      text: "The second hover the file explores: dim the siblings, except their strokes, to the quaternary color.",
+    },
+  },
   { on: ".ads-accordion-row", nth: 1, rest: 700 },
   { on: ".ads-accordion-row", nth: 0, click: "open", rest: 500 },
   { on: ".ads-accordion-item[data-open] .ads-btn", rest: 1000 },
@@ -142,10 +164,30 @@ const CARD_DEMO: Array<DemoStep> = [
   { on: ".ads-accordion-row", nth: 2, click: "open", rest: 1200 },
 ]
 
+// Its notes are the labels of the boards in the file's "Accordion" section.
 const RESIZE_DEMO: Array<DemoStep> = [
-  { on: ".ads-accordion-row", nth: 1, rest: 700 },
+  {
+    on: ".ads-accordion-row",
+    nth: 1,
+    rest: 700,
+    note: {
+      kind: "direction",
+      title: "Row hover",
+      text: "One of two hovers the file explores on the card: a “table row like hover.”",
+    },
+  },
   { on: ".cds-resize-grip", nth: 1, drag: 560 },
-  { on: ".cds-resize-grip", nth: 1, drag: 360 },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 360,
+    note: {
+      kind: "concept",
+      title: "Three widths",
+      on: ".ads-accordion-card",
+      text: "The file draws the card at Desktop LG, Tablet MD, and Mobile XS.",
+    },
+  },
   { on: ".ads-accordion-item[data-open] .ads-btn", rest: 900 },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
 ]

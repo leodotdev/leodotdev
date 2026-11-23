@@ -88,10 +88,45 @@ function Effect({
   )
 }
 
-// The cursor hovers the two samples whose effect is a hover.
+// The cursor hovers the two samples whose effect is a hover, then goes to
+// the focus ring and the shadow, which it only points at. Its notes are the
+// file's: how each effect style is made, and the Button's note on hover
+// ("On hover, animate in a … box-shadow with no blur").
 const EFFECTS_DEMO: Array<DemoStep> = [
-  { on: '[data-effect="secondary-hover"]', nth: 0, rest: 1400 },
+  {
+    on: '[data-effect="secondary-hover"]',
+    nth: 0,
+    rest: 1400,
+    note: {
+      kind: "concept",
+      title: "Secondary Hover",
+      text: "A shadow with no blur, its color bound to a variable. The buttons animate it in on hover.",
+    },
+  },
   { on: '[data-effect="tertiary-hover"]', nth: 0, rest: 1400 },
+  {
+    on: '[data-effect="focus"]',
+    nth: 1,
+    idle: true,
+    at: [0.5, 0.5],
+    rest: 500,
+    note: {
+      kind: "concept",
+      title: "Focus Outline Ring",
+      text: "Two shadows with no blur, one inside the other. Alt draws the pair closer in.",
+    },
+  },
+  {
+    on: ".ads-lift",
+    idle: true,
+    at: [0.5, 0.5],
+    rest: 500,
+    note: {
+      kind: "concept",
+      title: "Lift Small",
+      text: "A drop shadow, blurred and faint. The other four styles here have no blur.",
+    },
+  },
 ]
 
 export function EffectsDoc() {

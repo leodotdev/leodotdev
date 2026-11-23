@@ -220,12 +220,45 @@ export function RelatedList({ topic = "Topic name" }: { topic?: string }) {
 
 // The cursor rests in the empty middle, then looks over each card: the one
 // under it darkens and its title takes the arrow. It opens the second's
-// summary, reads it, and closes it with the cross.
+// summary, reads it, and closes it with the cross. Its notes are the
+// "List Item Card" component's four states and the boards it is drawn on.
 const LIST_DEMO: Array<DemoStep> = [
-  { on: ".ads-list-items", at: [0.5, 1.12], idle: true, rest: 900 },
-  { on: ".ads-list-item", nth: 0, at: [0.6, 0.62], rest: 900 },
+  {
+    on: ".ads-list-items",
+    at: [0.5, 1.12],
+    idle: true,
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Idle",
+      on: ".ads-list-item",
+      text: "The first of four states. The file draws the card on four themes: Ivory, Ivory Medium, White, and Slate.",
+    },
+  },
+  {
+    on: ".ads-list-item",
+    nth: 0,
+    at: [0.6, 0.62],
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Hover Card",
+      text: "Under the pointer the card darkens and an arrow follows its title.",
+    },
+  },
   { on: ".ads-list-item", nth: 1, at: [0.6, 0.62], rest: 700 },
-  { on: ".ads-list-item .ads-tiny-more", nth: 1, click: "open", rest: 600 },
+  {
+    on: ".ads-list-item .ads-tiny-more",
+    nth: 1,
+    click: "open",
+    rest: 600,
+    note: {
+      kind: "concept",
+      title: "Expanded",
+      on: ".ads-list-item[data-open]",
+      text: "Hover See More is a state of its own. Pressed, the more button turns into a cross that closes the summary.",
+    },
+  },
   { on: ".ads-list-item-summary", rest: 1600 },
   { on: ".ads-list-item .ads-tiny-more", nth: 1, click: "close", rest: 600 },
   { on: ".ads-list-item", nth: 2, at: [0.6, 0.62], rest: 900 },
@@ -233,26 +266,91 @@ const LIST_DEMO: Array<DemoStep> = [
 
 // It narrows the news items to a tablet's width, where picture and text take
 // half each, then until they stack, as on a phone, and lets them out again.
+// Its notes are the "News Item Large" component's two properties and its
+// three variants.
 const NEWS_DEMO: Array<DemoStep> = [
-  { on: ".ads-news-title", nth: 0, rest: 800 },
+  {
+    on: ".ads-news-title",
+    nth: 0,
+    rest: 800,
+    note: {
+      kind: "concept",
+      title: "Flip",
+      on: ".ads-news[data-flip]",
+      text: "A property of the item: flipped, its picture is on the other side.",
+    },
+  },
   { on: ".cds-resize-grip", nth: 1, drag: 800, rest: 1200 },
-  { on: ".cds-resize-grip", nth: 1, drag: 420 },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 420,
+    note: {
+      kind: "concept",
+      title: "Mobile",
+      on: ".ads-news",
+      text: "The third variant, which has no flip: topic and date above the picture, the rest under it.",
+    },
+  },
   { on: ".ads-news-title", nth: 0, rest: 900 },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
 ]
 
+// Its notes are the six styles of the "News Thumbnail Item".
 const THUMB_DEMO: Array<DemoStep> = [
-  { on: ".ads-thumb-title", nth: 0, rest: 700 },
+  {
+    on: ".ads-thumb-title",
+    nth: 0,
+    rest: 700,
+    note: {
+      kind: "concept",
+      title: "Six styles",
+      on: ".ads-thumbs",
+      text: "Four of them here: Default, Default Smaller Thumb, Image Right, and Text only.",
+    },
+  },
   { on: ".cds-resize-grip", nth: 1, drag: 480 },
-  { on: ".cds-resize-grip", nth: 1, drag: 380 },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 380,
+    note: {
+      kind: "concept",
+      title: "Mobile styles",
+      on: ".ads-thumb[data-style='default']",
+      text: "The other two: Mobile Image Left and Mobile Image Right, a small picture beside the headline.",
+    },
+  },
   { on: ".ads-thumb-title", nth: 2, rest: 900 },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
 ]
 
+// Its notes are the "Constellation Panel" component's parts and the boards
+// of the file's "Related List" section.
 const RELATED_DEMO: Array<DemoStep> = [
-  { on: ".ads-related .ads-list-item", at: [0.6, 0.6], rest: 1000 },
+  {
+    on: ".ads-related .ads-list-item",
+    at: [0.6, 0.6],
+    rest: 1000,
+    note: {
+      kind: "concept",
+      title: "Constellation Panel",
+      on: ".ads-related",
+      text: "The component’s name in the file. Three parts: Header, Diagram, and List.",
+    },
+  },
   { on: ".ads-related .ads-btn", rest: 800 },
-  { on: ".cds-resize-grip", nth: 1, drag: 560 },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 560,
+    note: {
+      kind: "direction",
+      title: "Alternates",
+      on: ".ads-related",
+      text: "The file draws an “alt” beside three of its five widths: Desktop LG, Tablet MD, and Mobile XS.",
+    },
+  },
   { on: ".ads-related .ads-list-item", at: [0.6, 0.6], rest: 900 },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
 ]

@@ -50,12 +50,44 @@ export {
 
 const LABELS = Array.from({ length: 8 }, () => "Label")
 
-// Across the three menus, resting on an item of each.
+// Across the three menus, resting on an item of each. Its notes are the
+// file's: the Menu's two properties and its variants, and its helpers Menu
+// Item and Menu Group.
 const MENU_DEMO: Array<DemoStep> = [
-  { on: ".ads-menu-item", text: "Nav Item", nth: 1, rest: 900 },
-  { on: '.ads-menu[data-device="mobile"] .ads-menu-item', nth: 2, rest: 900 },
+  {
+    on: ".ads-menu-item",
+    text: "Nav Item",
+    nth: 1,
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Menu Item",
+      text: "A helper component with two states, Default and Hover.",
+    },
+  },
+  {
+    on: '.ads-menu[data-device="mobile"] .ads-menu-item',
+    nth: 2,
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Device",
+      on: '.ads-menu[data-device="mobile"]',
+      text: "Desktop or Mobile. In the file only Mobile comes in sections.",
+    },
+  },
   { on: '.ads-menu[data-device="mobile"] .ads-menu-item', nth: 5, rest: 700 },
-  { on: '[aria-label="Two sections"] .ads-menu-item', nth: 11, rest: 900 },
+  {
+    on: '[aria-label="Two sections"] .ads-menu-item',
+    nth: 11,
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Sections",
+      on: '[aria-label="Two sections"]',
+      text: "Default, 2, or 4. A second helper, Menu Group, holds a section’s label and links.",
+    },
+  },
   { on: '[aria-label="Two sections"] .ads-menu-item', nth: 3, rest: 900 },
 ]
 
@@ -96,8 +128,20 @@ function MenuDoc() {
 
 // It opens the menu, looks down it and picks, then opens it again and
 // leaves it with Escape's equal, a press on the button.
+// Its note is the file's component, "Menu, Topic, Date": its layers and its
+// two boolean properties.
 const TOPIC_DEMO: Array<DemoStep> = [
-  { on: ".ads-menu-btn", click: "open", rest: 400 },
+  {
+    on: ".ads-menu-btn",
+    click: "open",
+    rest: 400,
+    note: {
+      kind: "concept",
+      title: "Menu, Topic, Date",
+      on: ".ads-topic-date",
+      text: "One component: a Tiny More Button, a tag, and a date. The button and the tag can be hidden.",
+    },
+  },
   { on: ".ads-menu-item", nth: 0 },
   { on: ".ads-menu-item", nth: 1 },
   { on: ".ads-menu-item", nth: 2, click: true, rest: 900 },
@@ -125,11 +169,41 @@ function MenuButtonDoc() {
 const VARIANTS = ["secondary", "tertiary"] as const
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 
-// Along each group, so the hover and the dimmed siblings show.
+// Along each group, so the hover and the dimmed siblings show. Its notes
+// are the designers' note on hover beside the Button Group in the file, and
+// the component's two properties.
 const GROUP_DEMO: Array<DemoStep> = [
-  { on: ".ads-btn-group .ads-btn", nth: 1, rest: 700 },
-  { on: ".ads-btn-group .ads-btn", nth: 3, rest: 700 },
-  { on: ".ads-btn-group .ads-btn", nth: 7, rest: 700 },
+  {
+    on: ".ads-btn-group .ads-btn",
+    nth: 1,
+    rest: 700,
+    note: {
+      kind: "concept",
+      title: "Hover",
+      text: "“On hover, bg-color matches border-color.”",
+    },
+  },
+  {
+    on: ".ads-btn-group .ads-btn",
+    nth: 3,
+    rest: 700,
+    note: {
+      kind: "concept",
+      title: "Siblings",
+      on: ".ads-btn-group",
+      text: "The hovered button’s foreground turns primary. Its siblings’ turn quaternary.",
+    },
+  },
+  {
+    on: ".ads-btn-group .ads-btn",
+    nth: 7,
+    rest: 700,
+    note: {
+      kind: "concept",
+      title: "Icons",
+      text: "Type is Labels or Icons. With Variant, that makes the group’s four variants.",
+    },
+  },
   { on: ".ads-btn-group .ads-btn", nth: 12, rest: 700 },
   { on: ".ads-btn-group .ads-btn", nth: 18, rest: 900 },
 ]
@@ -239,8 +313,20 @@ function TabsFigure() {
   )
 }
 
+// Its note is the file's Tabs component: one variant, made of five Buttons.
 const TABS_DEMO: Array<DemoStep> = [
-  { on: ".ads-tab", nth: 1, click: true, rest: 1100 },
+  {
+    on: ".ads-tab",
+    nth: 1,
+    click: true,
+    rest: 1100,
+    note: {
+      kind: "concept",
+      title: "Tabs",
+      on: ".ads-tabs",
+      text: "In the file, one variant, Size=Small, built from five instances of the Button.",
+    },
+  },
   { on: ".ads-tab", nth: 3, click: true, rest: 1100 },
   { on: ".ads-tab", nth: 4, click: true, rest: 1100 },
   { on: ".ads-tab", nth: 0, click: true, rest: 1300 },
@@ -290,8 +376,20 @@ function PaginationFigure() {
   )
 }
 
+// Its note is the file's Pagination component: two Buttons and its sample
+// count.
 const PAGINATION_DEMO: Array<DemoStep> = [
-  { on: '[aria-label="Next"]', click: true, rest: 600 },
+  {
+    on: '[aria-label="Next"]',
+    click: true,
+    rest: 600,
+    note: {
+      kind: "concept",
+      title: "Count",
+      on: ".ads-pagination-count",
+      text: "Between two instances of the Button. The file’s sample reads “01 / 12.”",
+    },
+  },
   { on: '[aria-label="Next"]', click: true, rest: 600 },
   { on: '[aria-label="Next"]', click: true, rest: 900 },
   { on: '[aria-label="Previous"]', click: true, rest: 500 },
@@ -314,14 +412,32 @@ function PaginationDoc() {
   )
 }
 
+// Its notes are the Audio Player's variants in the file: Version 1 in two
+// devices and two states, Version 2 in its Claude state in two devices.
 const AUDIO_DEMO: Array<DemoStep> = [
-  { on: ".ads-audio-play", click: true, rest: 400 },
+  {
+    on: ".ads-audio-play",
+    click: true,
+    rest: 400,
+    note: {
+      kind: "concept",
+      title: "Version 1",
+      on: ".ads-audio",
+      text: "Wide or Narrow, at rest or on hover: four of the component’s six variants.",
+    },
+  },
   { on: ".ads-audio-bar", at: [0.6, 0.5], click: true, rest: 900 },
   { on: ".ads-audio-play", click: true, rest: 1800 },
   {
     on: '.ads-audio[data-version="2"] .ads-audio-play',
     click: true,
     rest: 2400,
+    note: {
+      kind: "concept",
+      title: "Version 2",
+      on: '.ads-audio[data-version="2"]',
+      text: "The other two variants: one State, named Claude, at Desktop and at Narrow.",
+    },
   },
   {
     on: '.ads-audio[data-version="2"] .ads-audio-play',
@@ -340,9 +456,32 @@ const PLAYERS: Array<[version: 1 | 2, width: number]> = [
   [2, 295],
 ]
 
+// Its notes are the file's own use of the player beside the component: in
+// an article's text, Wide under the label "desktop LG" and Narrow under
+// "mobile xs".
 const ARTICLE_AUDIO_DEMO: Array<DemoStep> = [
-  { on: ".ads-audio-play", click: true, rest: 1600 },
-  { on: ".cds-resize-grip", nth: 1, drag: 380 },
+  {
+    on: ".ads-audio-play",
+    click: true,
+    rest: 1600,
+    note: {
+      kind: "concept",
+      title: "Wide",
+      on: ".ads-audio",
+      text: "The file sets the player in an article’s text too, under the label “desktop LG.”",
+    },
+  },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 380,
+    note: {
+      kind: "concept",
+      title: "Narrow",
+      on: ".ads-audio",
+      text: "The component’s other Device. The file labels it “mobile xs.”",
+    },
+  },
   { on: ".ads-audio-bar", at: [0.3, 0.5], click: true, rest: 900 },
   { on: ".ads-audio-play", click: true, rest: 1600 },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
@@ -491,11 +630,34 @@ function MetadataPage() {
   )
 }
 
+// Its notes are the component's two properties in the file, Value and
+// Direction, and their twelve variants.
 const META_DEMO: Array<DemoStep> = [
-  { on: ".ads-meta-icon", nth: 0, rest: 600 },
+  {
+    on: ".ads-meta-icon",
+    nth: 0,
+    rest: 600,
+    note: {
+      kind: "concept",
+      title: "Value",
+      on: '.ads-meta[data-value="share"]',
+      text: "Share is one of six: Mono Value, Sans Value, List, Share, Link, and Table of Contents.",
+    },
+  },
   { on: ".ads-meta-icon", nth: 2, rest: 600 },
   { on: ".ads-meta-link", rest: 900 },
-  { on: ".cds-resize-grip", nth: 1, drag: 440, rest: 900 },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 440,
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Horizontal & Vertical",
+      on: ".ads-meta-page-info",
+      text: "Horizontal or Vertical. Every value comes in both: twelve variants.",
+    },
+  },
   { on: ".ads-meta-icon", nth: 1, rest: 600 },
   { on: ".ads-meta-link", rest: 900 },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
@@ -522,9 +684,20 @@ function AnalysisMetadataDoc() {
 }
 
 // It presses play, watches a while, and stops the video, which brings the
-// cover back.
+// cover back. Its note is the file's Video component, which is one instance
+// of Media at 16:9 and nothing else.
 const VIDEO_DEMO: Array<DemoStep> = [
-  { on: ".ads-video .ads-play", click: true, rest: 700 },
+  {
+    on: ".ads-video .ads-play",
+    click: true,
+    rest: 700,
+    note: {
+      kind: "concept",
+      title: "Video",
+      on: ".ads-video",
+      text: "In the file, one instance of Media. The cover and its Play Button follow anthropic.com.",
+    },
+  },
   { on: ".ads-video-player", idle: true, at: [0.5, 0.82], rest: 3600 },
   { on: ".ads-video-player", at: [0.5, 0.5], click: true, rest: 500 },
   { on: ".ads-video", idle: true, at: [0.5, 0.82], rest: 1400 },
@@ -549,9 +722,22 @@ function VideoDoc() {
 
 // It reads down the piece, opens the contents and goes to a section, then
 // does the same at a phone's width.
+// Its note is the file's Article Subnav component: an instance of Analysis
+// metadata (Value=Table of Contents) and a small caret.
 const SUBNAV_DEMO: Array<DemoStep> = [
   { on: ".ads-article-window", scroll: 0, idle: true, at: [0.5, 0.5] },
-  { on: ".ads-article-window", scroll: 30, at: [0.5, 0.6], rest: 1200 },
+  {
+    on: ".ads-article-window",
+    scroll: 30,
+    at: [0.5, 0.6],
+    rest: 1200,
+    note: {
+      kind: "concept",
+      title: "Article Subnav",
+      on: ".ads-subnav-bar",
+      text: "In the file: an Analysis metadata row, its Table of Contents value, and a small caret.",
+    },
+  },
   { on: ".ads-subnav-bar", click: "open", rest: 500 },
   { on: ".ads-subnav-item", nth: 3 },
   { on: ".ads-subnav-item", nth: 5, click: true, rest: 1600 },

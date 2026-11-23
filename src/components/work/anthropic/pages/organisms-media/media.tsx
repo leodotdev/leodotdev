@@ -270,10 +270,34 @@ export function VideoPlaylist({
 
 // What the demo cursor does: it goes along the tabs and back to the first.
 const tab = ".ads-media-tabs .ads-btn"
+// Its notes are the file's: the caption's sample label, and the
+// component's one property.
 const CAROUSEL_DEMO: Array<DemoStep> = [
-  { on: tab, text: "Three", click: true, rest: 1400 },
+  {
+    on: tab,
+    text: "Three",
+    click: true,
+    rest: 1400,
+    note: {
+      kind: "concept",
+      title: "Tabs",
+      on: ".ads-media-tabs",
+      text: "Five in the file: “Tab One,” then Two, Three, Four, and Five.",
+    },
+  },
   { on: tab, text: "Four", click: true, rest: 1400 },
-  { on: tab, text: "Tab One", click: true, rest: 1800 },
+  {
+    on: tab,
+    text: "Tab One",
+    click: true,
+    rest: 1800,
+    note: {
+      kind: "concept",
+      title: "Caption Padding",
+      on: ".ads-fig-caption",
+      text: "The component’s only property, with one value: “A lot.” The file’s caption is numbered “fig.01.”",
+    },
+  },
 ]
 
 // And on the playlist: it plays the video, picks another demo, pauses it,
@@ -281,10 +305,30 @@ const CAROUSEL_DEMO: Array<DemoStep> = [
 // demo there, and lets the figure out again.
 const item = ".ads-playlist-item"
 const PLAYLIST_DEMO: Array<DemoStep> = [
-  { on: ".ads-video-play", click: true, rest: 1400 },
+  {
+    on: ".ads-video-play",
+    click: true,
+    rest: 1400,
+    note: {
+      kind: "concept",
+      title: "Playlist Item",
+      on: ".ads-playlist-items",
+      text: "Three states, and the file’s sample rows are named for theirs: Active, Hover, and Inactive demo name.",
+    },
+  },
   { on: item, nth: 1, click: true, rest: 1400 },
   { on: item, nth: 1, click: true, rest: 1000 },
-  { on: ".cds-resize-grip", nth: 1, drag: 420 },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 420,
+    note: {
+      kind: "concept",
+      title: "Two widths",
+      on: ".ads-playlist",
+      text: "The file draws the playlist at Desktop LG and at Mobile XS.",
+    },
+  },
   { on: item, nth: 3, click: true, rest: 1400 },
   { on: item, nth: 0, click: true, rest: 1000 },
   { on: item, nth: 0, click: true, rest: 600 },

@@ -608,11 +608,35 @@ const QUOTES: Array<Array<Cell>> = [
 // back, switches to the grid and back, looks at the open row's related
 // articles (each lights its node), closes it and opens another with a click
 // on the row, then narrows the table to a tablet and a phone, and back.
+// The rows behave as the site's do, so the notes keep to what the file
+// has: the "Table Row" and "_Filters" components' types and switches, and
+// the labels of the boards in its "Table" section.
 const ROW = ".ads-row:not(.ads-row-head) > .ads-row-top"
 const TABLE_DEMO: Array<DemoStep> = [
-  { on: ".ads-row-more .ads-tiny-more", nth: 1, rest: 700 },
+  {
+    on: ".ads-row-more .ads-tiny-more",
+    nth: 1,
+    rest: 700,
+    note: {
+      kind: "concept",
+      title: "Table Row",
+      on: ".ads-row-head",
+      text: "Three types in the file: Header, Closed, and Open. Its Category and Images columns are switches.",
+    },
+  },
   { on: ".ads-filters-left .ads-filter-menu-button", click: "open", rest: 400 },
-  { on: ".ads-filter-menu-item", text: "Alignment", click: true, rest: 1200 },
+  {
+    on: ".ads-filter-menu-item",
+    text: "Alignment",
+    click: true,
+    rest: 1200,
+    note: {
+      kind: "concept",
+      title: "1 Topic Active",
+      on: ".ads-filters-chips",
+      text: "One of the filters’ six types, beside Default, Many Topics Active, and each of the three menus open.",
+    },
+  },
   { on: ".ads-chip", click: true, rest: 600 },
   { on: ".ads-filters-right .ads-filter-menu-button", nth: 0, click: "open" },
   {
@@ -627,14 +651,36 @@ const TABLE_DEMO: Array<DemoStep> = [
   { on: ".ads-filter-menu-item", text: "Grid", click: true, rest: 1400 },
   { on: ".ads-filters-right .ads-filter-menu-button", nth: 1, click: "open" },
   { on: ".ads-filter-menu-item", text: "Table", click: true, rest: 500 },
-  { on: ".ads-related-card", nth: 0, at: [0.6, 0.6], rest: 900 },
+  {
+    on: ".ads-related-card",
+    nth: 0,
+    at: [0.6, 0.6],
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Card Hover & Node Hover",
+      on: ".ads-row-bottom",
+      text: "Two boards in the file for an open row: the pointer on a related article’s card, and on its node.",
+    },
+  },
   { on: ".ads-related-card", nth: 1, at: [0.6, 0.6], rest: 900 },
   {
     on: ".ads-row-more .ads-tiny-more[aria-expanded='true']",
     click: true,
     rest: 600,
   },
-  { on: ROW, nth: 2, at: [0.45, 0.5], click: true, rest: 1400 },
+  {
+    on: ROW,
+    nth: 2,
+    at: [0.45, 0.5],
+    click: true,
+    rest: 1400,
+    note: {
+      kind: "direction",
+      title: "Cell overflow",
+      text: "Two boards at Desktop LG explore a marquee, on hover, for text too long for its cell.",
+    },
+  },
   { on: ".ads-related-card", nth: 0, at: [0.6, 0.6], rest: 900 },
   { on: ".cds-resize-grip", nth: 1, drag: 760 },
   { on: ".ads-related-card", nth: 1, at: [0.6, 0.6], rest: 900 },
@@ -643,9 +689,30 @@ const TABLE_DEMO: Array<DemoStep> = [
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
 ]
 
+// Its notes are the "Table Card" component's layouts and switches, and
+// the label of its phone board.
 const CARD_DEMO: Array<DemoStep> = [
-  { on: ".ads-table-card .ads-btn", rest: 800 },
-  { on: ".cds-resize-grip", nth: 1, drag: 560 },
+  {
+    on: ".ads-table-card .ads-btn",
+    rest: 800,
+    note: {
+      kind: "concept",
+      title: "Table Card",
+      on: ".ads-table-card-box",
+      text: "Three layouts and three switches: Show Card Header, Show Caption, and Show Mobile Horizontal Scrollbar.",
+    },
+  },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 560,
+    note: {
+      kind: "concept",
+      title: "Nested card scroll",
+      on: ".ads-table-card-scroll",
+      text: "The file labels its phone board “mobile XS: nested card scroll”: the table scrolls inside the card.",
+    },
+  },
   { on: ".ads-table-card-scroll", scroll: 100, rest: 900 },
   { on: ".ads-table-card-scroll", scroll: 0, rest: 600 },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },

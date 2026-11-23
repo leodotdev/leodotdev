@@ -142,16 +142,48 @@ export function TableGridItem({
 }
 
 // It narrows the tout card from a row to a column, and lets it out again.
+// Its notes are the "Tout Card" component's Layout property and the widths
+// its section draws it at.
 const TOUT_DEMO: Array<DemoStep> = [
-  { on: ".ads-oc-text-link", rest: 800 },
+  {
+    on: ".ads-oc-text-link",
+    rest: 800,
+    note: {
+      kind: "concept",
+      title: "Layout: Row",
+      on: ".ads-tout",
+      text: "Layout is the card’s one property. The file draws it at Desktop LG, Tablet MD, and Mobile XS.",
+    },
+  },
   { on: ".cds-resize-grip", nth: 1, drag: 560 },
-  { on: ".cds-resize-grip", nth: 1, drag: 360 },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 360,
+    note: {
+      kind: "concept",
+      title: "Layout: Column",
+      on: ".ads-tout",
+      text: "The property’s other value: the picture above the headline.",
+    },
+  },
   { on: ".ads-oc-text-link", rest: 900 },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
 ]
 
+// Its note is the "Case Study Card" component's parts and properties.
 const CASE_DEMO: Array<DemoStep> = [
-  { on: ".ads-case .ads-btn", nth: 0, rest: 900 },
+  {
+    on: ".ads-case .ads-btn",
+    nth: 0,
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Case Study Card",
+      on: ".ads-case",
+      text: "Three parts in the file: Logo, Text, and Button. Its title and description are properties.",
+    },
+  },
   { on: ".ads-case .ads-btn", nth: 1, rest: 900 },
   { on: ".ads-case .ads-btn", nth: 2, rest: 900 },
 ]

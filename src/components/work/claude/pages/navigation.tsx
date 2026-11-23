@@ -73,12 +73,24 @@ const MENUS: Array<[label: string, groups: Array<Group>]> = [
 // right-hand grip and narrows the figure until the header folds, opens the
 // folded menu and its groups, narrows it to a phone and does the same, and
 // lets it out again. A step whose control is hidden at the current width is
-// skipped, so each stretch only uses what is showing.
+// skipped, so each stretch only uses what is showing. Its notes are the
+// file's: the description beside the Navigation on its Organisms page, and
+// the properties and variants of its two component sets.
 const DEMO: Array<DemoStep> = [
   // Close a folded menu or group left open.
   { on: ".cds-nav-toggle, .cds-nav-group", click: "close", rest: 200 },
   // Wide: the menus open under the cursor, as they do under a pointer.
-  { on: ".cds-nav-link", text: "Meet Claude", rest: 600 },
+  {
+    on: ".cds-nav-link",
+    text: "Meet Claude",
+    rest: 600,
+    note: {
+      kind: "concept",
+      title: "Menus",
+      text: "The file calls it site-wide wayfinding, with “hierarchical access to all major sections.”",
+      on: ".cds-nav-links .cds-menu",
+    },
+  },
   { on: ".cds-menu-item", text: "Claude Code" },
   { on: ".cds-menu-item", text: "Sonnet" },
   { on: ".cds-nav-link", text: "Platform", rest: 600 },
@@ -86,13 +98,32 @@ const DEMO: Array<DemoStep> = [
   { on: ".cds-nav-link", text: "Solutions", rest: 600 },
   { on: ".cds-menu-item", text: "Coding" },
   { on: ".cds-menu-item", text: "Education" },
-  { on: ".cds-nav-sub .cds-nav-link", rest: 600 },
+  {
+    on: ".cds-nav-sub .cds-nav-link",
+    rest: 600,
+    note: {
+      kind: "concept",
+      title: "Sub-navigation",
+      text: "A bar the header can turn on or off, with types for a Solution page and an Article.",
+      on: ".cds-nav-sub",
+    },
+  },
   { on: ".cds-menu-item", text: "Download pitch-worthy PDF" },
   { on: ".cds-nav-sub a", rest: 600 },
   // Narrower: the header folds into a menu button.
   { on: ".cds-resize-grip", nth: 1, drag: 600 },
   { on: ".cds-nav-toggle", click: "open" },
-  { on: ".cds-nav-group", text: "Meet Claude", click: "open" },
+  {
+    on: ".cds-nav-group",
+    text: "Meet Claude",
+    click: "open",
+    note: {
+      kind: "concept",
+      title: "Mobile menu",
+      text: "Mobile has a variant for the open menu, and one for each of its five groups opened.",
+      on: ".cds-nav-panel",
+    },
+  },
   { on: ".cds-nav-panel .cds-menu-item", text: "Claude Code" },
   { on: ".cds-nav-group", text: "Solutions", click: "open" },
   { on: ".cds-nav-panel .cds-menu-item", text: "Customer support" },
@@ -115,6 +146,12 @@ const DEMO: Array<DemoStep> = [
     text: "Try Claude",
     click: true,
     rest: 700,
+    note: {
+      kind: "concept",
+      title: "Formats",
+      text: "Besides this Full Nav, the file has a Minimal header and, on Mobile, one with its CTAs only.",
+      on: ".cds-nav-actions",
+    },
   },
 ]
 

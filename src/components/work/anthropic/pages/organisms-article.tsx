@@ -73,23 +73,76 @@ function InText({
 // a part in the contents, and the mission pillar's note; then the page at a
 // desktop's width, where the contents fold into the bar (opened and shut)
 // and the metadata lines up under the picture (its authors shown in full),
-// a tablet's, and a phone's.
+// a tablet's, and a phone's. Its notes are the file's: the "Analysis hero"
+// component's variants and what each holds, and the Tooltip its "Analysis
+// Metadata" section sets on a label.
 const HERO_DEMO: Array<DemoStep> = [
-  { on: ".ads-art-ctas .ads-btn", nth: 0, rest: 700 },
+  {
+    on: ".ads-art-ctas .ads-btn",
+    nth: 0,
+    rest: 700,
+    note: {
+      kind: "concept",
+      title: "Analysis hero",
+      on: ".ads-art-title",
+      text: "The file’s name for it. Twelve variants: six devices, each as News or Team.",
+    },
+  },
   { on: ".ads-art-toc .ads-toc-row", text: "05", rest: 700 },
-  { on: ".ads-meta-info", rest: 2200 },
+  {
+    on: ".ads-meta-info",
+    rest: 2200,
+    note: {
+      kind: "concept",
+      title: "Label note",
+      on: ".ads-meta-tooltip",
+      text: "The system’s Tooltip in its Footnote type. The file draws it with its close button and without.",
+    },
+  },
   { on: ".cds-resize-grip", nth: 1, drag: 800, rest: 600 },
   { on: ".ads-toc-bar-toggle", click: "open", rest: 1200 },
   { on: ".ads-toc-bar-toggle", click: "close", rest: 300 },
-  { on: ".ads-meta-more", click: true, rest: 1200 },
+  {
+    on: ".ads-meta-more",
+    click: true,
+    rest: 1200,
+    note: {
+      kind: "concept",
+      title: "Authors",
+      on: ".ads-art-info .ads-meta-row:last-child",
+      text: "In the file’s narrower heroes, the authors stop at two names and “See more….”",
+    },
+  },
   { on: ".cds-resize-grip", nth: 1, drag: 640, rest: 1200 },
-  { on: ".cds-resize-grip", nth: 1, drag: 420, rest: 1600 },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 420,
+    rest: 1600,
+    note: {
+      kind: "concept",
+      title: "Mobile",
+      on: ".ads-art-info",
+      text: "The file’s two phone variants keep two lines of metadata: the date and the category.",
+    },
+  },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
 ]
 
-// The Team hero's cursor only narrows it, through the same widths.
+// The Team hero's cursor only narrows it, through the same widths. Its
+// note is what the Team variants' metadata has where News has Category.
 const TEAM_DEMO: Array<DemoStep> = [
-  { on: ".ads-art-ctas .ads-btn", nth: 1, rest: 900 },
+  {
+    on: ".ads-art-ctas .ads-btn",
+    nth: 1,
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Type: Team",
+      on: ".ads-art-info .ads-meta-row:nth-child(2)",
+      text: "Where a News hero has a Category line, a Team hero names the piece’s team.",
+    },
+  },
   { on: ".cds-resize-grip", nth: 1, drag: 800, rest: 1400 },
   { on: ".cds-resize-grip", nth: 1, drag: 640, rest: 1400 },
   { on: ".cds-resize-grip", nth: 1, drag: 420, rest: 1600 },
@@ -98,13 +151,36 @@ const TEAM_DEMO: Array<DemoStep> = [
 
 // What the demo cursor does with the contents of a piece: goes to three
 // parts beside the text, then at a desktop's width and a phone's picks
-// parts from the bar they fold into, and goes back to the top.
+// parts from the bar they fold into, and goes back to the top. Its notes
+// are the boards of the file's "Analysis Table of contents" section and
+// the bar its narrower heroes have.
 const TOC_DEMO: Array<DemoStep> = [
-  { on: ".ads-toc-row", text: "03", click: true, rest: 900 },
+  {
+    on: ".ads-toc-row",
+    text: "03",
+    click: true,
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Three widths",
+      on: ".ads-art-toc",
+      text: "The file draws the contents in a piece at Desktop XXL, Tablet MD, and Mobile XS.",
+    },
+  },
   { on: ".ads-toc-row", text: "06", click: true, rest: 1400 },
   { on: ".ads-toc-row", text: "02", click: true, rest: 1200 },
   { on: ".cds-resize-grip", nth: 1, drag: 800 },
-  { on: ".ads-toc-bar-toggle", click: "open", rest: 600 },
+  {
+    on: ".ads-toc-bar-toggle",
+    click: "open",
+    rest: 600,
+    note: {
+      kind: "concept",
+      title: "Contents bar",
+      on: ".ads-toc-bar",
+      text: "On every hero but the widest: the part in view, and a chevron that opens the list.",
+    },
+  },
   { on: ".ads-toc-bar .ads-toc-row", text: "04", click: true, rest: 1400 },
   { on: ".cds-resize-grip", nth: 1, drag: 420 },
   { on: ".ads-toc-bar-toggle", click: "open", rest: 600 },
@@ -154,10 +230,31 @@ function ArticleFigure({
   )
 }
 
+// Its notes are the two components as the file has them: "Analysis table
+// of contents" and "Analysis metadata list".
 const META_DEMO: Array<DemoStep> = [
-  { on: ".ads-toc-row", text: "02", click: true },
+  {
+    on: ".ads-toc-row",
+    text: "02",
+    click: true,
+    note: {
+      kind: "concept",
+      title: "Table of contents",
+      on: ".ads-toc",
+      text: "In the file, nine instances of a Chapter component, numbered 01 to 09.",
+    },
+  },
   { on: ".ads-toc-row", text: "05", click: true },
-  { on: ".ads-meta-info", rest: 2200 },
+  {
+    on: ".ads-meta-info",
+    rest: 2200,
+    note: {
+      kind: "concept",
+      title: "Metadata list",
+      on: ".ads-art-meta",
+      text: "Six lines in the file: Share, Team, Published, Topics, Mission pillar, and Authors.",
+    },
+  },
   { on: ".ads-meta-more", click: true, rest: 1200 },
   { on: ".ads-toc-row", text: "01", click: true, rest: 800 },
 ]
@@ -198,19 +295,62 @@ function ArticleDoc() {
   )
 }
 
+// The first step only goes to the drop cap, for its note. The notes are
+// the file's editorial styles and its "Blockquote" component.
 const TYPE_DEMO: Array<DemoStep> = [
+  {
+    on: ".ads-lr-drop",
+    idle: true,
+    at: [0.3, 0.5],
+    rest: 500,
+    note: {
+      kind: "concept",
+      title: "Drop cap",
+      text: "Drop Cap and Small Caps are the file’s editorial styles: a pair for each body size.",
+    },
+  },
   { on: ".ads-lr-citation", rest: 2400 },
   { on: ".ads-lr-link:not(.ads-lr-citation)", rest: 600 },
   { on: "button.ads-lr-mark", click: "open", rest: 600 },
   { on: ".ads-lr-card-close", click: true, rest: 400 },
-  { on: ".ads-lr-page", scroll: 100 },
+  {
+    on: ".ads-lr-page",
+    scroll: 100,
+    note: {
+      kind: "concept",
+      title: "Blockquote",
+      on: ".ads-lr-blockquote",
+      text: "Two sizes in the file, Large and Small. Its text and citation are properties.",
+    },
+  },
   { on: ".ads-lr-page", scroll: 0, rest: 800 },
 ]
 
+// Its notes are what the file's "Citation, Footnote, Link" boards hold:
+// the Tooltip in its Min type, and "Inline & Contextual Footnotes".
 const CITE_DEMO: Array<DemoStep> = [
-  { on: ".ads-lr-citation", rest: 2400 },
+  {
+    on: ".ads-lr-citation",
+    rest: 2400,
+    note: {
+      kind: "concept",
+      title: "Citation",
+      on: ".ads-lr-card[data-kind='cite']",
+      text: "The card is the system’s Tooltip in its Min type: a heading, a summary, and View more.",
+    },
+  },
   { on: ".ads-lr-link:not(.ads-lr-citation)", rest: 600 },
-  { on: "button.ads-lr-mark", click: "open", rest: 2000 },
+  {
+    on: "button.ads-lr-mark",
+    click: "open",
+    rest: 2000,
+    note: {
+      kind: "concept",
+      title: "Contextual footnote",
+      on: ".ads-lr-card[data-kind='note']",
+      text: "One of two kinds the file names. The other, Inline, prints its note under the paragraph.",
+    },
+  },
   { on: ".ads-lr-card-close", click: true, rest: 600 },
 ]
 
@@ -323,10 +463,34 @@ const STAT_SIZES: Array<[StatSize, string]> = [
   ["large", "Large"],
 ]
 
+// Its notes are the "Stats" component's properties and the two boards of
+// the file's "Stats" section.
 const STATS_DEMO: Array<DemoStep> = [
-  { on: ".ads-stats .ads-btn", nth: 1, click: true, rest: 600 },
+  {
+    on: ".ads-stats .ads-btn",
+    nth: 1,
+    click: true,
+    rest: 600,
+    note: {
+      kind: "concept",
+      title: "Show Pagination",
+      on: ".ads-stats-pages",
+      text: "A switch on the Stats component, beside its type, size, and device: twelve variants.",
+    },
+  },
   { on: ".ads-stats .ads-btn", nth: 1, click: true, rest: 900 },
-  { on: ".ads-stats .ads-btn", nth: 0, click: true, rest: 900 },
+  {
+    on: ".ads-stats .ads-btn",
+    nth: 0,
+    click: true,
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Stats: Single",
+      on: ".ads-stats-single",
+      text: "The file gives a single stat a board of its own, beside “Stats: Multiple.”",
+    },
+  },
   { on: ".cds-resize-grip", nth: 1, drag: 400 },
   { on: ".ads-stats .ads-btn", nth: 1, click: true, rest: 900 },
   { on: ".ads-stats .ads-btn", nth: 1, click: true, rest: 900 },
@@ -385,8 +549,19 @@ function StatsDoc() {
   )
 }
 
+// Its note is the section's own title, and the file's separate Form page.
 const FORM_DEMO: Array<DemoStep> = [
-  { on: ".ads-input:not(.ads-select)", nth: 0, type: "Ada" },
+  {
+    on: ".ads-input:not(.ads-select)",
+    nth: 0,
+    type: "Ada",
+    note: {
+      kind: "direction",
+      title: "Form (WIP)",
+      on: ".ads-form",
+      text: "The section’s own title in the file, which also has a Form page of six numbered frames.",
+    },
+  },
   { on: ".ads-input:not(.ads-select)", nth: 1, type: "Lovelace" },
   { on: ".ads-input:not(.ads-select)", nth: 2, type: "ada@example.com" },
   { on: ".ads-select", nth: 0, click: "open", rest: 600 },
@@ -400,8 +575,19 @@ const FORM_DEMO: Array<DemoStep> = [
   { on: ".ads-form .ads-choice", nth: 6, click: true, rest: 600 },
 ]
 
+// Its note, and the fly-out's, are the names of the section's four boards.
 const PLACES_DEMO: Array<DemoStep> = [
-  { on: ".ads-form-dropdown-button", click: "open", rest: 600 },
+  {
+    on: ".ads-form-dropdown-button",
+    click: "open",
+    rest: 600,
+    note: {
+      kind: "concept",
+      title: "External - Dropdown",
+      on: ".ads-form-dropdown",
+      text: "One of four placements the file names: Insitu, External, External - Dropdown, and Flyout form.",
+    },
+  },
   { on: ".ads-input:not(.ads-select)", nth: 0, type: "Ada" },
   { on: ".ads-lr-page", scroll: 60 },
   { on: ".ads-lr-page", scroll: 0, rest: 600 },
@@ -409,7 +595,17 @@ const PLACES_DEMO: Array<DemoStep> = [
 ]
 
 const FLYOUT_DEMO: Array<DemoStep> = [
-  { on: ".ads-form-flyout .ads-input:not(.ads-select)", nth: 0, type: "Ada" },
+  {
+    on: ".ads-form-flyout .ads-input:not(.ads-select)",
+    nth: 0,
+    type: "Ada",
+    note: {
+      kind: "concept",
+      title: "Flyout form",
+      on: ".ads-form-flyout",
+      text: "The fourth placement. Its form is shorter: no radios or checkboxes, and a field for the reader’s role.",
+    },
+  },
   {
     on: ".ads-form-flyout .ads-input:not(.ads-select)",
     nth: 2,

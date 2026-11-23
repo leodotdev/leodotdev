@@ -670,16 +670,58 @@ export function Gutters() {
 // where the stage shows one side at a time it switches to the prompt and
 // back. Narrow, the last tab has moved into the overflow menu, and it picks
 // it from there. Then it lets the figure out to full width and tries the
-// tabs, ending on the first.
+// tabs, ending on the first. Its notes are the file's: the description
+// beside the Artifacts on its Organisms page, the component's seven
+// variants, and the boards of the Tabs it is built with.
 const ARTIFACT_DEMO: Array<DemoStep> = [
-  { on: ".cds-resize-grip", nth: 1, drag: 700 },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 700,
+    note: {
+      kind: "concept",
+      title: "Tabs",
+      text: "It “uses tabs to house different examples of embedded content, showing what you can do with Claude.”",
+      on: ".cds-tabs",
+    },
+  },
   { on: ".cds-resize-grip", nth: 1, drag: 600 },
   { on: ".cds-resize-grip", nth: 1, drag: 480 },
   { on: ".cds-tab[aria-haspopup]", click: "open" },
-  { on: ".cds-menu-item", text: "Product Management", click: true, rest: 500 },
-  { on: ".cds-artifact-toggle", click: true, rest: 500 },
+  {
+    on: ".cds-menu-item",
+    text: "Product Management",
+    click: true,
+    rest: 500,
+    note: {
+      kind: "concept",
+      title: "Overflow",
+      text: "A tab picked from the overflow menu shows in its button: “Truncated option active” on the Tabs board.",
+      on: ".cds-tab[aria-haspopup]",
+    },
+  },
+  {
+    on: ".cds-artifact-toggle",
+    click: true,
+    rest: 500,
+    note: {
+      kind: "concept",
+      title: "One side",
+      text: "Phablet and Mobile are each drawn twice, one side at a time: the result, then the prompt.",
+    },
+  },
   { on: ".cds-artifact-toggle", click: true, rest: 900 },
-  { on: ".cds-resize-grip", nth: 1, drag: 340 },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 340,
+    note: {
+      kind: "concept",
+      title: "Mobile",
+      text: "The file’s Mobile keeps three tabs, with a More button for the rest.",
+      on: ".cds-tabs",
+    },
+  },
   { on: ".cds-artifact-toggle", click: true, rest: 500 },
   { on: ".cds-artifact-toggle", click: true, rest: 900 },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
@@ -689,29 +731,79 @@ const ARTIFACT_DEMO: Array<DemoStep> = [
 ]
 
 // On the marginalia it looks down the first card's menu and presses the
-// cards' buttons.
+// cards' buttons. The notes are the component sets' own counts and names.
 const MARGINALIA_DEMO: Array<DemoStep> = [
-  { on: ".cds-margin-menu button", nth: 0 },
+  {
+    on: ".cds-margin-menu button",
+    nth: 0,
+    note: {
+      kind: "concept",
+      title: "One component",
+      text: "Two properties make its 23 variants: Type and Heading.",
+      on: ".cds-marginalia > :nth-child(1)",
+    },
+  },
   { on: ".cds-margin-menu button", nth: 1 },
   { on: ".cds-margin-menu button", nth: 2, click: true },
   { on: ".cds-margin .cds-btn", text: "Watch webinar", click: true },
   { on: ".cds-margin .cds-btn", text: "Read story", click: true },
-  { on: ".cds-margin .cds-play", click: true },
+  {
+    on: ".cds-margin .cds-play",
+    click: true,
+    note: {
+      kind: "concept",
+      title: "Media",
+      text: "A component of its own, Marginalia Media: Image, Pictogram, Video, Graphic, and Logo.",
+      on: '.cds-margin-media[data-type="video"]',
+    },
+  },
   { on: ".cds-margin .cds-btn", text: "Read more", click: true },
-  { on: ".cds-margin .cds-btn", text: "Ask Claude", click: true, rest: 700 },
+  {
+    on: ".cds-margin .cds-btn",
+    text: "Ask Claude",
+    click: true,
+    rest: 700,
+    note: {
+      kind: "concept",
+      title: "Below card CTA",
+      text: "The type’s name in the file: its button sits under the card.",
+      on: ".cds-margin-below",
+    },
+  },
 ]
 
 // On the page it goes through the deck of prompts in the left gutter and
 // looks at the card in the right one, then narrows the page until the cards
 // leave the gutters for a row, steps along the row's prompts and round to
 // the first again, and lets the page out. There it goes back through the
-// deck, so it ends on the first prompt, where it began.
+// deck, so it ends on the first prompt, where it began. The notes: the
+// file's own carousel for a gutter, and the description beside the
+// Marginalia on its Organisms page.
 const DECK = ".cds-gutters-deck"
 const ROW = ".cds-gutters-cards > .cds-carousel-ui"
 const GUTTERS_DEMO: Array<DemoStep> = [
-  { on: `${DECK} [aria-label="Next"]`, click: true },
+  {
+    on: `${DECK} [aria-label="Next"]`,
+    click: true,
+    note: {
+      kind: "concept",
+      title: "Desktop carousel",
+      text: "Several cards in one gutter are the file’s Marginalia Desktop Carousel: a stack over the carousel’s controls.",
+      on: DECK,
+    },
+  },
   { on: `${DECK} [aria-label="Next"]`, click: true, rest: 500 },
-  { on: ".cds-gutters .cds-btn", text: "Read more", rest: 700 },
+  {
+    on: ".cds-gutters .cds-btn",
+    text: "Read more",
+    rest: 700,
+    note: {
+      kind: "concept",
+      title: "Beside the text",
+      text: "“Alongside main content without interrupting the primary reading flow.”",
+      on: '.cds-margin[data-gutter="right"]',
+    },
+  },
   { on: ".cds-resize-grip", nth: 1, drag: 390 },
   { on: `${ROW} [aria-label="Next"]`, click: true },
   { on: `${ROW} [aria-label="Next"]`, click: true, rest: 600 },

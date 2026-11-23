@@ -129,14 +129,47 @@ const STATES_DEMO: Array<DemoStep> = [
   },
 ]
 
+// Its notes are the file's: the Play Button's one property, and its board
+// of states, which carries the Button's own three notes.
 const PLAY_DEMO: Array<DemoStep> = [
-  { on: "[data-col='rest'] .ads-play", nth: 0, click: true, rest: 900 },
-  { on: "[data-col='rest'] .ads-play", nth: 1, click: true, rest: 900 },
+  {
+    on: "[data-col='rest'] .ads-play",
+    nth: 0,
+    click: true,
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Play Button",
+      text: "Two variants by one property, Size: Small and Large.",
+    },
+  },
+  {
+    on: "[data-col='rest'] .ads-play",
+    nth: 1,
+    click: true,
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "States",
+      on: "[data-col='hover']",
+      text: "The file’s “Play Button Interactive States” carry the Button’s own notes on rest, hover, and focus.",
+    },
+  },
 ]
 
-// The more button opens, rests, and closes again.
+// The more button opens, rests, and closes again. Its note is the
+// component's one property in the file.
 const MORE_DEMO: Array<DemoStep> = [
-  { on: ".ads-more", click: "open", rest: 1600 },
+  {
+    on: ".ads-more",
+    click: "open",
+    rest: 1600,
+    note: {
+      kind: "concept",
+      title: "State",
+      text: "The component’s one property, with two values: Default and Active.",
+    },
+  },
   { on: ".ads-more", click: "close", rest: 900 },
 ]
 

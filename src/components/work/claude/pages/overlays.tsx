@@ -98,14 +98,43 @@ function Tooltip() {
 }
 
 // What the demo cursor tries: it looks down each of the three menus in turn
-// (the rows it is not on dim) and picks one.
+// (the rows it is not on dim) and picks one. As it comes to each it names
+// the menu's type, as the file's Menu component has them, with the file's
+// description of the component and what its three variants draw.
 const MENU_DEMO: Array<DemoStep> = [
-  { on: ".cds-menu-item", text: "Claude Code" },
+  {
+    on: ".cds-menu-item",
+    text: "Claude Code",
+    note: {
+      kind: "concept",
+      title: "Navigation Menu",
+      text: "One of the Menu’s three types: “grouped lists of clickable options.”",
+      on: '[aria-label="Navigation menu"]',
+    },
+  },
   { on: ".cds-menu-item", text: "Sonnet" },
   { on: ".cds-menu-item", text: "Haiku", click: true },
-  { on: ".cds-menu-item", text: "Write grant proposals" },
+  {
+    on: ".cds-menu-item",
+    text: "Write grant proposals",
+    note: {
+      kind: "concept",
+      title: "Prompt Suggestion Menu",
+      text: "The second type lists prompts under a header.",
+      on: '[aria-label="Prompt suggestions"]',
+    },
+  },
   { on: ".cds-menu-item", text: "Write video scripts", click: true },
-  { on: ".cds-menu-item", text: "Download pitch-worthy PDF" },
+  {
+    on: ".cds-menu-item",
+    text: "Download pitch-worthy PDF",
+    note: {
+      kind: "concept",
+      title: "List Menu",
+      text: "The third type: each option leads with an icon.",
+      on: '[aria-label="Page actions"]',
+    },
+  },
   { on: ".cds-menu-item", text: "View as markdown" },
   {
     on: ".cds-menu-item",
@@ -116,10 +145,42 @@ const MENU_DEMO: Array<DemoStep> = [
 ]
 
 // It rests on the dotted word, which opens the tooltip, reads it, and moves
-// off down the paragraph, which closes it.
+// off down the paragraph, which closes it. Its notes are from the Tooltip's
+// three boards in the file: the component's description, "Tooltips on
+// mobile", and "Using tooltips in Webflow".
 const TOOLTIP_DEMO: Array<DemoStep> = [
-  { on: ".cds-tip", rest: 2800 },
-  { on: ".cds-tip-text", at: [0.8, 0.9], rest: 1600 },
+  {
+    on: ".cds-tip",
+    rest: 2800,
+    note: {
+      kind: "concept",
+      title: "Tooltip",
+      text: "“They appear on demand and disappear when no longer needed.”",
+      on: ".cds-tooltip",
+    },
+  },
+  {
+    on: ".cds-tip-text",
+    at: [0.8, 0.9],
+    rest: 1600,
+    note: {
+      kind: "concept",
+      title: "On mobile",
+      text: "No hover there: “users tap the highlighted word or phrase.”",
+      on: ".cds-tip",
+    },
+  },
+  {
+    on: ".cds-tip-text",
+    at: [0.8, 0.9],
+    idle: true,
+    note: {
+      kind: "concept",
+      title: "Webflow token",
+      text: "The token “[[ url | tooltip headline | paragraph]]” writes one in Webflow.",
+      on: ".cds-tip",
+    },
+  },
 ]
 
 export function MenuDoc() {

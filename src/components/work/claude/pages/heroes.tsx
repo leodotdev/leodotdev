@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/work/claude/specimens"
 import { Section, Specimen } from "@/components/work/claude/ui"
 import type { DemoStep } from "@/components/work/claude/demo-cursor"
+import type { FigureNote } from "@/components/work/claude/figure-notes"
 
 // The hero's own illustration, exported from the Figma file as an SVG.
 const ABACUS = "/work/claude/illustrations/hand-abacus.svg"
@@ -33,15 +34,51 @@ const Illustration = () => (
 
 // What the demo cursor tries on a hero: its one button, with a rest on the
 // illustration, and then the page at a tablet's width and a phone's, where
-// the hero stacks, and back.
-const HERO_DEMO: Array<DemoStep> = [
-  { on: ".cds-btn", click: true, rest: 800 },
+// the hero stacks, and back. Each hero has notes of its own: its name on
+// the file's Page Heroes boards and what those boards draw (`first` once the
+// button is pressed, `narrow` once the page is a phone's width).
+const heroDemo = (first: FigureNote, narrow?: FigureNote): Array<DemoStep> => [
+  { on: ".cds-btn", click: true, rest: 800, note: first },
   { on: "img", rest: 1400 },
   { on: ".cds-resize-grip", nth: 1, drag: 700 },
-  { on: ".cds-resize-grip", nth: 1, drag: 390 },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 390,
+    ...(narrow && { note: narrow }),
+  },
   { on: ".cds-btn", rest: 900 },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
 ]
+
+const STAGGER_DEMO = heroDemo(
+  {
+    kind: "concept",
+    title: "Hero: Stagger",
+    text: "The file’s name for this hero. Its headline is two lines, each placed on its own.",
+    on: "h3",
+  },
+  {
+    kind: "concept",
+    title: "Four widths",
+    text: "The file draws it at each: Desktop, Laptop, Tablet, and Mobile.",
+    on: ".cds-hero",
+  }
+)
+
+const COLUMNS_DEMO = heroDemo({
+  kind: "concept",
+  title: "Hero: 2 Columns",
+  text: "Headline, copy, and button in one column; the illustration in the other.",
+  on: ".cds-hero-columns",
+})
+
+const CENTER_DEMO = heroDemo({
+  kind: "concept",
+  title: "Hero: 1 Column",
+  text: "Drawn three times in the file: over a wide picture, a smaller one, and none.",
+  on: ".cds-hero-center",
+})
 
 /**
  * A hero where it is used: at the top of a page, under the site's header.
@@ -49,11 +86,17 @@ const HERO_DEMO: Array<DemoStep> = [
  * it but the hero is a skeleton. The figure is one height, a window's: the
  * page under the hero runs off its bottom.
  */
-function HeroFigure({ children }: { children: React.ReactNode }) {
+function HeroFigure({
+  steps,
+  children,
+}: {
+  steps: Array<DemoStep>
+  children: React.ReactNode
+}) {
   return (
     <Specimen figure>
       {/* No padding: the page fills the figure. */}
-      <DemoCursor steps={HERO_DEMO}>
+      <DemoCursor steps={steps}>
         <Resizable
           label="Page width"
           min={390}
@@ -72,7 +115,7 @@ export function HeroesDoc() {
   return (
     <>
       <Section>
-        <HeroFigure>
+        <HeroFigure steps={STAGGER_DEMO}>
           <div className="cds-hero cds-hero-stagger">
             <h3>
               <span>Navigating AI in</span>
@@ -84,7 +127,7 @@ export function HeroesDoc() {
             </div>
           </div>
         </HeroFigure>
-        <HeroFigure>
+        <HeroFigure steps={COLUMNS_DEMO}>
           <div className="cds-hero">
             <div className="cds-hero-columns">
               <div className="cds-hero-copy">
@@ -95,7 +138,7 @@ export function HeroesDoc() {
             </div>
           </div>
         </HeroFigure>
-        <HeroFigure>
+        <HeroFigure steps={CENTER_DEMO}>
           <div className="cds-hero">
             <div className="cds-hero-center">
               <h3>Navigating AI in education together</h3>

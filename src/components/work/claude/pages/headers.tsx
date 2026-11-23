@@ -19,6 +19,7 @@ import { Resizable } from "@/components/work/claude/resizable"
 import { Button } from "@/components/work/claude/specimens"
 import { Section, Specimen } from "@/components/work/claude/ui"
 import type { DemoStep } from "@/components/work/claude/demo-cursor"
+import type { FigureNote } from "@/components/work/claude/figure-notes"
 
 // A pictogram from the system's set, exported from the Figma file as an SVG.
 const PICTOGRAM = "/work/claude/illustrations/hand-link.svg"
@@ -424,23 +425,74 @@ export function Footer({ minimal = false }: { minimal?: boolean }) {
 }
 
 // What the demo cursor tries on a header: its two buttons, with a rest on
-// the pictogram between rounds.
-const HEADER_DEMO: Array<DemoStep> = [
-  { on: ".cds-btn", text: "Primary", click: true, rest: 600 },
+// the pictogram between rounds. Each of the two figures has notes of its
+// own, from the description beside the Header on the file's Organisms page
+// and from the component's properties.
+const headerDemo = (first: FigureNote, second: FigureNote): Array<DemoStep> => [
+  { on: ".cds-btn", text: "Primary", click: true, rest: 600, note: first },
   { on: ".cds-btn", text: "Secondary", rest: 900 },
-  { on: "img", rest: 1800 },
+  { on: "img", rest: 1800, note: second },
 ]
+
+const HEADER_DEMO = headerDemo(
+  {
+    kind: "concept",
+    title: "Header",
+    text: "“A repeated component featuring an illustration, headline, body copy, and a row of 1-2 buttons.”",
+    on: ".cds-header-body",
+  },
+  {
+    kind: "concept",
+    title: "Pictogram",
+    text: "Its own property, Has Pictogram, as the buttons have theirs, CTAs.",
+  }
+)
+
+const HEADER_LEFT_DEMO = headerDemo(
+  {
+    kind: "concept",
+    title: "Size",
+    text: "P3 is the middle of the five sizes, P1 to P5.",
+    on: "h3",
+  },
+  {
+    kind: "concept",
+    title: "Alignment",
+    text: "Every size is drawn centered and aligned left, on Desktop and on Mobile.",
+    on: ".cds-header-body",
+  }
+)
 
 const link = ".cds-footer-block a"
 
 // On the prompt input it opens each kind of example, looks down the list
 // (the others dim), picks one, which is written in the field, and sends it.
+// The notes: the file's examples, and the component's two variants.
 const PROMPT_DEMO: Array<DemoStep> = [
   { on: ".cds-menu-header .cds-btn", click: true, rest: 200 },
-  { on: ".cds-chip", text: "Write", click: true },
+  {
+    on: ".cds-chip",
+    text: "Write",
+    click: true,
+    note: {
+      kind: "concept",
+      title: "Examples",
+      text: "Three kinds, Write, Learn, and Code, each with three prompts.",
+      on: ".cds-footer-prompt .cds-menu",
+    },
+  },
   { on: ".cds-menu-item", nth: 0 },
   { on: ".cds-menu-item", nth: 1, click: true, rest: 600 },
-  { on: ".cds-input .cds-btn", click: true },
+  {
+    on: ".cds-input .cds-btn",
+    click: true,
+    note: {
+      kind: "concept",
+      title: "Two variants",
+      text: "The file has it as Default and as Bigger, which adds a fourth chip, More.",
+      on: ".cds-footer-prompt",
+    },
+  },
   { on: ".cds-chip", text: "Learn", click: true },
   { on: ".cds-menu-item", nth: 2, rest: 700 },
   { on: ".cds-menu-header .cds-btn", click: true },
@@ -453,16 +505,37 @@ const PROMPT_DEMO: Array<DemoStep> = [
 // in each column (the others dim) and the social icons. Then it narrows the
 // footer until its links fold into two columns under the logo, looks at one
 // there, scrolls down the footer and back (narrow, it is longer than its
-// figure), and lets it out again.
+// figure), and lets it out again. The notes: the description beside the
+// Footer on the file's Organisms page, and the component's four variants.
 const FOOTER_DEMO: Array<DemoStep> = [
   { on: ".cds-input", type: "What can Claude do?" },
   { on: ".cds-input .cds-btn", click: true },
-  { on: link, text: "Claude Code", rest: 600 },
+  {
+    on: link,
+    text: "Claude Code",
+    rest: 600,
+    note: {
+      kind: "concept",
+      title: "Link groups",
+      text: "The file: “organized link groups, branding, and secondary actions” that anchor the page.",
+      on: ".cds-footer-links",
+    },
+  },
   { on: link, text: "Customer stories", rest: 600 },
   { on: link, text: "Support center", rest: 600 },
   { on: ".cds-footer-social a", nth: 1, rest: 800 },
   { on: ".cds-resize-grip", nth: 1, drag: 600 },
-  { on: ".cds-resize-grip", nth: 1, drag: 390 },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 390,
+    note: {
+      kind: "concept",
+      title: "Mobile",
+      text: "Each footer is a pair of variants in the file, Desktop and Mobile.",
+      on: ".cds-footer",
+    },
+  },
   // Narrow, the footer is longer than its figure: down it, and back up.
   { on: ".cds-footer-window", scroll: 60 },
   { on: link, rest: 700 },
@@ -474,8 +547,19 @@ const FOOTER_DEMO: Array<DemoStep> = [
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
 ]
 
+// The Minimal footer's note is what its variant in the file holds.
 const MINIMAL_DEMO: Array<DemoStep> = [
-  { on: link, text: "Privacy policy", rest: 700 },
+  {
+    on: link,
+    text: "Privacy policy",
+    rest: 700,
+    note: {
+      kind: "concept",
+      title: "Minimal",
+      text: "The Minimal variant keeps one group of links: Terms and policies.",
+      on: ".cds-footer-block",
+    },
+  },
   { on: link, text: "Terms of service", rest: 700 },
   { on: link, text: "Usage policy", rest: 700 },
   { on: ".cds-footer-social a", nth: 0, rest: 700 },
@@ -495,7 +579,7 @@ export function HeadersDoc() {
           </DemoCursor>
         </Specimen>
         <Specimen figure>
-          <DemoCursor steps={HEADER_DEMO}>
+          <DemoCursor steps={HEADER_LEFT_DEMO}>
             <Header size="p3" align="left" />
           </DemoCursor>
         </Specimen>

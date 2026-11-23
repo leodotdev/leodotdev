@@ -241,7 +241,13 @@ export function DemoCursor({
             if (!step.note) return []
             const el = step.note.on
               ? root.querySelector(step.note.on)
-              : Array.from(root.querySelectorAll(step.on)).at(step.nth ?? 0)
+              : Array.from(root.querySelectorAll(step.on))
+                  .filter(
+                    (found) =>
+                      !step.text ||
+                      found.textContent.trim().startsWith(step.text)
+                  )
+                  .at(step.nth ?? 0)
             return el ? [{ note: step.note, el }] : []
           })
         )
@@ -784,7 +790,19 @@ export function DemoCursor({
     </span>
   )
   return (
-    <div ref={figure} className={cn("relative", className)}>
+    <div
+      ref={figure}
+      className={cn("relative", className)}
+      // (While developing: the parts this figure's notes name, so a
+      // selector that finds nothing can be caught by a script.)
+      data-demo-notes={
+        import.meta.env.DEV
+          ? steps
+              .flatMap((step) => (step.note?.on ? [step.note.on] : []))
+              .join("\n") || undefined
+          : undefined
+      }
+    >
       {children}
       {frame ? createPortal(tip, frame) : tip}
       {noted && createPortal(<FigureNotes noted={noted} />, noted.host)}

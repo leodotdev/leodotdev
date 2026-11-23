@@ -85,12 +85,44 @@ export function LatestUpdates({ step = 2 }: { step?: number }) {
 }
 
 // It looks over the two items' buttons, narrows the module as the file's
-// tablet and phone frames do, lets it out, and loads the rest.
+// tablet and phone frames do, lets it out, and loads the rest. Its notes
+// are the "Latest Updates Module" component's parts, the "Updates Item"
+// component's one property, and the widths the section draws.
 const UPDATES_DEMO: Array<DemoStep> = [
-  { on: ".ads-update .ads-btn", nth: 0, rest: 800 },
-  { on: ".ads-update .ads-btn", nth: 1, rest: 800 },
+  {
+    on: ".ads-update .ads-btn",
+    nth: 0,
+    rest: 800,
+    note: {
+      kind: "concept",
+      title: "Latest Updates Module",
+      on: ".ads-updates",
+      text: "In the file: a headline, two Updates Items, and a Load More button.",
+    },
+  },
+  {
+    on: ".ads-update .ads-btn",
+    nth: 1,
+    rest: 800,
+    note: {
+      kind: "concept",
+      title: "Show New",
+      on: ".ads-update-new",
+      text: "The Updates Item’s one property: a switch for its New tag.",
+    },
+  },
   { on: ".cds-resize-grip", nth: 1, drag: 560 },
-  { on: ".cds-resize-grip", nth: 1, drag: 360 },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 360,
+    note: {
+      kind: "concept",
+      title: "Three widths",
+      on: ".ads-updates",
+      text: "The file draws the module at Desktop LG, Tablet MD, and Mobile XS.",
+    },
+  },
   { on: ".ads-update .ads-btn", nth: 0, rest: 800 },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
   { on: ".ads-updates > .ads-btn", click: true, rest: 600 },

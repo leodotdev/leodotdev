@@ -95,17 +95,58 @@ export function Lightbox({
 }
 
 // What the demo cursor tries: it closes the lightbox, which shows the video
-// on its page, and presses play to open it again.
+// on its page, and presses play to open it again. It starts on the open
+// lightbox, only resting there. Both notes are from the description beside
+// the Lightbox in the file.
 const LIGHTBOX_DEMO: Array<DemoStep> = [
+  {
+    on: ".cds-lightbox .cds-video",
+    at: [0.5, 0.5],
+    idle: true,
+    note: {
+      kind: "concept",
+      title: "Lightbox",
+      text: "A modal overlay that shows focused content “in an enlarged format.”",
+    },
+  },
   { on: ".cds-lightbox-close", click: true, rest: 900 },
-  { on: ".cds-playhead", click: true, rest: 900 },
+  {
+    on: ".cds-playhead",
+    click: true,
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Darkened background",
+      text: "It isolates “the user’s attention from the main page.”",
+      on: ".cds-lightbox",
+    },
+  },
   { on: ".cds-lightbox .cds-video", rest: 1800 },
 ]
 
-// The reel's playhead grows a little under the cursor.
+// The reel's playhead grows a little under the cursor. The notes are the
+// file's: the Playhead's own component set, and the Reel's description.
 const REEL_DEMO: Array<DemoStep> = [
-  { on: ".cds-playhead", click: true, rest: 900 },
-  { on: ".cds-reel", at: [0.5, 0.88], rest: 1800 },
+  {
+    on: ".cds-playhead",
+    click: true,
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Video: Playhead",
+      text: "A component of its own, with two states: Default and Hover.",
+    },
+  },
+  {
+    on: ".cds-reel",
+    at: [0.5, 0.88],
+    rest: 1800,
+    note: {
+      kind: "concept",
+      title: "Video: Reel",
+      text: "The file describes “integrated playback controls” and “external social media linking.”",
+    },
+  },
 ]
 
 export function MediaDoc() {

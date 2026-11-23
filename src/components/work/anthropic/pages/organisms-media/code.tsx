@@ -331,16 +331,62 @@ export function ClaudeTerminal({
 
 // What the demo cursor does on the block: it scrolls down the code and
 // back, and presses Copy.
+// Its notes, and the next two figures', are the "Code Block" component's
+// types, switches, and sample words.
 const BLOCK_DEMO: Array<DemoStep> = [
-  { on: ".ads-code-body", scroll: 70, rest: 900 },
+  {
+    on: ".ads-code-body",
+    scroll: 70,
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Two switches",
+      text: "On the component in the file: Show Scrollbar and Show Caption.",
+    },
+  },
   { on: ".ads-code-body", scroll: 0, rest: 600 },
-  { on: '[data-action="copy"]', click: true, rest: 1800 },
+  {
+    on: '[data-action="copy"]',
+    click: true,
+    rest: 1800,
+    note: {
+      kind: "concept",
+      title: "File name",
+      on: ".ads-code-name",
+      text: "The file’s sample marks it, and the caption under the block, “(optional).”",
+    },
+  },
 ]
 const SNIPPET_DEMO: Array<DemoStep> = [
-  { on: ".ads-code-body", idle: true, at: [0.5, 0.5], rest: 1400 },
+  {
+    on: ".ads-code-body",
+    idle: true,
+    at: [0.5, 0.5],
+    rest: 1400,
+    note: {
+      kind: "concept",
+      title: "Code Snippet",
+      on: ".ads-code",
+      text: "A type of the Code Block component, not a component of its own.",
+    },
+  },
   { on: '[data-action="copy"]', click: true, rest: 1800 },
 ]
+// The first step only goes to the prompt, for its note, before the long
+// wait while the session plays.
 const TERMINAL_DEMO: Array<DemoStep> = [
+  {
+    on: ".ads-terminal-prompt",
+    idle: true,
+    at: [0.3, 0.5],
+    rest: 600,
+    note: {
+      kind: "concept",
+      title: "Claude Terminal",
+      on: ".ads-terminal",
+      text: "A type of the Code Block component too. Its session, a prompt and Claude’s answer, is the file’s sample.",
+    },
+  },
   { on: ".ads-code-body", idle: true, at: [0.6, 0.7], rest: 9000 },
   { on: '[data-action="copy"]', click: true, rest: 1800 },
 ]

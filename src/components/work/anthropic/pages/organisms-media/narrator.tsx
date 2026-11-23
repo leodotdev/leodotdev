@@ -170,12 +170,43 @@ export function ClaudeNarrator({
 
 // What the demo cursor does: it plays, moves the bar on, pauses, narrows
 // the figure until the narrator runs across the foot of the page, plays
-// and pauses there, and lets the figure out again.
+// and pauses there, and lets the figure out again. Its notes are the
+// "Claude Narrator" component's sample words and its boards.
 const NARRATOR_DEMO: Array<DemoStep> = [
-  { on: ".ads-narrator-play", click: true, rest: 2600 },
-  { on: ".ads-narrator-thumb", drag: 200, rest: 1600 },
+  {
+    on: ".ads-narrator-play",
+    click: true,
+    rest: 2600,
+    note: {
+      kind: "concept",
+      title: "Voice",
+      on: ".ads-narrator-bar",
+      text: "The file’s sample reads “Voice: Buttery.”",
+    },
+  },
+  {
+    on: ".ads-narrator-thumb",
+    drag: 200,
+    rest: 1600,
+    note: {
+      kind: "concept",
+      title: "Audio Player",
+      on: ".ads-narrator-player",
+      text: "A named part of the component. In the file it stands at 5:23 of 6:12.",
+    },
+  },
   { on: ".ads-narrator-play", click: true, rest: 900 },
-  { on: ".cds-resize-grip", nth: 1, drag: 390 },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 390,
+    note: {
+      kind: "concept",
+      title: "Mobile XS",
+      on: ".ads-narrator",
+      text: "The file draws it on a phone in a board of its own, named “Audio Player.”",
+    },
+  },
   { on: ".ads-narrator-play", click: true, rest: 2400 },
   { on: ".ads-narrator-play", click: true, rest: 600 },
   { on: ".ads-narrator-thumb", drag: 0, rest: 600 },

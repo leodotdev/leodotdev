@@ -157,22 +157,74 @@ export function Proofs() {
 // What the demo cursor does on the proof cards: it goes to the next card,
 // narrows the figure to a phone's width, where one card shows and the next
 // peeks in, goes through the cards there and round to the first, and lets
-// the figure out again.
+// the figure out again. The notes are the file's descriptions of its two
+// carousels of proof cards, and of the Carousel organism.
 const next = '.cds-carousel-ui [aria-label="Next"]'
 const PROOF_DEMO: Array<DemoStep> = [
-  { on: next, click: true, rest: 900 },
-  { on: ".cds-resize-grip", nth: 1, drag: 390 },
-  { on: next, click: true, rest: 700 },
+  {
+    on: next,
+    click: true,
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Desktop carousel",
+      text: "“A carousel showing 3-4 Social Proof organisms at a time.”",
+      on: ".cds-proofs",
+    },
+  },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 390,
+    note: {
+      kind: "concept",
+      title: "Mobile carousel",
+      text: "One card “is highlighted at a time with the next item peeking”; a gradient fade softens the overflow.",
+      on: ".cds-proofs",
+    },
+  },
+  {
+    on: next,
+    click: true,
+    rest: 700,
+    note: {
+      kind: "concept",
+      title: "Controls",
+      text: "The Carousel organism’s own: “directional controls and pagination indicators.”",
+      on: ".cds-carousel-ui",
+    },
+  },
   { on: next, click: true, rest: 700 },
   { on: next, click: true, rest: 900 },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
 ]
 
 // And on the testimonial: it narrows it until the logo goes above the
-// quote, and lets it out again.
+// quote, and lets it out again. The notes are the Testimonial Blurb's own
+// properties and variants in the file.
 const TESTIMONIAL_DEMO: Array<DemoStep> = [
-  { on: ".cds-testimonial blockquote", idle: true, rest: 900 },
-  { on: ".cds-resize-grip", nth: 1, drag: 390 },
+  {
+    on: ".cds-testimonial blockquote",
+    idle: true,
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Logo",
+      text: "The component has two switches: Show Logo and CTA.",
+      on: ".cds-testimonial-logo",
+    },
+  },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 390,
+    note: {
+      kind: "concept",
+      title: "Mobile",
+      text: "The second of its two variants: a column, where Desktop is a row.",
+      on: ".cds-testimonial > div",
+    },
+  },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
 ]
 

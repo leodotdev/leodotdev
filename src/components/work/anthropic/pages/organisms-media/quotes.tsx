@@ -125,10 +125,42 @@ export function QuoteCarousel({ quotes = QUOTES }: { quotes?: Array<Quote> }) {
 // the figure to a phone's width, where one card shows and the next peeks
 // in, goes on and back there, and lets the figure out again.
 const next = '.ads-quote-pagination [aria-label="Next"]'
+// Its notes are the file's: the carousel's Pagination and its count, the
+// Quote Card's properties, and the carousel's one property, Device.
 const CAROUSEL_DEMO: Array<DemoStep> = [
-  { on: next, click: true, rest: 800 },
-  { on: next, click: true, rest: 900 },
-  { on: ".cds-resize-grip", nth: 1, drag: 390 },
+  {
+    on: next,
+    click: true,
+    rest: 800,
+    note: {
+      kind: "concept",
+      title: "Pagination",
+      on: ".ads-quote-pagination",
+      text: "An instance of the system’s Pagination under the row. The file’s count reads “01 / 12.”",
+    },
+  },
+  {
+    on: next,
+    click: true,
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Quote Card",
+      on: ".ads-quote-row",
+      text: "Each card has three text properties: Quote, Name, and “Title, Company.”",
+    },
+  },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 390,
+    note: {
+      kind: "concept",
+      title: "Device: Mobile",
+      on: ".ads-quote-row",
+      text: "Device is the carousel’s one property. This is its second value.",
+    },
+  },
   { on: next, click: true, rest: 800 },
   {
     on: '.ads-quote-pagination [aria-label="Previous"]',

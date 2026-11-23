@@ -105,9 +105,30 @@ export function ClipboardCopy({ command }: { command: string }) {
 // What the demo cursor tries. It waits under the middle of the cards, off
 // all of them, so they show at rest, then looks over each: the one under it
 // lifts and the others step back. Each time round it starts from there.
+// The notes here and on the next two figures are the file's own, from the
+// text beside each card on its Organisms page.
 const LINKS_DEMO: Array<DemoStep> = [
-  { on: ".cds-card-links", at: [0.5, 1.08], idle: true, rest: 1200 },
-  { on: ".cds-card-link", nth: 0, rest: 1000 },
+  {
+    on: ".cds-card-links",
+    at: [0.5, 1.08],
+    idle: true,
+    rest: 1200,
+    note: {
+      kind: "direction",
+      title: "Width limits",
+      text: "Without an image the card keeps one layout, held “never too wide, never too narrow.”",
+    },
+  },
+  {
+    on: ".cds-card-link",
+    nth: 0,
+    rest: 1000,
+    note: {
+      kind: "concept",
+      title: "Hover",
+      text: "It takes the “Lift Small” shadow; the others change their fill to “Background Primary.”",
+    },
+  },
   { on: ".cds-card-link", nth: 1, rest: 1000 },
   { on: ".cds-card-link", nth: 2, rest: 1000 },
 ]
@@ -115,9 +136,27 @@ const LINKS_DEMO: Array<DemoStep> = [
 // It narrows the card with an image: a row down to its least width, then a
 // column, down to a phone's width, and lets it out again.
 const ADAPT_DEMO: Array<DemoStep> = [
-  { on: ".cds-card-link", rest: 700 },
+  {
+    on: ".cds-card-link",
+    rest: 700,
+    note: {
+      kind: "concept",
+      title: "With an image",
+      text: "“A column layout at smaller breakpoints and a row layout at larger ones.”",
+    },
+  },
   { on: ".cds-resize-grip", nth: 1, drag: 460 },
-  { on: ".cds-resize-grip", nth: 1, drag: 400 },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 400,
+    note: {
+      kind: "concept",
+      title: "Container queries",
+      text: "They trigger the shift, “allowing the component to respond to its parent’s width.”",
+      on: ".cds-card-link",
+    },
+  },
   { on: ".cds-resize-grip", nth: 1, drag: 326 },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
 ]
@@ -125,27 +164,84 @@ const ADAPT_DEMO: Array<DemoStep> = [
 // And presses the video card's two buttons, narrows it until the video goes
 // above the text, as on a phone, and lets it out again.
 const VIDEO_DEMO: Array<DemoStep> = [
-  { on: ".cds-play", click: true },
+  {
+    on: ".cds-play",
+    click: true,
+    note: {
+      kind: "concept",
+      title: "Video card",
+      text: "It presents “video-based resources like webinars or presentations” with metadata and registration.",
+      on: ".cds-card-video",
+    },
+  },
   { on: ".cds-card-video .cds-btn", click: true, rest: 700 },
-  { on: ".cds-resize-grip", nth: 1, drag: 326 },
+  {
+    on: ".cds-resize-grip",
+    nth: 1,
+    drag: 326,
+    note: {
+      kind: "concept",
+      title: "Two variants",
+      text: "Desktop, a row, and Mobile, a column.",
+      on: ".cds-card-video",
+    },
+  },
   { on: ".cds-play", click: true, rest: 700 },
   { on: ".cds-resize-grip", nth: 1, drag: 4000 },
 ]
 
 // It looks over the prompts (the others step back), sends the second as
 // written, rewrites the third, and copies the command. The copy is for show:
-// nothing is written to the visitor's clipboard.
+// nothing is written to the visitor's clipboard. The notes are the
+// designers' own, beside the Prompt Box's three states and the Clipboard
+// Copy's on the file's Organisms page.
 const PROMPTS_DEMO: Array<DemoStep> = [
-  { on: ".cds-prompt", nth: 0, at: [0.5, 0.3], rest: 900 },
-  { on: ".cds-prompt", nth: 1, at: [0.5, 0.3], rest: 900 },
+  {
+    on: ".cds-prompt",
+    nth: 0,
+    at: [0.5, 0.3],
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Hover",
+      text: "“Text darkens, light shadow added, and button expands to reveal ‘Ask Claude’.”",
+    },
+  },
+  {
+    on: ".cds-prompt",
+    nth: 1,
+    at: [0.5, 0.3],
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Dimmed",
+      text: "“When another sibling is hovered, all others dim to create emphasis.”",
+      on: ".cds-prompts > :nth-child(3)",
+    },
+  },
   { on: ".cds-prompt .cds-btn", nth: 1, click: true },
   {
     on: ".cds-prompt",
     nth: 2,
     at: [0.5, 0.3],
     type: "Turn this week's reading into five quiz questions.",
+    note: {
+      kind: "concept",
+      title: "Editable",
+      text: "“Editable templates”: send a suggestion as written, or customize it before submission.",
+    },
   },
-  { on: ".cds-copy button", click: true, rest: 500 },
+  {
+    on: ".cds-copy button",
+    click: true,
+    rest: 500,
+    note: {
+      kind: "concept",
+      title: "Clipboard copy",
+      text: "“On icon click. Hold for 3s.” Then: “Return to default.”",
+      on: ".cds-copy",
+    },
+  },
   { on: ".cds-copy code", rest: 1800 },
 ]
 

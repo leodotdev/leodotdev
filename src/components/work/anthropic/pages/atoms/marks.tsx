@@ -6,6 +6,7 @@ import {
 } from "@/components/work/claude/ui"
 import { PlayButton } from "@/components/work/anthropic/specimens"
 import { DemoCursor } from "@/components/work/claude/demo-cursor"
+import type { DemoStep } from "@/components/work/claude/demo-cursor"
 
 // The atoms that are type and pictures more than controls: Caption and
 // Footnote, Powered by Claude, Media, and Rich Text: Headline.
@@ -119,6 +120,21 @@ const RATIOS = [
   ["2:1", "2/1"],
 ] as const
 
+// The cursor presses the play button. Its note is the Media component's
+// two boolean properties in the file.
+const MEDIA_DEMO: Array<DemoStep> = [
+  {
+    on: ".ads-play",
+    click: true,
+    rest: 1600,
+    note: {
+      kind: "concept",
+      title: "Play button",
+      text: "Two toggles on the Media component: Show XXL Play Button and Show LG Play Button.",
+    },
+  },
+]
+
 /** A picture in one of the system's aspect ratios, a video where it plays. */
 export function Media({
   ratio = "16/9",
@@ -156,7 +172,7 @@ export function MediaDoc() {
       </Specimen>
       <Specimen figure>
         <DemoCursor
-          steps={[{ on: ".ads-play", click: true, rest: 1600 }]}
+          steps={MEDIA_DEMO}
           className="mx-auto max-w-[40rem] p-6 md:p-8"
         >
           <Media ratio="16/9" play="large" />

@@ -36,20 +36,77 @@ const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 const muted = { color: "var(--ads-fg-3)" }
 
 // The live column of each selection grid: the cursor presses each control
-// and presses it back, so it ends as its label says.
+// and presses it back, so it ends as its label says. On its way it points
+// at a drawn state (a cell of the grid, counted from the grid's first: the
+// Small row's are its 7th to 10th children, the Medium row's its 12th to
+// 15th). The notes are the file's: each component's properties, and the
+// designers' notes on its "Interactive States" board.
 const RADIO_DEMO: Array<DemoStep> = [
-  { on: '[data-live] input[name="radio-small"]', nth: 1, click: true },
+  {
+    on: '[data-live] input[name="radio-small"]',
+    nth: 1,
+    click: true,
+    note: {
+      kind: "concept",
+      title: "Radio button",
+      on: ":scope > :nth-child(7)",
+      text: "Four properties: Label, Size, Selected, and State.",
+    },
+  },
   { on: '[data-live] input[name="radio-small"]', nth: 0, click: true },
+  {
+    on: ":scope > :nth-child(8)",
+    idle: true,
+    at: [0.5, 0.5],
+    rest: 400,
+    note: {
+      kind: "concept",
+      title: "Hover",
+      text: "“Stroke and background shifts 350 steps either up or down depending on theme.”",
+    },
+  },
   { on: '[data-live] input[name="radio-medium"]', nth: 1, click: true },
   { on: '[data-live] input[name="radio-medium"]', nth: 0, click: true },
+  {
+    on: ":scope > :nth-child(14)",
+    idle: true,
+    at: [0.5, 0.5],
+    rest: 400,
+    note: {
+      kind: "concept",
+      title: "Focus",
+      text: "An outline in the theme’s focus ring color, set a little off the control.",
+    },
+  },
   { on: '[data-live] input[name="radio-large"]', nth: 1, click: true },
   { on: '[data-live] input[name="radio-large"]', nth: 0, click: true },
 ]
 
 const box = "[data-live] .ads-checkbox input"
 const CHECK_DEMO: Array<DemoStep> = [
-  { on: box, nth: 0, click: true },
+  {
+    on: box,
+    nth: 0,
+    click: true,
+    note: {
+      kind: "concept",
+      title: "Selected",
+      on: ":scope > :nth-child(7)",
+      text: "On the checkbox this property has three values: False, True, and Indeterminate.",
+    },
+  },
   { on: box, nth: 0, click: true, rest: 300 },
+  {
+    on: ":scope > :nth-child(8)",
+    idle: true,
+    at: [0.5, 0.5],
+    rest: 400,
+    note: {
+      kind: "concept",
+      title: "Hover",
+      text: "As on the radio: stroke and background shift, up or down by theme.",
+    },
+  },
   { on: box, nth: 4, click: true },
   { on: box, nth: 4, click: true, rest: 300 },
   { on: box, nth: 8, click: true },
@@ -158,12 +215,74 @@ export function SelectionDoc() {
 
 const INPUT_SIZES: Array<InputSize> = ["small", "medium", "large", "larger"]
 
-// The cursor writes in the live field of each size, then hovers the next.
+// The cursor writes in the live field of each size, then points at two of
+// the drawn states (cells of the grid, counted from its first: the Hover
+// row's Small field is its 12th child, the Filled row's its 22nd). The
+// notes are the designers' own, from the file's Text Input board.
 const INPUT_DEMO: Array<DemoStep> = [
-  { on: "[data-live] .ads-input", nth: 0, type: "Input value" },
+  {
+    on: "[data-live] .ads-input",
+    nth: 0,
+    type: "Input value",
+    note: {
+      kind: "concept",
+      title: "Focus",
+      text: "“Focus ring applied to field.”",
+    },
+  },
   { on: "[data-live] .ads-input", nth: 1, type: "Input value" },
   { on: "[data-live] .ads-input", nth: 2, type: "Input value" },
   { on: "[data-live] .ads-input", nth: 3, type: "Input value", rest: 800 },
+  {
+    on: ":scope > :nth-child(12)",
+    idle: true,
+    at: [0.5, 0.5],
+    rest: 400,
+    note: {
+      kind: "concept",
+      title: "Hover",
+      text: "“On hover, border-color becomes primary.”",
+    },
+  },
+  {
+    on: ":scope > :nth-child(22)",
+    idle: true,
+    at: [0.5, 0.5],
+    rest: 400,
+    note: {
+      kind: "concept",
+      title: "Filled",
+      text: "The file’s note for a field with a value: “Text becomes primary.”",
+    },
+  },
+]
+
+// The two fields with their other parts. The notes are the file's: the Text
+// Field component's description, and the designers' note on its error.
+const PARTS_DEMO: Array<DemoStep> = [
+  {
+    on: ".ads-input",
+    nth: 0,
+    type: "Claude for Education",
+    note: {
+      kind: "concept",
+      title: "Toggles",
+      on: ":scope > :nth-child(1)",
+      text: "On the component, “label / help text / message / icons are boolean toggles.”",
+    },
+  },
+  {
+    on: ".ads-input",
+    nth: 1,
+    type: "hello@",
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Error",
+      on: ":scope > :nth-child(2)",
+      text: "“Border becomes red and error message is displayed.”",
+    },
+  },
 ]
 
 const FIELD_STATES = [
@@ -216,10 +335,7 @@ function InputParts() {
   return (
     <Specimen figure>
       <DemoCursor
-        steps={[
-          { on: ".ads-input", nth: 0, type: "Claude for Education" },
-          { on: ".ads-input", nth: 1, type: "hello@", rest: 900 },
-        ]}
+        steps={PARTS_DEMO}
         className="grid justify-center gap-x-10 gap-y-6 p-6 sm:grid-cols-[repeat(2,20rem)] md:p-8"
       >
         <TextInput
@@ -241,11 +357,31 @@ function InputParts() {
 
 const OPTIONS = ["Value", "Option two", "Option three", "Option four"]
 
-// The cursor opens the live select, picks a choice, and opens it again.
+// The cursor opens the live select, picks a choice, and opens it again. Its
+// notes are the Dropdown component's description in the file.
 const SELECT_DEMO: Array<DemoStep> = [
-  { on: "[data-live] .ads-select", click: "open", rest: 900 },
+  {
+    on: "[data-live] .ads-select",
+    click: "open",
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Caret",
+      text: "“The caret is always present and flips up when Open=Yes.”",
+    },
+  },
   { on: "[data-live] [role='option']", nth: 2, click: true, rest: 1200 },
-  { on: "[data-live] .ads-select", click: "open", rest: 900 },
+  {
+    on: "[data-live] .ads-select",
+    click: "open",
+    rest: 900,
+    note: {
+      kind: "direction",
+      title: "Menu",
+      on: "[data-live] .ads-select-list",
+      text: "In the file the component is the trigger only: “menu to follow,” its description says.",
+    },
+  },
   { on: "[data-live] [role='option']", nth: 0, click: true, rest: 1200 },
 ]
 
@@ -301,9 +437,19 @@ export function InputsDoc() {
   )
 }
 
-// The cursor drags the single knob and the range's two.
+// The cursor drags the single knob and the range's two. Its note is the
+// component's properties in the file.
 const SLIDER_DEMO: Array<DemoStep> = [
-  { on: "[role='slider']", nth: 1, drag: 85 },
+  {
+    on: "[role='slider']",
+    nth: 1,
+    drag: 85,
+    note: {
+      kind: "concept",
+      title: "Slider",
+      text: "Three properties: Variant, Size, and Type. Variant has one value, Tertiary.",
+    },
+  },
   { on: "[role='slider']", nth: 1, drag: 40 },
   { on: "[role='slider']", nth: 5, drag: 10 },
   { on: "[role='slider']", nth: 6, drag: 90 },

@@ -223,16 +223,49 @@ export function Carousel() {
 // tabs with the same names, so a step says which set it means (`nth`): the
 // first, the medium and large ones, and the last, whose overflow menu it
 // opens to pick a tab from. It ends with every set back on its first tab.
+// Its notes are from the Tabs' boards on the file's Organisms page: the
+// component's description, its "Show overflow" property, and the states
+// its variants board names.
 const TABS_DEMO: Array<DemoStep> = [
   { on: '[aria-expanded="true"]', click: "close", rest: 200 },
-  { on: ".cds-tab", text: "Code", click: true },
+  {
+    on: ".cds-tab",
+    text: "Code",
+    click: true,
+    note: {
+      kind: "concept",
+      title: "Tabs",
+      text: "They let users “switch between different views within the same interface area.”",
+      on: ".cds-tabs",
+    },
+  },
   { on: ".cds-tab", text: "Research", click: true },
   { on: ".cds-tab", text: "Create", click: true },
   { on: ".cds-tab", text: "Code", nth: 2, click: true },
   { on: ".cds-tab", text: "Research", nth: 3, click: true },
-  { on: ".cds-tab[aria-expanded]", nth: 3, click: "open" },
+  {
+    on: ".cds-tab[aria-expanded]",
+    nth: 3,
+    click: "open",
+    note: {
+      kind: "concept",
+      title: "Overflow menu",
+      text: "A “Show overflow” property adds the button that opens it.",
+      on: ".cds-menu",
+    },
+  },
   { on: ".cds-menu-item", text: "Analyze" },
-  { on: ".cds-menu-item", text: "Create", click: true },
+  {
+    on: ".cds-menu-item",
+    text: "Create",
+    click: true,
+    note: {
+      kind: "concept",
+      title: "Truncated option",
+      text: "The file draws this state as “Truncated option active.”",
+      on: '.cds-tab[aria-expanded][aria-selected="true"]',
+    },
+  },
   { on: ".cds-tab", text: "Learn", nth: 4, click: true, rest: 600 },
   { on: ".cds-tab", text: "Learn", nth: 3, click: true },
   { on: ".cds-tab", text: "Learn", nth: 2, click: true },
@@ -268,10 +301,27 @@ export function TabsDoc() {
 }
 
 // It opens the list, looks down it and picks an option, twice, ending on the
-// first again.
+// first again. Both notes quote the file's "Select Dropdown" board.
 const SELECT_DEMO: Array<DemoStep> = [
-  { on: ".cds-select", click: "open" },
-  { on: ".cds-menu-item", text: "Code" },
+  {
+    on: ".cds-select",
+    click: "open",
+    note: {
+      kind: "concept",
+      title: "Select Dropdown",
+      text: "“An interactive component revealed from the Select organism.”",
+      on: ".cds-menu",
+    },
+  },
+  {
+    on: ".cds-menu-item",
+    text: "Code",
+    note: {
+      kind: "concept",
+      title: "Hover",
+      text: "“Hover effects indicate selections.”",
+    },
+  },
   { on: ".cds-menu-item", text: "Research", click: true, rest: 500 },
   { on: ".cds-select", click: "open", rest: 700 },
   { on: ".cds-menu-item", text: "Create" },
@@ -279,19 +329,61 @@ const SELECT_DEMO: Array<DemoStep> = [
 ]
 
 // It opens the second row, which closes the first, reads the answer, and
-// opens the first again.
+// opens the first again. Its notes are the file's description of the
+// Accordion and the component's one variant property.
 const ACCORDION_DEMO: Array<DemoStep> = [
-  { on: ".cds-accordion-head", nth: 1, click: "open" },
+  {
+    on: ".cds-accordion-head",
+    nth: 1,
+    click: "open",
+    note: {
+      kind: "concept",
+      title: "Accordion",
+      text: "A “space-efficient” component: collapsible question-and-answer pairs or content sections.",
+      on: ".cds-accordion",
+    },
+  },
   { on: ".cds-accordion-body", rest: 1600 },
-  { on: ".cds-accordion-head", nth: 0, click: "open" },
+  {
+    on: ".cds-accordion-head",
+    nth: 0,
+    click: "open",
+    note: {
+      kind: "concept",
+      title: "Active",
+      text: "One property, Active, makes its two variants: True and False.",
+      on: ".cds-accordion-item",
+    },
+  },
   { on: ".cds-accordion-body", rest: 1600 },
 ]
 
 // Through the deck to its last card, where the arrow has nowhere to go, and
-// back to the first by its bullets and its other arrow.
+// back to the first by its bullets and its other arrow. Its notes are the
+// file's description of the Carousel and its two components, "Carousel: UI"
+// and "Marginalia Desktop Carousel".
 const CAROUSEL_DEMO: Array<DemoStep> = [
-  { on: '[aria-label="Next"]', click: true, rest: 500 },
-  { on: ".cds-deck-slide[data-active] .cds-btn", rest: 700 },
+  {
+    on: '[aria-label="Next"]',
+    click: true,
+    rest: 500,
+    note: {
+      kind: "concept",
+      title: "Carousel: UI",
+      text: "One component holds the “directional controls and pagination indicators.”",
+      on: ".cds-carousel-ui",
+    },
+  },
+  {
+    on: ".cds-deck-slide[data-active] .cds-btn",
+    rest: 700,
+    note: {
+      kind: "concept",
+      title: "Marginalia",
+      text: "The file’s “Marginalia Desktop Carousel” pairs three cards with these controls.",
+      on: ".cds-deck-cards",
+    },
+  },
   { on: '[aria-label="Next"]', click: true, rest: 500 },
   { on: ".cds-deck-slide[data-active] .cds-btn", rest: 700 },
   { on: '[aria-label="2 of 3"]', click: true, rest: 600 },
