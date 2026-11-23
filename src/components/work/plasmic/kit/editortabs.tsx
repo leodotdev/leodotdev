@@ -353,7 +353,7 @@ function InsertDialog({ s }: { s: State }) {
               className="rounded-md px-2.5 py-1"
               style={
                 w === "Inside"
-                  ? { background: "var(--pk-panel-2)", color: "var(--pk-fg)" }
+                  ? { background: "var(--pk-current)", color: "var(--pk-fg)" }
                   : { color: "var(--pk-fg-2)" }
               }
             >

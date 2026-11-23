@@ -709,16 +709,44 @@
   margin-left: auto;
   color: var(--color-muted-foreground);
 }
+/* The row scrolls sideways in its window: the page's scroll moves it, and
+   so can the visitor (a trackpad, a touch, a drag with the mouse, the arrow
+   keys). No scrollbar: the state cut off at the edge says there is more. A
+   sideways swipe that reaches the row's end stays here, and is not the
+   browser's Back. */
 .pl-sheet-view {
+  display: flex;
   flex: 1;
-  overflow: hidden;
-  padding: 16px;
+  min-height: 0;
+  overflow: auto hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  /* Its focus outline is inside it, since the window clips. */
+  border-radius: 0 0 20px 20px;
+  outline-offset: -4px;
 }
+.pl-sheet-view::-webkit-scrollbar {
+  display: none;
+}
+.pl-sheet-view[data-room] {
+  cursor: grab;
+  user-select: none;
+}
+.pl-sheet-view[data-room]:active {
+  cursor: grabbing;
+}
+/* The states are centered down the window, each on the row's middle line
+   (Leo, 2026-11-23: they hung from the top). The auto margins center the
+   row, and leave its top in sight should it ever be taller than the
+   window. The padding is the row's, so the last state stops short of the
+   window's edge. */
 .pl-sheet-row {
   display: flex;
+  flex: none;
+  align-items: center;
   gap: 16px;
-  width: max-content;
-  transition: translate 0.25s var(--pl-ease-out);
+  margin: auto 0;
+  padding: 16px;
 }
 .pl-sheet-item {
   display: flex;

@@ -17,6 +17,13 @@
   --pk-panel-3: #26282d;
   --pk-line: #26282d;
   --pk-line-2: #33353c;
+  /* What is under the pointer, and the current item of a list or a row of
+     tabs: a wash of the text's color, so each shows on whatever it lies on
+     (Leo, 2026-11-23: a dark row's hover was the next panel tone, which on
+     a panel hardly showed and on a dialog not at all). The current one is
+     the stronger, so a row hovered beside it reads as the lighter. */
+  --pk-hover: rgb(255 255 255 / 0.07);
+  --pk-current: rgb(255 255 255 / 0.11);
   --pk-fg: #e9eaee;
   --pk-fg-2: #a5a8b1;
   --pk-fg-3: #6e717b;
@@ -57,6 +64,8 @@
   --pk-panel-3: #ebecf0;
   --pk-line: #ebecef;
   --pk-line-2: #dcdee3;
+  --pk-hover: rgb(16 24 40 / 0.05);
+  --pk-current: rgb(16 24 40 / 0.08);
   --pk-fg: #18191d;
   --pk-fg-2: #5d616b;
   --pk-fg-3: #969aa3;
@@ -208,7 +217,7 @@
 }
 .pk-tool:hover,
 .pk-tool[data-state="hover"] {
-  background: var(--pk-panel-2);
+  background: var(--pk-hover);
   color: var(--pk-fg);
 }
 .pk-tool[aria-pressed="true"] {
@@ -240,7 +249,8 @@
 }
 .pk-btn:hover,
 .pk-btn[data-state="hover"] {
-  background: var(--pk-panel-3);
+  background:
+    linear-gradient(var(--pk-hover), var(--pk-hover)), var(--pk-panel-3);
 }
 .pk-btn[data-kind="primary"] {
   background: var(--pk-accent);
@@ -256,7 +266,7 @@
 }
 .pk-btn[data-kind="ghost"]:hover,
 .pk-btn[data-kind="ghost"][data-state="hover"] {
-  background: var(--pk-panel-2);
+  background: var(--pk-hover);
   color: var(--pk-fg);
 }
 .pk-btn[data-kind="rec"] {
@@ -349,7 +359,7 @@
   font-weight: 500;
 }
 .pk-ribbon-tab[aria-selected="true"] {
-  background: var(--pk-panel-2);
+  background: var(--pk-current);
   color: var(--pk-fg);
 }
 .pk-ribbon-group {
@@ -386,7 +396,7 @@
 }
 .pk-ribbon-item:hover,
 .pk-ribbon-item[data-state="hover"] {
-  background: var(--pk-panel-2);
+  background: var(--pk-hover);
   color: var(--pk-fg);
 }
 .pk-ribbon-item[aria-pressed="true"] {
@@ -452,7 +462,7 @@
   color: var(--pk-fg);
 }
 .pk-tab[aria-selected="true"] {
-  background: var(--pk-panel-2);
+  background: var(--pk-current);
   color: var(--pk-fg);
 }
 .pk-head {
@@ -485,7 +495,7 @@
 }
 .pk-icon-btn:hover,
 .pk-icon-btn[data-state="hover"] {
-  background: var(--pk-panel-2);
+  background: var(--pk-hover);
   color: var(--pk-fg);
 }
 .pk-search {
@@ -556,7 +566,7 @@
 }
 .pk-row:hover,
 .pk-row[data-state="hover"] {
-  background: var(--pk-panel-2);
+  background: var(--pk-hover);
   color: var(--pk-fg);
 }
 .pk-row[aria-selected="true"] {
@@ -840,7 +850,7 @@
 }
 .pk-variant:hover,
 .pk-variant[data-state="hover"] {
-  background: var(--pk-panel-2);
+  background: var(--pk-hover);
   color: var(--pk-fg);
 }
 .pk-variant[aria-checked="true"] {
@@ -1335,7 +1345,7 @@
 }
 .pk-insert-item:hover,
 .pk-insert-item[data-state="hover"] {
-  background: var(--pk-panel-2);
+  background: var(--pk-hover);
 }
 .pk-insert-item[aria-selected="true"] {
   background: var(--pk-accent);
@@ -1363,7 +1373,7 @@
 }
 .pk-tile:hover,
 .pk-tile[data-state="hover"] {
-  background: var(--pk-panel-2);
+  background: var(--pk-hover);
   color: var(--pk-fg);
 }
 
@@ -1565,7 +1575,7 @@
   flex: none;
 }
 .pk-dash-nav[aria-current] {
-  background: var(--pk-panel-2);
+  background: var(--pk-current);
   color: var(--pk-fg);
 }
 .pk-dash-nav[data-child] {
@@ -1694,7 +1704,7 @@
   box-shadow: 0 0 0 2px var(--pk-accent);
 }
 .pk-choice[data-state="hover"] {
-  background: var(--pk-panel-2);
+  background: var(--pk-hover);
 }
 
 /* 2023's app builder (kit/app23.tsx): the new page's templates, a query
@@ -1921,7 +1931,7 @@
   border-radius: 7px;
 }
 .pk-metric[aria-pressed="true"] {
-  background: var(--pk-panel-2);
+  background: var(--pk-current);
 }
 .pk-metric + .pk-metric {
   box-shadow: 0 -1px 0 var(--pk-line);
@@ -2418,25 +2428,25 @@
 }
 .pk-team-row:hover,
 .pk-choice:hover {
-  background: var(--pk-panel-2);
+  background: var(--pk-hover);
 }
 .pk-ins3-row:hover,
 .pk-dash-nav:not([aria-current]):hover {
-  background: var(--pk-panel-2);
+  background: var(--pk-hover);
   color: var(--pk-fg);
 }
 .pk-plan-cta:not([data-kind="link"]):hover {
   background: color-mix(in srgb, var(--plan) 26%, transparent);
 }
 .pk-act:not([data-new]):hover {
-  background: var(--pk-panel-2);
+  background: var(--pk-hover);
 }
 .pk-omni-row:not([aria-selected="true"]):hover {
   background: #2a2c31;
 }
 .pk-op:not([data-open]):hover,
 .pk-metric:not([aria-pressed="true"]):hover {
-  background: var(--pk-panel-2);
+  background: var(--pk-hover);
 }
 .pk-ribbon-tab:not([aria-selected="true"]):hover,
 .pk-d23-tab:not([aria-selected="true"]):hover {

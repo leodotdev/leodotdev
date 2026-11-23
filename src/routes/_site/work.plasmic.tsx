@@ -233,7 +233,12 @@ function PlasmicWork() {
       )
         return
       const t = e.target as HTMLElement | null
-      if (t?.closest("input, textarea, select, [contenteditable], dialog"))
+      // (Nor in the states' row, where the arrows scroll it sideways.)
+      if (
+        t?.closest(
+          "input, textarea, select, [contenteditable], dialog, .pl-sheet-view"
+        )
+      )
         return
       const tabs = [
         ...document.querySelectorAll<HTMLAnchorElement>(

@@ -389,7 +389,7 @@ export function CodeDialog({ tab = "React" }: { tab?: string }) {
               className="pk-variant"
               aria-checked={t === tab}
               style={
-                t === tab ? { background: "var(--pk-panel-2)" } : undefined
+                t === tab ? { background: "var(--pk-current)" } : undefined
               }
             >
               {t}

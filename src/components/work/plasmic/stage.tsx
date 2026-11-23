@@ -345,6 +345,12 @@ function useExits(root: React.RefObject<HTMLElement | null>) {
           ghost.removeAttribute("data-note")
           const next = record.nextSibling
           parent.insertBefore(ghost, next?.parentNode === parent ? next : null)
+          // A box that was scrolled sideways (the states' row) is put back
+          // where it was: a copy starts at the beginning.
+          for (const box of Array.from(
+            ghost.querySelectorAll<HTMLElement>("[data-x]")
+          ))
+            box.scrollLeft = Number(box.dataset.x)
           window.setTimeout(() => ghost.remove(), 240)
         }
       }
@@ -1463,6 +1469,10 @@ export function ShotView({
 /**
  * A feature's states, inline: a window on the desktop beside the browser,
  * its states in a row that passes as the page scrolls through the scene.
+ * The row is a real scroller, so the visitor can move it sideways too
+ * (Leo, 2026-11-23): by a trackpad or a touch, by dragging it with a
+ * mouse, or with the arrow keys once it has focus. From then on the page's
+ * scroll moves it on from wherever they left it.
  */
 function SheetWindow({
   sheet,
@@ -1477,19 +1487,46 @@ function SheetWindow({
   theme: PkTheme
   browser: { left: number; top: number; width: number; height: number }
 }) {
-  const row = useRef<HTMLDivElement>(null)
   const view = useRef<HTMLDivElement>(null)
   const [room, setRoom] = useState(0)
   useLayoutEffect(() => {
-    const r = row.current
     const v = view.current
-    if (!r || !v) return
-    const update = () => setRoom(Math.max(0, r.scrollWidth - v.clientWidth))
+    const r = v?.firstElementChild
+    if (!v || !r) return
+    const update = () => setRoom(Math.max(0, v.scrollWidth - v.clientWidth))
     const observer = new ResizeObserver(update)
     observer.observe(r)
     observer.observe(v)
     return () => observer.disconnect()
   }, [sheet])
+  // Where the row is, and whether the visitor has moved it themself.
+  const pos = useRef({ x: 0, progress, held: false })
+  useLayoutEffect(() => {
+    const v = view.current
+    if (!v) return
+    const p = pos.current
+    p.x = p.held
+      ? Math.min(room, Math.max(0, p.x + (progress - p.progress) * room))
+      : progress * room
+    p.progress = progress
+    v.scrollLeft = p.x
+    // For the copy that fades out when the window leaves (`useExits`): a
+    // copy has no scroll of its own.
+    v.dataset.x = String(Math.round(p.x))
+  }, [progress, room])
+  const onScroll = () => {
+    const v = view.current
+    if (!v) return
+    const p = pos.current
+    // A scroll that is not the one just set is the visitor's.
+    const set = Math.min(p.x, v.scrollWidth - v.clientWidth)
+    if (Math.abs(v.scrollLeft - set) < 2) return
+    p.x = v.scrollLeft
+    p.held = true
+    v.dataset.x = String(Math.round(p.x))
+  }
+  // A mouse has no sideways scroll of its own: it drags the row.
+  const drag = useRef<{ x: number; left: number } | null>(null)
   const width = Math.min(560, Math.round(box.w * 0.44))
   const height = Math.round(browser.height * 0.78)
   const left = Math.min(
@@ -1513,12 +1550,28 @@ function SheetWindow({
         <span>{sheet.title}</span>
         <span className="pl-sheet-count">{sheet.items.length} states</span>
       </header>
-      <div ref={view} className="pl-sheet-view">
-        <div
-          ref={row}
-          className="pl-sheet-row"
-          style={{ translate: `${-Math.round(progress * room)}px 0` }}
-        >
+      <div
+        ref={view}
+        className="pl-sheet-view"
+        // Only a row with more than fits can be moved, or takes focus.
+        data-room={room > 0 ? "" : undefined}
+        role="group"
+        aria-label="States"
+        tabIndex={room > 0 ? 0 : undefined}
+        onScroll={onScroll}
+        onPointerDown={(e) => {
+          if (e.pointerType !== "mouse" || e.button !== 0 || !room) return
+          drag.current = { x: e.clientX, left: e.currentTarget.scrollLeft }
+          e.currentTarget.setPointerCapture(e.pointerId)
+        }}
+        onPointerMove={(e) => {
+          const d = drag.current
+          if (d) e.currentTarget.scrollLeft = d.left - (e.clientX - d.x)
+        }}
+        onPointerUp={() => (drag.current = null)}
+        onPointerCancel={() => (drag.current = null)}
+      >
+        <div className="pl-sheet-row">
           {sheet.items.map((shot, i) => {
             const k = Math.min(1, 220 / shot.w)
             return (
