@@ -140,11 +140,13 @@ export function HomeScreen() {
       />
       <div className="amo-launch" inert={!open}>
         <ContactsScreen view="card" back loading={loading} />
-        {/* The icon it grows out of, and shrinks back into. */}
+        {/* The icon it grows out of, and shrinks back into: cut from the
+            home screen's picture, wallpaper and all, so it lies exactly
+            over the icon there. */}
         <img
           aria-hidden
           className="amo-launch-icon"
-          src={`${ASSETS}/contacts-icon.webp`}
+          src={`${ASSETS}/contacts-icon-home.webp`}
           alt=""
           draggable={false}
         />

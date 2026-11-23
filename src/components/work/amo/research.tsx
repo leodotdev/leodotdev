@@ -29,11 +29,10 @@ function Board({
 }
 
 // The strip's tiles, in the board's order. "Today" is the Contacts app as
-// it is; "Next" is Leo's proposal (Leo, 2026-11-23).
+// it is and "Next" is Leo's proposal: one tile holds the pair.
 const TILES: Array<{ id: string; Tile: () => React.ReactNode }> = [
   { id: "notes", Tile: NotesSticky },
-  { id: "today", Tile: () => <AppMap /> },
-  { id: "next", Tile: () => <AppMap next /> },
+  { id: "maps", Tile: AppMaps },
   { id: "degrees", Tile: Degrees },
   { id: "sketch", Tile: Sketch },
   { id: "inspiration", Tile: Wishes },
@@ -144,102 +143,133 @@ const CHANNELS: Array<[string, string, boolean]> = [
 ]
 
 // The map is laid out to the pixel, so its lines can be: the apps' middles
-// down the left, and the channels' down the right, a little lower.
+// down the left and the channels' down the right, a row lower, so Contacts
+// is level with the calls and messages it already reaches.
 const LEFT = [26, 92, 158, 224, 290, 356]
-const RIGHT = [116, 182, 248, 314, 380]
-const curve = (y1: number, y2: number, x1 = 148, x2 = 232) =>
-  `M${x1} ${y1} C${x1 + 52} ${y1} ${x2 - 52} ${y2} ${x2} ${y2}`
-/** A line round the left of the apps, into Contacts. */
-const into = (y: number, out: number) =>
-  `M0 ${y} C${-out} ${y} ${-out} ${LEFT[1]} -3 ${LEFT[1]}`
+const RIGHT = [92, 158, 224, 290, 356]
+const [PHONE, CONTACTS, SOCIAL, WORK, GAMES] = LEFT
+const [, FACETIME, WHATSAPP, SIGNAL, DMS] = RIGHT
 
 /**
- * How apps reach people: today, in the Contacts app as it is, and next, in
- * the proposal, with Contacts as the hub the others come to.
+ * How apps reach people. Its lines are squared off with round corners, each
+ * kind in a lane of its own so that none crosses another (Leo, 2026-11-23:
+ * "group these and clean these up"; they were loose curves that bundled).
+ * Today: Phone and Contacts reach calls, messages, and FaceTime; Social and
+ * Productivity keep their own threads; and the three chat apps each keep
+ * contacts of their own. Next: Contacts reaches the same as before and the
+ * chat apps too ("New"), and the other apps come to it.
  */
 function AppMap({ next }: { next?: boolean }) {
   return (
-    <Board
-      name={next ? "Next: my proposal" : "Today: the current Contacts app"}
-    >
-      <div
-        className="amor-map-title"
-        style={
-          {
-            "--amor-tone": next ? TONES.blue : TONES.violet,
-          } as React.CSSProperties
-        }
-      >
-        {next ? "Next" : "Today"}
+    <div className="amor-map" style={{ marginLeft: next ? 40 : 0 }}>
+      <svg aria-hidden>
+        {/* Phone, round the top into Calls, Messages. */}
+        <path d={`M148 ${PHONE} H294 Q306 ${PHONE} 306 38 V66`} />
+        {/* Contacts, straight across, with a branch down to FaceTime. */}
+        <path d={`M148 ${CONTACTS} H232`} />
+        <path
+          d={`M212 ${CONTACTS} V${FACETIME - 10} Q212 ${FACETIME} 222 ${FACETIME} H232`}
+        />
+        {next ? (
+          <>
+            {/* New: Contacts reaches the chat apps, down one lane. */}
+            <g stroke="#14ae5c">
+              <path
+                d={`M148 ${CONTACTS + 12} H178 Q190 ${CONTACTS + 12} 190 ${CONTACTS + 24} V${DMS - 12} Q190 ${DMS} 202 ${DMS} H232`}
+              />
+              <path d={`M190 ${WHATSAPP} H232 M190 ${SIGNAL} H232`} />
+            </g>
+            {/* The other apps come to Contacts, up one lane on the left. */}
+            <g stroke="#0d99ff">
+              <path
+                d={`M0 ${PHONE} H-12 Q-24 ${PHONE} -24 ${PHONE + 12} V${CONTACTS - 12} Q-24 ${CONTACTS} -12 ${CONTACTS} H-3`}
+              />
+              <path
+                d={`M0 ${GAMES} H-12 Q-24 ${GAMES} -24 ${GAMES - 12} V${CONTACTS + 12} Q-24 ${CONTACTS} -12 ${CONTACTS}`}
+              />
+              <path d={`M0 ${SOCIAL} H-24 M0 ${WORK} H-24`} />
+              <path
+                d={`M-11 ${CONTACTS - 7} L-3 ${CONTACTS} L-11 ${CONTACTS + 7}`}
+              />
+            </g>
+            <text x="190" y={CONTACTS - 9} textAnchor="middle">
+              Same
+            </text>
+            <text x="197" y={(FACETIME + WHATSAPP) / 2 + 9}>
+              New
+            </text>
+          </>
+        ) : (
+          <>
+            {/* Social and Productivity, down one lane to their threads. */}
+            <path
+              d={`M148 ${SOCIAL} H166 Q178 ${SOCIAL} 178 ${SOCIAL + 12} V${DMS - 12} Q178 ${DMS} 190 ${DMS} H232`}
+            />
+            <path d={`M148 ${WORK} H178`} />
+          </>
+        )}
+        {/* The contacts each chat app keeps for itself. */}
+        <path
+          strokeDasharray="6 6"
+          d={RIGHT.slice(2)
+            .map((y) => `M384 ${y} H402`)
+            .join(" ")}
+        />
+      </svg>
+      <div>
+        {APPS.map(([name, tone]) => (
+          <span
+            key={name}
+            className="amor-node"
+            data-hub={(next && name === "Contacts") || undefined}
+            style={{ "--amor-tone": tone } as React.CSSProperties}
+          >
+            {name}
+          </span>
+        ))}
       </div>
-      <div className="amor-map" style={{ marginLeft: next ? 72 : 0 }}>
-        <svg aria-hidden>
-          <path d={`M148 ${LEFT[0]} H290 Q306 ${LEFT[0]} 306 42 V90`} />
-          {next ? (
-            <>
-              <path d={curve(LEFT[1], RIGHT[0])} />
-              <path d={curve(LEFT[1], RIGHT[1])} />
-              <g stroke="#14ae5c">
-                <path d={curve(LEFT[1], RIGHT[2])} />
-                <path d={curve(LEFT[1], RIGHT[3])} />
-                <path d={curve(LEFT[1], RIGHT[4])} />
-              </g>
-              <g stroke="#0d99ff">
-                <path d={into(LEFT[0], 34)} />
-                <path d={into(LEFT[2], 34)} />
-                <path d={into(LEFT[3], 54)} />
-                <path d={into(LEFT[4], 74)} />
-                <path
-                  d={`M-12 ${LEFT[1] - 8} L-2 ${LEFT[1]} L-12 ${LEFT[1] + 8}`}
-                />
-              </g>
-              <text x="196" y={LEFT[1] + 2}>
-                Same
-              </text>
-              <text x="186" y={RIGHT[3] - 28}>
-                New
-              </text>
-            </>
-          ) : (
-            <>
-              <path d={curve(LEFT[1], RIGHT[0])} />
-              <path d={curve(LEFT[1], RIGHT[1])} />
-              <path d={curve(LEFT[2], RIGHT[4])} />
-              <path d={curve(LEFT[3], RIGHT[4])} />
-            </>
-          )}
-          <path
-            strokeDasharray="6 6"
-            d={RIGHT.slice(2)
-              .map((y) => `M384 ${y} H402`)
-              .join(" ")}
-          />
-        </svg>
-        <div>
-          {APPS.map(([name, tone]) => (
-            <span
-              key={name}
-              className="amor-node"
-              data-hub={(next && name === "Contacts") || undefined}
-              style={{ "--amor-tone": tone } as React.CSSProperties}
-            >
-              {name}
-            </span>
-          ))}
-        </div>
-        <div style={{ marginTop: 90 }}>
-          {CHANNELS.map(([name, tone, own]) => (
-            <span
-              key={name}
-              className="amor-node"
-              data-outline
-              style={{ "--amor-tone": tone } as React.CSSProperties}
-            >
-              {name}
-              {own && <em>{next ? "C" : "Contacts"}</em>}
-            </span>
-          ))}
-        </div>
+      <div style={{ marginTop: 66 }}>
+        {CHANNELS.map(([name, tone, own]) => (
+          <span
+            key={name}
+            className="amor-node"
+            data-outline
+            style={{ "--amor-tone": tone } as React.CSSProperties}
+          >
+            {name}
+            {own && <em>{next ? "C" : "Contacts"}</em>}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+/**
+ * Today and Next as one tile, side by side: the Contacts app as it is, and
+ * Leo's proposal, each under its name.
+ */
+function AppMaps() {
+  return (
+    <Board name="Today & Next">
+      <div className="amor-maps">
+        <figure>
+          <figcaption>
+            <b>Today</b>
+            The current Contacts app
+          </figcaption>
+          <AppMap />
+        </figure>
+        <span aria-hidden className="amor-maps-to">
+          →
+        </span>
+        <figure>
+          <figcaption>
+            <b>Next</b>
+            My proposal
+          </figcaption>
+          <AppMap next />
+        </figure>
       </div>
     </Board>
   )

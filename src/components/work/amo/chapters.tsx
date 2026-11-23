@@ -71,7 +71,9 @@ export function Chapters() {
           alt="The Contacts app icon"
           width={96}
           height={96}
-          className="h-24 w-24 shrink-0 rounded-[22px]"
+          // (The picture is the icon alone, exported from the file with its
+          // own corners: no rounding here.)
+          className="h-24 w-24 shrink-0"
         />
         <div className="flex flex-col gap-1">
           <h2 className="font-semibold">Approach</h2>
