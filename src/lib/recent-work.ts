@@ -62,8 +62,10 @@ export const recentWork: Array<RecentWork> = [
     title: "iOS Contacts, Reimagined",
     summary:
       "What if Apple made the Contacts app better and more powerful? A one-day design exercise.",
-    // (Amo's own mark: its site's icon, the first letter of its wordmark on
-    // a white tile, from amo.co.)
+    // (Amo's own mark: its whole wordmark, from its site's icon file at
+    // amo.co, set across a white tile. The icon itself shows only the
+    // first letter, cut off at the tile's edge, which Leo did not want:
+    // 2026-11-23.)
     logo: "/logo-amo.svg",
     client: "Amo",
     year: "2023",
