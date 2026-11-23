@@ -193,25 +193,20 @@ const DRIFT = 24
 const HOLD = 4000
 
 /**
- * A row of clips that runs to the page's edges, with a credit under it: the
- * clips are the studio's, from its own case study.
- *
- * The row drifts sideways on its own, scrolls by touch or trackpad, and can be
- * grabbed with the mouse and thrown. It is endless both ways: whenever the
- * row has moved off centre, a clip that is out of sight on the long side moves
- * to the other end, and the row scrolls by that clip's width in the same
- * commit, so nothing on screen moves. The drift stops under the mouse, while
- * the keyboard is inside the row and for a while after any touch, wheel or
- * drag, and never runs for a visitor who asked for reduced motion.
+ * What makes a row of tiles a strip: it drifts sideways on its own, scrolls
+ * by touch or trackpad, and can be grabbed with the mouse and thrown. It is
+ * endless both ways: whenever the row has moved off center, a tile that is
+ * out of sight on the long side moves to the other end, and the row scrolls
+ * by that tile's width in the same commit, so nothing on screen moves. The
+ * drift stops under the mouse, while the keyboard is inside the row and for
+ * a while after any touch, wheel or drag, and never runs for a visitor who
+ * asked for reduced motion. Put `strip` on the row's `<ul>` and draw `items`
+ * in it, in their order, each keyed. (The docs' clips and /work/amo's
+ * research both use it.)
  */
-export function MediaStrip({
-  items = CLIPS,
-}: {
-  /** The strip's clips and pictures; the Claude docs' own by default. */
-  items?: Array<StripItem>
-} = {}) {
+export function useDriftStrip<T>(all: Array<T>) {
   const strip = useRef<HTMLUListElement>(null)
-  const [clips, setClips] = useState(items)
+  const [items, setItems] = useState(all)
   // Where the drift has got to. Kept here, not read back each frame: a browser
   // may round scrollLeft, and a fraction of a pixel a frame would round away.
   const position = useRef(0)
@@ -224,7 +219,7 @@ export function MediaStrip({
     row.scrollLeft -= owed.current
     position.current -= owed.current
     owed.current = 0
-  }, [clips])
+  }, [items])
 
   useEffect(() => {
     const row = strip.current
@@ -248,13 +243,13 @@ export function MediaStrip({
         last.right - tiles[tiles.length - 2].getBoundingClientRect().right
       if (row.scrollLeft > (max + head) / 2 && first.right < view.left - 1) {
         owed.current = head
-        setClips(([clip, ...rest]) => [...rest, clip])
+        setItems(([lead, ...rest]) => [...rest, lead])
       } else if (
         row.scrollLeft < (max - tail) / 2 &&
         last.left > view.right + 1
       ) {
         owed.current = -tail
-        setClips((all) => [all[all.length - 1], ...all.slice(0, -1)])
+        setItems((now) => [now[now.length - 1], ...now.slice(0, -1)])
       }
     }
     // Several moves, a frame apart, until the row is centred again.
@@ -422,6 +417,22 @@ export function MediaStrip({
       row.removeEventListener("scroll", scrolled)
     }
   }, [])
+
+  return { strip, items }
+}
+
+/**
+ * A row of clips that runs to the page's edges, with a credit under it: the
+ * clips are the studio's, from its own case study. It drifts, loops, and
+ * takes a drag as `useDriftStrip` has it.
+ */
+export function MediaStrip({
+  items = CLIPS,
+}: {
+  /** The strip's clips and pictures; the Claude docs' own by default. */
+  items?: Array<StripItem>
+} = {}) {
+  const { strip, items: clips } = useDriftStrip(items)
 
   return (
     <figure className="mb-12 flex flex-col gap-3">

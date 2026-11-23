@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useDriftStrip } from "@/components/work/claude/media"
 
 // /work/amo's research: the pieces of the project's FigJam board, redrawn
 // in HTML, CSS, and SVG (`.amor-*` in src/amo.css), set side by side in one
@@ -28,38 +28,38 @@ function Board({
   )
 }
 
+// The strip's tiles, in the board's order. "Today" is the Contacts app as
+// it is; "Next" is Leo's proposal (Leo, 2026-11-23).
+const TILES: Array<{ id: string; Tile: () => React.ReactNode }> = [
+  { id: "notes", Tile: NotesSticky },
+  { id: "today", Tile: () => <AppMap /> },
+  { id: "next", Tile: () => <AppMap next /> },
+  { id: "degrees", Tile: Degrees },
+  { id: "sketch", Tile: Sketch },
+  { id: "inspiration", Tile: Wishes },
+  { id: "principle", Tile: Principle },
+]
+
 /**
- * The research, in one row as wide as the window: it scrolls sideways by
- * touch or trackpad, by a drag with the mouse, and with the arrow keys once
- * it has focus. It does not drift as the clips do: it is there to be read.
+ * The research, in one row as wide as the window, which behaves as the
+ * other projects' strips of clips do (`useDriftStrip`; Leo, 2026-11-23): it
+ * drifts sideways slowly, takes a touch, a trackpad, or a drag and a throw
+ * with the mouse, and is endless both ways. The drift stops under the
+ * pointer, so a tile can be read.
  */
 export function ResearchStrip() {
-  const drag = useRef<{ x: number; left: number } | null>(null)
+  const { strip, items } = useDriftStrip(TILES)
   return (
     <figure className="mb-12 flex flex-col gap-3">
       <ul
+        ref={strip}
         aria-label="Research"
         tabIndex={0}
-        className="amor-strip bleed scrollbar-hide flex cursor-grab gap-3 overflow-x-auto select-none active:cursor-grabbing"
-        onPointerDown={(e) => {
-          if (e.pointerType !== "mouse" || e.button !== 0) return
-          drag.current = { x: e.clientX, left: e.currentTarget.scrollLeft }
-          e.currentTarget.setPointerCapture(e.pointerId)
-        }}
-        onPointerMove={(e) => {
-          const d = drag.current
-          if (d) e.currentTarget.scrollLeft = d.left - (e.clientX - d.x)
-        }}
-        onPointerUp={() => (drag.current = null)}
-        onPointerCancel={() => (drag.current = null)}
+        className="amor-strip bleed scrollbar-hide flex cursor-grab gap-3 overflow-x-auto select-none data-[dragging]:cursor-grabbing"
       >
-        <NotesSticky />
-        <AppMap />
-        <AppMap next />
-        <Degrees />
-        <Sketch />
-        <Wishes />
-        <Principle />
+        {items.map(({ id, Tile }) => (
+          <Tile key={id} />
+        ))}
       </ul>
       <figcaption className="text-xs text-muted-foreground">
         Research, from the project’s FigJam board
@@ -150,10 +150,15 @@ const curve = (y1: number, y2: number, x1 = 148, x2 = 232) =>
 const into = (y: number, out: number) =>
   `M0 ${y} C${-out} ${y} ${-out} ${LEFT[1]} -3 ${LEFT[1]}`
 
-/** How apps reach people: today, and with Contacts as the hub. */
+/**
+ * How apps reach people: today, in the Contacts app as it is, and next, in
+ * the proposal, with Contacts as the hub the others come to.
+ */
 function AppMap({ next }: { next?: boolean }) {
   return (
-    <Board name={next ? "Next" : "Today"}>
+    <Board
+      name={next ? "Next: my proposal" : "Today: the current Contacts app"}
+    >
       <div
         className="amor-map-title"
         style={
