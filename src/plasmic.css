@@ -431,6 +431,48 @@
   --pl-ink-discovery: #3f7765;
 }
 
+/* The same notes on the docs' figures (/work/claude, /work/anthropic:
+   src/components/work/claude/figure-notes.tsx), one beside a figure as its
+   demo cursor reaches each step. The card is the site's surface in the
+   theme opposite the page's, as a toast is; the outline and the arrow lie
+   on the figure and on the page at once, which may be of opposite themes,
+   so their tones are the middle ones that show on both. */
+.fig-notes {
+  position: absolute;
+  top: 0;
+  z-index: 3;
+  pointer-events: none;
+  transition: opacity 0.18s var(--pl-ease-out);
+  --pl-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --pl-ease-move: cubic-bezier(0.65, 0, 0.35, 1);
+  --pl-card: var(--ads-gray-000);
+  --pl-card-fg: var(--ads-gray-950);
+  --pl-card-line: var(--ads-gray-200);
+  --pl-card-shadow:
+    0 0 0 0.5px rgb(0 0 0 / 0.18), 0 2px 6px -2px rgb(0 0 0 / 0.2),
+    0 12px 32px -10px rgb(0 0 0 / 0.4);
+  --pl-card-decision: #b53333;
+  --pl-card-concept: #154c92;
+  --pl-card-discovery: #3f7765;
+  --pl-ink-decision: #d64545;
+  --pl-ink-concept: #3d8bdc;
+  --pl-ink-discovery: #3f9a7c;
+}
+html:not(.dark) .fig-notes {
+  --pl-card: var(--ads-gray-950);
+  --pl-card-fg: var(--ads-gray-050);
+  --pl-card-line: var(--ads-gray-700);
+  --pl-card-shadow:
+    0 0 0 0.5px rgb(255 255 255 / 0.22), 0 2px 6px -2px rgb(0 0 0 / 0.3),
+    0 12px 32px -10px rgb(0 0 0 / 0.5);
+  --pl-card-decision: #e86b6b;
+  --pl-card-concept: #90c3f6;
+  --pl-card-discovery: #8fc4b2;
+}
+.fig-notes[data-leaving] {
+  opacity: 0;
+}
+
 /* Notes: decisions in red, how it works in the accent blue. */
 .pl-notes {
   position: absolute;

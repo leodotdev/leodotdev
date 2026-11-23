@@ -195,7 +195,9 @@ export function Figure({
   children: React.ReactNode
 }) {
   return (
-    <figure className="m-0 min-w-0">
+    // (Relative: a demo cursor's notes are drawn in it, over and beside
+    // the figure: figure-notes.tsx.)
+    <figure className="relative m-0 min-w-0">
       <Scaled>{children}</Scaled>
       {/* Under the figure, centered, at the page's own size: the name of
           the layout a resizable figure is showing. Nothing while empty. */}

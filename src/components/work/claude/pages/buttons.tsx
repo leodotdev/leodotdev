@@ -17,13 +17,86 @@ const COLUMNS = ["", "Small", "Medium", "Large", "Leading icon", "Icon only"]
 const variant = (name: string) => `.cds-btn[data-variant="${name}"]`
 
 // What the demo cursor tries. On the grid it goes down the variants and
-// across the columns at once, pressing one button of each kind.
+// across the columns at once, pressing one button of each kind, and tells
+// the button's story as it goes: each note is the file's own, from the
+// designers' notes beside the Button on its Molecules page and from the
+// component's properties.
 const GRID_DEMO: Array<DemoStep> = [
-  { on: variant("primary"), nth: 0, click: true },
-  { on: variant("secondary"), nth: 1, click: true },
-  { on: variant("tertiary"), nth: 2, click: true },
-  { on: variant("clay"), nth: 3, click: true },
-  { on: variant("clay"), nth: 4, rest: 700 },
+  {
+    on: variant("primary"),
+    nth: 0,
+    click: true,
+    note: {
+      kind: "concept",
+      title: "Hover",
+      text: "On hover, a shadow with no blur animates in.",
+    },
+  },
+  {
+    on: variant("secondary"),
+    nth: 1,
+    click: true,
+    note: {
+      kind: "concept",
+      title: "Secondary & Tertiary",
+      text: "Their foreground darkens to the primary one as the shadow comes in.",
+    },
+  },
+  {
+    on: variant("tertiary"),
+    nth: 2,
+    click: true,
+    note: {
+      kind: "direction",
+      title: "Label sizes",
+      text: "The file notes each as “updated”: Medium to Body 3, Large to Body 2.",
+    },
+  },
+  {
+    on: variant("clay"),
+    nth: 3,
+    click: true,
+    note: {
+      kind: "direction",
+      title: "Clay",
+      text: "“No border on Primary / Clay.”",
+    },
+  },
+  {
+    on: variant("clay"),
+    nth: 4,
+    rest: 700,
+    note: {
+      kind: "concept",
+      title: "One button",
+      text: "Four properties make its 48 variants: Text, Format, Size, and Variant.",
+    },
+  },
+]
+
+// The states: the cursor only goes to each column and waits, so every
+// button shows as drawn.
+const STATES_DEMO: Array<DemoStep> = [
+  {
+    on: ":scope > :nth-child(1)",
+    at: [0.5, 0.5],
+    idle: true,
+    note: {
+      kind: "concept",
+      title: "At rest",
+      text: "“At rest, the button holds a calm, consistent tone.”",
+    },
+  },
+  {
+    on: ":scope > :nth-child(3)",
+    at: [0.5, 0.5],
+    idle: true,
+    note: {
+      kind: "concept",
+      title: "Focus",
+      text: "The button receives an outline, set off from it.",
+    },
+  },
 ]
 
 const LINKS_DEMO: Array<DemoStep> = [
@@ -69,7 +142,10 @@ export function ButtonsDoc() {
         caption="We wanted a button at rest to hold “a calm, consistent tone.” Labels run thinner on dark backgrounds."
       >
         <Specimen figure>
-          <div className="grid justify-center gap-x-16 gap-y-6 p-6 sm:grid-cols-[repeat(3,auto)] md:p-8">
+          <DemoCursor
+            steps={STATES_DEMO}
+            className="grid justify-center gap-x-16 gap-y-6 p-6 sm:grid-cols-[repeat(3,auto)] md:p-8"
+          >
             {(
               [
                 ["At rest", undefined],
@@ -89,7 +165,7 @@ export function ButtonsDoc() {
                 ))}
               </Cell>
             ))}
-          </div>
+          </DemoCursor>
         </Specimen>
         <ThemeStrip figure>
           {VARIANTS.map((name) => (

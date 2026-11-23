@@ -1,6 +1,8 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
+import { FigureNotes } from "@/components/work/claude/figure-notes"
 import { useFrame } from "@/components/work/claude/frame"
+import type { FigureNote, Noted } from "@/components/work/claude/figure-notes"
 import { cn } from "@/lib/utils"
 
 /**
@@ -59,7 +61,43 @@ export type DemoStep = {
   idle?: true
   /** How long to rest on it, in ms. */
   rest?: number
+  /**
+   * The figure's story at this step: a note beside the figure, on this
+   * step's element (or `note.on`), which comes up once the step is done
+   * and stays long enough to read, the cursor resting there meanwhile.
+   */
+  note?: FigureNote
 }
+
+// The figures on screen whose cursors have a story to tell. Only one of
+// them speaks at a time, the one nearest the middle of what shows of the
+// page under the docs' bar: two stories at once are hard to keep up with.
+// The others' cursors still play, without their notes.
+const tellers = new Set<Element>()
+const leads = (root: Element) => {
+  const top =
+    document.querySelector("[data-docs-bar]")?.getBoundingClientRect().bottom ??
+    0
+  const middle = (Math.max(0, top) + window.innerHeight) / 2
+  let lead: Element | null = null
+  let least = Infinity
+  for (const el of tellers) {
+    const box = el.getBoundingClientRect()
+    const off =
+      box.top <= middle && box.bottom >= middle
+        ? 0
+        : Math.min(Math.abs(box.top - middle), Math.abs(box.bottom - middle))
+    if (off < least) {
+      least = off
+      lead = el
+    }
+  }
+  return lead === root
+}
+
+/** How long a note stays up: a moment to find it, then its words read. */
+const readTime = (note: FigureNote) =>
+  Math.max(2600, 1100 + (note.title.length + note.text.length) * 42)
 
 // The cursor's shapes: the system's arrow, and what a real pointer turns into
 // over something to press, a text field and a control dragged sideways. The
@@ -130,7 +168,16 @@ const everyFrame = (
  * enters the figure it leaves, and it comes back a little after they go; on
  * a touch screen a tap in the figure sends it away for a few seconds. It
  * only plays while the figure is on screen, and not for anyone who prefers
- * reduced motion.
+ * reduced motion. When it comes back it carries on from the step it was
+ * sent away at, not from the start (Leo, 2026-11-23: after a visitor
+ * clicks around and goes, "that figure story and demo cursor should
+ * resume"); a step whose element is no longer there is skipped, as ever.
+ *
+ * Its steps can tell the figure's story (`note`): a card beside the figure
+ * with an arrow to the step's element (`FigureNotes`), up while the cursor
+ * rests there, and gone when the cursor moves on or the visitor comes in.
+ * Under reduced motion, where no cursor plays, the notes of everything in
+ * the figure as it stands all show while it is on screen.
  *
  * A pretend pointer cannot make `:hover` match, so the element it rests on
  * is marked `data-state="hover"`, which the system's controls style the same
@@ -157,6 +204,8 @@ export function DemoCursor({
   const figure = useRef<HTMLDivElement>(null)
   const cursor = useRef<HTMLSpanElement>(null)
   const frame = useFrame().el
+  // The notes showing beside the figure, set from the cursor's own loop.
+  const [noted, setNoted] = useState<Noted | null>(null)
 
   useEffect(() => {
     const root = figure.current
@@ -165,7 +214,45 @@ export function DemoCursor({
     // The cursor's ground: where it is drawn and measured from, and where
     // the visitor is watched for.
     const stage = frame ?? root
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    // The notes are drawn in the figure's own element, outside its scaled
+    // box, at the page's size.
+    const host = root.closest("figure")
+    let fading = 0
+    const say = (items: Noted["items"]) => {
+      window.clearTimeout(fading)
+      if (host && items.length) setNoted({ host, items })
+    }
+    // A note leaves with a short fade, then is taken away.
+    const hush = () => {
+      window.clearTimeout(fading)
+      setNoted((now) => (now ? { ...now, leaving: true } : now))
+      fading = window.setTimeout(() => setNoted(null), 200)
+    }
+    const partOf = (note: FigureNote, el: Element) =>
+      (note.on ? root.querySelector(note.on) : null) ?? el
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // No cursor: while the figure is on screen, the notes of what is in
+      // it as it stands.
+      const still = new IntersectionObserver((entries) => {
+        const entry = entries[entries.length - 1]
+        if (!entry.isIntersecting) return hush()
+        say(
+          steps.flatMap((step) => {
+            if (!step.note) return []
+            const el = step.note.on
+              ? root.querySelector(step.note.on)
+              : Array.from(root.querySelectorAll(step.on)).at(step.nth ?? 0)
+            return el ? [{ note: step.note, el }] : []
+          })
+        )
+      })
+      still.observe(root)
+      return () => {
+        still.disconnect()
+        window.clearTimeout(fading)
+        setNoted(null)
+      }
+    }
     const arrow = tip.firstElementChild
     if (!arrow) return
 
@@ -184,6 +271,8 @@ export function DemoCursor({
     // The visitor has just left the figure.
     let away = false
     let comeback = 0
+    // The step to carry on from when it comes back.
+    let resume = 0
 
     const scale = () =>
       stage.getBoundingClientRect().width / (stage.offsetWidth || 1)
@@ -366,8 +455,10 @@ export function DemoCursor({
     const leave = () => {
       run++
       playing = false
+      tellers.delete(root)
       hover(null)
       restore()
+      hush()
       if (!shown) return
       // Off, up and away.
       void travel(at.x + 36, at.y - 28, 0)
@@ -375,6 +466,7 @@ export function DemoCursor({
 
     const play = async () => {
       playing = true
+      if (steps.some((step) => step.note)) tellers.add(root)
       const mine = ++run
       const live = () => mine === run
       // Comes in from somewhere in the left half of the figure, within the
@@ -390,7 +482,10 @@ export function DemoCursor({
       }
       shown = false
       while (live()) {
-        for (const step of steps) {
+        for (let i = resume; i < steps.length; i++) {
+          // Sent away during this step, it comes back to it.
+          resume = i
+          const step = steps[i]
           const el = find(step)
           if (!el) continue
           const open = el.getAttribute("aria-expanded") === "true"
@@ -545,7 +640,18 @@ export function DemoCursor({
             await pressed
             if (!live()) return
           }
+          if (step.note && leads(root)) {
+            // What the step did is drawn; now what it shows is said, and
+            // the cursor waits while it is read.
+            await sleep(120)
+            if (!live()) return
+            say([{ note: step.note, el: partOf(step.note, el) }])
+            await sleep(readTime(step.note))
+            if (!live()) return
+            hush()
+          }
         }
+        resume = 0
         await sleep(900)
         if (!live()) return
         restore()
@@ -632,6 +738,9 @@ export function DemoCursor({
       run++
       window.clearTimeout(comeback)
       window.clearTimeout(turn)
+      window.clearTimeout(fading)
+      setNoted(null)
+      tellers.delete(root)
       stage.removeEventListener("pointerdown", onDown)
       stage.removeEventListener("click", onTap)
       watcher.disconnect()
@@ -668,6 +777,7 @@ export function DemoCursor({
     <div ref={figure} className={cn("relative", className)}>
       {children}
       {frame ? createPortal(tip, frame) : tip}
+      {noted && createPortal(<FigureNotes noted={noted} />, noted.host)}
     </div>
   )
 }

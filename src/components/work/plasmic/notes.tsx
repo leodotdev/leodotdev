@@ -71,6 +71,7 @@ export function NoteLayer({
   fly = 0,
   view = "",
   quick = false,
+  list = true,
 }: {
   /** Each note with the box its part takes up, in the app's pixels. */
   notes: Array<{
@@ -97,6 +98,9 @@ export function NoteLayer({
   /** Asked for by the visitor's pointer: it comes up at once, with none
       of the order a beat's notes come in in. */
   quick?: boolean
+  /** False where a narrow box's notes are not to be a numbered list under
+      the picture (the docs' figures, which show one note at a time). */
+  list?: boolean
 }) {
   // A note's height as drawn, by its words and width (an estimate until
   // it has been drawn once).
@@ -128,7 +132,7 @@ export function NoteLayer({
   if (!notes.length) return null
   const [ox, oy] = origin
   const [dw, dh] = desk
-  const narrow = dw < 768
+  const narrow = list && dw < 768
 
   const room = {
     left: !browser || taken?.left ? 0 : browser.left,

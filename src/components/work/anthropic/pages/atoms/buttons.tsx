@@ -45,13 +45,43 @@ const muted = { color: "var(--ads-fg-3)" }
 const variant = (name: ButtonVariant) => `.ads-btn[data-variant="${name}"]`
 
 // The grid: the cursor presses a button of each variant down the formats,
-// moving across the sizes, then turns the corners round and back.
+// moving across the sizes, then turns the corners round and back. Its notes
+// are the file's own: the description beside the Button on its Atoms page,
+// and the component's properties.
 const GRID_DEMO: Array<DemoStep> = [
-  { on: variant("primary"), nth: 0, click: true },
+  {
+    on: variant("primary"),
+    nth: 0,
+    click: true,
+    note: {
+      kind: "concept",
+      title: "Button",
+      text: "“An interactive component combining text, icons, and styling to trigger actions across multiple contexts.”",
+    },
+  },
   { on: variant("secondary"), nth: 5, click: true },
   { on: variant("tertiary"), nth: 10, click: true },
-  { on: variant("primary"), nth: 15, click: true, rest: 500 },
-  { on: '[data-corner-pick="round"]', click: true, rest: 600 },
+  {
+    on: variant("primary"),
+    nth: 15,
+    click: true,
+    rest: 500,
+    note: {
+      kind: "concept",
+      title: "96 variants",
+      text: "Four properties beside its label: Variant, Format, Corner, and Size.",
+    },
+  },
+  {
+    on: '[data-corner-pick="round"]',
+    click: true,
+    rest: 600,
+    note: {
+      kind: "concept",
+      title: "Corner",
+      text: "A property of the button, so every variant comes with either corner.",
+    },
+  },
   { on: variant("secondary"), nth: 2, click: true },
   { on: variant("tertiary"), nth: 7, click: true },
   { on: variant("primary"), nth: 13, click: true, rest: 500 },
@@ -59,14 +89,44 @@ const GRID_DEMO: Array<DemoStep> = [
 ]
 
 // The states: the cursor rests on each button at rest, which shows its
-// hover beside the drawn one.
+// hover beside the drawn one. Its notes are the designers' own, from the
+// file's "Button Interactive States".
 const STATES_DEMO: Array<DemoStep> = [
-  { on: "[data-col='rest'] .ads-btn", nth: 0, rest: 900 },
-  { on: "[data-col='rest'] .ads-btn", nth: 1, rest: 900 },
+  {
+    on: "[data-col='rest'] .ads-btn",
+    nth: 0,
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "At rest",
+      text: "“At rest, the button holds a calm, consistent tone.”",
+    },
+  },
+  {
+    on: "[data-col='rest'] .ads-btn",
+    nth: 1,
+    rest: 900,
+    note: {
+      kind: "concept",
+      title: "Hover",
+      text: "A shadow with no blur animates in. Secondary and tertiary foregrounds become primary.",
+    },
+  },
   { on: "[data-col='rest'] .ads-btn", nth: 2, rest: 900 },
   { on: "[data-col='rest'] .ads-btn", nth: 3, click: true },
   { on: "[data-col='rest'] .ads-btn", nth: 4, click: true },
-  { on: "[data-col='rest'] .ads-btn", nth: 5, click: true, rest: 700 },
+  {
+    on: "[data-col='rest'] .ads-btn",
+    nth: 5,
+    click: true,
+    rest: 700,
+    note: {
+      kind: "concept",
+      title: "Focus",
+      on: "[data-col='focus']",
+      text: "An outline in Sky, set off from the button. Secondary and tertiary foregrounds become primary here too.",
+    },
+  },
 ]
 
 const PLAY_DEMO: Array<DemoStep> = [
