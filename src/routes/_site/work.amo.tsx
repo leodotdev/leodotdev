@@ -38,9 +38,19 @@ export const Route = createFileRoute("/_site/work/amo")({
 })
 
 // The same facts as the other projects give, less a team: there was none.
-const FACTS: Array<[label: string, value: string]> = [
+const FACTS: Array<[label: string, value: React.ReactNode]> = [
   ["My Role", "Product Designer"],
-  ["Client", "Amo"],
+  [
+    "Client",
+    <a
+      key="amo"
+      className="underline decoration-dotted hover:text-tint hover:decoration-solid"
+      href="https://amo.co/"
+      target="_blank"
+    >
+      Amo
+    </a>,
+  ],
   ["Type", "Design Exercise"],
   ["Year", "2023"],
 ]
