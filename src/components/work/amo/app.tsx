@@ -518,34 +518,43 @@ export function ContactsScreen({
   return (
     <div className="amo-app" data-view={view} data-mini={mini || undefined}>
       <StatusBar />
-      <header className="amo-head">
-        <div className="amo-bar">
-          {onBack ? (
-            <button
-              type="button"
-              className="amo-link"
-              data-back
-              onClick={onBack}
-            >
-              <TbChevronLeft aria-hidden /> Lists
-            </button>
-          ) : (
-            <span className="amo-link">
-              {back && !mini && (
-                <>
-                  <TbChevronLeft aria-hidden /> Lists
-                </>
-              )}
-            </span>
-          )}
-          <span className="amo-bar-title">{title}</span>
-          <TbPlus aria-label="New contact" className="amo-link" />
-        </div>
+      {/* The bar is all that stays put. The large title, the search field,
+          and the filters are the first things in the list and scroll with
+          it, as on iOS: the title goes up under the bar, whose own small
+          title then shows; the search field stops under the bar and holds
+          there; the filters go on up under it. So a scroll never changes
+          the list's own size (when the header itself folded, a short list
+          stopped being scrollable as it did, unfolded it again, and so on:
+          Leo, 2026-11-23, saw it on Mentors). */}
+      <div className="amo-bar amo-head">
+        {onBack ? (
+          <button type="button" className="amo-link" data-back onClick={onBack}>
+            <TbChevronLeft aria-hidden /> Lists
+          </button>
+        ) : (
+          <span className="amo-link">
+            {back && !mini && (
+              <>
+                <TbChevronLeft aria-hidden /> Lists
+              </>
+            )}
+          </span>
+        )}
+        <span className="amo-bar-title">{title}</span>
+        <TbPlus aria-label="New contact" className="amo-link" />
+      </div>
+      <div
+        ref={list}
+        className="amo-list"
+        onScroll={(e) => setMini(e.currentTarget.scrollTop > 36)}
+      >
         <h4 className="amo-large">{title}</h4>
-        <div className="amo-search">
-          <TbSearch aria-hidden />
-          <span className="amo-grow">Search</span>
-          <TbMicrophone aria-hidden />
+        <div className="amo-pin">
+          <div className="amo-search">
+            <TbSearch aria-hidden />
+            <span className="amo-grow">Search</span>
+            <TbMicrophone aria-hidden />
+          </div>
         </div>
         <div className="amo-filters">
           <div className="amo-seg" role="group" aria-label="Degrees">
@@ -589,59 +598,59 @@ export function ContactsScreen({
           </div>
           <TbAdjustmentsHorizontal aria-label="Filter" className="amo-link" />
         </div>
-      </header>
-      {loading && (
-        <div aria-hidden className="amo-list amo-redacted">
-          <section>
-            <h5>
-              <i style={{ width: 10 }} />
-            </h5>
-            {[112, 148, 76, 130, 96].map((w, i) => (
-              <div key={w} className="amo-row">
-                <i className="amo-avatar" />
-                <div className="amo-row-main">
-                  <div className="amo-row-top">
-                    <span className="amo-grow">
-                      <i style={{ width: w, height: 12 }} />
-                      <i style={{ width: w * 0.5, height: 9, marginTop: 7 }} />
-                    </span>
-                    <i style={{ width: 22, height: 16 }} />
+        {loading ? (
+          <div aria-hidden className="amo-redacted">
+            <section>
+              <h5>
+                <i style={{ width: 10 }} />
+              </h5>
+              {[112, 148, 76, 130, 96].map((w, i) => (
+                <div key={w} className="amo-row">
+                  <i className="amo-avatar" />
+                  <div className="amo-row-main">
+                    <div className="amo-row-top">
+                      <span className="amo-grow">
+                        <i style={{ width: w, height: 12 }} />
+                        <i
+                          style={{ width: w * 0.5, height: 9, marginTop: 7 }}
+                        />
+                      </span>
+                      <i style={{ width: 22, height: 16 }} />
+                    </div>
+                    {view === "card" && i < 2 && (
+                      <i
+                        className="amo-card"
+                        style={{
+                          width: i ? "100%" : 196,
+                          height: i ? 56 : 236,
+                        }}
+                      />
+                    )}
                   </div>
-                  {view === "card" && i < 2 && (
-                    <i
-                      className="amo-card"
-                      style={{ width: i ? "100%" : 196, height: i ? 56 : 236 }}
-                    />
-                  )}
                 </div>
-              </div>
-            ))}
-          </section>
-        </div>
-      )}
-      <div
-        ref={list}
-        className="amo-list"
-        hidden={loading}
-        data-arrived={loading === false || undefined}
-        onScroll={(e) => setMini(e.currentTarget.scrollTop > 12)}
-      >
-        {SECTIONS.map(([letter, ids]) => {
-          const rows = ids.filter(shown)
-          if (!rows.length) return null
-          return (
-            <section key={letter}>
-              <h5>{letter}</h5>
-              {rows.map((id) => (
-                <Row key={id} contact={C[id]}>
-                  {view === "card" && id in CARDS && (
-                    <MediaCard card={CARDS[id]} />
-                  )}
-                </Row>
               ))}
             </section>
-          )
-        })}
+          </div>
+        ) : (
+          <div data-arrived={loading === false || undefined}>
+            {SECTIONS.map(([letter, ids]) => {
+              const rows = ids.filter(shown)
+              if (!rows.length) return null
+              return (
+                <section key={letter}>
+                  <h5>{letter}</h5>
+                  {rows.map((id) => (
+                    <Row key={id} contact={C[id]}>
+                      {view === "card" && id in CARDS && (
+                        <MediaCard card={CARDS[id]} />
+                      )}
+                    </Row>
+                  ))}
+                </section>
+              )
+            })}
+          </div>
+        )}
       </div>
       <span aria-hidden className="amo-index">
         {"#ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((l) => (

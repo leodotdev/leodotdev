@@ -268,9 +268,12 @@
 .amo-app[data-ground] {
   background: var(--amo-ground);
 }
+/* The contacts' bar: all of the header that stays put (the rest scrolls
+   with the list). */
 .amo-head {
-  flex: none;
-  border-bottom: 0.5px solid var(--amo-line);
+  position: relative;
+  z-index: 3;
+  background: #fff;
 }
 .amo-bar {
   display: flex;
@@ -414,32 +417,29 @@
   height: 15px;
   stroke-width: 2;
 }
-/* Scrolled: the header minifies. */
-.amo-head .amo-large,
-.amo-head .amo-filters {
-  display: grid;
-  overflow: hidden;
-  transition:
-    max-height 0.25s cubic-bezier(0.23, 1, 0.32, 1),
-    opacity 0.2s,
-    padding 0.25s cubic-bezier(0.23, 1, 0.32, 1);
-}
-.amo-head .amo-large {
-  max-height: 50px;
-}
-.amo-head .amo-filters {
-  display: flex;
-  max-height: 40px;
-}
-.amo-app[data-mini] .amo-large,
-.amo-app[data-mini] .amo-filters {
-  max-height: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  opacity: 0;
-}
+/* Scrolled: the bar's own title shows, once the large one has gone up
+   under it. */
 .amo-app[data-mini] .amo-bar-title {
   opacity: 1;
+}
+/* The search field stops under the bar and holds there, over what scrolls
+   on up beneath it; a hairline closes it off once something has. */
+.amo-pin {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding-bottom: 8px;
+  background: #fff;
+}
+.amo-pin .amo-search {
+  margin-bottom: 0;
+}
+.amo-app[data-mini] .amo-pin {
+  box-shadow: 0 0.5px 0 var(--amo-line);
+}
+.amo-list > .amo-filters {
+  padding-top: 0;
+  border-bottom: 0.5px solid var(--amo-line);
 }
 
 /* The list. */
@@ -447,8 +447,11 @@
   flex: 1;
   min-height: 0;
   overflow: hidden auto;
-  padding: 8px 0 40px 16px;
+  padding-bottom: 40px;
   scrollbar-width: none;
+}
+.amo-list section {
+  padding-left: 16px;
 }
 .amo-list::-webkit-scrollbar {
   display: none;
@@ -653,7 +656,7 @@
   border-radius: 10px;
   background: rgb(120 120 128 / 0.1);
 }
-.amo-list[data-arrived] {
+.amo-list [data-arrived] {
   animation: amo-arrive 0.3s ease-out both;
 }
 @keyframes amo-arrive {
@@ -662,7 +665,7 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .amo-list[data-arrived] {
+  .amo-list [data-arrived] {
     animation: none;
   }
 }
