@@ -62,6 +62,22 @@ export function FigureNotes({ noted }: { noted: Noted }) {
   useEffect(() => {
     let frame = 0
     let last = ""
+    // What cuts each part off inside the figure (a phone's screen, a list
+    // that scrolls): its outline is drawn only where the part shows, and a
+    // part scrolled out of such a box takes its note with it.
+    const clips = items.map(({ el }) => {
+      const list: Array<Element> = []
+      for (
+        let box = el.parentElement;
+        box && box !== host && host.contains(box);
+        box = box.parentElement
+      ) {
+        const style = getComputedStyle(box)
+        if (style.overflowX !== "visible" || style.overflowY !== "visible")
+          list.push(box)
+      }
+      return list
+    })
     const measure = () => {
       frame = requestAnimationFrame(measure)
       const h = host.getBoundingClientRect()
@@ -69,12 +85,19 @@ export function FigureNotes({ noted }: { noted: Noted }) {
       const gutters = Math.max(h.left, window_ - h.right) >= ROOM
       // The layer's own left edge and top, in the window.
       const x0 = gutters ? 0 : h.left
-      const rects = items.map(({ el }): Rect | null => {
+      const rects = items.map(({ el }, i): Rect | null => {
         const p = el.getBoundingClientRect()
-        const l = Math.max(p.left, h.left)
-        const t = Math.max(p.top, h.top)
-        const r = Math.min(p.right, h.right)
-        const b = Math.min(p.bottom, h.bottom)
+        let l = Math.max(p.left, h.left)
+        let t = Math.max(p.top, h.top)
+        let r = Math.min(p.right, h.right)
+        let b = Math.min(p.bottom, h.bottom)
+        for (const box of clips[i]) {
+          const c = box.getBoundingClientRect()
+          l = Math.max(l, c.left)
+          t = Math.max(t, c.top)
+          r = Math.min(r, c.right)
+          b = Math.min(b, c.bottom)
+        }
         if (!el.isConnected || r - l < 4 || b - t < 4) return null
         return [
           Math.round(l - x0),

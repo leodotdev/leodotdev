@@ -14,6 +14,9 @@ export type DemoStep = {
    * A selector inside the figure. A step whose element is missing, hidden,
    * disabled (`aria-disabled`), or out of the figure's sight (scrolled out of a page that scrolls
    * inside it) is skipped; of several matches, the first in sight is used.
+   * An element cut off by a box that scrolls inside the figure (a phone's
+   * list) is scrolled back into view first, and a step with a `note` takes
+   * one that is out of sight altogether if scrolling can bring it back.
    */
   on: string
   /** Narrows `on` to the element whose text starts with this. */
@@ -366,7 +369,79 @@ export function DemoCursor({
 
     // A step's element is looked for in the figure and, failing that, among
     // what sits on the frame itself (the grips of a resizable figure).
+    // The boxes that can cut an element off: what scrolls up and down
+    // around it inside the figure (a phone's list), innermost first.
+    const scrollers = (el: Element) => {
+      const list: Array<HTMLElement> = []
+      for (
+        let box = el.parentElement;
+        box && root.contains(box);
+        box = box.parentElement
+      ) {
+        const way = getComputedStyle(box).overflowY
+        if (
+          (way === "auto" || way === "scroll") &&
+          box.scrollHeight - box.clientHeight > 1
+        )
+          list.push(box)
+      }
+      return list
+    }
+    // How far a box has to scroll (in its own pixels) for an element to
+    // show in it: whole, with a little air, or, where it is taller than the
+    // box, its middle in the box's middle. 0 where it shows well enough.
+    const offBy = (el: Element, box: HTMLElement) => {
+      const part = el.getBoundingClientRect()
+      const port = box.getBoundingClientRect()
+      const k = port.height / (box.offsetHeight || 1) || 1
+      const air = 12 * k
+      let by = 0
+      if (part.height + 2 * air >= port.height) {
+        const showing =
+          Math.min(part.bottom, port.bottom) - Math.max(part.top, port.top)
+        if (showing < port.height * 0.6)
+          by = part.top + part.height / 2 - (port.top + port.height / 2)
+      } else if (part.top < port.top + air) by = part.top - port.top - air
+      else if (part.bottom > port.bottom - air)
+        by = part.bottom - port.bottom + air
+      const to = Math.min(
+        box.scrollHeight - box.clientHeight,
+        Math.max(0, box.scrollTop + by / k)
+      )
+      return Math.abs(to - box.scrollTop) < 2 ? 0 : to - box.scrollTop
+    }
+    const cutOff = (el: Element) =>
+      scrollers(el).some((box) => offBy(el, box) !== 0)
+    /**
+     * Scrolls an element back into view where a box that scrolls inside the
+     * figure has cut it off, as a wheel would (Leo, 2026-11-23: a note was
+     * drawn on a card that had gone up under a phone's header; "demo cursors
+     * should scroll thing back into view for annotation").
+     */
+    const bring = async (el: Element, live: () => boolean) => {
+      for (const box of scrollers(el)) {
+        const by = offBy(el, box)
+        if (!by) continue
+        const from = box.scrollTop
+        hover(null)
+        await everyFrame(
+          Math.min(1200, Math.max(400, Math.abs(by) * 1.5)),
+          (t) => {
+            const eased = t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2
+            box.scrollTop = from + by * eased
+          },
+          live
+        )
+        if (!live()) return
+        await sleep(250)
+        if (!live()) return
+      }
+    }
+
     const find = (step: DemoStep) => {
+      // A step with a note may take an element out of sight, if scrolling
+      // can bring it back: used only when none of the matches is in sight.
+      let hidden: HTMLElement | null = null
       let skip = step.nth ?? 0
       let found = root.querySelectorAll<HTMLElement>(step.on)
       if (found.length === 0 && stage !== root)
@@ -389,11 +464,13 @@ export function DemoCursor({
           x > sight.right + slack ||
           y < sight.top - slack ||
           y > sight.bottom + slack
-        )
+        ) {
+          if (step.note && !hidden && scrollers(el).length) hidden = el
           continue
+        }
         if (skip-- === 0) return el
       }
-      return null
+      return hidden
     }
 
     /**
@@ -521,6 +598,12 @@ export function DemoCursor({
               Math.abs(el.scrollTop - (step.scroll / 100) * most) < 2
             )
               continue
+          }
+          // Cut off by a list that scrolls inside the figure, it is
+          // scrolled back into view before the cursor goes to it.
+          if (cutOff(el)) {
+            await bring(el, live)
+            if (!live()) return
           }
           // Something to be gripped is taken by its exact middle.
           const point = pointOn(
@@ -661,7 +744,13 @@ export function DemoCursor({
             // the cursor waits while it is read.
             await sleep(120)
             if (!live()) return
-            say([{ note: step.note, el: partOf(step.note, el) }])
+            // The part the note is of has to be showing too.
+            const part = partOf(step.note, el)
+            if (cutOff(part)) {
+              await bring(part, live)
+              if (!live()) return
+            }
+            say([{ note: step.note, el: part }])
             await sleep(readTime(step.note))
             if (!live()) return
             hush()

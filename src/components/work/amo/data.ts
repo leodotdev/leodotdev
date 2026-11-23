@@ -130,8 +130,8 @@ export const C: Record<string, Contact> = {
   // (The file's list repeats its rows from here on. These are added so
   // the lists have more in them, named as the file names its own, after
   // people and places in television of the 1990s and 2000s (Leo,
-  // 2026-11-23). They have no picture in the file: their initials are on
-  // iOS's system colors.)
+  // 2026-11-23; none from Friends, which he had taken out). They have no
+  // picture in the file: their initials are on iOS's system colors.)
   carlton: {
     name: "Carlton Banks",
     strong: "Banks",
@@ -140,19 +140,19 @@ export const C: Record<string, Contact> = {
     actions: ["message", "call"],
     tint: "#30b0c7",
   },
-  perk: {
-    name: "Central Perk",
-    strong: "Perk",
+  nervosa: {
+    name: "Café Nervosa",
+    strong: "Nervosa",
     role: "Coffee House",
     state: "Open",
     actions: ["map", "share"],
     tint: "#34c759",
     business: true,
   },
-  chandler: {
-    name: "Chandler Bing",
-    strong: "Bing",
-    role: "Analyst",
+  carrie: {
+    name: "Carrie Bradshaw",
+    strong: "Bradshaw",
+    role: "Columnist",
     degree: "2°",
     badge: { count: 2, tone: "blue" },
     actions: ["message", "video"],
@@ -290,10 +290,10 @@ export const CARDS: Record<string, Card> = {
     text: "you know what’s crazier than a cyborg spy ninja? Trying to find my car keys in the Danger Zone!",
     when: "1d ago",
   },
-  chandler: {
+  carrie: {
     kind: "line",
     app: "whatsapp",
-    text: "Running late. Save me a seat on the couch?",
+    text: "Running late. Start without me?",
     when: "5m ago",
   },
   scully: {
@@ -314,7 +314,7 @@ export const CARDS: Record<string, Card> = {
 export const SECTIONS: Array<[letter: string, ids: Array<string>]> = [
   ["A", ["alf", "tahani", "arthur", "archie", "animal", "sterling"]],
   ["B", ["bob", "lucille", "george", "kahuna", "burgers"]],
-  ["C", ["carlton", "perk", "chandler", "kramer"]],
+  ["C", ["nervosa", "carlton", "carrie", "kramer"]],
   ["D", ["scully", "daria", "dunder", "dwight"]],
   ["E", ["elaine"]],
   ["F", ["mulder", "frasier"]],
@@ -362,19 +362,12 @@ export const REACH = ["Messages", "WhatsApp", "Discord", "Signal", "Instagram"]
  * A list not named here shows everyone.
  */
 export const MEMBERS: Record<string, Array<string>> = {
-  Favorites: ["tahani", "animal", "lucille", "bob", "elaine", "chandler"],
-  "Top Friends": [
-    "animal",
-    "archie",
-    "lucille",
-    "george",
-    "chandler",
-    "elaine",
-  ],
-  Founders: ["george", "bob", "kahuna", "burgers", "perk", "dunder"],
+  Favorites: ["tahani", "animal", "lucille", "bob", "elaine", "carrie"],
+  "Top Friends": ["animal", "archie", "lucille", "george", "carrie", "elaine"],
+  Founders: ["george", "bob", "kahuna", "burgers", "nervosa", "dunder"],
   Mentors: ["lucille", "sterling", "frasier", "scully"],
   "SF Designers": ["tahani", "daria", "carlton", "kramer"],
-  "NYC Designers": ["tahani", "archie", "chandler", "elaine", "kramer"],
+  "NYC Designers": ["tahani", "archie", "carrie", "elaine", "kramer"],
   "Unkown Senders": ["alf", "arthur"],
-  "Unread Messages": ["tahani", "chandler", "elaine"],
+  "Unread Messages": ["tahani", "carrie", "elaine"],
 }
