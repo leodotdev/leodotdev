@@ -628,19 +628,24 @@ html:not(.dark) .fig-notes {
   display: inline;
   opacity: 0.2;
   filter: blur(2.5px);
-  animation: pl-focus 0.75s ease-out forwards;
+  /* (Short: at 26ms a character, about eleven are on their way at once,
+     so the soft stretch and its glow keep close to the edge, a few
+     characters deep, and do not run back into the word. Leo, 2026-11-23:
+     it was 0.75s, some thirty characters.) */
+  animation: pl-focus 0.3s ease-out forwards;
 }
 @keyframes pl-focus {
-  40% {
+  30% {
     opacity: 1;
     filter: blur(0);
     color: var(--pl-peak);
-    text-shadow: 0 0 9px color-mix(in srgb, var(--pl-peak) 75%, transparent);
+    text-shadow: 0 0 8px color-mix(in srgb, var(--pl-peak) 75%, transparent);
   }
+  65%,
   to {
     opacity: 1;
     filter: blur(0);
-    text-shadow: 0 0 9px transparent;
+    text-shadow: 0 0 8px transparent;
   }
 }
 /* Its arrow, from the card to the part, drawn along its length. */
