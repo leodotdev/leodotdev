@@ -1,8 +1,7 @@
 // /work/amo's sample data: the contacts, lists, and cards on the screens of
-// the Figma file (amo-2023), by the names the file gives them. The file
-// draws each contact with a picture; here a contact is its initials on a
-// color, and a card's photo or video is a plain block: the pictures are
-// other people's, and are not copied into this site.
+// the Figma file (amo-2023), by the names the file gives them, with the
+// file's own pictures (public/work/amo; a contact past B is made up, so the
+// list has more to scroll, and has its initials on a color).
 
 export type Action = "message" | "call" | "video" | "map" | "share" | "star"
 
@@ -20,12 +19,15 @@ export type Contact = {
   badge?: { count: number; tone: "red" | "blue" }
   actions: Array<Action>
   tint: string
-  /** A business, drawn as a logo tile, not a person. */
+  /** The file's picture of them (public/work/amo/avatars). */
+  photo?: string
+  /** A business, with what a business shows: open, closed, a way there. */
   business?: boolean
 }
 
 export const C: Record<string, Contact> = {
   alf: {
+    photo: "alf",
     name: "Alf",
     strong: "Alf",
     degree: "∞°",
@@ -33,6 +35,7 @@ export const C: Record<string, Contact> = {
     tint: "#c98a4b",
   },
   tahani: {
+    photo: "tahani",
     name: "Tahani Al-Jamil",
     strong: "Al-Jamil",
     role: "Designer",
@@ -42,6 +45,7 @@ export const C: Record<string, Contact> = {
     tint: "#d6457a",
   },
   arthur: {
+    photo: "arthur",
     name: "Arthur",
     strong: "Arthur",
     degree: "6°",
@@ -50,6 +54,7 @@ export const C: Record<string, Contact> = {
     tint: "#5b8def",
   },
   archie: {
+    photo: "archie",
     name: "Archie Andrews",
     strong: "Andrews",
     role: "Student",
@@ -58,6 +63,7 @@ export const C: Record<string, Contact> = {
     tint: "#f08a24",
   },
   animal: {
+    photo: "animal",
     name: "Animal",
     strong: "Animal",
     role: "Musician",
@@ -67,6 +73,7 @@ export const C: Record<string, Contact> = {
     tint: "#d6402b",
   },
   sterling: {
+    photo: "sterling",
     name: "Sterling Archer",
     strong: "Archer",
     role: "Agent",
@@ -75,6 +82,7 @@ export const C: Record<string, Contact> = {
     tint: "#4a5568",
   },
   bob: {
+    photo: "bob",
     name: "Bob Belcher",
     strong: "Belcher",
     role: "Chef",
@@ -83,6 +91,7 @@ export const C: Record<string, Contact> = {
     tint: "#6b8e4e",
   },
   lucille: {
+    photo: "lucille",
     name: "Lucille Bluth",
     strong: "Bluth",
     degree: "1°",
@@ -90,6 +99,7 @@ export const C: Record<string, Contact> = {
     tint: "#8e6bbf",
   },
   george: {
+    photo: "george",
     name: "George Michael Bluth",
     strong: "Bluth",
     role: "Entrepreneur",
@@ -98,6 +108,7 @@ export const C: Record<string, Contact> = {
     tint: "#3aa6a0",
   },
   kahuna: {
+    photo: "kahuna",
     name: "Big Kahuna Burger",
     strong: "Burger",
     role: "Burger Joint",
@@ -107,6 +118,7 @@ export const C: Record<string, Contact> = {
     business: true,
   },
   burgers: {
+    photo: "burgers",
     name: "Bob's Burgers",
     strong: "Burgers",
     role: "Burger Joint",
@@ -115,46 +127,101 @@ export const C: Record<string, Contact> = {
     tint: "#e7c229",
     business: true,
   },
-  // (The file's list repeats its rows from here on; these few are made up,
-  // so the list has more to scroll.)
-  casey: {
-    name: "Casey Chen",
-    strong: "Chen",
-    role: "Engineer",
+  // (The file's list repeats its rows from here on. These are added so
+  // the lists have more in them, named as the file names its own, after
+  // people and places in television of the 1990s and 2000s (Leo,
+  // 2026-11-23). They have no picture in the file: their initials are on
+  // iOS's system colors.)
+  carlton: {
+    name: "Carlton Banks",
+    strong: "Banks",
+    role: "Student",
     degree: "3°",
     actions: ["message", "call"],
-    tint: "#3f8f6b",
+    tint: "#30b0c7",
   },
-  cleo: {
-    name: "Cleo’s Flowers",
-    strong: "Flowers",
-    role: "Florist",
+  perk: {
+    name: "Central Perk",
+    strong: "Perk",
+    role: "Coffee House",
     state: "Open",
-    actions: ["map"],
-    tint: "#c9558d",
+    actions: ["map", "share"],
+    tint: "#34c759",
     business: true,
   },
-  cyrus: {
-    name: "Cyrus",
-    strong: "Cyrus",
-    degree: "5°",
-    actions: ["message"],
-    tint: "#7d6bd6",
-  },
-  dana: {
-    name: "Dana Okafor",
-    strong: "Okafor",
-    role: "Photographer",
+  chandler: {
+    name: "Chandler Bing",
+    strong: "Bing",
+    role: "Analyst",
     degree: "2°",
+    badge: { count: 2, tone: "blue" },
     actions: ["message", "video"],
-    tint: "#d98a2b",
+    tint: "#5856d6",
   },
-  dev: {
-    name: "Dev",
-    strong: "Dev",
+  kramer: {
+    name: "Cosmo Kramer",
+    strong: "Kramer",
+    degree: "5°",
+    actions: ["call"],
+    tint: "#ff9500",
+  },
+  scully: {
+    name: "Dana Scully",
+    strong: "Scully",
+    role: "Agent",
+    degree: "2°",
+    actions: ["message", "call"],
+    tint: "#ff2d55",
+  },
+  daria: {
+    name: "Daria Morgendorffer",
+    strong: "Morgendorffer",
+    role: "Student",
+    degree: "3°",
+    actions: ["message"],
+    tint: "#00c7be",
+  },
+  dunder: {
+    name: "Dunder Mifflin",
+    strong: "Mifflin",
+    role: "Paper Company",
+    state: "Closed",
+    actions: ["map"],
+    tint: "#8e8e93",
+    business: true,
+  },
+  dwight: {
+    name: "Dwight Schrute",
+    strong: "Schrute",
+    role: "Salesman",
+    degree: "4°",
+    actions: ["call", "video"],
+    tint: "#a2845e",
+  },
+  elaine: {
+    name: "Elaine Benes",
+    strong: "Benes",
+    role: "Editor",
+    degree: "1°",
+    badge: { count: 1, tone: "red" },
+    actions: ["message", "call"],
+    tint: "#af52de",
+  },
+  mulder: {
+    name: "Fox Mulder",
+    strong: "Mulder",
+    role: "Agent",
+    degree: "2°",
+    actions: ["message"],
+    tint: "#007aff",
+  },
+  frasier: {
+    name: "Frasier Crane",
+    strong: "Crane",
+    role: "Radio Host",
     degree: "3°",
     actions: ["call"],
-    tint: "#4a90a4",
+    tint: "#ff3b30",
   },
 }
 
@@ -165,9 +232,16 @@ export type Card =
       app: "instagram"
       text: string
       when: string
-      more?: boolean
+      /** The pictures they shared together (public/work/amo/media). */
+      pictures: Array<string>
     }
-  | { kind: "video"; app: "youtube"; text: string; when: string }
+  | {
+      kind: "video"
+      app: "youtube"
+      text: string
+      when: string
+      picture: string
+    }
   | {
       kind: "line"
       app: "facetime" | "twitter" | "whatsapp"
@@ -182,7 +256,7 @@ export const CARDS: Record<string, Card> = {
     app: "instagram",
     text: "wish you were here 🕶",
     when: "1w ago",
-    more: true,
+    pictures: ["alf-beach", "alf-poster", "alf-record"],
   },
   tahani: {
     kind: "line",
@@ -208,6 +282,7 @@ export const CARDS: Record<string, Card> = {
     app: "youtube",
     text: "Dave Grohl and Animal Drum Battle",
     when: "1d ago",
+    picture: "drum-battle",
   },
   sterling: {
     kind: "line",
@@ -215,14 +290,34 @@ export const CARDS: Record<string, Card> = {
     text: "you know what’s crazier than a cyborg spy ninja? Trying to find my car keys in the Danger Zone!",
     when: "1d ago",
   },
+  chandler: {
+    kind: "line",
+    app: "whatsapp",
+    text: "Running late. Save me a seat on the couch?",
+    when: "5m ago",
+  },
+  scully: {
+    kind: "line",
+    app: "facetime",
+    text: "Missed FaceTime call",
+    when: "2h ago",
+  },
+  elaine: {
+    kind: "line",
+    app: "twitter",
+    text: "New issue is out. Tell me what you think.",
+    when: "3d ago",
+  },
 }
 
 /** The contacts list, in its sections. */
 export const SECTIONS: Array<[letter: string, ids: Array<string>]> = [
   ["A", ["alf", "tahani", "arthur", "archie", "animal", "sterling"]],
   ["B", ["bob", "lucille", "george", "kahuna", "burgers"]],
-  ["C", ["casey", "cleo", "cyrus"]],
-  ["D", ["dana", "dev"]],
+  ["C", ["carlton", "perk", "chandler", "kramer"]],
+  ["D", ["scully", "daria", "dunder", "dwight"]],
+  ["E", ["elaine"]],
+  ["F", ["mulder", "frasier"]],
 ]
 
 /** The Lists screen, in its groups of rows. */
@@ -258,38 +353,28 @@ export const LISTS: Array<{
   { rows: [["trash", "Recently Deleted"]] },
 ]
 
-/** The home screen's apps, by row, and its dock. */
-export const HOME: Array<[name: string, tint: string, glyph: string]> = [
-  ["FaceTime", "#34c759", "video"],
-  ["Calendar", "#ffffff", "calendar"],
-  ["Photos", "#ffffff", "photos"],
-  ["Camera", "#8e8e93", "camera"],
-  ["Mail", "#1e90ff", "mail"],
-  ["Notes", "#ffd60a", "notes"],
-  ["Reminders", "#ffffff", "reminders"],
-  ["Clock", "#1c1c1e", "clock"],
-  ["News", "#ff375f", "news"],
-  ["TV", "#1c1c1e", "tv"],
-  ["Podcasts", "#b150e2", "podcasts"],
-  ["App Store", "#0a84ff", "store"],
-  ["Maps", "#63d17a", "maps"],
-  ["Health", "#ffffff", "health"],
-  ["Wallet", "#1c1c1e", "wallet"],
-  ["Settings", "#8e8e93", "settings"],
-  ["Contacts", "#34c759", "contacts"],
-]
-export const DOCK: Array<[name: string, tint: string, glyph: string]> = [
-  ["Phone", "#34c759", "phone"],
-  ["Safari", "#ffffff", "safari"],
-  ["Messages", "#34c759", "messages"],
-  ["Music", "#ff375f", "music"],
-]
-
 /** The apps a contact can be reached through, per action (the View sheet). */
-export const REACH: Array<[app: string, tint: string]> = [
-  ["Messages", "#34c759"],
-  ["WhatsApp", "#25d366"],
-  ["Discord", "#5865f2"],
-  ["Signal", "#3a76f0"],
-  ["Instagram", "#e1306c"],
-]
+export const REACH = ["Messages", "WhatsApp", "Discord", "Signal", "Instagram"]
+
+/**
+ * Who is on each list, so a list opened from Lists has people in it (the
+ * file draws only the lists' names and counts; who is on which is made up).
+ * A list not named here shows everyone.
+ */
+export const MEMBERS: Record<string, Array<string>> = {
+  Favorites: ["tahani", "animal", "lucille", "bob", "elaine", "chandler"],
+  "Top Friends": [
+    "animal",
+    "archie",
+    "lucille",
+    "george",
+    "chandler",
+    "elaine",
+  ],
+  Founders: ["george", "bob", "kahuna", "burgers", "perk", "dunder"],
+  Mentors: ["lucille", "sterling", "frasier", "scully"],
+  "SF Designers": ["tahani", "daria", "carlton", "kramer"],
+  "NYC Designers": ["tahani", "archie", "chandler", "elaine", "kramer"],
+  "Unkown Senders": ["alf", "arthur"],
+  "Unread Messages": ["tahani", "chandler", "elaine"],
+}

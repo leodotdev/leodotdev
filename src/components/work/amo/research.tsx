@@ -1,26 +1,77 @@
-import { Figure } from "@/components/work/claude/ui"
+import { useRef } from "react"
 
 // /work/amo's research: the pieces of the project's FigJam board, redrawn
-// in HTML, CSS, and SVG (`.amor-*` in src/amo.css). The words on the notes
-// and beside the drawings are the board's own, Leo's. The board's
-// "Inspiration" is other people's posts about the Contacts app; they are
-// retold here by what each wished for, without their names or their words.
+// in HTML, CSS, and SVG (`.amor-*` in src/amo.css), set side by side in one
+// strip that scrolls sideways, at the top of the overview where the other
+// projects have their clips (Leo, 2026-11-23: "research can be in overview
+// where the videos would be, all one h section"; it was a tab of chapters
+// for an hour). The words on the notes and beside the drawings are the
+// board's own, Leo's. The board's "Inspiration" is other people's posts
+// about the Contacts app; they are retold here by what each wished for,
+// without their names or their words.
 
-/** A piece of the board: a figure on FigJam's white. */
-function Board({ children }: { children: React.ReactNode }) {
+/** A piece of the board: a tile of the strip, on FigJam's white. */
+function Board({
+  name,
+  children,
+}: {
+  name: string
+  children: React.ReactNode
+}) {
   return (
-    <Figure>
-      <div className="amo-figure" data-board data-figure>
-        <div className="amor-board">{children}</div>
-      </div>
-    </Figure>
+    <li className="amor-tile" aria-label={name}>
+      <span aria-hidden className="amor-tile-name">
+        {name}
+      </span>
+      {children}
+    </li>
+  )
+}
+
+/**
+ * The research, in one row as wide as the window: it scrolls sideways by
+ * touch or trackpad, by a drag with the mouse, and with the arrow keys once
+ * it has focus. It does not drift as the clips do: it is there to be read.
+ */
+export function ResearchStrip() {
+  const drag = useRef<{ x: number; left: number } | null>(null)
+  return (
+    <figure className="mb-12 flex flex-col gap-3">
+      <ul
+        aria-label="Research"
+        tabIndex={0}
+        className="amor-strip bleed scrollbar-hide flex cursor-grab gap-3 overflow-x-auto select-none active:cursor-grabbing"
+        onPointerDown={(e) => {
+          if (e.pointerType !== "mouse" || e.button !== 0) return
+          drag.current = { x: e.clientX, left: e.currentTarget.scrollLeft }
+          e.currentTarget.setPointerCapture(e.pointerId)
+        }}
+        onPointerMove={(e) => {
+          const d = drag.current
+          if (d) e.currentTarget.scrollLeft = d.left - (e.clientX - d.x)
+        }}
+        onPointerUp={() => (drag.current = null)}
+        onPointerCancel={() => (drag.current = null)}
+      >
+        <NotesSticky />
+        <AppMap />
+        <AppMap next />
+        <Degrees />
+        <Sketch />
+        <Wishes />
+        <Principle />
+      </ul>
+      <figcaption className="text-xs text-muted-foreground">
+        Research, from the project’s FigJam board
+      </figcaption>
+    </figure>
   )
 }
 
 /** "Notes after using my iOS Contacts app". */
-export function NotesSticky() {
+function NotesSticky() {
   return (
-    <Board>
+    <Board name="Notes">
       <div className="amor-sticky">
         <p>Notes after using my iOS Contacts app:</p>
         <ul>
@@ -102,7 +153,7 @@ const into = (y: number, out: number) =>
 /** How apps reach people: today, and with Contacts as the hub. */
 function AppMap({ next }: { next?: boolean }) {
   return (
-    <div className="flex flex-wrap items-start justify-center gap-10">
+    <Board name={next ? "Next" : "Today"}>
       <div
         className="amor-map-title"
         style={
@@ -182,20 +233,7 @@ function AppMap({ next }: { next?: boolean }) {
           ))}
         </div>
       </div>
-    </div>
-  )
-}
-
-export function AppMaps() {
-  return (
-    <>
-      <Board>
-        <AppMap />
-      </Board>
-      <Board>
-        <AppMap next />
-      </Board>
-    </>
+    </Board>
   )
 }
 
@@ -257,9 +295,9 @@ const RINGS: Array<
 ]
 
 /** Degrees: the sketch of rings round the phone, and its wireframe. */
-export function Degrees() {
+function Degrees() {
   return (
-    <Board>
+    <Board name="Degrees">
       <svg
         className="amor-sketch"
         width="280"
@@ -379,11 +417,12 @@ const squiggle = (x: number, y: number, n = 4) =>
   `M${x} ${y}${"q5 -12 9 0t9 0".repeat(n)}`
 
 /** The first sketch of the list, with the board's notes round it. */
-export function Sketch() {
+function Sketch() {
   return (
-    <Board>
+    <Board name="Sketch">
       <svg
-        className="amor-sketch w-full max-w-[900px]"
+        className="amor-sketch"
+        width="860"
         viewBox="0 0 900 470"
         role="img"
         aria-label="A sketch of the contacts list: a search field, a slider of degrees, contacts with their recent cards, and notes on each part."
@@ -502,9 +541,9 @@ const WISHES: Array<[wish: string, where: string]> = [
 ]
 
 /** Inspiration: what people wished the Contacts app did. */
-export function Wishes() {
+function Wishes() {
   return (
-    <Board>
+    <Board name="Inspiration">
       <div className="amor-wishes">
         {WISHES.map(([wish, where]) => (
           <div key={wish} className="amor-wish">
@@ -518,9 +557,9 @@ export function Wishes() {
 }
 
 /** The principle: "Follow Apple's HIG." */
-export function Principle() {
+function Principle() {
   return (
-    <Board>
+    <Board name="Principle">
       <div className="amor-sticky" data-tone="yellow">
         <p>Follow Apple’s HIG.</p>
         <p>

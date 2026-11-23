@@ -542,8 +542,10 @@ html:not(.dark) .fig-notes {
 .pl-note {
   position: absolute;
   margin: 0;
-  padding: 10px 12px;
-  border-radius: 12px;
+  /* (Leo, 2026-11-23: every annotation card has 24px of padding and the
+     corners of the Contact menu's container.) */
+  padding: 24px;
+  border-radius: var(--radius-menu);
   background: var(--pl-card);
   color: var(--pl-card-fg);
   box-shadow: var(--pl-card-shadow);
@@ -812,7 +814,7 @@ html:not(.dark) .fig-notes {
   left: 24px;
   z-index: 2;
   width: min(300px, calc(100% - 48px));
-  padding: 16px;
+  padding: 24px;
   border-radius: var(--radius-menu);
   background: var(--pl-card);
   color: var(--pl-card-fg);

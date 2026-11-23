@@ -35,15 +35,24 @@ function Screens({
   )
 }
 
+// (The first step only quits the app if a visitor left it open; the last
+// quits it, so the script starts over from the home screen.)
 const HOME_STEPS: Array<DemoStep> = [
+  { on: "[data-phone='home'] .amo-home-go", click: "close", rest: 300 },
+  { on: "[data-phone='lists'] [data-back]", click: true, rest: 300 },
   {
-    on: "[data-phone='home'] [data-app='Contacts'] > i",
+    on: "[data-phone='home'] [data-app='Contacts']",
     rest: 700,
     note: {
       kind: "direction",
       title: "Contacts",
       text: "Contacts takes its new rightful place on the home screen.",
     },
+  },
+  {
+    on: "[data-phone='home'] [data-app='Contacts']",
+    click: "open",
+    rest: 500,
   },
   {
     on: "[data-phone='lists'] [data-group='Groups']",
@@ -64,6 +73,18 @@ const HOME_STEPS: Array<DemoStep> = [
       text: "Opt in to auto-generated suggested groups.",
     },
   },
+  // A few lists, each opened briefly and backed out of: a later figure goes
+  // into the contacts themselves.
+  { on: "[data-phone='lists'] [data-list='Top Friends']", click: true },
+  { on: "[data-phone='lists'] .amo-stack-top .amo-list", scroll: 45 },
+  { on: "[data-phone='lists'] [data-back]", click: true, rest: 500 },
+  { on: "[data-phone='lists'] [data-list='Founders']", click: true },
+  { on: "[data-phone='lists'] .amo-stack-top .amo-row", nth: 1, rest: 700 },
+  { on: "[data-phone='lists'] [data-back]", click: true, rest: 500 },
+  { on: "[data-phone='lists'] [data-list='SF Designers']", click: true },
+  { on: "[data-phone='lists'] .amo-stack-top .amo-list", scroll: 40 },
+  { on: "[data-phone='lists'] [data-back]", click: true, rest: 500 },
+  { on: "[data-phone='home'] .amo-home-go", click: "close", rest: 900 },
 ]
 
 export function HomeDoc() {
@@ -81,14 +102,34 @@ export function HomeDoc() {
 
 const LANDING_STEPS: Array<DemoStep> = [
   {
-    on: "[data-phone='card'] .amo-card",
-    at: [0.4, 0.5],
+    on: "[data-phone='card'] .amo-fan",
+    at: [0.3, 0.5],
     idle: true,
     note: {
       kind: "concept",
       title: "Cards",
       text: "Cards and notifications with recently shared multimedia and messages.",
     },
+  },
+  // Through the pictures shared together: each comes round as it is
+  // pressed, and straightens.
+  {
+    on: "[data-phone='card'] .amo-fan > :nth-child(2) > button",
+    at: [0.85, 0.4],
+    click: true,
+    rest: 500,
+  },
+  {
+    on: "[data-phone='card'] .amo-fan > :nth-child(3) > button",
+    at: [0.85, 0.4],
+    click: true,
+    rest: 500,
+  },
+  {
+    on: "[data-phone='card'] .amo-fan > :nth-child(1) > button",
+    at: [0.2, 0.4],
+    click: true,
+    rest: 500,
   },
   {
     on: "[data-phone='card'] [data-degree='1°']",

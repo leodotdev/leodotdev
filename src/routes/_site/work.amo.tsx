@@ -8,43 +8,46 @@ import {
 import { useEffect, useRef, useState } from "react"
 import { BackButton } from "@/components/BackButton"
 import { Navigation } from "@/components/Navigation"
-import { TABS } from "@/components/work/amo/docs"
+import { DESIGN } from "@/components/work/amo/docs"
 import { ChapterNav } from "@/components/work/claude/chapter-nav"
 import { NavLabel, NavRow } from "@/components/work/claude/nav-list"
 import { wave } from "@/lib/wave"
 
-// leo.dev/work/amo: an exploration for Amo that reimagines the iOS Contacts
-// app as the social networking app (Leo, 2026-11-23; Figma file amo-2023 and
-// its FigJam board). Unlisted, like /work. Built on the docs' shell
+// leo.dev/work/amo: "what if Apple made the Contacts app better, more
+// powerful", the app to keep up with people in place of the social networks:
+// a one-day design exercise Leo did for Amo, his client (Leo, 2026-11-23;
+// Figma file amo-2023 and its FigJam board). Amo is who it was for, not the
+// app's name: the app is iOS's Contacts. Unlisted, like /work. Built on the
+// docs' shell
 // (/work/claude): the introduction, then a bar held at the top of the window
-// with two tabs, Research and Design, and the open tab's chapters in the
-// chapter bar under them. The research is the board's pieces redrawn; the
-// design is the file's ten screens as working phones, their stories told by
-// the demo cursor in Leo's own notes (src/components/work/amo/).
+// with two tabs, Overview and Design, and the Design tab's chapters in the
+// chapter bar under them. The overview opens with the research, the board's
+// pieces redrawn in one strip where the other projects have their clips,
+// over the chapters as rows; the design is the file's ten screens as working
+// phones, their stories told by the demo cursor in Leo's own notes
+// (src/components/work/amo/).
 
 export const Route = createFileRoute("/_site/work/amo")({
   head: () => ({
     meta: [
-      { title: "Amo · Leo Succar" },
+      { title: "iOS Contacts, Reimagined · Leo Succar" },
       { name: "robots", content: "noindex" },
     ],
   }),
   component: AmoWork,
 })
 
-// (Only what is known of it: who it was for, what it was, and the year in
-// the file's name.)
+// The same facts as the other projects give, less a team: there was none.
 const FACTS: Array<[label: string, value: string]> = [
-  ["For", "Amo"],
-  ["Kind", "Exploration"],
-  ["Platform", "iOS"],
+  ["My Role", "Product Designer"],
+  ["Client", "Amo"],
+  ["Type", "Design Exercise"],
   ["Year", "2023"],
 ]
 
 function AmoWork() {
   const { pathname } = useLocation()
-  const open = pathname.replace(/\/$/, "").split("/")[3] ?? ""
-  const tab = TABS.find((t) => t.slug === open) ?? TABS[0]
+  const design = pathname.replace(/\/$/, "").split("/")[3] === "design"
 
   // The bar's place and height, as on the docs: held at the top of the
   // window it draws a line under itself, and its height is handed down as
@@ -114,12 +117,14 @@ function AmoWork() {
         <div className="bleed border-b bg-gray-6">
           <header className="flex flex-col gap-6 px-6 py-12 md:px-12">
             <div className="flex flex-col gap-2">
-              <h1 className="font-semibold">Amo</h1>
+              <h1 className="font-semibold">iOS Contacts, Reimagined</h1>
               <p className="max-w-cols-9 text-pretty text-muted-foreground">
-                An exploration for Amo: the iOS Contacts app, reimagined as the
-                social networking app. It starts from notes on the app as it is
-                today, and ends in ten screens that follow one rule: make it the
-                new native iOS Contacts app.
+                What if Apple made the Contacts app better and more powerful:
+                the one place to keep up with people, in place of Facebook,
+                Instagram, and the likes of LinkedIn? A one-day design exercise
+                for Amo. It starts from notes on the app as it is today, and
+                ends in ten screens that follow one rule: make it the new native
+                iOS Contacts app.
               </p>
             </div>
             <dl className="grid grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-4">
@@ -149,14 +154,14 @@ function AmoWork() {
             data-stuck={stuck || undefined}
             className="sticky top-0 z-20 bleed grid gap-x-6 gap-y-6 border-b border-transparent bg-background py-12 data-[stuck]:border-border"
           >
-            <NavRow label="Amo" current={pathname}>
+            <NavRow label="iOS Contacts, Reimagined" current={pathname}>
               <Link
                 to="/work/amo"
                 activeOptions={{ exact: true }}
                 className="nav-link"
                 onClick={(e) => swap(e, "/work/amo")}
               >
-                <NavLabel>Research</NavLabel>
+                <NavLabel>Overview</NavLabel>
               </Link>
               <Link
                 to="/work/amo/design"
@@ -166,13 +171,12 @@ function AmoWork() {
                 <NavLabel>Design</NavLabel>
               </Link>
             </NavRow>
-            <ChapterNav
-              group={{
-                slug: tab.slug || "research",
-                name: tab.name,
-                docs: tab.docs,
-              }}
-            />
+            {/* The overview, like the other projects', has no chapters. */}
+            {design && (
+              <ChapterNav
+                group={{ slug: "design", name: "Design", docs: DESIGN }}
+              />
+            )}
           </div>
           <Outlet />
         </main>

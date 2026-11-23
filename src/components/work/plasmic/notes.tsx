@@ -174,8 +174,8 @@ export function NoteLayer({
         : want === "left" && roomLeft < beside && roomRight >= beside
           ? "right"
           : want
-    const chars = Math.max(8, Math.floor((width - 22) / 7.2))
-    const guess = 16 + 24 + Math.ceil(note.text.length / chars) * 17
+    const chars = Math.max(8, Math.floor((width - 48) / 7.2))
+    const guess = 48 + 22 + Math.ceil(note.text.length / chars) * 20
     const height = heights[keyOf(note, width)] ?? guess
     return { note, more, box, gutter, side, width, height, x: 0, y: 0 }
   })

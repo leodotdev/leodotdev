@@ -59,9 +59,9 @@ export const recentWork: Array<RecentWork> = [
     to: "/work/plasmic",
   },
   {
-    title: "Amo",
+    title: "iOS Contacts, Reimagined",
     summary:
-      "An exploration reimagining the iOS Contacts app as the social networking app.",
+      "What if Apple made the Contacts app better and more powerful? A one-day design exercise.",
     client: "Amo",
     year: "2023",
     to: "/work/amo",
