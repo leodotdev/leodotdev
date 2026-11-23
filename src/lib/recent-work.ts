@@ -48,16 +48,20 @@ export const recentWork: Array<RecentWork> = [
     year: "2025–'26",
     to: "/work/claude",
   },
-  {
-    title: "Plasmic",
-    summary:
-      "A visual tool for building React apps, year by year, rebuilt from the design files.",
-    logo: "/logo-pl.svg",
-    client: "Plasmic",
-    location: "Remote",
-    year: "2020–'24",
-    to: "/work/plasmic",
-  },
+  // Plasmic is hidden for now (Leo, 2026-11-23); its page, /work/plasmic,
+  // is still there. To list it again, take these lines out of the comment.
+  // With it back the list is four rows, so it starts with three and Show
+  // more.
+  // {
+  //   title: "Plasmic",
+  //   summary:
+  //     "A visual tool for building React apps, year by year, rebuilt from the design files.",
+  //   logo: "/logo-pl.svg",
+  //   client: "Plasmic",
+  //   location: "Remote",
+  //   year: "2020–'24",
+  //   to: "/work/plasmic",
+  // },
   {
     title: "iOS Contacts, Reimagined",
     summary:
