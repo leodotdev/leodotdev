@@ -610,17 +610,37 @@ html:not(.dark) .fig-notes {
    start, dim and soft, and each character sharpens and lights in its turn,
    so an edge of focus runs along the lines: slowly enough to be followed,
    and evenly enough to be restful. A character is set inline, not as a box,
-   so the words keep their spacing and their line breaks. */
+   so the words keep their spacing and their line breaks.
+
+   The edge has a point to follow (Leo, 2026-11-23): as a character comes
+   sharp it glows for a moment in its note's color, the color of the title,
+   with a soft halo, and then settles to the text's own. */
+.pl-note {
+  --pl-peak: var(--pl-decision);
+}
+.pl-note[data-kind="concept"] {
+  --pl-peak: var(--pl-concept);
+}
+.pl-note[data-kind="discovery"] {
+  --pl-peak: var(--pl-discovery);
+}
 .pl-hand [data-focus] i {
   display: inline;
   opacity: 0.2;
   filter: blur(2.5px);
-  animation: pl-focus 0.5s var(--pl-ease-out) forwards;
+  animation: pl-focus 0.75s ease-out forwards;
 }
 @keyframes pl-focus {
+  40% {
+    opacity: 1;
+    filter: blur(0);
+    color: var(--pl-peak);
+    text-shadow: 0 0 9px color-mix(in srgb, var(--pl-peak) 75%, transparent);
+  }
   to {
     opacity: 1;
     filter: blur(0);
+    text-shadow: 0 0 9px transparent;
   }
 }
 /* Its arrow, from the card to the part, drawn along its length. */
