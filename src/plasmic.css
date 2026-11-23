@@ -887,15 +887,21 @@
 .pl-say[data-up] {
   margin-top: -34px;
 }
+/* The step's number: a disc in the card's own blue with the card's color
+   for its figure (Leo, 2026-11-22: it was white on the page's tint, pale on
+   pale over the dark studio, and sat low in a 17px disc under a 20px
+   line). Its line is the disc's height and its figures are all one width,
+   so each sits in the middle. */
 .pl-say b {
-  display: grid;
-  place-items: center;
-  width: 17px;
-  height: 17px;
+  flex: none;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  background: var(--color-tint);
-  color: #fff;
-  font-weight: 400;
+  background: var(--pl-card-concept);
+  color: var(--pl-card);
+  font: 600 12px/20px var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
   corner-shape: round;
 }
 /* What a drag carries: picked up at the cursor, tilted a little. */
