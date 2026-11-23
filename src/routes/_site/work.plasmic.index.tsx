@@ -1,4 +1,5 @@
 import { Link, createFileRoute, useHydrated } from "@tanstack/react-router"
+import { NextTab } from "@/components/work/claude/next-tab"
 import { APP_H, APP_W, ShotView } from "@/components/work/plasmic/stage"
 import { usePkTheme } from "@/components/work/plasmic/theme"
 import { THREADS } from "@/components/work/plasmic/threads"
@@ -14,10 +15,18 @@ export const Route = createFileRoute("/_site/work/plasmic/")({
 })
 
 function Overview() {
+  const first = YEARS.find((year) => year.dives.length)
   return (
     <>
       <YearList />
       <Threads />
+      {first && (
+        <NextTab
+          to="/work/plasmic/$year"
+          params={{ year: first.slug }}
+          name={first.name}
+        />
+      )}
     </>
   )
 }

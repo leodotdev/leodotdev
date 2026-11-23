@@ -1,7 +1,8 @@
 import { createFileRoute, notFound } from "@tanstack/react-router"
 import { useEffect } from "react"
+import { NextTab } from "@/components/work/claude/next-tab"
 import { Stage } from "@/components/work/plasmic/stage"
-import { findYear } from "@/components/work/plasmic/years"
+import { YEARS, findYear } from "@/components/work/plasmic/years"
 
 // A year of /work/plasmic: its dives, played on the stage as the page
 // scrolls (src/components/work/plasmic/stage.tsx).
@@ -19,7 +20,22 @@ function YearPage() {
   const year = findYear(slug)
   useArrival(slug)
   if (!year) return null
-  return <Stage key={year.slug} year={year} />
+  // Like the docs' tabs, a year ends by leading to the next (Leo,
+  // 2026-11-23); the last has none.
+  const tabs = YEARS.filter((y) => y.dives.length)
+  const next = tabs.at(tabs.indexOf(year) + 1)
+  return (
+    <>
+      <Stage key={year.slug} year={year} />
+      {next && (
+        <NextTab
+          to="/work/plasmic/$year"
+          params={{ year: next.slug }}
+          name={next.name}
+        />
+      )}
+    </>
+  )
 }
 
 /**
