@@ -6,11 +6,21 @@ import { DIVES_2023 } from "@/components/work/plasmic/y2023"
 import { DIVES_BEFORE } from "@/components/work/plasmic/ybefore"
 import type { Year } from "@/components/work/plasmic/types"
 
-// /work/plasmic's years, the tabs. A year with no dives yet shows in the
-// overview as to come, with no tab. Each year's dives are rebuilt in HTML
-// (y2020.tsx … y2023.tsx, with the kit in kit/).
+// /work/plasmic's tabs after the Overview: the research before 2020, then
+// the years. One with no dives yet shows in the overview as to come, with
+// no tab. Each one's dives are rebuilt in HTML (ybefore.tsx, y2020.tsx …
+// y2023.tsx, with the kit in kit/). The research has a tab of its own
+// (Leo, 2026-11-23: "i dont like it on overview", whose stage used to play
+// it).
 
 export const YEARS: Array<Year> = [
+  {
+    slug: "research",
+    name: "Research",
+    summary:
+      "Before 2020: naming the parts, regrouping them, and a north star.",
+    dives: inline(DIVES_BEFORE),
+  },
   {
     slug: "2020",
     name: "2020",
@@ -42,13 +52,4 @@ export const YEARS: Array<Year> = [
   { slug: "2024", name: "2024", summary: "", dives: [] },
 ]
 
-/** Before 2020: the research, played on the overview's stage. */
-export const BEFORE: Year = {
-  slug: "before",
-  name: "Before 2020",
-  summary: "Research: naming the parts, regrouping them, and a north star.",
-  dives: inline(DIVES_BEFORE),
-}
-
-export const findYear = (slug: string) =>
-  slug === "" ? BEFORE : YEARS.find((y) => y.slug === slug)
+export const findYear = (slug: string) => YEARS.find((y) => y.slug === slug)

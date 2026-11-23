@@ -1,14 +1,14 @@
 import { Link, createFileRoute, useHydrated } from "@tanstack/react-router"
-import { APP_H, APP_W, ShotView, Stage } from "@/components/work/plasmic/stage"
+import { APP_H, APP_W, ShotView } from "@/components/work/plasmic/stage"
 import { usePkTheme } from "@/components/work/plasmic/theme"
 import { THREADS } from "@/components/work/plasmic/threads"
-import { BEFORE, YEARS } from "@/components/work/plasmic/years"
+import { YEARS } from "@/components/work/plasmic/years"
 
-// /work/plasmic's overview: the research before 2020, played on the stage
-// like a year, then the years, a row each with a small live picture of its
-// first scene, linking to theirs (a year still to come is listed as Soon),
-// and the threads: a part of the product followed from year to year, each
-// step a link to its dive.
+// /work/plasmic's overview: the tabs, a row each (the research, then the
+// years) with a small live picture of its first scene, linking to theirs (a
+// year still to come is listed as Soon), and the threads: a part of the
+// product followed from year to year, each step a link to its dive. It has
+// no stage of its own: the research it used to play has its own tab.
 export const Route = createFileRoute("/_site/work/plasmic/")({
   component: Overview,
 })
@@ -16,7 +16,6 @@ export const Route = createFileRoute("/_site/work/plasmic/")({
 function Overview() {
   return (
     <>
-      <Stage year={BEFORE} />
       <YearList />
       <Threads />
     </>
@@ -27,7 +26,7 @@ function YearList() {
   const { theme } = usePkTheme()
   const hydrated = useHydrated()
   return (
-    <div className="flex flex-col pt-12">
+    <div className="flex flex-col">
       {YEARS.map((year) => {
         const first = year.dives.at(0)?.scenes.at(0)
         const row = (

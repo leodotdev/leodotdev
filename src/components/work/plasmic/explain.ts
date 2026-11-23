@@ -1,4 +1,4 @@
-import { BEFORE, YEARS } from "@/components/work/plasmic/years"
+import { YEARS } from "@/components/work/plasmic/years"
 import type { Note, Scene } from "@/components/work/plasmic/types"
 
 // What can be said of a part under the visitor's pointer, and where to go
@@ -40,7 +40,7 @@ function build(): Guide {
     if (!has || (has.kind !== "concept" && note.kind === "concept"))
       into.set(part, note)
   }
-  for (const year of [BEFORE, ...YEARS]) {
+  for (const year of YEARS) {
     const inYear = new Map<string, Note>()
     years.set(year.slug, inYear)
     for (const dive of year.dives) {

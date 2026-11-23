@@ -22,10 +22,11 @@ import { wave } from "@/lib/wave"
 // leo.dev/work/plasmic: the design of Plasmic, a visual tool for building
 // React apps, year by year (Leo, 2026-11-21). Unlisted, like /work. Built on
 // the docs' shell (/work/claude): the introduction, then a bar held at the
-// top of the window with a tab per year and the year's dives in the
-// chapter bar under them; a year's page is the stage (stage.tsx), the app
-// on a desktop, played as the page scrolls. The years are listed in
-// src/components/work/plasmic/years.ts.
+// top of the window with a tab for the research and one per year, and the
+// open tab's dives in the chapter bar under them; such a page is the stage
+// (stage.tsx), the app on a desktop, played as the page scrolls. They are
+// listed in src/components/work/plasmic/years.ts. The Overview lists them
+// and has no stage, so neither the theme's dots nor a chapter bar.
 
 export const Route = createFileRoute("/_site/work/plasmic")({
   head: () => ({
