@@ -890,8 +890,9 @@
 /* The step's number: a disc in the card's own blue with the card's color
    for its figure (Leo, 2026-11-22: it was white on the page's tint, pale on
    pale over the dark studio, and sat low in a 17px disc under a 20px
-   line). Its line is the disc's height and its figures are all one width,
-   so each sits in the middle. */
+   line). It is in Paper Mono, like the site's other small figures (Leo,
+   later that day). Its line is the disc's height and a mono's figures are
+   all one width, so each sits in the middle. */
 .pl-say b {
   flex: none;
   width: 20px;
@@ -899,8 +900,7 @@
   border-radius: 50%;
   background: var(--pl-card-concept);
   color: var(--pl-card);
-  font: 600 12px/20px var(--font-sans);
-  font-variant-numeric: tabular-nums;
+  font: 500 12px/20px var(--font-mono);
   text-align: center;
   corner-shape: round;
 }
