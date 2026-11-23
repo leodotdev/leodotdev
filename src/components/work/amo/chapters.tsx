@@ -78,10 +78,17 @@ export function Chapters() {
         <div className="flex flex-col gap-1">
           <h2 className="font-semibold">Approach</h2>
           <p className="max-w-cols-9 text-pretty text-muted-foreground">
-            The screens follow Apple’s Human Interface Guidelines wherever they
-            give guidance, so there is as little to learn for most people. The
-            device and the home screen are iOS as it is. The one exception is
-            the Contacts icon, which I fine-tuned for this.
+            These screens attempt to follow{" "}
+            <a
+              className="underline decoration-dotted hover:text-tint hover:decoration-solid"
+              href="https://developer.apple.com/design/human-interface-guidelines"
+              target="_blank"
+            >
+              Apple’s Human Interface Guidelines
+            </a>{" "}
+            wherever possible, so there is as little to learn for most people.
+            The device and the home screen are iOS as it is. The one exception
+            is the Contacts icon, which I fine-tuned for this.
           </p>
         </div>
       </section>

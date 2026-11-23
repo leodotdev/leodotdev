@@ -606,6 +606,20 @@ html:not(.dark) .fig-notes {
     opacity: 1;
   }
 }
+/* The words coming into focus (notes.tsx, `FOCUS`): the note is all there
+   from the start, dim and soft, and each word sharpens and lights in its
+   turn, slowly enough to be followed and evenly enough to be restful. */
+.pl-hand [data-focus] i {
+  opacity: 0.2;
+  filter: blur(3px);
+  animation: pl-focus 0.7s var(--pl-ease-out) forwards;
+}
+@keyframes pl-focus {
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
 /* Its arrow, from the card to the part, drawn along its length. */
 .pl-ink {
   position: absolute;
@@ -647,8 +661,10 @@ html:not(.dark) .fig-notes {
   animation-delay: 0s;
 }
 @media (prefers-reduced-motion: reduce) {
-  .pl-hand i {
+  .pl-hand i,
+  .pl-hand [data-focus] i {
     opacity: 1;
+    filter: none;
     animation: none;
   }
   .pl-ink path {

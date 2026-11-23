@@ -351,11 +351,20 @@ export function NoteLayer({
 }
 
 /**
- * A note's words, coming in a word at a time, the title first (Leo,
- * 2026-11-22, wanted them easy to keep up with: a letter at a time, as
- * they were, read like a typewriter), the whole note in about half a
- * second however long it is, after its card has. Screen readers get the
- * words whole.
+ * How a note's words arrive. With this on (Leo, 2026-11-23, asked for
+ * something "more mesmerizing, or asmr" to follow): the whole note is laid
+ * out at once, dim and out of focus, and its words come into focus one
+ * after another at an even, readable pace, a little ahead of the eye, so
+ * the reader is led along the lines. Off, the words rise in quickly, the
+ * whole note in about half a second, as they did before.
+ */
+const FOCUS = true as boolean
+/** The pace of the focus, in ms a letter (a reader is given 42). */
+const PACE = 26
+
+/**
+ * A note's words, the title first, each a box of its own so it can arrive
+ * in its turn (see `FOCUS`). Screen readers get the words whole.
  */
 function Written({
   title,
@@ -370,17 +379,19 @@ function Written({
   const head = title.split(" ")
   const body = text.split(" ")
   const step = Math.min(36, 560 / (head.length + body.length))
+  // When each word's turn comes: by the letters before it, with a breath
+  // after the title; or, the quick way, a fixed step a word.
+  const turns: Array<number> = []
+  let at = wait
+  for (const [i, word] of [...head, ...body].entries()) {
+    turns.push(Math.round(FOCUS ? at : wait + i * step))
+    at += (word.length + 1) * PACE + (i === head.length - 1 ? 180 : 0)
+  }
   const words = (list: Array<string>, from: number) =>
     list.map((word, i) => (
       // (The space is outside the word: each word is a box of its own.)
       <Fragment key={i}>
-        <i
-          style={{
-            animationDelay: `${Math.round(wait + (from + i) * step)}ms`,
-          }}
-        >
-          {word}
-        </i>
+        <i style={{ animationDelay: `${turns[from + i]}ms` }}>{word}</i>
         {i < list.length - 1 ? " " : ""}
       </Fragment>
     ))
@@ -389,10 +400,16 @@ function Written({
       <span className="sr-only">
         {title}: {text}
       </span>
-      <span aria-hidden className="pl-note-kind">
+      <span
+        aria-hidden
+        className="pl-note-kind"
+        data-focus={FOCUS || undefined}
+      >
         {words(head, 0)}
       </span>
-      <span aria-hidden>{words(body, head.length)}</span>
+      <span aria-hidden data-focus={FOCUS || undefined}>
+        {words(body, head.length)}
+      </span>
     </>
   )
 }
