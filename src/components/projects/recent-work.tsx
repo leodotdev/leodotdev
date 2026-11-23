@@ -1,5 +1,6 @@
 import { Link, useRouter } from "@tanstack/react-router"
 import { ROW, ROW_LINK, RowContent } from "@/components/projects/list-row"
+import { ShowMoreButton, useShowMore } from "@/components/projects/show-more"
 import { recentWork } from "@/lib/recent-work"
 import { wave } from "@/lib/wave"
 import type { RecentWork } from "@/lib/recent-work"
@@ -35,14 +36,17 @@ export function RecentWorkSection() {
     )
   }
 
+  // Like the page's other sections: its first rows, then Show more.
+  const { sectionRef, visible, toggle } = useShowMore(recentWork)
+
   return (
-    <div id="recent-work">
+    <div id="recent-work" ref={sectionRef}>
       <div className="px-6 pb-6 md:px-12">
         <div className="font-semibold">Recent work</div>
       </div>
 
       <div className="flex flex-col [&>*+*]:-mt-[0.5px]">
-        {recentWork.map((work) => {
+        {visible.map((work) => {
           const linked = Boolean(work.to ?? work.href)
           const content = (
             <RowContent
@@ -98,6 +102,8 @@ export function RecentWorkSection() {
           )
         })}
       </div>
+
+      <ShowMoreButton toggle={toggle} />
     </div>
   )
 }

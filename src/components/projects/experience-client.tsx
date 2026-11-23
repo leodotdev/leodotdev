@@ -6,8 +6,6 @@ import { cn } from "@/lib/utils"
 import { TbArrowUpRight, TbDownload } from "react-icons/tb"
 import type { Experience } from "@/server/db/schema"
 
-const EXPERIENCE_PAGE_SIZE = 3
-
 interface ExperienceClientProps {
   experiences: Experience[]
 }
@@ -61,10 +59,7 @@ function ProjectLinks({ exp }: { exp: Experience }) {
 }
 
 export function ExperienceClient({ experiences }: ExperienceClientProps) {
-  const { sectionRef, visible, toggle } = useShowMore(
-    experiences,
-    EXPERIENCE_PAGE_SIZE
-  )
+  const { sectionRef, visible, toggle } = useShowMore(experiences)
 
   return (
     <div id="experience" ref={sectionRef}>

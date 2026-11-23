@@ -9,11 +9,17 @@ type Toggle = {
 }
 
 /**
+ * How many rows each of the home page's sections starts with (Leo,
+ * 2026-11-23: "for each section, show 3 listitems then show more").
+ */
+export const PAGE_SIZE = 3
+
+/**
  * A list that starts with its first `pageSize` items and can be expanded to
  * all of them, then collapsed again. Put `sectionRef` on the section the list
  * sits in and render `<ShowMoreButton toggle={toggle} />` under the list.
  */
-export function useShowMore<T>(items: Array<T>, pageSize: number) {
+export function useShowMore<T>(items: Array<T>, pageSize = PAGE_SIZE) {
   const [count, setCount] = useState(pageSize)
   const sectionRef = useRef<HTMLDivElement>(null)
 
@@ -44,15 +50,14 @@ export function useShowMore<T>(items: Array<T>, pageSize: number) {
   return { sectionRef, visible: items.slice(0, count), toggle }
 }
 
-/** The button under an expandable list; empty when the list fits its page. */
+/** The button under an expandable list; nothing when the list fits its page. */
 export function ShowMoreButton({ toggle }: { toggle: Toggle | null }) {
+  if (!toggle) return null
   return (
     <div className="flex justify-center px-6 pt-8 md:px-12">
-      {toggle && (
-        <Button variant="pill" data-wave-manual onClick={toggle.onClick}>
-          {toggle.label}
-        </Button>
-      )}
+      <Button variant="pill" data-wave-manual onClick={toggle.onClick}>
+        {toggle.label}
+      </Button>
     </div>
   )
 }

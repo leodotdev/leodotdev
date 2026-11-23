@@ -29,16 +29,6 @@ export type RecentWork = {
 
 export const recentWork: Array<RecentWork> = [
   {
-    title: "Plasmic",
-    summary:
-      "A visual tool for building React apps, year by year, rebuilt from the design files.",
-    logo: "/logo-pl.svg",
-    client: "Plasmic",
-    location: "Remote",
-    year: "2020–'24",
-    to: "/work/plasmic",
-  },
-  {
     title: "Anthropic.com Design System & Web Design",
     summary:
       "The design system, components and pages of the Anthropic website.",
@@ -57,5 +47,15 @@ export const recentWork: Array<RecentWork> = [
     location: "Remote",
     year: "2025–'26",
     to: "/work/claude",
+  },
+  {
+    title: "Plasmic",
+    summary:
+      "A visual tool for building React apps, year by year, rebuilt from the design files.",
+    logo: "/logo-pl.svg",
+    client: "Plasmic",
+    location: "Remote",
+    year: "2020–'24",
+    to: "/work/plasmic",
   },
 ]

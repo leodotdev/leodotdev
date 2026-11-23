@@ -2,17 +2,12 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { ShowMoreButton, useShowMore } from "@/components/projects/show-more"
 import type { Reference } from "@/server/db/schema"
 
-const REFERENCES_PAGE_SIZE = 2
-
 interface ReferencesScrollProps {
   references: Reference[]
 }
 
 export function ReferencesScroll({ references }: ReferencesScrollProps) {
-  const { sectionRef, visible, toggle } = useShowMore(
-    references,
-    REFERENCES_PAGE_SIZE
-  )
+  const { sectionRef, visible, toggle } = useShowMore(references)
 
   return (
     <div id="references" ref={sectionRef}>
