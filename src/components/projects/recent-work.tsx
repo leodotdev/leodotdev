@@ -37,7 +37,7 @@ export function RecentWorkSection() {
   }
 
   // Like the page's other sections: its first rows, then Show more.
-  const { sectionRef, visible, toggle } = useShowMore(recentWork)
+  const { sectionRef, visible, toggle, reveal } = useShowMore(recentWork)
 
   return (
     <div id="recent-work" ref={sectionRef}>
@@ -46,7 +46,7 @@ export function RecentWorkSection() {
       </div>
 
       <div className="flex flex-col [&>*+*]:-mt-[0.5px]">
-        {visible.map((work) => {
+        {visible.map((work, i) => {
           const linked = Boolean(work.to ?? work.href)
           const content = (
             <RowContent
@@ -73,6 +73,7 @@ export function RecentWorkSection() {
               <Link
                 key={work.title}
                 to={work.to}
+                {...reveal(i)}
                 data-wave
                 // Its click is the page's wave, above, not a tap wave on
                 // the row.
@@ -87,6 +88,7 @@ export function RecentWorkSection() {
             return (
               <a
                 key={work.title}
+                {...reveal(i)}
                 data-wave
                 className={ROW}
                 href={work.href}
@@ -96,7 +98,7 @@ export function RecentWorkSection() {
               </a>
             )
           return (
-            <div key={work.title} data-wave className={ROW}>
+            <div key={work.title} {...reveal(i)} data-wave className={ROW}>
               {content}
             </div>
           )

@@ -4,7 +4,6 @@ import { TbArrowUp } from "react-icons/tb"
 import { Button } from "@/components/ui/button"
 import { useToastShowing } from "@/components/ui/toast"
 import { glideTo } from "@/lib/glide"
-import { cn } from "@/lib/utils"
 
 /** How far down the page, in px, the button comes up. */
 const AFTER = 2000
@@ -44,12 +43,11 @@ export function BackToTop() {
 
   return (
     <div
-      className={cn(
-        "pointer-events-none fixed inset-x-0 bottom-[max(24px,env(safe-area-inset-bottom))] z-30 flex justify-center",
-        "transition-[opacity,translate] duration-200 ease-out motion-reduce:transition-opacity",
-        shown ? "opacity-100" : "translate-y-2 opacity-0",
-        shown && toast && "-translate-y-[46px]"
-      )}
+      // It springs up from under the window, and up again out of a toast's
+      // way (`.pop-up` in src/styles.css).
+      className="pop-up pointer-events-none fixed inset-x-0 bottom-[max(24px,env(safe-area-inset-bottom))] z-30 flex justify-center"
+      data-shown={shown || undefined}
+      data-raised={(shown && toast) || undefined}
       inert={!shown}
     >
       <Button

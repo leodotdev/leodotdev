@@ -418,24 +418,148 @@ html:has([data-claude-page]) {
 }
 
 /*
- * A toast (src/components/ui/toast.tsx) rises 8px and fades in, and goes
- * the same way. Swiped down, it follows the finger.
+ * What comes up from the bottom of the window springs up, with a bounce
+ * (Leo, 2026-11-23: the toasts, "even the back to top"): it starts below
+ * the window's edge and overshoots where it rests before settling. The
+ * curve is a real spring, sampled (0.5s, bounce 0.4: a damping ratio of
+ * 0.6, which runs about a tenth past and takes 0.85s to settle); a browser
+ * without `linear()` gets easeOutBack, one overshoot. Leaving, it drops
+ * back the way it came, quickly and with no bounce.
+ */
+:root {
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --spring-time: 0.5s;
+}
+@supports (transition-timing-function: linear(0, 1)) {
+  :root {
+    --ease-spring: linear(
+      0,
+      0.0433,
+      0.1511,
+      0.2942,
+      0.45,
+      0.6016,
+      0.7382,
+      0.8532,
+      0.944,
+      1.0109,
+      1.0559,
+      1.0822,
+      1.0935,
+      1.0937,
+      1.0861,
+      1.0739,
+      1.0596,
+      1.0448,
+      1.0311,
+      1.0191,
+      1.0093,
+      1.0019,
+      0.9966,
+      0.9933,
+      0.9915,
+      0.991,
+      0.9914,
+      0.9924,
+      0.9937,
+      0.9951,
+      0.9964,
+      0.9976,
+      0.9987,
+      0.9995,
+      1
+    );
+    --spring-time: 0.85s;
+  }
+}
+
+/*
+ * A list's rows let in by Show more come up one after another on the same
+ * spring, and the rows Show less sends away drop out, the last first
+ * (src/components/projects/show-more.tsx sets `--i`, a row's turn).
+ */
+[data-enter] {
+  animation: row-in var(--spring-time) var(--ease-spring) both;
+  animation-delay: calc(var(--i, 0) * 50ms);
+}
+@keyframes row-in {
+  from {
+    opacity: 0;
+    translate: 0 24px;
+  }
+}
+[data-leave] {
+  animation: row-out 0.2s cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation-delay: calc(var(--i, 0) * 30ms);
+}
+@keyframes row-out {
+  to {
+    opacity: 0;
+    translate: 0 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-enter],
+  [data-leave] {
+    animation: none;
+  }
+}
+
+/*
+ * A toast (src/components/ui/toast.tsx) springs up from under the window
+ * and fades in as it comes, and drops back out. Swiped down, it follows the
+ * finger.
  */
 .toast {
   transform: translateY(var(--toast-swipe-movement-y, 0px));
   transition:
-    opacity 0.2s ease-out,
-    translate 0.2s ease-out;
+    opacity 0.15s ease-out,
+    translate var(--spring-time) var(--ease-spring);
 }
 .toast[data-starting-style],
 .toast[data-ending-style] {
   opacity: 0;
-  translate: 0 8px;
+  translate: 0 72px;
+}
+.toast[data-ending-style] {
+  transition:
+    opacity 0.2s ease-out,
+    translate 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/*
+ * The back-to-top pill (src/components/BackToTop.tsx) comes up the same
+ * way, and springs up out of a toast's way while one shows.
+ */
+.pop-up {
+  opacity: 0;
+  translate: 0 72px;
+  transition:
+    opacity 0.2s ease-out,
+    translate 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.pop-up[data-shown] {
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity 0.15s ease-out,
+    translate var(--spring-time) var(--ease-spring);
+}
+.pop-up[data-shown][data-raised] {
+  translate: 0 -46px;
 }
 @media (prefers-reduced-motion: reduce) {
   .toast[data-starting-style],
   .toast[data-ending-style] {
     translate: none;
+  }
+  .pop-up,
+  .pop-up[data-shown] {
+    translate: none;
+    transition: opacity 0.2s ease-out;
+  }
+  .pop-up[data-shown][data-raised] {
+    translate: 0 -46px;
   }
 }
 

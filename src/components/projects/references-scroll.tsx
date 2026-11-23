@@ -7,7 +7,7 @@ interface ReferencesScrollProps {
 }
 
 export function ReferencesScroll({ references }: ReferencesScrollProps) {
-  const { sectionRef, visible, toggle } = useShowMore(references)
+  const { sectionRef, visible, toggle, reveal } = useShowMore(references)
 
   return (
     <div id="references" ref={sectionRef}>
@@ -16,9 +16,10 @@ export function ReferencesScroll({ references }: ReferencesScrollProps) {
       </div>
 
       <div className="flex flex-col [&>*+*]:-mt-[0.5px]">
-        {visible.map((reference) => (
+        {visible.map((reference, i) => (
           <div
             key={reference.id}
+            {...reveal(i)}
             data-wave
             className="group/item cursor-pointer rounded-[20px] border border-transparent bg-background hover:bg-card md:mx-6"
             onClick={() => window.open(reference.linkedinUrl, "_blank")}

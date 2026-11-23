@@ -59,7 +59,7 @@ function ProjectLinks({ exp }: { exp: Experience }) {
 }
 
 export function ExperienceClient({ experiences }: ExperienceClientProps) {
-  const { sectionRef, visible, toggle } = useShowMore(experiences)
+  const { sectionRef, visible, toggle, reveal } = useShowMore(experiences)
 
   return (
     <div id="experience" ref={sectionRef}>
@@ -87,9 +87,10 @@ export function ExperienceClient({ experiences }: ExperienceClientProps) {
       </div>
 
       <div className="flex flex-col [&>*+*]:-mt-[0.5px]">
-        {visible.map((exp) => (
+        {visible.map((exp, i) => (
           <div
             key={exp.id}
+            {...reveal(i)}
             data-wave
             className={cn(ROW, "cursor-pointer")}
             onClick={() => {
