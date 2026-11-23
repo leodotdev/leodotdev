@@ -45,7 +45,8 @@ const TILES: Array<{ id: string; Tile: () => React.ReactNode }> = [
  * other projects' strips of clips do (`useDriftStrip`; Leo, 2026-11-23): it
  * drifts sideways slowly, takes a touch, a trackpad, or a drag and a throw
  * with the mouse, and is endless both ways. The drift stops under the
- * pointer, so a tile can be read.
+ * pointer, so a tile can be read, and its words can be selected: a press
+ * on words starts a selection, a press anywhere else grabs the strip.
  */
 export function ResearchStrip() {
   const { strip, items } = useDriftStrip(TILES)
@@ -55,7 +56,9 @@ export function ResearchStrip() {
         ref={strip}
         aria-label="Research"
         tabIndex={0}
-        className="amor-strip bleed scrollbar-hide flex cursor-grab gap-3 overflow-x-auto select-none data-[dragging]:cursor-grabbing"
+        // (No `select-none`: its words can be selected, and a press on them
+        // is not a grab.)
+        className="amor-strip bleed scrollbar-hide flex cursor-grab gap-3 overflow-x-auto data-[dragging]:cursor-grabbing data-[dragging]:select-none"
       >
         {items.map(({ id, Tile }) => (
           <Tile key={id} />

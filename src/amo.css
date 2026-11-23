@@ -1024,6 +1024,23 @@
 .amor-strip {
   overscroll-behavior-x: contain;
 }
+/* Its words are words: the text cursor over them, where the rest of the
+   strip shows the hand that grabs it. */
+.amor-strip
+  :is(
+    .amor-sticky,
+    .amor-labels,
+    .amor-node,
+    .amor-map-title,
+    .amor-wish,
+    .amor-tile-name,
+    text
+  ) {
+  cursor: text;
+}
+.amor-strip[data-dragging] * {
+  cursor: grabbing;
+}
 /* A tile of the strip: a piece of the board on FigJam's white, whatever
    the page wears, all one height, under its name. */
 .amor-tile {

@@ -200,7 +200,9 @@ const HOLD = 4000
  * by that tile's width in the same commit, so nothing on screen moves. The
  * drift stops under the mouse, while the keyboard is inside the row and for
  * a while after any touch, wheel or drag, and never runs for a visitor who
- * asked for reduced motion. Put `strip` on the row's `<ul>` and draw `items`
+ * asked for reduced motion. A row whose text can be selected (no
+ * `select-none` on it) leaves a press on words to the selection. Put `strip`
+ * on the row's `<ul>` and draw `items`
  * in it, in their order, each keyed. (The docs' clips and /work/amo's
  * research both use it.)
  */
@@ -316,6 +318,20 @@ export function useDriftStrip<T>(all: Array<T>) {
     const down = (e: PointerEvent) => {
       if (e.pointerType !== "mouse" || e.button !== 0) return
       if (e.target instanceof Element && e.target.closest("button")) return
+      // Where the row lets its words be selected, a press on words starts
+      // a selection, as anywhere else on the page, and not a grab (Leo,
+      // 2026-11-23, of /work/amo's research); a press on anything else
+      // still takes hold of the row.
+      if (
+        e.target instanceof Element &&
+        getComputedStyle(e.target).userSelect !== "none" &&
+        Array.from(e.target.childNodes).some(
+          (node) =>
+            node.nodeType === Node.TEXT_NODE &&
+            Boolean(node.textContent?.trim())
+        )
+      )
+        return
       cancelAnimationFrame(glide)
       pressed = true
       dragging = false

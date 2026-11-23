@@ -474,9 +474,13 @@ html:has([data-claude-page]) {
 }
 
 /*
- * A list's rows let in by Show more come up one after another on the same
- * spring, and the rows Show less sends away drop out, the last first
- * (src/components/projects/show-more.tsx sets `--i`, a row's turn).
+ * A list's rows let in by Show more come down from under the row above
+ * them, one after another on the same spring, and the rows Show less sends
+ * away go back up under it, the last first (Leo, 2026-11-23: "reveal from
+ * above (their siblings) and outro the same, back up they go";
+ * src/components/projects/show-more.tsx sets `--i`, a row's turn). A row
+ * starts 40px up and cut off at where its top will rest, so it shows only
+ * as it clears the row above.
  */
 [data-enter] {
   animation: row-in var(--spring-time) var(--ease-spring) both;
@@ -485,17 +489,25 @@ html:has([data-claude-page]) {
 @keyframes row-in {
   from {
     opacity: 0;
-    translate: 0 24px;
+    translate: 0 -40px;
+    clip-path: inset(40px 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
   }
 }
 [data-leave] {
-  animation: row-out 0.2s cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation: row-out 0.22s cubic-bezier(0.23, 1, 0.32, 1) both;
   animation-delay: calc(var(--i, 0) * 30ms);
 }
 @keyframes row-out {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
   to {
     opacity: 0;
-    translate: 0 16px;
+    translate: 0 -40px;
+    clip-path: inset(40px 0 0 0);
   }
 }
 @media (prefers-reduced-motion: reduce) {
