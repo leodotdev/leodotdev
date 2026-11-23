@@ -606,13 +606,16 @@ html:not(.dark) .fig-notes {
     opacity: 1;
   }
 }
-/* The words coming into focus (notes.tsx, `FOCUS`): the note is all there
-   from the start, dim and soft, and each word sharpens and lights in its
-   turn, slowly enough to be followed and evenly enough to be restful. */
+/* The note coming into focus (notes.tsx, `FOCUS`): it is all there from the
+   start, dim and soft, and each character sharpens and lights in its turn,
+   so an edge of focus runs along the lines: slowly enough to be followed,
+   and evenly enough to be restful. A character is set inline, not as a box,
+   so the words keep their spacing and their line breaks. */
 .pl-hand [data-focus] i {
+  display: inline;
   opacity: 0.2;
-  filter: blur(3px);
-  animation: pl-focus 0.7s var(--pl-ease-out) forwards;
+  filter: blur(2.5px);
+  animation: pl-focus 0.5s var(--pl-ease-out) forwards;
 }
 @keyframes pl-focus {
   to {

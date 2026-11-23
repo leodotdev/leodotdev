@@ -352,19 +352,23 @@ export function NoteLayer({
 
 /**
  * How a note's words arrive. With this on (Leo, 2026-11-23, asked for
- * something "more mesmerizing, or asmr" to follow): the whole note is laid
- * out at once, dim and out of focus, and its words come into focus one
- * after another at an even, readable pace, a little ahead of the eye, so
- * the reader is led along the lines. Off, the words rise in quickly, the
- * whole note in about half a second, as they did before.
+ * something "more mesmerizing, or asmr" to follow, then for it to be
+ * "character driven, rather than whole word"): the whole note is laid out
+ * at once, dim and out of focus, and it comes into focus a character at a
+ * time, at an even, readable pace a little ahead of the eye, so a soft
+ * edge of focus runs along the lines and the reader is led by it. Off, the
+ * words rise in quickly, the whole note in about half a second, as they
+ * did at first.
  */
 const FOCUS = true as boolean
-/** The pace of the focus, in ms a letter (a reader is given 42). */
+/** The pace of the focus, in ms a character (a reader is given 42). */
 const PACE = 26
 
 /**
- * A note's words, the title first, each a box of its own so it can arrive
- * in its turn (see `FOCUS`). Screen readers get the words whole.
+ * A note's words, the title first. In focus (see `FOCUS`) each character
+ * is an element of its own, set inline so the words keep their spacing and
+ * break where they would; the quick way, each word is a box that rises.
+ * Screen readers get the words whole.
  */
 function Written({
   title,
@@ -379,7 +383,7 @@ function Written({
   const head = title.split(" ")
   const body = text.split(" ")
   const step = Math.min(36, 560 / (head.length + body.length))
-  // When each word's turn comes: by the letters before it, with a breath
+  // When each word's turn comes: by the characters before it, with a breath
   // after the title; or, the quick way, a fixed step a word.
   const turns: Array<number> = []
   let at = wait
@@ -389,9 +393,20 @@ function Written({
   }
   const words = (list: Array<string>, from: number) =>
     list.map((word, i) => (
-      // (The space is outside the word: each word is a box of its own.)
+      // (The space is outside the word, as plain text.)
       <Fragment key={i}>
-        <i style={{ animationDelay: `${turns[from + i]}ms` }}>{word}</i>
+        {FOCUS ? (
+          Array.from(word).map((char, c) => (
+            <i
+              key={c}
+              style={{ animationDelay: `${turns[from + i] + c * PACE}ms` }}
+            >
+              {char}
+            </i>
+          ))
+        ) : (
+          <i style={{ animationDelay: `${turns[from + i]}ms` }}>{word}</i>
+        )}
         {i < list.length - 1 ? " " : ""}
       </Fragment>
     ))
