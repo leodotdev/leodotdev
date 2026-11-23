@@ -1,4 +1,4 @@
-import { Link, createFileRoute, notFound } from "@tanstack/react-router"
+import { createFileRoute, notFound } from "@tanstack/react-router"
 import { useEffect, useRef } from "react"
 import { GROUPS, findGroup } from "@/components/work/anthropic/docs"
 import { ATOMS } from "@/components/work/anthropic/pages/atoms"
@@ -10,6 +10,7 @@ import { ORGANISMS_MEDIA } from "@/components/work/anthropic/pages/organisms-med
 import { ORGANISMS_SITE } from "@/components/work/anthropic/pages/organisms-site"
 import { TEMPLATES } from "@/components/work/anthropic/pages/templates"
 import { useFadeIns } from "@/components/work/anthropic/reveal"
+import { NextTab } from "@/components/work/claude/next-tab"
 
 // One tab of the Anthropic.com design system docs: a group of topics, one
 // after another (/work/anthropic/atoms, /molecules, /organisms,
@@ -127,18 +128,11 @@ function GroupPage() {
 
         {/* The system is a sequence, so each page ends by leading to the next. */}
         {next && (
-          <div className="rule-t flex justify-end pt-6">
-            <Link
-              to="/work/anthropic/$doc"
-              params={{ doc: next.slug }}
-              className="group/item flex flex-col items-end gap-1"
-            >
-              <span className="text-xs text-muted-foreground">Next</span>
-              <span className="underline decoration-dotted group-hover/item:text-tint group-hover/item:decoration-solid">
-                {next.name}
-              </span>
-            </Link>
-          </div>
+          <NextTab
+            to="/work/anthropic/$doc"
+            params={{ doc: next.slug }}
+            name={next.name}
+          />
         )}
       </div>
     </div>

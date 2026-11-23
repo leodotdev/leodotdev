@@ -62,7 +62,6 @@ export function RecentWorkSection() {
                   </span>
                 )
               }
-              location={work.location}
               duration={work.year}
             />
           )

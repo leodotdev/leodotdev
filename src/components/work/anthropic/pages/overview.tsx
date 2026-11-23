@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router"
 import { GROUPS } from "@/components/work/anthropic/docs"
 import { ANTHROPIC_MEDIA } from "@/components/work/anthropic/media"
 import { MediaStrip } from "@/components/work/claude/media"
+import { NextTab } from "@/components/work/claude/next-tab"
 
 /** The docs' contents: each group with its topics, linked. */
 export function OverviewDoc() {
@@ -56,6 +57,11 @@ export function OverviewDoc() {
           </ul>
         </section>
       ))}
+      <NextTab
+        to="/work/anthropic/$doc"
+        params={{ doc: GROUPS[0].slug }}
+        name={GROUPS[0].name}
+      />
     </>
   )
 }

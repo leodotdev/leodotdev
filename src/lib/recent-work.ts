@@ -17,8 +17,6 @@ export type RecentWork = {
   roundLogo?: boolean
   /** Who it was for, shown on the right. */
   client?: string
-  /** Where the work was done, shown before the year. */
-  location?: string
   /** When, written like the experience list's dates ("2025–'26"). */
   year: string
   /** The work's own page on this site (a route under /work). */
@@ -34,7 +32,6 @@ export const recentWork: Array<RecentWork> = [
       "The design system, components and pages of the Anthropic website.",
     logo: "/logo-anthropic.svg",
     client: "Design Business Company",
-    location: "Remote",
     year: "2026",
     to: "/work/anthropic",
   },
@@ -44,7 +41,6 @@ export const recentWork: Array<RecentWork> = [
       "The design system, patterns and pages of the Claude marketing website.",
     logo: "/logo-claude.svg",
     client: "Design Business Company",
-    location: "Remote",
     year: "2025–'26",
     to: "/work/claude",
   },
@@ -58,7 +54,6 @@ export const recentWork: Array<RecentWork> = [
   //     "A visual tool for building React apps, year by year, rebuilt from the design files.",
   //   logo: "/logo-pl.svg",
   //   client: "Plasmic",
-  //   location: "Remote",
   //   year: "2020–'24",
   //   to: "/work/plasmic",
   // },

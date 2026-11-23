@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router"
 import { DESIGN } from "@/components/work/amo/docs"
 import { ResearchStrip } from "@/components/work/amo/research"
+import { NextTab } from "@/components/work/claude/next-tab"
 import {
   ContactDoc,
   HomeDoc,
@@ -51,6 +52,7 @@ export function Overview() {
           ))}
         </ul>
       </section>
+      <NextTab to="/work/amo/design" name="Design" />
     </>
   )
 }

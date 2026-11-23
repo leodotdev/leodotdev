@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router"
 import { GROUPS } from "@/components/work/claude/docs"
 import { MediaStrip } from "@/components/work/claude/media"
+import { NextTab } from "@/components/work/claude/next-tab"
 
 /** Clips of the finished site, then the docs' contents: each group with its topics, linked. */
 export function OverviewDoc() {
@@ -51,6 +52,11 @@ export function OverviewDoc() {
           </ul>
         </section>
       ))}
+      <NextTab
+        to="/work/claude/$doc"
+        params={{ doc: GROUPS[0].slug }}
+        name={GROUPS[0].name}
+      />
     </>
   )
 }
