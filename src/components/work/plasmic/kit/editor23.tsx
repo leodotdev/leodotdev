@@ -560,7 +560,11 @@ function TreePanel({ s }: { s: State }) {
         </span>
       </div>
       <Search placeholder="Search…" />
-      <Tree nodes={TREE} selected={str(s.treeSel, "hero")} />
+      <Tree
+        nodes={TREE}
+        selected={str(s.treeSel, "hero")}
+        rec={s.rec ? [str(s.treeSel, "hero")] : undefined}
+      />
     </>
   )
 }
@@ -905,7 +909,7 @@ function RightCrumb({ s }: { s: State }) {
           <div className="pk-section-head">
             <span>Size</span>
           </div>
-          <Field label="Width">
+          <Field label="Width" rec={Boolean(s.rec)}>
             <Input rec={Boolean(s.rec)}>{s.rec ? "100%" : "Stretch"}</Input>
           </Field>
           <Field label="Height">
@@ -916,7 +920,7 @@ function RightCrumb({ s }: { s: State }) {
           <div className="pk-section-head">
             <span>Spacing</span>
           </div>
-          <Field label="Padding">
+          <Field label="Padding" rec={Boolean(s.rec && s.tightPad)}>
             <Input rec={Boolean(s.rec && s.tightPad)}>
               {s.rec && s.tightPad ? "48 24" : "80 40"}
             </Input>

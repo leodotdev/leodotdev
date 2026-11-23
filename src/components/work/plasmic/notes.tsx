@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react"
+import { Fragment, useLayoutEffect, useRef, useState } from "react"
 import type { Note, Rect, Side } from "@/components/work/plasmic/types"
 
 /** A note's width, in the page's pixels. */
@@ -14,7 +14,7 @@ const MEET = 20
  * How a note is drawn. With this on (Leo, 2026-11-22, who first asked for
  * "curved lines and more handwritten font being scribble animated
  * written", then for clean lines, then for Inter alone): the note's words
- * in Inter, written on a letter at a time, on a card, with a clean arrow
+ * in Inter, coming in a word at a time, on a card, with a clean arrow
  * curving from the card to its part's clean outline; a card that is right
  * beside its part is set against the outline with no arrow at all. Set to
  * false, a note is a title over Paper Mono on a straight line, as it was
@@ -68,6 +68,9 @@ export function NoteLayer({
   browser,
   taken,
   under,
+  fly = 0,
+  view = "",
+  quick = false,
 }: {
   /** Each note with the box its part takes up, in the app's pixels. */
   notes: Array<{
@@ -85,6 +88,15 @@ export function NoteLayer({
   taken?: { left?: boolean; right?: boolean }
   /** A gutter whose top is something else's: its notes start under this. */
   under?: { left?: number; right?: number }
+  /** While the picture is moving under the notes (ms): those that stay
+      up move with their parts; otherwise a note is simply where it is. */
+  fly?: number
+  /** Which view of the picture this is: an arrow that stays up through a
+      change of view is drawn again, to where its part now is. */
+  view?: string
+  /** Asked for by the visitor's pointer: it comes up at once, with none
+      of the order a beat's notes come in in. */
+  quick?: boolean
 }) {
   // A note's height as drawn, by its words and width (an estimate until
   // it has been drawn once).
@@ -239,25 +251,35 @@ export function NoteLayer({
   // On a card with an arrow wherever there is room (the phone's list is not).
   const hand = (_: Placed) => HAND && !narrow
   return (
-    <div ref={layer} className="pl-notes" data-narrow={narrow || undefined}>
+    <div
+      ref={layer}
+      className="pl-notes"
+      data-narrow={narrow || undefined}
+      data-quick={quick || undefined}
+      style={{ "--pl-fly": `${fly}ms` } as React.CSSProperties}
+    >
       {placed.map((p, i) => (
         <div
           key={narrow ? i : p.note.text}
           aria-hidden
           className="pl-note-box"
           data-kind={p.note.kind}
-          style={p.box}
+          style={{ ...p.box, "--pl-n": i } as React.CSSProperties}
         >
           {narrow && <span className="pl-note-num">{i + 1}</span>}
         </div>
       ))}
       {!narrow && placed.some(hand) && (
         <svg aria-hidden className="pl-ink" width={dw} height={dh}>
-          {placed.filter(hand).map((p) => {
+          {placed.filter(hand).map((p, i) => {
             const ink = arrowOf(p)
             return (
               ink && (
-                <g key={p.note.text} data-kind={p.note.kind}>
+                <g
+                  key={`${p.note.text}:${view}`}
+                  data-kind={p.note.kind}
+                  style={{ "--pl-n": i } as React.CSSProperties}
+                >
                   <path className="pl-ink-line" pathLength={1} d={ink.line} />
                   <path className="pl-ink-head" pathLength={1} d={ink.head} />
                 </g>
@@ -284,7 +306,7 @@ export function NoteLayer({
           ))}
         </ol>
       ) : (
-        placed.map((p) => {
+        placed.map((p, i) => {
           const { note, gutter, x, y, width } = p
           return hand(p) ? (
             <p
@@ -292,9 +314,15 @@ export function NoteLayer({
               className="pl-note pl-hand"
               data-kind={note.kind}
               data-note={keyOf(note, width)}
-              style={{ left: x, top: y, width }}
+              style={
+                { left: x, top: y, width, "--pl-n": i } as React.CSSProperties
+              }
             >
-              <Written title={note.title} text={note.text} />
+              <Written
+                title={note.title}
+                text={note.text}
+                wait={quick ? 40 : 260 + i * 120}
+              />
               {p.more && (
                 <span className="pl-note-more">Press for {p.more} →</span>
               )}
@@ -319,20 +347,38 @@ export function NoteLayer({
 }
 
 /**
- * A note's words, written on: each letter comes in after the one before,
- * the title first, the whole note in about a second and a half however
- * long it is. Screen readers get the words whole.
+ * A note's words, coming in a word at a time, the title first (Leo,
+ * 2026-11-22, wanted them easy to keep up with: a letter at a time, as
+ * they were, read like a typewriter), the whole note in about half a
+ * second however long it is, after its card has. Screen readers get the
+ * words whole.
  */
-function Written({ title, text }: { title: string; text: string }) {
-  const step = Math.min(16, 1500 / (title.length + text.length))
-  const letters = (words: string, from: number) =>
-    Array.from(words, (c, i) => (
-      <i
-        key={i}
-        style={{ animationDelay: `${Math.round((from + i) * step)}ms` }}
-      >
-        {c}
-      </i>
+function Written({
+  title,
+  text,
+  wait,
+}: {
+  title: string
+  text: string
+  /** How long before its first word, in ms. */
+  wait: number
+}) {
+  const head = title.split(" ")
+  const body = text.split(" ")
+  const step = Math.min(36, 560 / (head.length + body.length))
+  const words = (list: Array<string>, from: number) =>
+    list.map((word, i) => (
+      // (The space is outside the word: each word is a box of its own.)
+      <Fragment key={i}>
+        <i
+          style={{
+            animationDelay: `${Math.round(wait + (from + i) * step)}ms`,
+          }}
+        >
+          {word}
+        </i>
+        {i < list.length - 1 ? " " : ""}
+      </Fragment>
     ))
   return (
     <>
@@ -340,9 +386,9 @@ function Written({ title, text }: { title: string; text: string }) {
         {title}: {text}
       </span>
       <span aria-hidden className="pl-note-kind">
-        {letters(title, 0)}
+        {words(head, 0)}
       </span>
-      <span aria-hidden>{letters(text, title.length)}</span>
+      <span aria-hidden>{words(body, head.length)}</span>
     </>
   )
 }

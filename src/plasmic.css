@@ -18,6 +18,14 @@
   height: var(--pl-desk);
   margin-inline: calc(50% - 50vw);
   isolation: isolate;
+  /* The stage's curves. Out: for what comes in or goes. Move: for what
+     travels across the screen (the cursor, the lens, the browser), slow at
+     both ends. Arc: the cursor's way down, a little off its way across, so
+     it travels in a slight arc. (easings.net: the strong ease-out the site
+     uses elsewhere, easeInOutCubic, and easeInOutSine.) */
+  --pl-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --pl-ease-move: cubic-bezier(0.65, 0, 0.35, 1);
+  --pl-ease-arc: cubic-bezier(0.37, 0, 0.63, 1);
 }
 /* What the desk shows. At 100% (Leo, 2026-11-22) it leaves the desk for
    the whole window, over the bar and the page's header, with the browser
@@ -92,6 +100,21 @@
     radial-gradient(70% 70% at 100% 0%, #30b0c7 0%, transparent 62%),
     radial-gradient(80% 80% at 10% 0%, #1c2a80 0%, transparent 70%), #3634a3;
   filter: blur(28px) saturate(1.05);
+  /* It is never quite still: the mesh drifts, too slowly to watch. */
+  animation: pl-drift 70s ease-in-out infinite alternate;
+}
+@keyframes pl-drift {
+  from {
+    transform: scale(1.1) translate(-1.5%, -1%) rotate(-1.5deg);
+  }
+  to {
+    transform: scale(1.18) translate(1.5%, 1.5%) rotate(2deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pl-wallpaper {
+    animation: none;
+  }
 }
 /* Big Sur. */
 .pl-wallpaper[data-year="2020"] {
@@ -146,7 +169,7 @@
 .pl-browser-box {
   --pl-round: 26px;
   position: absolute;
-  transition: left 0.6s cubic-bezier(0.3, 0, 0.2, 1);
+  transition: left 0.6s var(--pl-ease-move);
   border-radius: calc(var(--pl-round) * var(--pl-s, 0.8));
   box-shadow:
     0 0 0 1px rgb(0 0 0 / 0.12),
@@ -183,40 +206,147 @@
   background: #f5f6f8;
 }
 
+/* The lens (stage.tsx): the app is drawn through it, closer where a beat
+   is about something small. Only its transform moves. */
+.pl-lens {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 0;
+  transition: transform 0.8s var(--pl-ease-move);
+}
+/* The scene before, a copy over the app, going: it fades (a scene change,
+   a script starting over), or, between two versions of one thing, is wiped
+   away behind a line. Whatever was animating in it is at its end. */
+.pl-app-out {
+  position: absolute !important;
+  top: 52px;
+  left: 0;
+  z-index: 1;
+  pointer-events: none;
+  animation: pl-dissolve 0.36s ease forwards;
+}
+.pl-app-out *,
+.pl-app-out *::before,
+.pl-app-out *::after {
+  transition: none !important;
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+}
+@keyframes pl-dissolve {
+  to {
+    opacity: 0;
+  }
+}
+.pl-app-out[data-out="wipe"] {
+  animation: pl-wipe 0.7s var(--pl-ease-move) forwards;
+}
+.pl-app-out[data-out="wipe-back"] {
+  animation: pl-wipe-back 0.7s var(--pl-ease-move) forwards;
+}
+@keyframes pl-wipe {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 100% 0 0);
+  }
+}
+@keyframes pl-wipe-back {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 100%);
+  }
+}
+/* The wipe's edge: a line that crosses with it. */
+.pl-wipe {
+  position: absolute;
+  top: 52px;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--color-tint);
+  box-shadow: 0 0 24px 2px
+    color-mix(in srgb, var(--color-tint) 60%, transparent);
+  pointer-events: none;
+  animation: pl-wipe-line 0.7s var(--pl-ease-move) forwards;
+}
+.pl-wipe[data-out="wipe-back"] {
+  animation-direction: reverse;
+}
+@keyframes pl-wipe-line {
+  from {
+    translate: 1440px 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
+/* What leaves the desk fades out (useExits in stage.tsx puts a copy back
+   for as long as this takes). */
+.pl-desk [data-leaving] {
+  pointer-events: none !important;
+  animation: pl-dissolve 0.18s ease forwards !important;
+}
+.pl-desk [data-leaving] *,
+.pl-desk [data-leaving] *::before,
+.pl-desk [data-leaving] *::after {
+  transition: none !important;
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+}
+
 /* What is drawn over the browser at the page's own size. */
 .pl-over {
   position: absolute;
   inset: 0;
   pointer-events: none;
 }
-.pl-cursor {
+/* The demo cursor's place: across on one curve and down on another, so it
+   travels in a slight arc, for as long as it is far (--pl-move, set with
+   each move). While the lens moves under a cursor that is staying on its
+   part, both go the lens's way, so it keeps its place. */
+.pl-point {
   position: absolute;
   top: 0;
   left: 0;
   z-index: 3;
   opacity: 0;
   transition:
-    translate 0.6s cubic-bezier(0.3, 0, 0.2, 1),
-    opacity 0.2s ease-out;
+    translate var(--pl-move, 0.6s) var(--pl-ease-move),
+    opacity 0.25s ease;
 }
-.pl-cursor[data-shown] {
+.pl-point > div {
+  transition: translate var(--pl-move, 0.6s) var(--pl-ease-arc);
+}
+.pl-point[data-ride] > div {
+  transition-timing-function: var(--pl-ease-move);
+}
+.pl-point[data-shown] {
   opacity: 1;
 }
 .pl-cursor img {
   position: absolute;
   max-width: none;
+  transition: scale 0.1s ease;
 }
 .pl-cursor img[data-shape="arrow"] {
   top: -1px;
   left: -1px;
   width: 12px;
   height: 19px;
+  transform-origin: 1px 1px;
 }
 .pl-cursor img[data-shape="pointer"] {
   top: -1px;
   left: -5px;
   width: 16px;
   height: 17px;
+  transform-origin: 5px 1px;
 }
 .pl-cursor img[data-shape="text"] {
   top: -8px;
@@ -224,29 +354,43 @@
   width: 9px;
   height: 16px;
 }
+/* A press: the cursor dips, and a ring opens from its tip and goes. */
+.pl-cursor[data-pressed] img {
+  scale: 0.9;
+}
 .pl-cursor::after {
   content: "";
   position: absolute;
-  top: -12px;
-  left: -12px;
-  width: 24px;
-  height: 24px;
+  top: -14px;
+  left: -14px;
+  width: 28px;
+  height: 28px;
   border: 1.5px solid var(--color-tint);
   border-radius: 50%;
   opacity: 0;
-  scale: 0.3;
+  scale: 1.5;
+  transition:
+    scale 0.45s var(--pl-ease-out),
+    opacity 0.45s ease;
   corner-shape: round;
 }
 .pl-cursor[data-pressed]::after {
   opacity: 1;
-  scale: 1;
-  transition:
-    scale 0.14s ease-out,
-    opacity 0.14s ease-out;
+  scale: 0.8;
+  transition: none;
+  animation: pl-press 0.14s var(--pl-ease-out) both;
+}
+@keyframes pl-press {
+  from {
+    opacity: 0;
+    scale: 0.35;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .pl-cursor {
-    transition: opacity 0.2s ease-out;
+  .pl-point,
+  .pl-point > div,
+  .pl-lens {
+    transition: none;
   }
 }
 
@@ -298,12 +442,22 @@
   --pl-discovery: var(--pl-ink-discovery);
 }
 /* A note's part, outlined: a clean line a little outside it. */
+/* A note comes in in order: its part's outline, the arrow to it, the card,
+   then the card's words; a second note a beat after the first (--pl-n).
+   While the lens is moving (--pl-fly), the notes that stay up move with
+   their parts. */
 .pl-note-box {
   position: absolute;
   border-radius: 4px;
   outline: 1.5px solid var(--pl-decision);
   outline-offset: 3px;
-  animation: pl-box-in 0.25s ease-out both;
+  transition:
+    left var(--pl-fly, 0s) var(--pl-ease-move),
+    top var(--pl-fly, 0s) var(--pl-ease-move),
+    width var(--pl-fly, 0s) var(--pl-ease-move),
+    height var(--pl-fly, 0s) var(--pl-ease-move);
+  animation: pl-box-in 0.3s var(--pl-ease-out) both;
+  animation-delay: calc(var(--pl-n, 0) * 0.12s);
 }
 .pl-note-box[data-kind="concept"] {
   outline-color: var(--pl-concept);
@@ -353,7 +507,11 @@
   box-shadow: var(--pl-card-shadow);
   font: 400 12px/17px var(--font-mono);
   text-wrap: pretty;
-  animation: pl-note-in 0.3s ease-out both;
+  transition:
+    left var(--pl-fly, 0s) var(--pl-ease-move),
+    top var(--pl-fly, 0s) var(--pl-ease-move);
+  animation: pl-note-in 0.35s var(--pl-ease-out) both;
+  animation-delay: calc(var(--pl-n, 0) * 0.12s + 0.2s);
 }
 /* On a card the kinds' colors are the card's theme's, not the page's. */
 .pl-note {
@@ -390,14 +548,15 @@
   cursor: pointer;
 }
 .pl-hand i {
+  display: inline-block;
   font-style: normal;
   opacity: 0;
-  animation: pl-write 0.12s ease-out forwards;
+  animation: pl-write 0.4s var(--pl-ease-out) forwards;
 }
 @keyframes pl-write {
   from {
     opacity: 0;
-    translate: -1px 1px;
+    translate: 0 4px;
   }
   to {
     opacity: 1;
@@ -424,20 +583,24 @@
   /* A dash as long as the path, started off its end. */
   stroke-dasharray: 1 2;
   stroke-dashoffset: 1.05;
-  animation: pl-draw 0.5s ease-in-out forwards;
+  animation: pl-draw 0.5s var(--pl-ease-move) forwards;
 }
 .pl-ink .pl-ink-line {
-  animation-duration: 0.4s;
-  animation-delay: 0.1s;
+  animation-duration: 0.45s;
+  animation-delay: calc(var(--pl-n, 0) * 0.12s + 0.12s);
 }
 .pl-ink .pl-ink-head {
   animation-duration: 0.15s;
-  animation-delay: 0.47s;
+  animation-delay: calc(var(--pl-n, 0) * 0.12s + 0.52s);
 }
 @keyframes pl-draw {
   to {
     stroke-dashoffset: 0;
   }
+}
+/* A note the visitor's pointer asked for is there at once. */
+.pl-notes[data-quick] :is(.pl-note-box, .pl-note, .pl-ink path) {
+  animation-delay: 0s;
 }
 @media (prefers-reduced-motion: reduce) {
   .pl-hand i {
@@ -455,7 +618,7 @@
 @keyframes pl-note-in {
   from {
     opacity: 0;
-    translate: 0 4px;
+    translate: 0 6px;
   }
 }
 .pl-note-num {
@@ -490,7 +653,11 @@
   position: static;
 }
 @media (prefers-reduced-motion: reduce) {
-  .pl-note {
+  .pl-note,
+  .pl-sheet,
+  .pl-sheet-item,
+  .pl-change,
+  .pl-rise {
     animation: none;
   }
 }
@@ -507,7 +674,26 @@
   box-shadow:
     0 0 0 1px rgb(0 0 0 / 0.12),
     0 24px 60px -12px rgb(0 0 0 / 0.4);
-  animation: pl-note-in 0.3s ease-out both;
+  /* It comes in from the side it sits on, and its states after it, one
+     by one. */
+  animation: pl-sheet-in 0.5s var(--pl-ease-out) both;
+}
+@keyframes pl-sheet-in {
+  from {
+    opacity: 0;
+    transform: translateX(32px) scale(0.98);
+  }
+}
+.pl-sheet-item,
+.pl-rise {
+  animation: pl-rise 0.5s var(--pl-ease-out) both;
+  animation-delay: calc(var(--pl-n, 0) * 0.06s + 0.18s);
+}
+@keyframes pl-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
 }
 .pl-sheet-bar {
   display: flex;
@@ -532,7 +718,7 @@
   display: flex;
   gap: 16px;
   width: max-content;
-  transition: translate 0.15s linear;
+  transition: translate 0.25s var(--pl-ease-out);
 }
 .pl-sheet-item {
   display: flex;
@@ -561,8 +747,8 @@
   background: var(--pl-card);
   color: var(--pl-card-fg);
   box-shadow: var(--pl-card-shadow);
-  transition: opacity 0.4s ease-out;
-  animation: pl-note-in 0.3s ease-out both;
+  transition: opacity 0.4s ease;
+  animation: pl-note-in 0.35s var(--pl-ease-out) both;
 }
 /* The change card is an annotation too, so it is set as the notes are
    (Leo, 2026-11-22). */
@@ -578,6 +764,11 @@
   padding-left: 22px;
   font: 400 14px/20px var(--font-sans);
   list-style: decimal;
+}
+/* The versions' list: the one showing picked out, the pick moving down
+   the list as the page goes through them. */
+.pl-versions li {
+  transition: opacity 0.3s ease;
 }
 .pl-change li[data-dim] {
   opacity: 0.45;
@@ -658,15 +849,14 @@
   flex: none;
 }
 
-/* A workflow's step, said beside the cursor as it happens. */
+/* A workflow's step, said beside the cursor as it happens (it is in the
+   cursor's holder, so it goes where the cursor does). Each new step comes
+   in as it is said. */
 .pl-say {
   position: absolute;
   top: 0;
   left: 0;
   z-index: 4;
-  display: flex;
-  align-items: center;
-  gap: 6px;
   margin: 22px 0 0 16px;
   padding: 4px 12px 4px 4px;
   border-radius: 999px;
@@ -676,8 +866,19 @@
   font: 400 14px/20px var(--font-sans);
   white-space: nowrap;
   pointer-events: none;
-  transition: translate 0.6s cubic-bezier(0.3, 0, 0.2, 1);
   corner-shape: round;
+}
+.pl-say > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  animation: pl-say-in 0.3s var(--pl-ease-out) both;
+}
+@keyframes pl-say-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
 }
 .pl-say[data-flip] {
   margin: 22px 0 0 -12px;
@@ -697,6 +898,7 @@
   font-weight: 400;
   corner-shape: round;
 }
+/* What a drag carries: picked up at the cursor, tilted a little. */
 .pl-ghost {
   position: absolute;
   top: 0;
@@ -711,13 +913,20 @@
   font: 500 12px/17px var(--font-sans);
   white-space: nowrap;
   pointer-events: none;
-  transition: translate 0.6s cubic-bezier(0.3, 0, 0.2, 1);
+  rotate: -2deg;
+  animation: pl-ghost-in 0.2s var(--pl-ease-out) both;
 }
-.pl-cursor[data-slow],
-.pl-say[data-slow],
-.pl-ghost[data-slow] {
-  transition-duration: 1s;
-  transition-timing-function: cubic-bezier(0.45, 0, 0.25, 1);
+@keyframes pl-ghost-in {
+  from {
+    opacity: 0;
+    scale: 0.92;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pl-say > span,
+  .pl-ghost {
+    animation: none;
+  }
 }
 .pl-shot {
   position: relative;

@@ -667,7 +667,11 @@ function ComponentPanel({ s }: { s: State }) {
       >
         <span>Tree</span>
       </div>
-      <Tree nodes={SELECT_TREE} selected={str(s.treeSel, "trigger")} />
+      <Tree
+        nodes={SELECT_TREE}
+        selected={str(s.treeSel, "trigger")}
+        rec={s.rec ? [str(s.treeSel, "trigger")] : undefined}
+      />
     </div>
   )
 }
@@ -676,6 +680,10 @@ function ComponentPanel({ s }: { s: State }) {
 function Right21({ s }: { s: State }) {
   const open = str(s.expand, "size").split(",")
   const rec = Boolean(s.rec || s.multiRec)
+  // What the recording has changed: Round's own width and color, or, into
+  // several variants at once, the one color edited.
+  const recWidth = Boolean(s.rec)
+  const recColor = Boolean(s.rec || (s.multiRec && s.multiColor))
   const head = (
     <div
       className="grid grid-cols-3 gap-1 border-b px-3 py-2.5"
@@ -808,8 +816,8 @@ function Right21({ s }: { s: State }) {
         "Size",
         "sec:size",
         <>
-          <Field label="Width" pk="f:width">
-            <Input rec={rec}>Stretch</Input>
+          <Field label="Width" pk="f:width" rec={recWidth}>
+            <Input rec={recWidth}>Stretch</Input>
           </Field>
           <Field label="Height">
             <Input>Hug</Input>
@@ -878,12 +886,14 @@ function Right21({ s }: { s: State }) {
           <Field
             label={
               <span className="flex items-center gap-1.5">
-                <span className="pk-dot" data-kind={rec ? "rec" : "set"} />
-                Color
+                <span className="pk-dot" data-kind={recColor ? "rec" : "set"} />
+                <span style={recColor ? { color: "var(--pk-rec)" } : undefined}>
+                  Color
+                </span>
               </span>
             }
           >
-            <Input rec={rec}>
+            <Input rec={recColor}>
               <span
                 className="pk-swatch"
                 style={{

@@ -19,10 +19,15 @@ function Strips({ items }: { items: Array<Shot> }) {
       className="flex h-full flex-col justify-center gap-7"
       style={{ padding: "0 72px", background: "var(--pk-bg)" }}
     >
-      {items.map((shot) => {
+      {items.map((shot, i) => {
         const k = (1440 - 144) / shot.w
         return (
-          <figure key={shot.label} className="m-0 flex flex-col gap-2">
+          <figure
+            key={shot.label}
+            // They come in one after another, down the stack.
+            className="pl-rise m-0 flex flex-col gap-2"
+            style={{ "--pl-n": i } as React.CSSProperties}
+          >
             <figcaption className="pk-faint pk-mono text-[11px]">
               {shot.label}
             </figcaption>

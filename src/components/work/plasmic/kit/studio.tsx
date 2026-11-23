@@ -428,10 +428,13 @@ export function Tree({
   selected,
   hover,
   drop,
+  rec,
 }: {
   nodes: Array<TreeNode>
   selected?: string
   hover?: string
+  /** The rows a recording has changed: each wears the recording's dot. */
+  rec?: Array<string>
   /** The row a dragged item would land under (or, as `^id`, above). */
   drop?: string
 }) {
@@ -450,6 +453,7 @@ export function Tree({
             data-pk={`row:${n.id}`}
             data-kind={kind}
             data-dim={n.dim || undefined}
+            data-rec={rec?.includes(n.id) || undefined}
             data-drop={
               drop === n.id
                 ? "below"
@@ -475,6 +479,7 @@ export function Tree({
             )}
             <Icon />
             <span className="truncate">{n.label}</span>
+            {rec?.includes(n.id) && <i className="pk-dot" data-kind="rec" />}
             <span className="pk-row-end">
               <TbLock />
               <TbEye />
@@ -516,14 +521,17 @@ export function Section({
 export function Field({
   label,
   pk,
+  rec,
   children,
 }: {
   label: React.ReactNode
   pk?: string
+  /** A recording has changed it: its label wears the recording's dot. */
+  rec?: boolean
   children: React.ReactNode
 }) {
   return (
-    <div className="pk-field" data-pk={pk}>
+    <div className="pk-field" data-pk={pk} data-rec={rec || undefined}>
       <label>{label}</label>
       {children}
     </div>

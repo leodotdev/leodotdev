@@ -223,6 +223,7 @@ export function Takes21({ s }: { s: State }) {
             { id: "icon", label: "Icon", kind: "image", depth: 2 },
           ]}
           selected="button"
+          rec={rec ? ["button"] : undefined}
         />
       </div>
       <main

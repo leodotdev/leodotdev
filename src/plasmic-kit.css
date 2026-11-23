@@ -8,6 +8,8 @@
  */
 
 .pk {
+  /* What opens comes in on the site's strong ease-out. */
+  --pk-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --pk-bg: #101113;
   --pk-dots: #24262b;
   --pk-panel: #17181b;
@@ -636,6 +638,34 @@
 .pk-field > label {
   color: var(--pk-fg-2);
 }
+/* A property a recording has changed: its label in the recording's red,
+   after a dot, as its row in the tree is (Leo, 2026-11-22). */
+.pk-field[data-rec] > label {
+  color: var(--pk-rec);
+}
+.pk-field[data-rec] > label::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: var(--pk-rec);
+  vertical-align: 1px;
+  animation: pk-dot-in 0.25s var(--pk-ease-out) both;
+  corner-shape: round;
+}
+.pk-row[data-rec] > .pk-dot {
+  flex: none;
+  animation: pk-dot-in 0.25s var(--pk-ease-out) both;
+  corner-shape: round;
+}
+@keyframes pk-dot-in {
+  from {
+    opacity: 0;
+    scale: 0.5;
+  }
+}
 .pk-input {
   display: flex;
   align-items: center;
@@ -865,12 +895,12 @@
   position: absolute;
   inset: 0;
   transform-origin: 0 0;
-  transition: transform 0.8s cubic-bezier(0.3, 0, 0.2, 1);
+  transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
 }
 .pk-canvas {
   transition:
-    background-size 0.8s cubic-bezier(0.3, 0, 0.2, 1),
-    background-position 0.8s cubic-bezier(0.3, 0, 0.2, 1);
+    background-size 0.8s cubic-bezier(0.65, 0, 0.35, 1),
+    background-position 0.8s cubic-bezier(0.65, 0, 0.35, 1);
 }
 /* Someone else in the project: their cursor, in their color, named. */
 .pk-peer {
@@ -879,7 +909,12 @@
   left: 0;
   z-index: 6;
   pointer-events: none;
-  transition: translate 0.9s cubic-bezier(0.35, 0, 0.25, 1);
+  transition:
+    translate 0.9s cubic-bezier(0.65, 0, 0.35, 1),
+    opacity 0.3s ease;
+}
+.pk-peer[data-away] {
+  opacity: 0;
 }
 .pk-peer svg {
   display: block;
@@ -985,6 +1020,19 @@
   z-index: 2;
   outline: 1.5px solid var(--pk-accent);
   pointer-events: none;
+  /* The selection goes from one element to the next, so the eye can
+     follow it (the product's own snapped). */
+  transition:
+    left 0.2s var(--pk-ease-out),
+    top 0.2s var(--pk-ease-out),
+    width 0.2s var(--pk-ease-out),
+    height 0.2s var(--pk-ease-out),
+    outline-color 0.2s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pk-sel {
+    transition: none;
+  }
 }
 .pk-sel[data-kind="component"] {
   outline-color: var(--pk-component);
@@ -1080,12 +1128,14 @@
   border-radius: 10px;
   background: var(--pk-pop);
   box-shadow: var(--pk-shadow);
-  animation: pk-pop-in 0.16s ease-out both;
+  animation: pk-pop-in 0.2s var(--pk-ease-out) both;
 }
+/* (It moves by `transform`, so a piece that places itself with `translate`,
+   as the dialogs do to sit in the middle, comes in where it is.) */
 @keyframes pk-pop-in {
   from {
     opacity: 0;
-    translate: 0 -4px;
+    transform: translateY(-4px) scale(0.97);
   }
 }
 .pk-menu {
@@ -1161,7 +1211,7 @@
   background: var(--pk-pop);
   box-shadow: var(--pk-shadow);
   translate: -50% -50%;
-  animation: pk-pop-in 0.2s ease-out both;
+  animation: pk-pop-in 0.22s var(--pk-ease-out) both;
 }
 .pk-dialog-head {
   display: flex;
@@ -1221,7 +1271,7 @@
   color: var(--pk-bg);
   font-weight: 500;
   translate: -50% 0;
-  animation: pk-pop-in 0.2s ease-out both;
+  animation: pk-pop-in 0.22s var(--pk-ease-out) both;
   white-space: nowrap;
 }
 .pk-toast svg {
@@ -1619,7 +1669,7 @@
   border-radius: 8px;
   background: var(--pk-rec-bg);
   color: var(--pk-rec);
-  animation: pk-pop-in 0.2s ease-out both;
+  animation: pk-pop-in 0.22s var(--pk-ease-out) both;
 }
 
 /* A big choice in a dialog (Q3 2021's onboarding). */
@@ -1849,11 +1899,11 @@
 }
 .pk-land-new {
   color: #111827;
-  animation: pk-pop-in 0.3s ease-out both;
+  animation: pk-pop-in 0.3s var(--pk-ease-out) both;
 }
 .pk-land-new {
   color: #111827;
-  animation: pk-pop-in 0.3s ease-out both;
+  animation: pk-pop-in 0.3s var(--pk-ease-out) both;
 }
 
 /* 2022's Insights (kit/insights.tsx). */
@@ -1984,7 +2034,7 @@
   border-radius: 9px;
   background: var(--pk-pop);
   box-shadow: var(--pk-shadow);
-  animation: pk-pop-in 0.25s ease-out both;
+  animation: pk-pop-in 0.25s var(--pk-ease-out) both;
 }
 .pk-take-context {
   right: auto;
@@ -2047,7 +2097,7 @@
   padding: 0 14px;
   background: var(--pk-rec);
   color: #fff;
-  animation: pk-pop-in 0.25s ease-out both;
+  animation: pk-pop-in 0.25s var(--pk-ease-out) both;
 }
 
 /* Q1 2021's Publish dialog (kit/publish21.tsx): steps down a line. */
@@ -2274,7 +2324,7 @@
   margin: 4px 8px;
   border-radius: 8px;
   box-shadow: 0 0 0 1.5px var(--pk-accent);
-  animation: pk-pop-in 0.3s ease-out both;
+  animation: pk-pop-in 0.3s var(--pk-ease-out) both;
 }
 
 /* 2020's Inheritance popover (kit/editor.tsx). */
@@ -2291,7 +2341,7 @@
   border-radius: 9px;
   background: var(--pk-pop);
   box-shadow: var(--pk-shadow);
-  animation: pk-pop-in 0.2s ease-out both;
+  animation: pk-pop-in 0.22s var(--pk-ease-out) both;
 }
 .pk-inherit-row {
   position: relative;
@@ -2332,7 +2382,7 @@
   box-shadow: 0 16px 40px -10px rgb(0 0 0 / 0.6);
   color: #e5e7eb;
   translate: -50% 0;
-  animation: pk-pop-in 0.2s ease-out both;
+  animation: pk-pop-in 0.22s var(--pk-ease-out) both;
 }
 .pk-omni-search {
   display: flex;
@@ -2580,7 +2630,7 @@
   color: #111827;
   font: 500 20px/1 var(--pk-sans);
   white-space: nowrap;
-  animation: pk-pop-in 0.2s ease-out both;
+  animation: pk-pop-in 0.22s var(--pk-ease-out) both;
 }
 .pk-richbar-item {
   display: flex;

@@ -30,6 +30,7 @@ import type {
   Dive,
   Note,
   Peer,
+  Point,
   Rect,
   Scene,
   Sheet,
@@ -65,11 +66,40 @@ const SCALE = 0.8
  * where the window is too small; the app does not reflow (it was a desktop
  * app). The browser and the studio wear the product theme picked in the
  * bar (./theme.tsx).
+ *
+ * Nothing on the stage cuts (Leo, 2026-11-22: "better motion graphics
+ * throughout, without being too hard to keep up with"): a scene dissolves
+ * into the next, two versions of one thing wipe across, the cursor carries
+ * on from where the last scene left it, a lens closes in on what a beat is
+ * about, and what leaves the desk fades out.
  */
 export function Stage({ year }: { year: Year }) {
   const track = useRef<HTMLDivElement>(null)
   const desk = useRef<HTMLDivElement>(null)
-  const at = useScrollScene(track, year.dives)
+  // What the scene being left looked like, for the next to come in over.
+  const memory = useRef<Memory | null>(null)
+  const leave = useCallback((forward: boolean, quick: boolean) => {
+    const app = desk.current?.querySelector<HTMLElement>(
+      ".pl-browser > .pl-app:not(.pl-app-out)"
+    )
+    const frame = app?.closest<HTMLElement>(".pl-browser-box")
+    // Scrubbed through quickly, scenes cut: a dissolve each would smear.
+    memory.current =
+      app && frame && !quick
+        ? {
+            node: app.cloneNode(true) as HTMLElement,
+            left: frame.offsetLeft,
+            forward,
+          }
+        : null
+  }, [])
+  // The scene coming in takes it, once.
+  const take = useCallback(() => {
+    const old = memory.current
+    memory.current = null
+    return old
+  }, [])
+  const at = useScrollScene(track, year.dives, leave)
   const dive = year.dives.at(at.dive) ?? year.dives[0]
   const scene = dive.scenes.at(at.scene) ?? dive.scenes[0]
   const key = `${dive.slug}:${at.scene}`
@@ -77,6 +107,16 @@ export function Stage({ year }: { year: Year }) {
   const { theme, full, setFull } = usePkTheme()
   // What a visitor's click on a part does: what the scripts' own clicks do.
   const live = useMemo(() => clicksOf(year.dives), [year])
+
+  // Where the demo cursor last rested, in the app's pixels as drawn: the
+  // next scene's cursor sets out from there.
+  const [carry, setCarry] = useState<Point | null>(null)
+  const rest = useCallback(
+    (x: number, y: number) =>
+      setCarry((was) => (was?.[0] === x && was[1] === y ? was : [x, y])),
+    []
+  )
+  useExits(desk)
 
   const [box, setBox] = useState({ w: 0, h: 0, s: SCALE })
   useLayoutEffect(() => {
@@ -113,6 +153,11 @@ export function Stage({ year }: { year: Year }) {
     return () => window.removeEventListener("keydown", onKey)
   }, [full, setFull])
 
+  // The versions card stays for the whole of its set, so the version
+  // showing is picked out as the page goes through them.
+  const frame = frameOf(box, Boolean(scene.sheet))
+  const [versionsFoot, setVersionsFoot] = useState(0)
+
   return (
     <div ref={track} className="pl-track">
       <div
@@ -135,6 +180,20 @@ export function Stage({ year }: { year: Year }) {
               box={box}
               live={live.get(scene.view)}
               here={{ year: year.slug, slug: dive.slug }}
+              from={carry}
+              onRest={rest}
+              take={take}
+              versionsFoot={versionsFoot}
+            />
+          )}
+          {box.w > 0 && scene.versions && (
+            <VersionsCard
+              key={scene.versions.title}
+              versions={scene.versions}
+              room={frame.narrow ? panned(box, frame, APP_W / 2) : frame.left}
+              top={frame.top}
+              height={frame.bh}
+              onFoot={setVersionsFoot}
             />
           )}
           {full && (
@@ -184,15 +243,19 @@ function DiveArticle({ dive }: { dive: Dive }) {
 /**
  * Which scene the page is on: the dive whose top has reached the bottom of
  * the bar, and how far into it, laid along its scenes by the steps each
- * takes. `progress` is how far through the scene, for the sheets.
+ * takes. `progress` is how far through the scene, for the sheets. Just
+ * before the scene changes, `onLeave` is told (which way the page is going,
+ * and whether the last change was only a moment ago).
  */
 function useScrollScene(
   track: React.RefObject<HTMLDivElement | null>,
-  dives: Array<Dive>
+  dives: Array<Dive>,
+  onLeave: (forward: boolean, quick: boolean) => void
 ) {
   const [at, setAt] = useState({ dive: 0, scene: 0, progress: 0 })
   useEffect(() => {
     let frame = 0
+    let last: { d: number; s: number; when: number } | null = null
     const measure = () => {
       frame = 0
       const el = track.current
@@ -219,6 +282,13 @@ function useScrollScene(
         s++
       }
       const progress = Math.round((x / (spans.at(s) ?? 1)) * 200) / 200
+      const now = performance.now()
+      if (last && (last.d !== d || last.s !== s))
+        onLeave(
+          d > last.d || (d === last.d && s > last.s),
+          now - last.when < 260
+        )
+      if (last?.d !== d || last.s !== s) last = { d, s, when: now }
       setAt((was) =>
         was.dive === d && was.scene === s && was.progress === progress
           ? was
@@ -236,18 +306,214 @@ function useScrollScene(
       window.removeEventListener("scroll", queue)
       window.removeEventListener("resize", queue)
     }
-  }, [track, dives])
+  }, [track, dives, onLeave])
   return at
 }
 
+/**
+ * What leaves the desk fades out, where it would otherwise only be gone: a
+ * menu or a dialog the script closes, a note whose beat is over, the
+ * states' window. React takes the element out at once; a copy is put back
+ * in its place for as long as the fade takes (`[data-leaving]` in
+ * src/plasmic.css). Something only moved, or taken out along with what it
+ * is in, is left alone.
+ */
+const EXITS =
+  ".pl-notes, .pl-note, .pl-note-box, .pl-ink g, .pl-sheet, .pl-change, .pk-pop, .pk-dialog, .pk-scrim, .pk-toast"
+function useExits(root: React.RefObject<HTMLElement | null>) {
+  useEffect(() => {
+    const el = root.current
+    if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    const observer = new MutationObserver((records) => {
+      for (const record of records) {
+        const parent = record.target
+        if (!(parent instanceof Element) || !parent.isConnected) continue
+        if (parent.closest("[data-leaving], .pl-app-out")) continue
+        for (const node of record.removedNodes) {
+          if (!(node instanceof Element) || node.isConnected) continue
+          if (node.hasAttribute("data-leaving") || !node.matches(EXITS))
+            continue
+          const ghost = node.cloneNode(true) as Element
+          ghost.setAttribute("data-leaving", "")
+          ghost.setAttribute("aria-hidden", "true")
+          // A copy is not the part: nothing measures or presses it.
+          for (const part of [
+            ghost,
+            ...Array.from(ghost.querySelectorAll("[data-pk]")),
+          ])
+            part.removeAttribute("data-pk")
+          ghost.removeAttribute("data-note")
+          const next = record.nextSibling
+          parent.insertBefore(ghost, next?.parentNode === parent ? next : null)
+          window.setTimeout(() => ghost.remove(), 240)
+        }
+      }
+    })
+    observer.observe(el, { childList: true, subtree: true })
+    return () => observer.disconnect()
+  }, [root])
+}
+
 type Box = { w: number; h: number; s: number }
+
+/** Where the browser sits on the desk, and at what scale it is drawn. */
+function frameOf(box: Box, sheet: boolean) {
+  // On a phone the browser is drawn larger than the window is wide (a
+  // whole desktop app at a quarter of its size cannot be read), and pans
+  // sideways to keep the demo cursor in view.
+  const narrow = box.w < 768
+  const s = narrow ? Math.min(0.5, (box.h * 0.6) / (APP_H + CHROME)) : box.s
+  const bw = Math.round(APP_W * s)
+  const bh = Math.round((APP_H + CHROME) * s)
+  const shift = sheet ? Math.min(160, Math.max(0, box.w - bw) / 2) : 0
+  return {
+    narrow,
+    s,
+    bw,
+    bh,
+    left: Math.round((box.w - bw) / 2 - shift),
+    top: narrow ? 16 : Math.round((box.h - bh) / 2),
+    chrome: Math.round(CHROME * s),
+  }
+}
+type Frame = ReturnType<typeof frameOf>
+
+/** On a phone: the browser's left edge with the app's `x` in view. */
+const panned = (box: Box, frame: Frame, x: number) =>
+  Math.round(
+    Math.min(8, Math.max(box.w - frame.bw - 8, box.w / 2 - x * frame.s))
+  )
+
+/** The scene just left, as it looked, and where its browser was. */
+type Memory = { node: HTMLElement; left: number; forward: boolean }
+
+/**
+ * One picture of the app gives way to the next: the old one, a copy laid
+ * over the app, fades out (a scene change, or a script starting over), or,
+ * between two versions of one thing, is wiped away sideways behind a line,
+ * the way the page is going, so the two can be compared as it passes.
+ */
+function dissolve(
+  app: HTMLElement | null,
+  old: HTMLElement,
+  how: "fade" | "wipe" | "wipe-back"
+) {
+  const host = app?.parentElement
+  if (!host) return
+  for (const was of host.querySelectorAll(".pl-app-out, .pl-wipe")) was.remove()
+  old.classList.add("pl-app-out")
+  old.dataset.out = how
+  old.setAttribute("aria-hidden", "true")
+  old.removeAttribute("data-go")
+  old.inert = true
+  const made: Array<HTMLElement> = [old]
+  if (how !== "fade") {
+    const line = document.createElement("i")
+    line.className = "pl-wipe"
+    line.dataset.out = how
+    made.push(line)
+  }
+  for (const el of made) host.appendChild(el)
+  old.addEventListener("animationend", (e) => {
+    if (e.target === old) for (const el of made) el.remove()
+  })
+}
+
+/**
+ * The lens over the app (Leo, 2026-11-22: "better motion graphics… without
+ * being too hard to keep up with"): what of the app the browser shows, and
+ * how close. `x` and `y` are the corner of what shows, in the app's pixels,
+ * `z` how much larger it is drawn, and `ms` how long the lens took to get
+ * there. It closes in on what a beat is about and holds while the next
+ * beats stay in the frame, so most of the time nothing moves but the
+ * cursor.
+ */
+type Lens = { x: number; y: number; z: number; ms: number }
+const WIDE: Lens = { x: 0, y: 0, z: 1, ms: 0 }
+/** Off, the app is always shown whole. */
+const LENS = true as boolean
+
+/** A box of the app as the lens shows it. */
+const through = (r: Rect, l: Lens): Rect => [
+  (r[0] - l.x) * l.z,
+  (r[1] - l.y) * l.z,
+  r[2] * l.z,
+  r[3] * l.z,
+]
+const union = (a: Rect | null, b: Rect | null): Rect | null => {
+  if (!a || !b) return a ?? b
+  const x = Math.min(a[0], b[0])
+  const y = Math.min(a[1], b[1])
+  return [
+    x,
+    y,
+    Math.max(a[0] + a[2], b[0] + b[2]) - x,
+    Math.max(a[1] + a[3], b[1] + b[3]) - y,
+  ]
+}
+
+/**
+ * Where the lens goes for what a beat is about (`focus`: the part the
+ * cursor is after, and every part with a note showing). Something that
+ * takes up more than half the app either way is shown whole. Something
+ * smaller is shown closer, by `zoom`, if the beat stays long enough to be
+ * worth the move (`linger`); a passing beat leaves the lens where it is
+ * while its part is in the frame, and pulls it back where it is not.
+ * `k` is the page's pixels to one of the app's: the lens stops on a whole
+ * pixel, so what it shows is drawn sharp.
+ */
+function aim(
+  was: Lens,
+  focus: Rect | null,
+  linger: boolean,
+  zoom: number,
+  k: number
+): Lens {
+  if (!focus) return was
+  const [fx, fy, fw, fh] = focus
+  const small = fw <= APP_W * 0.5 && fh <= APP_H * 0.5
+  if (was.z > 1 && small) {
+    const m = 16 / was.z
+    const inFrame =
+      fx >= was.x + m &&
+      fy >= was.y + m &&
+      fx + fw <= was.x + APP_W / was.z - m &&
+      fy + fh <= was.y + APP_H / was.z - m
+    if (inFrame) return was
+  }
+  if (!small || !linger) return was.z === 1 ? was : { ...WIDE, ms: 800 }
+  const snap = (v: number) => Math.round(v * zoom * k) / (zoom * k)
+  const vw = APP_W / zoom
+  const vh = APP_H / zoom
+  const x = snap(Math.min(Math.max(fx + fw / 2 - vw / 2, 0), APP_W - vw))
+  const y = snap(Math.min(Math.max(fy + fh / 2 - vh / 2, 0), APP_H - vh))
+  const far =
+    Math.hypot((x - was.x) * zoom, (y - was.y) * zoom) +
+    Math.abs(zoom - was.z) * 900
+  return {
+    x,
+    y,
+    z: zoom,
+    ms: Math.round(Math.min(1100, Math.max(650, 480 + far * 0.55))),
+  }
+}
+
 type Cursor = {
+  /** The beat it is on (-1 before the first), and the one it came from. */
   index: number
+  from: number
+  /** Where it is, in the app's own pixels. */
   x: number
   y: number
   shape: NonNullable<Beat["shape"]>
   pressed: boolean
-  slow: boolean
+  shown: boolean
+  /** It has arrived, and what its press did is drawn: the notes come in. */
+  settled: boolean
+  /** How long the move it is making takes. */
+  ms: number
+  /** It is only keeping its place while the lens moves under it. */
+  ride: boolean
 }
 
 /** What pressing each part does to the state, by the part's name. */
@@ -283,7 +549,9 @@ const beatsOf = (n: Note) =>
 /**
  * One scene, played: the browser with the studio in it, the notes, the
  * cursor running the scene's script, and whatever else the scene has.
- * Remounted for every scene, so a script always starts from its first beat.
+ * Remounted for every scene, so a script always starts from its first beat;
+ * what carries over from the scene before is the cursor's place (`from`)
+ * and the look of the app (`take`), which this one comes in over.
  */
 function Player({
   scene,
@@ -291,6 +559,10 @@ function Player({
   box,
   live,
   here,
+  from,
+  onRest,
+  take,
+  versionsFoot,
 }: {
   scene: Scene
   progress: number
@@ -298,25 +570,30 @@ function Player({
   live?: Patches
   /** The year and dive on the stage. */
   here: { year: string; slug: string }
+  /** Where the last scene's cursor rested. */
+  from: Point | null
+  onRest: (x: number, y: number) => void
+  /** Hands over how the scene before looked, once. */
+  take: () => Memory | null
+  /** Where the versions card ends, in the desk's pixels. */
+  versionsFoot: number
 }) {
   const { theme } = usePkTheme()
-  // On a phone the browser is drawn larger than the window is wide (a
-  // whole desktop app at a quarter of its size cannot be read), and pans
-  // sideways to keep the demo cursor in view.
-  const narrow = box.w < 768
-  const s = narrow ? Math.min(0.5, (box.h * 0.6) / (APP_H + CHROME)) : box.s
-  const bw = Math.round(APP_W * s)
-  const bh = Math.round((APP_H + CHROME) * s)
-  const shift = scene.sheet ? Math.min(160, Math.max(0, box.w - bw) / 2) : 0
-  const top = narrow ? 16 : Math.round((box.h - bh) / 2)
-  const chrome = Math.round(CHROME * s)
+  const frame = frameOf(box, Boolean(scene.sheet))
+  const { narrow, s, bw, bh, top, chrome } = frame
 
   const [initial] = useState<State>(() => scene.state ?? {})
   const [state, setState] = useState<State>(initial)
+  const [still] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      matchMedia("(prefers-reduced-motion: reduce)").matches
+  )
 
   // A change scene starts on what came before and waves into itself.
   const [before, setBefore] = useState(Boolean(scene.change))
   const app = useRef<HTMLDivElement>(null)
+  const glass = useRef<HTMLDivElement>(null)
   useEffect(() => {
     if (!scene.change) return
     const t = window.setTimeout(() => {
@@ -325,21 +602,54 @@ function Player({
     return () => clearTimeout(t)
   }, [scene])
 
-  // Where a part is, in the app's pixels (measured as drawn).
+  // Coming in: the scene before dissolves away over this one (two versions
+  // of one thing are wiped across), and the browser glides over from where
+  // that scene had it (one with a states' window sits further left).
+  const set = scene.versions?.title ?? ""
+  useLayoutEffect(() => {
+    const old = take()
+    const el = app.current
+    const boxEl = el?.closest<HTMLElement>(".pl-browser-box")
+    if (!old || !el || !boxEl || still) return
+    dissolve(
+      el,
+      old.node,
+      set && old.node.dataset.set === set
+        ? old.forward
+          ? "wipe"
+          : "wipe-back"
+        : "fade"
+    )
+    const dx = old.left - boxEl.offsetLeft
+    if (dx)
+      boxEl.animate([{ translate: `${dx}px 0` }, { translate: "0 0" }], {
+        duration: 600,
+        easing: "cubic-bezier(0.65, 0, 0.35, 1)",
+      })
+  }, [take, set, still])
+  // And a script starting over dissolves back to where it began.
+  const rewind = useCallback(() => {
+    const el = app.current
+    if (el) dissolve(el, el.cloneNode(true) as HTMLElement, "fade")
+  }, [])
+
+  // Where a part is, in the app's own pixels, whatever the lens is doing
+  // (it is measured as drawn, then taken back through the lens as it is
+  // this instant, which may be mid-move).
   const measure = useCallback((a: Anchor): Rect | null => {
     if (typeof a !== "string") return a
     const root = app.current
     const el = root?.querySelector(`[data-pk="${a}"]`)
-    if (!root || !el) return null
-    const r = el.getBoundingClientRect()
-    const o = root.getBoundingClientRect()
-    const k = o.width / APP_W || 1
-    return [
-      (r.left - o.left) / k,
-      (r.top - o.top) / k,
-      r.width / k,
-      r.height / k,
-    ]
+    return root && el ? rawRect(root, glass.current, el) : null
+  }, [])
+  // The menus, popovers, and dialogs open now.
+  const overlays = useCallback((): Rect | null => {
+    const root = app.current
+    if (!root) return null
+    let all: Rect | null = null
+    for (const el of root.querySelectorAll(".pk-pop, .pk-dialog"))
+      all = union(all, rawRect(root, glass.current, el))
+    return all
   }, [])
 
   // Tinkering (Leo, 2026-11-22): while the cursor presents, a visitor can
@@ -463,35 +773,37 @@ function Player({
     }))
   }
 
-  const [still] = useState(
-    () =>
-      typeof window !== "undefined" &&
-      matchMedia("(prefers-reduced-motion: reduce)").matches
-  )
-  const { cursor, say, ghost } = useScript(
-    scene.script,
-    scene.notes,
+  const { cursor, lens, say, ghost } = useScript({
+    script: scene.script,
+    notes: scene.notes,
     paused,
-    !before && !still,
+    running: !before && !still,
     initial,
+    from,
+    // Closer by enough to draw the app at its true size (it is drawn at
+    // 80%), and no closer on a phone, where the browser pans instead.
+    zoom: LENS && !narrow ? Math.min(1.5, Math.max(1.25, 1 / s)) : 1,
+    k: s,
     setState,
-    measure
-  )
-  const left = narrow
-    ? Math.round(
-        Math.min(
-          8,
-          Math.max(box.w - bw - 8, box.w / 2 - (cursor?.x ?? APP_W / 2) * s)
-        )
-      )
-    : Math.round((box.w - bw) / 2 - shift)
+    measure,
+    overlays,
+    rewind,
+  })
+  // The cursor as the lens shows it, in the app's pixels as drawn.
+  const cx = (cursor.x - lens.x) * lens.z
+  const cy = (cursor.y - lens.y) * lens.z
+  const shown = cursor.shown
+  useEffect(() => {
+    if (shown) onRest(cx, cy)
+  }, [shown, cx, cy, onRest])
+  const left = narrow ? panned(box, frame, shown ? cx : APP_W / 2) : frame.left
   const peers = usePeers(scene.peers, !before && !still, setState, measure)
 
   // The notes showing: those for the whole scene, and those of the beat
-  // the cursor is on (with reduced motion, all of them).
+  // the cursor is on, once it is there (with reduced motion, all of them).
   const notes = scene.notes
   const [rects, setRects] = useState<Array<Rect | null>>([])
-  const beatIndex = cursor?.index
+  const { index, settled } = cursor
   useLayoutEffect(() => {
     // Measured as drawn, and again once a pan or zoom has settled.
     const update = () => setRects((notes ?? []).map((n) => measure(n.on)))
@@ -501,33 +813,48 @@ function Player({
       cancelAnimationFrame(f)
       clearTimeout(t)
     }
-  }, [state, before, s, notes, measure, beatIndex])
+  }, [state, before, s, notes, measure, index, settled])
+  // A part as the lens shows it, cut to what of it is in the browser.
+  const seen = (r: Rect): Rect | null => {
+    const [x, y, w, h] = through(r, lens)
+    const l = Math.max(0, x)
+    const t = Math.max(0, y)
+    const r2 = Math.min(APP_W, x + w)
+    const b = Math.min(APP_H, y + h)
+    return r2 - l < 4 || b - t < 4 ? null : [l, t, r2 - l, b - t]
+  }
   const playing = (notes ?? [])
-    .map((note, i) => ({ note, rect: rects.at(i) ?? null }))
+    .map((note, i) => {
+      const rect = rects.at(i)
+      return { note, rect: rect ? seen(rect) : null }
+    })
     .filter((n): n is { note: Note; rect: Rect } => {
       if (!n.rect) return false
       const only = beatsOf(n.note)
       if (!only || still) return true
-      return beatIndex !== undefined && only.includes(beatIndex)
+      // A note that stays from the beat before does not wait again.
+      return only.includes(index) && (settled || only.includes(cursor.from))
     })
   // The part asked of takes the notes' place while it is asked of.
-  const shown = asked
-    ? [
-        {
-          note: asked.note,
-          rect: asked.rect,
-          more:
-            asked.go &&
-            `${asked.go.name === "Overview" ? "Research" : asked.go.name} · ${asked.go.title}`,
-        },
-      ]
-    : playing
+  const askedRect = asked && seen(asked.rect)
+  const showing =
+    asked && askedRect
+      ? [
+          {
+            note: asked.note,
+            rect: askedRect,
+            more:
+              asked.go &&
+              `${asked.go.name === "Overview" ? "Research" : asked.go.name} · ${asked.go.title}`,
+          },
+        ]
+      : playing
 
   // Where the change card ends, in the desk's pixels.
   const [changeFoot, setChangeFoot] = useState(0)
+  const cardFoot = scene.versions ? versionsFoot : scene.change ? changeFoot : 0
 
-  const at = (x: number, y: number) =>
-    `${Math.round(x * s)}px ${Math.round(y * s)}px`
+  const px = (v: number) => Math.round(v * s)
 
   return (
     <>
@@ -553,61 +880,87 @@ function Player({
             ref={app}
             className="pk pl-app"
             data-pk-theme={theme}
+            data-set={set || undefined}
             style={{ width: APP_W, height: APP_H }}
             data-go={asked?.go ? "" : undefined}
             onClick={tinker}
             onPointerMove={ask}
             onPointerLeave={() => setAsked(null)}
           >
-            {before && scene.change
-              ? scene.change.from(state)
-              : scene.view(state)}
+            <div
+              ref={glass}
+              className="pl-lens"
+              style={{
+                transform: `translate(${-lens.x * lens.z}px, ${-lens.y * lens.z}px) scale(${lens.z})`,
+                transitionDuration: `${lens.ms}ms`,
+              }}
+            >
+              {before && scene.change
+                ? scene.change.from(state)
+                : scene.view(state)}
+            </div>
           </div>
         </div>
         <div className="pl-over" style={{ top: chrome }}>
-          {ghost && cursor && (
-            <span
-              className="pl-ghost"
-              data-slow={cursor.slow ? "" : undefined}
-              style={{ translate: at(cursor.x, cursor.y) }}
-            >
-              {ghost}
-            </span>
-          )}
           {peers.map((p) => (
-            <PeerView key={p.name} peer={p} s={s} />
+            <PeerView
+              key={p.name}
+              peer={p}
+              at={[px((p.x - lens.x) * lens.z), px((p.y - lens.y) * lens.z)]}
+              sel={p.sel && seen(p.sel)}
+              // Someone outside what the lens shows is out of sight.
+              away={!seen([p.x, p.y, 4, 4])}
+              s={s}
+            />
           ))}
-          <CursorView cursor={cursor} s={s} />
-          {say && cursor && (
-            <span
-              className="pl-say"
-              data-slow={cursor.slow ? "" : undefined}
-              // Near the browser's right edge, the step is said to the
-              // cursor's left.
-              data-flip={cursor.x * s > bw - 240 ? "" : undefined}
-              // And near its foot, above it.
-              data-up={cursor.y * s > bh - chrome - 56 ? "" : undefined}
-              style={{ translate: at(cursor.x, cursor.y) }}
-            >
-              <b>{say.n}</b>
-              {say.text}
-            </span>
-          )}
+          <div
+            className="pl-point"
+            data-shown={shown ? "" : undefined}
+            data-ride={cursor.ride ? "" : undefined}
+            style={
+              {
+                translate: `${px(cx)}px 0`,
+                "--pl-move": `${cursor.ms}ms`,
+              } as React.CSSProperties
+            }
+          >
+            <div style={{ translate: `0 ${px(cy)}px` }}>
+              {ghost && <span className="pl-ghost">{ghost}</span>}
+              <CursorView cursor={cursor} />
+              {say && (
+                <span
+                  className="pl-say"
+                  // Near the browser's right edge, the step is said to
+                  // the cursor's left.
+                  data-flip={cx * s > bw - 240 ? "" : undefined}
+                  // And near its foot, above it.
+                  data-up={cy * s > bh - chrome - 56 ? "" : undefined}
+                >
+                  <span key={say.n}>
+                    <b>{say.n}</b>
+                    {say.text}
+                  </span>
+                </span>
+              )}
+            </div>
+          </div>
         </div>
       </div>
       <NoteLayer
-        notes={shown}
+        notes={showing}
         s={s}
         origin={[left, top + chrome]}
         desk={[box.w, box.h]}
         browser={{ left, width: bw }}
         taken={{ right: Boolean(scene.sheet) }}
+        // While the lens is moving, what stays up moves with it.
+        fly={settled ? 0 : lens.ms}
+        view={`${lens.x},${lens.y},${lens.z}`}
+        quick={Boolean(asked)}
         // The change card is at the top of the left gutter: notes there
         // start under it.
         under={
-          (scene.change || scene.versions) && left >= CHANGE_ROOM && changeFoot
-            ? { left: changeFoot + 12 }
-            : undefined
+          cardFoot && left >= CHANGE_ROOM ? { left: cardFoot + 12 } : undefined
         }
       />
       {scene.sheet && (
@@ -617,15 +970,6 @@ function Player({
           box={box}
           theme={theme}
           browser={{ left, top, width: bw, height: bh }}
-        />
-      )}
-      {scene.versions && (
-        <VersionsCard
-          versions={scene.versions}
-          room={left}
-          top={top}
-          height={bh}
-          onFoot={setChangeFoot}
         />
       )}
       {scene.change && (
@@ -641,23 +985,81 @@ function Player({
   )
 }
 
+/** A part's box in the app's own pixels, taken back through the lens. */
+function rawRect(root: Element, glass: Element | null, el: Element): Rect {
+  const r = el.getBoundingClientRect()
+  const o = root.getBoundingClientRect()
+  const k = o.width / APP_W || 1
+  const m = glass
+    ? new DOMMatrixReadOnly(getComputedStyle(glass).transform)
+    : null
+  const z = m?.a || 1
+  return [
+    ((r.left - o.left) / k - (m?.e ?? 0)) / z,
+    ((r.top - o.top) / k - (m?.f ?? 0)) / z,
+    r.width / k / z,
+    r.height / k / z,
+  ]
+}
+
 /**
  * Runs a scene's script: the cursor goes to each beat in turn (measuring
  * the part it is after where it is drawn now), presses, drags, or types
  * where a beat says, and the state changes; after the last it rests, the
- * state goes back to the scene's own, and it starts over.
+ * app dissolves back to the scene's own state, and it starts over.
+ *
+ * The motion is paced to be followed (Leo, 2026-11-22): a move takes as
+ * long as it is far, short hops quick and a crossing slow; the lens closes
+ * in on what a beat is about as the cursor goes there, and holds while the
+ * next beats stay in its frame; and a beat's notes come up only once the
+ * cursor has arrived and what its press did is on screen.
  */
-function useScript(
-  script: Array<Beat> | undefined,
-  notes: Array<Note> | undefined,
+function useScript({
+  script,
+  notes,
+  paused,
+  running,
+  initial,
+  from,
+  zoom,
+  k,
+  setState,
+  measure,
+  overlays,
+  rewind,
+}: {
+  script: Array<Beat> | undefined
+  notes: Array<Note> | undefined
   /** Held where it is while this is set (the visitor is asking of a part). */
-  paused: React.RefObject<boolean>,
-  running: boolean,
-  initial: State,
-  setState: React.Dispatch<React.SetStateAction<State>>,
+  paused: React.RefObject<boolean>
+  running: boolean
+  initial: State
+  /** Where the cursor sets out from. */
+  from: Point | null
+  /** How close the lens goes (1: it stays wide). */
+  zoom: number
+  /** The page's pixels to one of the app's. */
+  k: number
+  setState: React.Dispatch<React.SetStateAction<State>>
   measure: (a: Anchor) => Rect | null
-) {
-  const [cursor, setCursor] = useState<Cursor | null>(null)
+  overlays: () => Rect | null
+  rewind: () => void
+}) {
+  const [start] = useState(from)
+  const [cursor, setCursor] = useState<Cursor>(() => ({
+    index: -1,
+    from: -1,
+    // With nowhere to set out from, it comes in from the middle.
+    x: start?.[0] ?? APP_W * 0.54,
+    y: start?.[1] ?? APP_H * 0.6,
+    shape: "arrow",
+    pressed: false,
+    shown: Boolean(start && script?.length && running),
+    settled: false,
+    ms: 0,
+    ride: false,
+  }))
+  const [lens, setLens] = useState<Lens>(WIDE)
   const [say, setSay] = useState<{ n: number; text: string } | null>(null)
   const [ghost, setGhost] = useState<string | null>(null)
   useEffect(() => {
@@ -673,10 +1075,6 @@ function useScript(
       await wait(ms)
       while (paused.current) await wait(200)
     }
-    const point = (on: string, at: [number, number] = [0.5, 0.5]) => {
-      const r = measure(on)
-      return r ? ([r[0] + r[2] * at[0], r[1] + r[3] * at[1]] as const) : null
-    }
     // How long a beat rests at the least: long enough to read what it
     // brings up (Leo, 2026-11-22: the notes went too quickly to read), its
     // step and its notes at an easy reading pace, a note that stays for
@@ -689,48 +1087,105 @@ function useScript(
       }
       return letters ? 900 + letters * 42 : 0
     }
+    // What a beat is about: the part the cursor is after (and where it
+    // drags to), every part with a note showing, and, once it has pressed,
+    // whatever that opened.
+    const about = (i: number, b: Beat, part: Rect | null, opened: boolean) => {
+      let all = union(part, b.drag ? measure(b.drag) : null)
+      for (const n of notes ?? []) {
+        const on = beatsOf(n)
+        if (!on || on.includes(i)) all = union(all, measure(n.on))
+      }
+      return opened ? union(all, overlays()) : all
+    }
+    // The script's own copies of where the cursor and the lens are.
+    let at: Point = start ?? [APP_W * 0.54, APP_H * 0.6]
+    let glass = WIDE
+    const fly = (to: Lens) => {
+      if (to === glass) return 0
+      glass = to
+      setLens(to)
+      return to.ms
+    }
     void (async () => {
       await after(450)
       for (;;) {
         let step = 0
         for (const [i, b] of script.entries()) {
-          const to = b.to ?? (b.on ? point(b.on, b.at) : null)
+          const part = b.on
+            ? measure(b.on)
+            : b.to
+              ? ([b.to[0] - 100, b.to[1] - 70, 200, 140] as Rect)
+              : null
+          const to: Point | null =
+            b.to ??
+            (b.on && part
+              ? [
+                  part[0] + part[2] * (b.at?.[0] ?? 0.5),
+                  part[1] + part[3] * (b.at?.[1] ?? 0.5),
+                ]
+              : null)
           const shape = b.shape ?? (b.click || b.drag ? "pointer" : "arrow")
-          setCursor((c) =>
-            to
-              ? {
-                  index: i,
-                  x: to[0],
-                  y: to[1],
-                  shape,
-                  pressed: false,
-                  slow: false,
-                }
-              : c && { ...c, index: i }
-          )
+          const rest = Math.max(b.wait ?? 1300, read(i, b))
+          const linger = rest >= 2000
+          let travel = 120
+          if (to) {
+            const was = glass
+            const flight = fly(
+              aim(glass, about(i, b, part, false), linger, zoom, k)
+            )
+            // As far as it is on the page, from where it shows now to
+            // where it will.
+            const far =
+              Math.hypot(
+                (to[0] - glass.x) * glass.z - (at[0] - was.x) * was.z,
+                (to[1] - glass.y) * glass.z - (at[1] - was.y) * was.z
+              ) * k
+            travel = Math.max(
+              flight,
+              Math.round(Math.min(900, Math.max(360, 260 + far * 0.6)))
+            )
+            at = to
+          }
+          const ms = travel
+          setCursor((c) => ({
+            ...c,
+            index: i,
+            from: c.index,
+            x: at[0],
+            y: at[1],
+            shape: to ? shape : c.shape,
+            pressed: false,
+            shown: c.shown || Boolean(to),
+            settled: false,
+            ms: to ? ms : c.ms,
+            ride: false,
+          }))
           if (b.say) setSay({ n: ++step, text: b.say })
-          await after(to ? 680 : 120)
+          await after(travel + 80)
           if (b.click) {
-            setCursor((c) => c && { ...c, pressed: true })
+            setCursor((c) => ({ ...c, pressed: true }))
             await after(140)
-            setCursor((c) => c && { ...c, pressed: false })
+            setCursor((c) => ({ ...c, pressed: false }))
           }
           if (b.drag) {
-            const end = point(b.drag)
-            setCursor((c) => c && { ...c, pressed: true, shape: "grab" })
+            const end = measure(b.drag)
+            setCursor((c) => ({ ...c, pressed: true, shape: "grab" }))
             setGhost(b.ghost ?? null)
             await after(220)
-            if (end)
-              setCursor((c) => c && { ...c, x: end[0], y: end[1], slow: true })
+            if (end) {
+              at = [end[0] + end[2] / 2, end[1] + end[3] / 2]
+              setCursor((c) => ({ ...c, x: at[0], y: at[1], ms: 1000 }))
+            }
             await after(1000)
-            setCursor((c) => c && { ...c, pressed: false, slow: false })
+            setCursor((c) => ({ ...c, pressed: false }))
             setGhost(null)
           }
           if (b.type) {
             const { key, text } = b.type
-            setCursor((c) => c && { ...c, shape: "text" })
-            for (let k = 1; k <= text.length; k++) {
-              setState((was) => ({ ...was, [key]: text.slice(0, k) }))
+            setCursor((c) => ({ ...c, shape: "text" }))
+            for (let n = 1; n <= text.length; n++) {
+              setState((was) => ({ ...was, [key]: text.slice(0, n) }))
               await after(55)
             }
           }
@@ -738,17 +1193,52 @@ function useScript(
             const patch = b.set
             setState((was) => ({ ...was, ...patch }))
           }
-          await after(Math.max(b.wait ?? 1300, read(i, b)))
+          if (b.set || b.type || b.drag) {
+            // Once what that did is drawn, the lens takes it in.
+            await after(80)
+            const again = about(i, b, b.on ? measure(b.on) : part, true)
+            const flight = fly(aim(glass, again, linger, zoom, k))
+            if (flight) {
+              setCursor((c) => ({ ...c, ms: flight, ride: true }))
+              await after(flight + 80)
+            }
+          }
+          setCursor((c) => ({ ...c, settled: true }))
+          await after(rest)
         }
         await after(1500)
+        rewind()
+        glass = WIDE
+        setLens(WIDE)
         setState(initial)
         setSay(null)
-        await after(700)
+        setCursor((c) => ({
+          ...c,
+          index: -1,
+          from: -1,
+          settled: false,
+          ms: 500,
+          ride: true,
+        }))
+        await after(900)
       }
     })()
     return () => timers.forEach(clearTimeout)
-  }, [script, notes, paused, running, initial, setState, measure])
-  return { cursor, say, ghost }
+  }, [
+    script,
+    notes,
+    paused,
+    running,
+    initial,
+    start,
+    zoom,
+    k,
+    setState,
+    measure,
+    overlays,
+    rewind,
+  ])
+  return { cursor, lens, say, ghost }
 }
 
 type PeerAt = {
@@ -827,21 +1317,36 @@ function usePeers(
   return at
 }
 
-/** Someone else's cursor: an arrow in their color, with their name. */
-function PeerView({ peer, s }: { peer: PeerAt; s: number }) {
+/**
+ * Someone else's cursor: an arrow in their color, with their name, at a
+ * place in the page's pixels (theirs in the app, as the lens shows it).
+ */
+function PeerView({
+  peer,
+  at,
+  sel,
+  away,
+  s,
+}: {
+  peer: PeerAt
+  at: [number, number]
+  sel: Rect | null
+  away: boolean
+  s: number
+}) {
   if (!peer.shown) return null
   return (
     <>
-      {peer.sel && (
+      {sel && (
         <span
           className="pk-peer-sel"
           style={
             {
               "--peer": peer.color,
-              left: Math.round(peer.sel[0] * s),
-              top: Math.round(peer.sel[1] * s),
-              width: Math.round(peer.sel[2] * s),
-              height: Math.round(peer.sel[3] * s),
+              left: Math.round(sel[0] * s),
+              top: Math.round(sel[1] * s),
+              width: Math.round(sel[2] * s),
+              height: Math.round(sel[3] * s),
             } as React.CSSProperties
           }
         >
@@ -851,9 +1356,8 @@ function PeerView({ peer, s }: { peer: PeerAt; s: number }) {
       <span
         aria-hidden
         className="pk-peer"
-        style={{
-          translate: `${Math.round(peer.x * s)}px ${Math.round(peer.y * s)}px`,
-        }}
+        data-away={away || undefined}
+        style={{ translate: `${at[0]}px ${at[1]}px` }}
       >
         <svg viewBox="0 0 18 18">
           <path
@@ -871,22 +1375,18 @@ function PeerView({ peer, s }: { peer: PeerAt; s: number }) {
 }
 
 /**
- * The demo cursor, in the page's own pixels over the browser: one of the
- * macOS cursors (public/cursors), gliding between beats, slower while it
- * drags, with a ring where it presses.
+ * The demo cursor's picture: one of the macOS cursors (public/cursors),
+ * with a ring that opens where it presses. Where it is, and how it gets
+ * there, is its holder's (`.pl-point`): across on one curve and down on
+ * another, so it travels in a slight arc as a hand does.
  */
-function CursorView({ cursor, s }: { cursor: Cursor | null; s: number }) {
-  const shape = !cursor || cursor.shape === "grab" ? "pointer" : cursor.shape
+function CursorView({ cursor }: { cursor: Cursor }) {
+  const shape = cursor.shape === "grab" ? "pointer" : cursor.shape
   return (
     <div
       aria-hidden
       className="pl-cursor"
-      data-shown={cursor ? "" : undefined}
-      data-pressed={cursor?.pressed ? "" : undefined}
-      data-slow={cursor?.slow ? "" : undefined}
-      style={{
-        translate: `${Math.round((cursor?.x ?? 0) * s)}px ${Math.round((cursor?.y ?? 0) * s)}px`,
-      }}
+      data-pressed={cursor.pressed ? "" : undefined}
     >
       {(["arrow", "pointer", "text"] as const).map((k) => (
         <img
@@ -894,7 +1394,7 @@ function CursorView({ cursor, s }: { cursor: Cursor | null; s: number }) {
           src={`/cursors/${k}.svg`}
           alt=""
           data-shape={k}
-          hidden={k !== (cursor ? shape : "arrow")}
+          hidden={k !== shape}
         />
       ))}
     </div>
@@ -1019,13 +1519,18 @@ function SheetWindow({
           className="pl-sheet-row"
           style={{ translate: `${-Math.round(progress * room)}px 0` }}
         >
-          {sheet.items.map((shot) => {
+          {sheet.items.map((shot, i) => {
             const k = Math.min(1, 220 / shot.w)
             return (
               <figure
                 key={shot.label}
                 className="pl-sheet-item"
-                style={{ width: Math.round(shot.w * k) }}
+                style={
+                  {
+                    width: Math.round(shot.w * k),
+                    "--pl-n": Math.min(i, 8),
+                  } as React.CSSProperties
+                }
               >
                 <ShotView
                   shot={shot}
@@ -1133,7 +1638,9 @@ function ChangeCard({
 /**
  * Which version of a thing the scene shows, of the set it belongs to: the
  * set's name and every version's label, the one showing picked out. It
- * sits where the change card does.
+ * sits where the change card does, and stays for the whole of its set (the
+ * stage draws it, not the scene), so the pick moves down the list as the
+ * page goes through the versions.
  */
 function VersionsCard({
   versions,
@@ -1157,12 +1664,15 @@ function VersionsCard({
       onFoot(el.offsetTop + el.offsetHeight)
     )
     observer.observe(el)
-    return () => observer.disconnect()
+    return () => {
+      observer.disconnect()
+      onFoot(0)
+    }
   }, [onFoot, top])
   return (
     <aside
       ref={card}
-      className="pl-change"
+      className="pl-change pl-versions"
       style={
         fits
           ? { left: 16, top, width: Math.min(300, room - 32) }

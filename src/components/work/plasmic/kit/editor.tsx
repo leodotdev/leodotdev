@@ -113,6 +113,10 @@ const num = (v: State[string], d: number) => (typeof v === "number" ? v : d)
  * - menu: a context menu ("context"); share, invite, roles; publish,
  *   note, published; code; toast; topHover; tool; boards: "all"
  */
+/** A recording has changed the selection's fill. */
+const recorded = (s: State) =>
+  Boolean(s.rec) && Boolean(s.fill) && s.fill !== str(s.accent, "#2563eb")
+
 export function Editor({ s }: { s: State }) {
   const layout = str(s.layout, "classic") as Layout
   const left = str(s.left, "tree")
@@ -215,6 +219,7 @@ export function Editor({ s }: { s: State }) {
               selected={sel}
               hover={str(s.hover)}
               drop={str(s.drop)}
+              rec={recorded(s) ? [sel] : undefined}
             />
           </>
         )}
@@ -542,8 +547,8 @@ function RightDesign({ s }: { s: State }) {
           </Section>
           <Section title="Background" pk="sec:fill">
             <div className="relative">
-              <Field label="Fill" pk="fill">
-                <Input set={Boolean(s.fillToken)} rec={Boolean(rec)}>
+              <Field label="Fill" pk="fill" rec={recorded(s)}>
+                <Input set={Boolean(s.fillToken)} rec={recorded(s)}>
                   <span className="pk-swatch" style={{ background: fill }} />
                   {s.fillToken ? str(s.fillToken) : fill.toUpperCase()}
                 </Input>
